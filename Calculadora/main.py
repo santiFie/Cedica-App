@@ -1,3 +1,5 @@
+import add, split, multiply, subtraction
+
 def calculadora():
     try:
         num1 = float(input("Ingrese el primer número: "))
@@ -9,7 +11,7 @@ def calculadora():
             case '+':
                 resultado = add(num1,num2)
             case '-':
-                resultado = substract(num1,num2)
+                resultado = subtraction(num1,num2)
             case '*':
                 resultado = multiply(num1,num2)
             case '/':
