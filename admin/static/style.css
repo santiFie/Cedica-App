@@ -1,0 +1,35 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(196, 196, 190, 0.5); /* Fondo con opacidad */
+    color: rgba(50, 50, 50, 0.8); /* Texto en gris oscuro con opacidad */
+}
+
+/* Navbar */
+div.navbar {
+    background-color: rgba(100, 100, 100, 0.6); /* Fondo gris medio con opacidad */
+    color: rgba(240, 240, 240, 0.8); /* Texto en gris claro */
+    padding: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+div.navbar a {
+    color: rgba(230, 230, 230, 0.9); /* Links en gris claro con opacidad */
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+div.navbar a:hover {
+    background-color: rgba(120, 120, 120, 0.7); /* Fondo de los links en gris más oscuro al pasar por encima */
+}
+
+/* Container */
+#container {
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); 
+}
