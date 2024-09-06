@@ -9,6 +9,6 @@ def create_app(env="development", static_folder="../../static"):
     def home():
         return render_template("home.html")
     
-    app.register_error_handler(404, error.not_found_error)
+    app.register_error_handler(404, error.not_found_error_404)
     
     return app
