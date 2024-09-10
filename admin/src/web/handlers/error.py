@@ -18,3 +18,8 @@ def server_error_500(e):
     error = Error(500, "500 - Error interno del servidor", "Error interno del servidor", "Ocurrio un error inesperado en el servidor", "Intenta nuevamente mas tarde")
 
     return render_template("error.html", error=error), 500
+
+def unauthorized_401(e):
+    error = Error(401, "401 - No autorizado", "No autorizado", "No tienes permiso para acceder a este recurso", "Verifica tus credenciales e intenta nuevamente")
+
+    return render_template("error.html", error=error), 401

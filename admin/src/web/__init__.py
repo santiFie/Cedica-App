@@ -18,5 +18,10 @@ def create_app(env="development", static_folder="../../static"):
 
     app.register_error_handler(500, error.server_error_500)
 
+    @app.route("/error401")
+    def error401():
+        abort(401)
+
+    app.register_error_handler(401, error.unauthorized_401)
 
     return app
