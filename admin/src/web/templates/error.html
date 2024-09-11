@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='error_style.css') }}">
+
+  <title id="404">{{ error.title }}</title>
+</head>
+
+<body>
+<div class="notfound-background"></div>
+<div class="row">
+  <div class="row content">
+    <div>
+      <h1>{{ error.code }}</h1>
+      <h2 id="page_not_found_subtitle">{{ error.subtitle }}</h2>
+      <p id="page_not_found_description">{{ error.description }}</p>
+      <p id="page_not_found_helper">{{ error.helper }}</p>
+      <div class="button-container">
+        <a id="page_not_found_back_button_text" href="javascript:history.back()" class="btn btn-grey">Volver</a>
+        <a id="page_not_found_go_to_home_button_text" href="/" class="btn btn-info">Ir a la página de inicio</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>
