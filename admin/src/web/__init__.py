@@ -1,9 +1,15 @@
 from flask import Flask, abort
 from flask import render_template
 from src.web.handlers import error
+from src.core import database
+from src.core.config import config
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
+
+    app.config.from_object(config[env])
+
+    database.init_app(app)
 
     @app.route("/")
     def home():
@@ -23,5 +29,9 @@ def create_app(env="development", static_folder="../../static"):
         abort(401)
 
     app.register_error_handler(401, error.unauthorized_401)
+
+    @app.cli.command(name="reset-db")
+    def reset_db():
+        database.reset()
 
     return app
