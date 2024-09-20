@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %} Consultas {% endblock %}
+
+{% block content %}
+    <h1>Consultas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+                <tr>
+                    <td>{{ issue.id }}</td>
+                    <td>{{ issue.title }}</td>
+                    <td>{{ issue.description }}</td>
+                    <td>{{ issue.status }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+{% endblock %}

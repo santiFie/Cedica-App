@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from sqlalchemy import inspect
 
 db = SQLAlchemy()
 
@@ -27,13 +29,21 @@ def config(app):
     return app
 
 def reset():
-    """
-    Resets the database
-    """
-    print("Deleting the database...")
+    # with db.engine.connect() as conn:
+    #     conn.execute(db.text("DROP SCHEMA IF EXISTS public CASCADE"))
+    #     conn.execute(db.text("CREATE SCHEMA public"))
+    #     conn.commit()
     db.drop_all()
-    print("Creating the database...")
+    db.session.commit()
     db.create_all()
-    print("Done!")
+    db.session.commit()
+    print("Database reset complete.")
 
-    
+
+def seeds():
+    """
+    Seeds the database
+    """
+    from src.core import seeds
+
+    seeds.run()
