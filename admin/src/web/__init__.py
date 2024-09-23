@@ -3,6 +3,7 @@ from flask import render_template
 from src.web.handlers import error
 from src.core import database
 from src.core.config import config
+from src.web.handlers.auth import bp as auth_bp
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
@@ -23,6 +24,7 @@ def create_app(env="development", static_folder="../../static"):
         abort(500)
 
     app.register_error_handler(500, error.server_error_500)
+    app.register_blueprint(auth_bp)
 
     @app.route("/error401")
     def error401():
