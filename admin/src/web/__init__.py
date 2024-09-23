@@ -3,8 +3,6 @@ from flask import render_template
 from src.web.handlers import error
 from src.core import database
 from src.core.config import config
-from src.web.controllers.issues import bp as issues_bp
-from src.core.board.issue import Issue
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
@@ -32,24 +30,12 @@ def create_app(env="development", static_folder="../../static"):
 
     app.register_error_handler(401, error.unauthorized_401)
 
-    app.register_blueprint(issues_bp)
-
-    
-
     @app.cli.command(name="reset-db")
     def reset_db():
-        # with app.app_context():
-        #     database.reset()
         database.reset()
 
     @app.cli.command(name="seeds-db")
     def seeds_db():
-        # with app.app_context():
-        #     database.seeds()
         database.seeds()
-
-    @app.cli.command(name="new-user")
-    def new_user():
-        database.new_user()
 
     return app
