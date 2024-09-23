@@ -30,9 +30,9 @@ def config(app):
 
 def reset():
     db.drop_all()
-    db.session.commit()
+    #db.session.commit()
     db.create_all()
-    db.session.commit()
+    #db.session.commit()
     print("Database reset complete.")
 
 def seeds():
