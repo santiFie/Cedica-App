@@ -23,6 +23,8 @@ def verification():
     if not user:
         redirect(url_for("auth.login"))
 
+    session["user"] = user.email
+
     return redirect(url_for('home'))
 
 @bp.get("/logout")

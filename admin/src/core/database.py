@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import inspect
+from src.core import users
 
 db = SQLAlchemy()
 
@@ -36,4 +37,4 @@ def reset():
     print("Database reset complete.")
 
 def seeds():
-    pass
+    users.run()
