@@ -1,44 +1,30 @@
-from flask import Flask, abort
-from flask import render_template
+from flask import Flask
 from flask_session import Session
-from src.web.handlers import error
-from src.web.controllers.auth import bp as auth_bp
+from flask_bcrypt import Bcrypt
+from src.web import routes
+from src.web import errors
 from src.core import database
 from src.core.config import config
 
 session = Session()
+bcrypt = Bcrypt()
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
-
+    # Init configuration
     app.config.from_object(config[env])
-
+    # Init database
     database.init_app(app)
-
+    # Init session
     session.init_app(app)
+    # Init bcrypt
+    bcrypt.init_app(app)
 
-    @app.route("/")
-    def home():
-        return render_template("home.html")
-    
-    app.register_error_handler(404, error.not_found_error_404)
-    
-    # queda ruta para chequear que esta bien
-    @app.route("/error500")
-    def error500():
-        abort(500)
+    # Register routes
+    routes.register(app)
 
-    app.register_error_handler(500, error.server_error_500)
-
-    @app.route("/error401")
-    def error401():
-        abort(401)
-
-    app.register_error_handler(401, error.unauthorized_401)
-
-
-    #Registro autenticacion
-    app.register_blueprint(auth_bp)
+    # Error handlers
+    errors.register_errors(app)
 
     @app.cli.command(name="reset-db")
     def reset_db():
