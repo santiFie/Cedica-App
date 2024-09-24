@@ -24,7 +24,7 @@ def find_user_by_email(email):
 def check_user(email, password):
     user = find_user_by_email(email)
 
-    if not user:
-        return False
+    if user and bcrypt.check_password_hash(user.password, password):
+        return user
 
-    return bcrypt.check_password_hash(user.password, password)
+    return None
