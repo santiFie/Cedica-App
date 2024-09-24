@@ -18,7 +18,7 @@ def login():
 def verification():
     params = request.form
 
-    user = auth.find_user_by_email_and_password(params["email"],params["password"])
+    user = auth.check_user(params["email"],params["password"])
 
     if not user:
         redirect(url_for("auth.login"))
