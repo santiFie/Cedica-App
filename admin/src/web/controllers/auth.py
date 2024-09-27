@@ -1,18 +1,24 @@
-from flask import Blueprint
-from flask import render_template
-from flask import request
-from flask import url_for
-from flask import redirect
-from flask import session
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash
+
 from src.core import auth
 
 bp = Blueprint('auth',__name__,url_prefix="/auth")
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
+
     if request.method == "POST":
-        auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"])
+        user = auth.check_user(request.form["email"], request.form["password"])
+
+        if not user:
+            auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"])
+            return redirect(url_for("auth.login"))
+        else:
+            flash("Ya tienes una cuenta. Por favor, inicia sesión.", "info")
+        
+
     return render_template("auth/register.html")
+    
 
 @bp.get("/")
 def login():
