@@ -27,16 +27,24 @@ def login():
 
 @bp.post("/authenticate")
 def verification():
+    """
+    Verifies the user credentials
+    """
     params = request.form
 
     user = auth.check_user(params["email"],params["password"])
 
     if not user:
-        redirect(url_for("auth.login"))
+        flash("Usuario o contraseña inválidos", "error")
+        return redirect(url_for("auth.login"))
+    
+    if auth.user_is_active(user):
+        session["user"] = user.email
+        return redirect(url_for('home'))
 
-    session["user"] = user.email
+    flash("Tu cuenta ha sido desactivada. Por favor, contacta a un administrador", "error")
 
-    return redirect(url_for('home'))
+    return redirect(url_for("auth.login"))
 
 @bp.get("/logout")
 def logout():

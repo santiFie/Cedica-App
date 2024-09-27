@@ -20,6 +20,9 @@ def find_user_by_email(email):
 
     return user
 
+def user_is_active(user):
+    return user.active
+
 
 def check_user(email, password):
     user = find_user_by_email(email)
