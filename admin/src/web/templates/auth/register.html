@@ -8,6 +8,11 @@
 
 {% block content %}
 
+    <div>{% block navbar %}
+
+        {% endblock %}
+    </div>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <ul>
