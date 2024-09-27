@@ -40,4 +40,7 @@ def verification():
 
 @bp.get("/logout")
 def logout():
-    pass
+    if(session.get('user')):
+        del session['user']
+        session.clear()
+    return redirect(url_for('auth.login'))
