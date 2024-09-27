@@ -5,8 +5,9 @@ from src.web.handlers.auth import login_required
 
 def register(app):
 
-    @login_required
+    
     @app.route("/")
+    @login_required
     def home():
         return render_template("home.html")
 
