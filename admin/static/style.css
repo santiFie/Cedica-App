@@ -5,31 +5,59 @@ body {
     padding: 0;
     background-color: rgba(196, 196, 190, 0.5); /* Fondo con opacidad */
     color: rgba(50, 50, 50, 0.8); /* Texto en gris oscuro con opacidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* Navbar */
-div.navbar {
-    background-color: rgba(100, 100, 100, 0.6); /* Fondo gris medio con opacidad */
-    color: rgba(240, 240, 240, 0.8); /* Texto en gris claro */
-    padding: 15px;
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-div.navbar a {
-    color: rgba(230, 230, 230, 0.9); /* Links en gris claro con opacidad */
-    text-decoration: none;
-    padding: 10px 20px;
-}
-
-div.navbar a:hover {
-    background-color: rgba(120, 120, 120, 0.7); /* Fondo de los links en gris más oscuro al pasar por encima */
-}
-
-/* Container */
-#container {
-    margin: 20px auto;
-    max-width: 1200px;
+/* Login Container */
+.login-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgba(50, 50, 50, 0.8); /* Título gris oscuro con opacidad */
+}
+
+/* Form Styles */
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    color: rgba(50, 50, 50, 0.8); /* Etiquetas en gris oscuro con opacidad */
+    margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(100, 100, 100, 0.6); /* Borde gris medio con opacidad */
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
+    color: rgba(50, 50, 50, 0.8); /* Texto gris oscuro */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(100, 100, 100, 0.6); /* Botón gris medio con opacidad */
+    color: rgba(240, 240, 240, 0.8); /* Texto del botón gris claro con opacidad */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(120, 120, 120, 0.7); /* Fondo más oscuro al pasar sobre el botón */
 }
