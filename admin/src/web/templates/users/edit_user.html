@@ -1,0 +1,50 @@
+{% block title %}Editar usuario{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
+    <h1>Editar usuario</h1>
+    <form action="{{ url_for('users.user_edit', user_id=user.id) }}" method="POST">
+        <div>
+            <label for="nickname">Alias:</label>
+            <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}" required>
+        </div>
+        <div>
+            <label for="system_admin"> Administrador</label>
+            <input type="checkbox" id="system_admin" name="system_admin" {% if user.system_admin %}checked{% endif %}>
+        </div>
+        <div>
+            <label for="role_id">Rol:</label>
+            <select id="role_id" name="role_id">
+            {% for role in roles %}
+                <option value="{{ role.id }}" {% if role.id == user.role_id %}selected{% endif %}>{{ role.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
+
+    <div>
+        <p>¿Desea eliminar su cuenta? <a href="{{ url_for('users.user_delete', user_id=user.id) }}">Eliminar</a></p>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+
+{% endblock %}

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.core import users
+from src.core import users, auth
+from src.core.models.users import Role
 
 
 bp = Blueprint('users',__name__,url_prefix="/users")
@@ -9,13 +10,18 @@ def user_update():
     """
     Updates a user
     """
-    # Tener en cuenta la forma de mostrar el rol en el formulario porque aca se recibe un id y hay que mostrar un string
-    users.edit(email=request.form["email"], nickname=request.form["nickname"], system_admin=request.form["system_admin"], role_id=request.form["role_id"])
-    return redirect(url_for("users.users_list"))
+    user = users.edit(nickname=request.form["nickname"], system_admin=request.form["system_admin"], role_id=request.form["role_id"])
+    if not user:
+        flash("No existe el usuario")
+    else:
+        flash("Usuario actualizado")
+    return redirect(url_for("users.users_list"), flash=flash)
 
 bp.get("/edit")
-def user_edit():
+def user_edit(user_id):
     """
     Edits a user
     """
-    return render_template("users/edit.html")
+    user = auth.find_user_by_id(user_id)
+    roles = Role.query.all()
+    return render_template("users/edit.html", user=user,roles=roles)
