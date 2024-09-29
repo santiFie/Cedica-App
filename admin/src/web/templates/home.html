@@ -9,4 +9,7 @@
 {% block content %}
     <h1>Inicio</h1>
     <p>Pagina de inicio de la aplicacion del grupo 43</p>
+    <div>
+        <button><a href="{{ url_for('users.edit') }}">Cerrar sesión</a></button>
+    </div>
 {% endblock %}
