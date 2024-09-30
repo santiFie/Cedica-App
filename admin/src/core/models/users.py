@@ -8,7 +8,7 @@ class User(database.db.Model):
     password = database.db.Column(database.db.String(120), nullable=False)
     active = database.db.Column(database.db.Boolean, default=True)
     system_admin = database.db.Column(database.db.Boolean, default=False)
-    role_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('roles.id'), nullable=False)
+    role_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('roles.id'), nullable=True)
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
     updated_at = database.db.Column(database.db.DateTime, default=datetime.now(), onupdate=datetime.now())
     
