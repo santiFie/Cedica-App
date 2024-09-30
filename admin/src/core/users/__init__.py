@@ -3,11 +3,16 @@ from src.core.models.users import User
 
 
 def find_users(page=1):
-    # Definimos cuántos registros mostrar por página
-    per_page = 25
-    # Calculamos el "offset" (cuántos registros saltar) en función de la página actual
-    offset = (page - 1) * per_page
-    # Realizamos la consulta con el offset y el límite de 25 usuarios
-    users = User.query.offset(offset).limit(per_page).all()
+   per_page = 25
+   total_users = User.query.count()
+   
+   max_pages = (total_users + per_page - 1) // per_page  # Redondeo hacia arriba
     
-    return users
+    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+   if page > max_pages:
+     page = max_pages
+    
+   offset = (page - 1) * per_page
+   users = User.query.offset(offset).limit(per_page).all()
+    
+   return users
