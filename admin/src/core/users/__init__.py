@@ -51,6 +51,7 @@ def edit(**kwargs):
     user = auth.find_user_by_email(kwargs["email"])
     if user:
         user.nickname = kwargs["nickname"]
+        print(kwargs["nickname"])
         user.system_admin = kwargs["system_admin"]
         user.role_id = kwargs["role_id"]
         auth.db.session.commit()

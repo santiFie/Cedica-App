@@ -32,8 +32,8 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('users.user_edit', user_id=user.id), roles=roles }}" method="POST"></a>
-                            <button>Modificar</button>
+                        <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                            <button type="button">Modificar</button>
                         </a>
                     </td>
                     <td>

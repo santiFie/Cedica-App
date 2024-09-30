@@ -1,3 +1,5 @@
+{% extends 'layout.html' %}
+
 {% block title %}Editar usuario{% endblock %}
 
 {% block head %}
@@ -17,10 +19,10 @@
     {% endwith %}
 
     <h1>Editar usuario</h1>
-    <form action="{{ url_for('users.user_edit', user_id=user.id) }}" method="POST">
+    <form action="{{ url_for('users.user_update', user_email=user.email) }}" method="post">
         <div>
             <label for="nickname">Alias:</label>
-            <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}" required>
+            <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}">
         </div>
         <div>
             <label for="system_admin"> Administrador</label>
@@ -39,12 +41,5 @@
         </div>
     </form>
 
-    <div>
-        <p>¿Desea eliminar su cuenta? <a href="{{ url_for('users.user_delete', user_id=user.id) }}">Eliminar</a></p>
-    </div>
-{% endblock %}
-
-{% block footer %}
-    {{ super() }}
 
 {% endblock %}
