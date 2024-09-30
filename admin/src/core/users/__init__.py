@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from src.core.database import db
 from src.core.models.users import User
 
@@ -17,7 +16,6 @@ def find_users(page=1):
    users = User.query.offset(offset).limit(per_page).all()
     
    return users
-=======
 from flask import session
 from src.core import auth
 from src.core.models.users import RolePermission
@@ -45,4 +43,3 @@ def has_permissions(session, permission):
     permissions = get_permissions(user)
 
     return permission in permissions
->>>>>>> dev
