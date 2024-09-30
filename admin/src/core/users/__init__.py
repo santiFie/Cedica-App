@@ -1,6 +1,8 @@
-<<<<<<< HEAD
 from src.core.database import db
 from src.core.models.users import User
+from flask import session
+from src.core import auth
+from src.core.models.users import RolePermission
 
 
 def find_users(page=1):
@@ -17,10 +19,6 @@ def find_users(page=1):
    users = User.query.offset(offset).limit(per_page).all()
     
    return users
-=======
-from flask import session
-from src.core import auth
-from src.core.models.users import RolePermission
 
 def get_permissions(user):
     """
@@ -45,7 +43,6 @@ def has_permissions(session, permission):
     permissions = get_permissions(user)
 
     return permission in permissions
-<<<<<<< HEAD
 
 def edit(**kwargs):
     """
@@ -59,7 +56,5 @@ def edit(**kwargs):
         auth.db.session.commit()
         return user
     return None
-    
-=======
->>>>>>> dev
->>>>>>> dev
+
+
