@@ -50,11 +50,12 @@ def user_edit():
     return render_template("users/edit_user.html", user=user,roles=roles)
 
 
-@bp.post("/delete_user")
+@bp.get("/delete_user")
 def delete_user():
-    user_email = request.form.get("user_email")
+    user_email = request.args.get("user_email")
+    print(user_email)
     users.user_delete(user_email)
     flash("User deleted successfully")
-    return redirect(url_for("users.list_users"))
+    return redirect(url_for("users.users_list", flash=flash) )
 
 

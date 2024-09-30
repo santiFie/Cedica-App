@@ -37,7 +37,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#">
+                        <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
                             <button>Eliminar</button>
                         </a>
                     </td>
