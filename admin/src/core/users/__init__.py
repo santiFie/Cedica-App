@@ -26,11 +26,11 @@ def has_permissions(session, permission):
 
     return permission in permissions
 
-def user_delete(user_id):
+def user_delete(user_email):
     """
     Deletes a user
     """
-    user = auth.find_user_by_id(user_id)
+    user = auth.find_user_by_email(user_email)
     auth.db.session.delete(user)
     auth.db.session.commit()
     return True
