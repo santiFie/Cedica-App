@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado Usuarios{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Usuarios del sistema</h1>
+    <button>crear usuario</button>
+    {% if list %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Alias</th>
+                    <th>Email</th>
+                    <th>Informacion</th>
+                    <th>Modificacion</th>
+                    <th>Eliminacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in list %}
+                <tr>
+                    <td>{{ user.nickname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <a href="#">
+                            <button>Mostrar informacion</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                            <button type="button">Modificar</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
+                            <button>Eliminar</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+    {% endif %}
+
+
+    
+
+
+{% endblock %}
