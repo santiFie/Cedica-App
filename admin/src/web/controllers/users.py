@@ -59,3 +59,19 @@ def delete_user():
     return redirect(url_for("users.users_list", flash=flash) )
 
 
+@bp.route("/register", methods=["GET", "POST"])
+def user_create():
+
+    if request.method == "POST":
+        user = auth.check_user(request.form["email"], request.form["password"])
+
+        if not user:
+            auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"], role_id=request.form["role_id"])
+            flash("Usuario creado exitosamente")
+        else:
+            flash("El usuario ingresado ya existe", "info")
+        
+    roles = Role.query.all()
+
+    return render_template("users/register.html", roles=roles)  
+
