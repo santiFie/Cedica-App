@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado Usuarios{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Pagos</h1>
+    <a href="#"> <button> Registrar Pago </button></a>
+
+
+    <form method="GET" action="{{ url_for('payment.index_payments') }}">
+        <div>
+            <label for="start_date">Fecha de pago (Desde):</label>
+            <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
+        </div>
+        <div>
+            <label for="end_date">Fecha de pago (Hasta):</label>
+            <input type="date" id="end_date" name="end_date" value="{{ request.args.get('end_date', '') }}">
+        </div>
+        <div>
+            <label for="payment_type">Tipo de pago:</label>
+            <select id="payment_type" name="payment_type">
+                <option value="">Todos</option>
+                <option value="Honorarios" {% if request.args.get('payment_type') == 'Honorarios' %}selected{% endif %}>Honorarios</option>
+                <option value="Proveedor" {% if request.args.get('payment_type') == 'Proveedor' %}selected{% endif %}>Proveedor</option>
+                <option value="Gastos Varios" {% if request.args.get('payment_type') == 'Gastos Varios' %}selected{% endif %}>Gastos Varios</option>
+            </select>
+        </div>
+        <div>
+            <label for="order_by">Ordenar por fecha de pago:</label>
+            <select id="order_by" name="order_by">
+                <option value="asc" {% if request.args.get('order_by') == 'asc' %}selected{% endif %}>Ascendente</option>
+                <option value="desc" {% if request.args.get('order_by') == 'desc' %}selected{% endif %}>Descendente</option>
+            </select>
+        </div>
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if payments %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Beneficiario</th>
+                    <th>Monto</th>
+                    <th>Fecha de Pago</th>
+                    <th>Tipo de Pago</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td> {{ payment.beneficiary.name if payment.beneficiary else 'Externo' }} </td> <!-- deberia ser el nombre del usuario no el id pero por ahora queda-->
+                    <td> {{ payment.amount }} </td>
+                    <td> {{ payment.payment_date }} </td>
+                    <td> {{ payment.payment_type }} </td>
+                    <td> {{ payment.description }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No se encontraron pagos</p>
+    {{% endif %}}
+
+
+{% endblock %}

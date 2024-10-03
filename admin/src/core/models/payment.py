@@ -13,7 +13,7 @@ class Payment(database.db.Model):
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
     
     # si es un beneficiario, osea que trabaja en cedica, apunta a los usuarios del sistema. Los pagos pueden ser a cosas externas tambien
-    beneficiary_id = database.db.Column(database.db.Integer, database.db.ForeingKey('user.id'), nullable = True)
+    beneficiary_id = database.db.Column(database.db.Integer, database.db.ForeignKey('user.id'), nullable = True)
     amount = database.db.Column(database.db.Float, nullable = False)
     payment_date = database.db.Column(database.db.DateTime, default=datetime.now, nullable=False)
     payment_type = database.db.Column(database.db.Enum(PaymentType), nullable=False)
