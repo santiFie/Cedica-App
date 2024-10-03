@@ -31,7 +31,7 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
         flash("No hay usuarios cargados en el sistema.", "info")
         return render_template("home.html")
         
-    return render_template("users/show_users.html", list = all_users, page=page, max_pages=max_pages, sort_by=sort_by)
+    return render_template("users/show_users.html", list = all_users, page=page, max_pages=max_pages)
 
 
 
