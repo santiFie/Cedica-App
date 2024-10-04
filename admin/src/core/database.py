@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from src.core import riders_and_horsewomen as rh
 
 db = SQLAlchemy()
 
@@ -28,7 +29,9 @@ def config(app):
 
 def reset():
     db.drop_all()
-    #db.session.commit()
+    
+    # Create all the rideders and horsewomen enums
+    rh.create_enums()
+
     db.create_all()
-    #db.session.commit()
     print("Database reset complete.")

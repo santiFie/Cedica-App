@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 from src.web import routes
 from src.web import errors
 from src.core import database
+from src.core.models.riders_and_horsewomen import RidersAndHorsewoman, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
+from src.core.models.users import User, RolePermission, Role
 from src.core.config import config
 
 session = Session()

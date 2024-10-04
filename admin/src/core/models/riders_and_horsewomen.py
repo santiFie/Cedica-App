@@ -32,7 +32,7 @@ disability_type_enum= ENUM(
     'Sensorial',
     'Visceral',
     name='disability_type_enum',
-    create_type=False
+    create_type= False
 )
 
 #Asignacion familiar
@@ -51,12 +51,19 @@ pension_enum= ENUM(
     create_type= False
 )
 
+# Definimos el ENUM para los días de la semana
+days_enum = ENUM(
+    'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo',
+    name='days_of_week_enum',  # Nombre del tipo ENUM en PostgreSQL
+    create_type=False  # Creamos el tipo si no existe
+)
+
 # nombre del modelo dudas plural?
 class RidersAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomens'
     dni = database.db.Column(database.db.String(8), primary_key=True)
     name = database.db.Column(database.db.String(120), nullable=False)
-    age = database.db.Column(database.db.Integer(2), nullable=False)
+    age = database.db.Column(database.db.Integer, nullable=False)
     date_of_birth = database.db.Column(database.db.Date, nullable=False)
     place_of_birth = database.db.Column(database.db.String(120), nullable=False)
     address = database.db.Column(database.db.String(120), nullable=False)
@@ -84,13 +91,21 @@ class Tutor(database.db.Model):
 
 #tabla intermedia entre tutor y jinetes
 
-class WorkInInstitution(database.db.Model):
-    __tablename__ = 'work_in_institutions'
-    proposal = database.db.Column(database.db.String(120), nullable=False)
-    condition = database.db.Column(database.db.String(120), nullable=False)
-    seat = database.db.Column(database.db.String(120), nullable=False)
-    #day = 
-    #therapist = 
-    #rider =
-    #horse =
-    #track_assistant=
+# class WorkDays(database.db.Model):
+#     __tablename__ = 'work_days'
+
+#     day = database.db.Column(days_enum, nullable=False, primary_key=True)
+#     work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), nullable=False, primary_key=True)
+
+# class WorkInInstitution(database.db.Model):
+#     __tablename__ = 'work_in_institutions'
+#     proposal = database.db.Column(database.db.String(120), nullable=False)
+#     condition = database.db.Column(database.db.String(120), nullable=False)
+#     seat = database.db.Column(database.db.String(120), nullable=False)
+#     #therapist = 
+#     #rider =
+#     #horse =
+#     #track_assistant=
+
+#     # Relación many-to-many con los días
+#     days = database.db.relationship('Day', secondary=WorkDays, back_populates='tasks')
