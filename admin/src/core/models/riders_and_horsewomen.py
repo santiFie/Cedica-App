@@ -1,4 +1,55 @@
 from src.core import database
+from sqlalchemy.dialects.postgresql import ENUM
+
+
+disability_certificate_enum = ENUM(
+    'ECNE', 
+    'Lesión post-traumática', 
+    'Mielomeningocele', 
+    'Esclerosis Múltiple', 
+    'Escoliosis Leve', 
+    'Secuelas de ACV', 
+    'Discapacidad Intelectual', 
+    'Trastorno del Espectro Autista', 
+    'Trastorno del Aprendizaje', 
+    'Trastorno por Déficit de Atención/Hiperactividad', 
+    'Trastorno de la Comunicación', 
+    'Trastorno de Ansiedad', 
+    'Síndrome de Down', 
+    'Retraso Madurativo', 
+    'Psicosis',     
+    'Trastorno de Conducta', 
+    'Trastornos del ánimo y afectivos', 
+    'Trastorno Alimentario', 
+    'OTRO',
+    name='disability_certificate_enum',
+    create_type=False  # Para no crear el tipo si ya existe
+)
+
+disability_type_enum= ENUM(
+    'Mental',
+    'Motora',
+    'Sensorial',
+    'Visceral',
+    name='disability_type_enum',
+    create_type=False
+)
+
+#Asignacion familiar
+family_allowance_enum= ENUM( 
+    'Asignación Universal por hijo',
+    'Asignación Universal por hijo con Discapacidad',
+    'Asignación por ayuda escolar anual',
+    name='family_allowance_enum',
+    create_type= False
+)
+
+pension_enum= ENUM(
+    'Provincial',
+    'Nacional',
+    name='pension_enum',
+    create_type= False
+)
 
 # nombre del modelo dudas plural?
 class RidersAndHorsewoman(database.db.Model):
@@ -14,7 +65,11 @@ class RidersAndHorsewoman(database.db.Model):
     emergency_phone = database.db.Column(database.db.String(13), nullable=False)
     scholarship = database.db.Column(database.db.Boolean, nullable=False)
     observations = database.db.Column(database.db.String(120), nullable=True)
-#Faltan certificado discapacidad para abajo.
+    disability_certificate = database.db.Column(disability_certificate_enum, nullable=True, default=None)
+    others = database.db.Column(database.db.String(120), nullable=True)
+    disability_type = database.db.Column(disability_type_enum, nullable=False)
+    family_allowance = database.db.Column(family_allowance_enum, nullable= True, default= None)
+    pension = database.db.Column(pension_enum, nullable= True, default= None)
 
 class Tutor(database.db.Model):
     __tablename__ = 'tutors'
