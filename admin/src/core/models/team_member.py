@@ -1,45 +1,46 @@
 from src.core import database
 from enum import Enum
+from sqlalchemy.dialects.postgresql import ENUM
 
-class ProfessionEnum(Enum):
-        PSYCHOLOGIST = "Psicólogo/a"
-        PSYCHOMOTRICIAN = "Psicomotricista"
-        DOCTOR = "Médico/a"
-        PHYSIOTHERAPIST = "Kinesiólogo/a"
-        OCCUPATIONAL_THERAPIST = "Terapista Ocupacional"
-        EDUCATIONAL_PSYCHOLOGIST = "Psicopedagogo/a"
-        TEACHER = "Docente"
-        PROFESSOR = "Profesor"
-        SPEECH_THERAPIST = "Fonoaudiólogo/a"
-        VETERINARIAN = "Veterinario/a"
-        OTHER = "Otro"
-
-        def __str__(self):
-            return self.value
+ProfessionEnum = ENUM(
+    'PSYCHOLOGIST',
+    'PSYCHOMOTRICIAN',
+    'DOCTOR',
+    'PHYSIOTHERAPIST',
+    'OCCUPATIONAL_THERAPIST',
+    'EDUCATIONAL_PSYCHOLOGIST',
+    'TEACHER',
+    'PROFESSOR',
+    'SPEECH_THERAPIST',
+    'VETERINARIAN',
+    'OTHER',
+    name='professionenum',
+    create_type=False
+)
         
-class Job(Enum):
-    ADMINISTRATIVE = "Administrativo/a"
-    THERAPIST = "Terapeuta"
-    DRIVER = "Conductor"
-    TRACK_ASSISTANT = "Auxiliar de pista"
-    BLACKSMITH = "Herrero"
-    VETERINARIAN = "Veterinario"
-    HORSE_TRAINER = "Entrenador de Caballos"
-    HORSE_TAMER = "Domador"
-    EQUESTRIAN_TEACHER = "Profesor de Equitación"
-    TRAINING_TEACHER = "Docente de Capacitación"
-    MAINTENANCE_ASSISTANT = "Auxiliar de mantenimiento"
-    OTHER = "Otro"
+JobEnum = ENUM(
+    'ADMINISTRATIVE',
+    'THERAPIST',
+    'DRIVER',
+    'TRACK_ASSISTANT',
+    'BLACKSMITH',
+    'VETERINARIAN',
+    'HORSE_TRAINER',
+    'HORSE_TAMER',
+    'EQUESTRIAN_TEACHER',
+    'TRAINING_TEACHER',
+    'MAINTENANCE_ASSISTANT',
+    'OTHER',
+    name='jobenum',
+    create_type=False
+)
 
-    def __str__(self):
-        return self.value
-    
-class Condition(Enum):
-    VOLUNTEER = "Voluntario"
-    PAID_STAFF = "Personal Rentado"
-
-    def __str__(self):
-        return self.value
+ConditionEnum = ENUM(
+    'VOLUNTEER',
+    'PAID_STAFF',
+    name='conditionenum',
+    create_type=False
+)
 
 class TeamMember(database.db.Model):
     __tablename__ = "team_members"
@@ -57,9 +58,9 @@ class TeamMember(database.db.Model):
     active = database.db.Column(database.db.Boolean, nullable=False, default=True)
     health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
 
-    condition = database.db.Column(database.db.Enum(Condition), nullable=False)
-    job_position = database.db.Column(database.db.Enum(Job), nullable=False)
-    proffesion = database.db.Column(database.db.Enum(ProfessionEnum), nullable=False)
+    condition = database.db.Column(ConditionEnum, nullable=False)
+    job_position = database.db.Column(JobEnum, nullable=False)
+    proffesion = database.db.Column(ProfessionEnum, nullable=False)
     health_insurance = database.db.relationship('HealthInsurance', back_populates='team_members')
 
     def __repr__(self):

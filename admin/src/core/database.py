@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from src.core import team_member as tm 
 db = SQLAlchemy()
 
 def init_app(app):
@@ -28,7 +28,9 @@ def config(app):
 
 def reset():
     db.drop_all()
-    #db.session.commit()
+
+    # Creates the team member enums
+    tm.create_enums()
+
     db.create_all()
-    #db.session.commit()
     print("Database reset complete.")
