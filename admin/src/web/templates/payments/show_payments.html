@@ -11,7 +11,7 @@
     <a href="#"> <button> Registrar Pago </button></a>
 
 
-    <form method="GET" action="{{ url_for('payment.index_payments') }}">
+    <form method="GET" action="{{ url_for('payments.index_payments') }}">
         <div>
             <label for="start_date">Fecha de pago (Desde):</label>
             <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
@@ -64,7 +64,7 @@
         </table>
     {% else %}
         <p>No se encontraron pagos</p>
-    {{% endif %}}
+    {% endif %}
 
 
 {% endblock %}

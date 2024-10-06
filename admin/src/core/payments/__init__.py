@@ -28,11 +28,19 @@ def find_payments(start_date=None, end_date=None, payment_type=None, order_by='a
 
     total_payments = query.count()
 
+    # Manejo del caso en el que no haya pagos
+    if total_payments == 0:
+        return [], 0
+
     max_pages = (total_payments + per_page - 1) // per_page  # Redondeo hacia arriba
+
+    # Aseguramos que la página solicitada no sea menor que 1
+    if page < 1:
+        page = 1
         
     # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
     if page > max_pages:
-            page = max_pages
+        page = max_pages
         
         
     offset = (page - 1) * per_page
