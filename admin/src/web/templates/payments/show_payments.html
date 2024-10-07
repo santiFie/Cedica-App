@@ -8,7 +8,7 @@
 
 {% block content %}
     <h1>Pagos</h1>
-    <a href="#"> <button> Registrar Pago </button></a>
+    <a href="{{ url_for('payments.payment_register_form') }}"> <button> Registrar Pago </button></a>
 
 
     <form method="GET" action="{{ url_for('payments.index_payments') }}">
@@ -24,9 +24,9 @@
             <label for="payment_type">Tipo de pago:</label>
             <select id="payment_type" name="payment_type">
                 <option value="">Todos</option>
-                <option value="Honorarios" {% if request.args.get('payment_type') == 'Honorarios' %}selected{% endif %}>Honorarios</option>
-                <option value="Proveedor" {% if request.args.get('payment_type') == 'Proveedor' %}selected{% endif %}>Proveedor</option>
-                <option value="Gastos Varios" {% if request.args.get('payment_type') == 'Gastos Varios' %}selected{% endif %}>Gastos Varios</option>
+                <option value="HONORARIOS" {% if request.args.get('payment_type') == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
+                <option value="PROVEEDOR" {% if request.args.get('payment_type') == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
+                <option value="GASTOS VARIOS" {% if request.args.get('payment_type') == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
             </select>
         </div>
         <div>
@@ -62,6 +62,23 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- FALTA PROBAR ESTOS BOTONES -->
+        <div>
+            {% if current_page > 1 %}
+                <a href="{{ url_for('payments.index_payments', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
+                    <button>Anterior</button>
+                </a>
+            {% endif %}
+        
+            {% if current_page < max_pages %}
+                <a href="{{ url_for('payments.index_payments', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
+                    <button>Siguiente</button>
+                </a>
+            {% endif %}
+        </div>
+
+
     {% else %}
         <p>No se encontraron pagos</p>
     {% endif %}

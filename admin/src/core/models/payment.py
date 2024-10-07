@@ -1,11 +1,15 @@
 from src.core import database
 from datetime import datetime
-import enum
+from enum import Enum
+from sqlalchemy.dialects.postgresql import ENUM
 
-class PaymentType(enum.Enum):
-    HONORARIOS = 'Honorarios'
-    PROVEEDOR = 'Proveedor'
-    GASTOS_VARIOS = 'Gastos Varios'
+PaymentType = ENUM (
+    'HONORARIOS',
+    'PROVEEDOR',
+    'GASTOS VARIOS',
+    name = 'payment_type_enum',
+    create_type = False
+)
 
 class Payment(database.db.Model):
     __tablename__ = "payments"
@@ -16,7 +20,7 @@ class Payment(database.db.Model):
     beneficiary_id = database.db.Column(database.db.String(120), database.db.ForeignKey('users.email'), nullable=True)
     amount = database.db.Column(database.db.Float, nullable = False)
     payment_date = database.db.Column(database.db.DateTime, default=datetime.now, nullable=False)
-    payment_type = database.db.Column(database.db.Enum(PaymentType), nullable=False)
+    payment_type = database.db.Column(PaymentType, nullable=False)
     description = database.db.Column(database.db.String(200), nullable = True)
 
     # relacione del pago con el beneficiario

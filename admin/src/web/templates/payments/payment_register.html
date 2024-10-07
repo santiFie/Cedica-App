@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}Registro de Pagos{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Registrar Pago</h1>
+
+    <form action="{{ url_for('payments.payment_register') }}" method="POST">
+                
+        <label for="amount">Monto:</label>
+        <input type="number" step="0.01" id="amount" name="amount" required>
+                
+        <label for="payment_date">Fecha de Pago:</label>
+        <input type="date" id="payment_date" name="payment_date" required>
+        
+                        
+        <label for="payment_type">Tipo de Pago:</label>
+        <select id="payment_type" name="payment_type" required>
+            <option value="" disabled selected>Seleccionar tipo</option>
+            <option value="HONORARIOS">Honorarios</option>
+            <option value="PROVEEDOR">Proveedor</option>
+            <option value="GASTOS VARIOS">Gastos Varios</option>
+        </select>
+        
+                
+        <label for="description">Descripción (Opcional):</label>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea>
+        
+             
+        <label for="beneficiary_id">Beneficiario (Opcional):</label>
+        <input type="email" id="beneficiary_id" name="beneficiary_id" placeholder="Correo del beneficiario (si aplica)">
+               
+        <button type="submit">Registrar Pago</button>
+
+    </form>
+
+    <a href="{{ url_for('payments.index_payments') }}"> <button type="button" >Volver a listado de pagos </button> </a>
+
+{% endblock %}

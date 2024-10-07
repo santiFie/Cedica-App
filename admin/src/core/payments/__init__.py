@@ -1,5 +1,6 @@
 from src.core.database import db
-from src.core.models.payment import Payment  
+from src.core.models.payment import Payment, PaymentType
+from src.core.models.users import User
 from datetime import datetime
 
 def find_payments(start_date=None, end_date=None, payment_type=None, order_by='asc', page=1):
@@ -18,7 +19,8 @@ def find_payments(start_date=None, end_date=None, payment_type=None, order_by='a
 
     # Filtro por tipo de pago
     if payment_type:
-        query = query.filter(Payment.payment_type == payment_type)
+        payment_type_enum = PaymentType(payment_type)
+        query = query.filter(Payment.payment_type == payment_type_enum)
 
     # Ordeno por fecha de pago
     if order_by == 'asc':
@@ -50,3 +52,33 @@ def find_payments(start_date=None, end_date=None, payment_type=None, order_by='a
 
 
 
+def create_payment(**kwargs):
+    """
+     Crea un nuevo Payment con los parámetros dados
+    """
+    
+    payment_type_str = kwargs["payment_type"]  # Captura el string del tipo de pago
+
+    beneficiary_id = kwargs.get("beneficiary_id", None)
+    
+    # si no hay beneficiario por que es otro tipo de pago, le mando vacio
+    if beneficiary_id == '':
+        beneficiary_id = None
+    else:
+        # Verificar si el beneficiario existe
+        if not User.query.filter_by(email=beneficiary_id).first():
+            raise ValueError("El beneficiario no existe en la base de datos.")
+
+    payment = Payment(
+        amount=kwargs["amount"],
+        payment_date=kwargs["payment_date"],
+        payment_type=payment_type_str,
+        description=kwargs.get("description", ""),
+        beneficiary_id=beneficiary_id
+    )
+
+    # Agregar el pago a la base de datos
+    db.session.add(payment)
+    db.session.commit()
+
+    return payment
