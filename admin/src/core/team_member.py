@@ -1,4 +1,6 @@
 from src.core import database
+from datetime import datetime
+from flask import flash
 
 def create_enums():
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
@@ -17,6 +19,21 @@ def check_team_member_by_email(email):
 
     return team_member
 
+def validate_dates(initial_date, end_date):
+    """
+    Check if the dates are valid
+    """
+
+
+    if initial_date > datetime.now():
+        return False
+
+    if end_date is not None:
+        if initial_date > end_date:
+            return False
+
+    return True
+
 def create(form):
     """
     Create a new team member
@@ -26,6 +43,9 @@ def create(form):
     end_date = form["end_date"]
     if end_date == '':
         end_date = None
+
+    if not validate_dates(form["initial_date"], end_date):
+        return flash("Las fechas no son válidas")
 
     team_member = TeamMember(
         name=form["name"],
@@ -47,4 +67,4 @@ def create(form):
     database.db.session.add(team_member)
     database.db.session.commit()
 
-    return team_member
+    return flash("Miembro de equipo creado exitosamente")
