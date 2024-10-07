@@ -52,7 +52,7 @@ class TeamMember(database.db.Model):
     locality = database.db.Column(database.db.String(120), nullable=False)
     phone = database.db.Column(database.db.String(120), nullable=False)
     initial_date = database.db.Column(database.db.DateTime, nullable=False)
-    end_date = database.db.Column(database.db.DateTime, nullable=True)
+    end_date = database.db.Column(database.db.DateTime, nullable=True, default=None)
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(120), nullable=False)
     active = database.db.Column(database.db.Boolean, nullable=False, default=True)
@@ -60,7 +60,7 @@ class TeamMember(database.db.Model):
 
     condition = database.db.Column(ConditionEnum, nullable=False)
     job_position = database.db.Column(JobEnum, nullable=False)
-    proffesion = database.db.Column(ProfessionEnum, nullable=False)
+    profession = database.db.Column(ProfessionEnum, nullable=False)
     health_insurance = database.db.relationship('HealthInsurance', back_populates='team_members')
 
     def __repr__(self):

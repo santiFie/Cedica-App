@@ -17,29 +17,31 @@ def check_team_member_by_email(email):
 
     return team_member
 
-def create(**kwargs):
+def create(form):
     """
     Create a new team member
     """
     from src.core.models.team_member import TeamMember
 
-    team_member = TeamMember(
-        name=kwargs.get('name'),
-        last_name=kwargs.get('last_name'),
-        address=kwargs.get('address'),
-        email=kwargs.get('email'),
-        locality=kwargs.get('locality'),
-        phone=kwargs.get('phone'),
-        initial_date=kwargs.get('initial_date'),
-        end_date=kwargs.get('end_date'),
-        emergency_contact=kwargs.get('emergency_contact'),
-        emergency_phone=kwargs.get('emergency_phone'),
-        active=kwargs.get('active'),
-        health_insurance_id=kwargs.get('health_insurance_id'),
-        condition = kwargs.get('condition').upper(),
-        job_position = kwargs.get('job').upper(),
-        proffesion = kwargs.get('profession').upper(),
+    end_date = form["end_date"]
+    if end_date == '':
+        end_date = None
 
+    team_member = TeamMember(
+        name=form["name"],
+        last_name=form["last_name"],
+        address=form["address"],
+        email=form["email"],
+        locality=form["locality"],
+        phone=form["phone"],
+        initial_date=form["initial_date"],
+        end_date=end_date,
+        emergency_contact=form["emergency_contact"],
+        emergency_phone=form["emergency_phone"],
+        health_insurance_id=form["health_insurance_id"],
+        condition=form["condition"].upper(),
+        job_position=form["job_position"].upper(),
+        profession=form["profession"].upper(),
     )
 
     database.db.session.add(team_member)

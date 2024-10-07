@@ -99,18 +99,12 @@
 
             <!-- Profesión -->
             <div class="form-group">
-                <label for="proffesion">Profesión:</label>
-                <select id="proffesion" name="proffesion" required>
+                <label for="profession">Profesión:</label>
+                <select id="profession" name="profession" required>
                     {% for profession in professions %}
                         <option value="{{ profession }}">{{ profession }}</option>
                     {% endfor %}
                 </select>
-            </div>
-
-            <!-- Activo -->
-            <div class="form-group">
-                <label for="active">Activo:</label>
-                <input type="checkbox" id="active" name="active" checked>
             </div>
 
             <!-- Submit Button -->

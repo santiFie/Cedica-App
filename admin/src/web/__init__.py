@@ -33,6 +33,11 @@ def create_app(env="development", static_folder="../../static"):
     def reset_db():
         database.reset()
 
+    @app.cli.command(name="reset-model")
+    def reset_model():
+        database.reset_model(TeamMember)
+ 
+
     @app.cli.command(name="users-db")
     def users_db():
         database.seeds()

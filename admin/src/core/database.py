@@ -34,3 +34,11 @@ def reset():
 
     db.create_all()
     print("Database reset complete.")
+
+def reset_model(model):
+    """
+    Resets a specific model in the database
+    """
+    model.__table__.drop(db.engine)
+    model.__table__.create(db.engine)
+    print(f"Model {model.__name__} reset complete.")

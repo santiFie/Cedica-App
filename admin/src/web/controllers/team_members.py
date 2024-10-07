@@ -11,7 +11,6 @@ def new():
     professions = ProfessionEnum.enums
     conditions = ConditionEnum.enums
     jobs = JobEnum.enums
-    print(jobs)
 
     health_insurances = hi.get_all()
 
@@ -26,6 +25,7 @@ def create():
         flash("El miembro de equipo ya existe")
         return redirect(url_for("team_members.new"))
     
-
+    tm.create(request.form)
+    flash("Miembro de equipo creado exitosamente")
 
     return redirect(url_for("team_members.new"))
