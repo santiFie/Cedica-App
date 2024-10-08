@@ -2,54 +2,20 @@
 <html lang="en">
     <head>
         {% block head %}
-        <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-        />
+        <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
 
         <title>{% block title %}{% endblock %}</title>
         {% endblock %}
     </head>
     <body>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
 
-
-        <div>{% block navbar %}
-            <div class="navbar">
-                <div class="logo"> 
-                    <img src="static/images/logoCEDICA.png" alt="Logo" style="height: 40px;">
-                </div>
-                <!-- Menú de navegación -->
-                <div class="menu">
-                    <button>J&A</button>
-                    <button>Ecuestre</button>
-                    <button>Equipo</button>
-                </div>
-        
-                <!-- Perfil de usuario -->
-                <div class="user-menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
-                        <path d="M20.8 21a8.38 8.38 0 0 0-7.8-4.5h-2c-3.6 0-6.7 2-7.8 4.5"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    <div class="dropdown-content">
-                        <a href="#">Perfil</a>
-                        <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
-                    </div>
-                </div>
-            </div>
-            {% endblock %}</div>
-        <div id="container">
+        <div>
+            {% block navbar %}
+            
+            {% endblock %}
+        </div>
             {% block content %}
+
             {% endblock %}
         </div>
         <div>{% block footer %}{% endblock %}</div>
