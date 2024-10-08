@@ -75,6 +75,13 @@ def delete_user():
     return redirect(url_for("users.users_list", flash=flash) )
 
 
+@bp.get("/user_register_form")
+def user_register_form():
+    roles = Role.query.all()
+    return render_template("users/register.html", roles=roles)
+
+
+
 @bp.route("/register", methods=["GET", "POST"])
 def user_create():
 

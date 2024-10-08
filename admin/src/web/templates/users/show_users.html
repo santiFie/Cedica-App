@@ -9,7 +9,8 @@
 
 {% block content %}
     <h1>Usuarios del sistema</h1>
-    <button>Crear Usuario</button>
+    <a href="{{ url_for('users.user_register_form') }}"><button type="button">Crear Usuario</button></a>
+
     <h2>Buscar usuarios</h2>
     <form action="{{ url_for('users.users_list') }}" method="get">
         <label for="email">Email:</label>
