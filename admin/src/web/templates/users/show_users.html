@@ -9,7 +9,51 @@
 
 {% block content %}
     <h1>Usuarios del sistema</h1>
-    <button>crear usuario</button>
+    <button>Crear Usuario</button>
+    <h2>Buscar usuarios</h2>
+    <form action="{{ url_for('users.users_list') }}" method="get">
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
+    
+        <label for="active">Activo:</label>
+        <select name="active" id="active">
+            <option value="">-- Seleccionar --</option>
+            <option value="SI" {% if request.args.get('active') == 'SI' %}selected{% endif %}>SI</option>
+            <option value="NO" {% if request.args.get('active') == 'NO' %}selected{% endif %}>NO</option>
+        </select>
+    
+        <label for="role">Rol:</label>
+        <select name="role" id="role">
+            <option value="">-- Seleccionar --</option>
+            <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Técnica</option>
+            <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
+            <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
+            <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
+        </select>
+
+        <h3>Ordenar por:</h3>
+        <label>
+            <input type="radio" name="sort_by" value="email_asc" {% if request.args.get('sort_by') == 'email_asc' %}checked{% endif %}>
+            Email Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="email_desc" {% if request.args.get('sort_by') == 'email_desc' %}checked{% endif %}>
+            Email Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
+            Fecha de creación Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
+            Fecha de creación Descendente
+        </label>
+
+    
+        <button type="submit">Buscar</button>
+    </form>
+    
+
     {% if list %}
         <table>
             <thead>
@@ -46,6 +90,26 @@
             </tbody>
         </table>
     
+        <!-- Botones de Paginación -->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('users.users_list', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Previo</button>
+                </a>
+            {% else %}
+                <button disabled>Previo</button>
+            {% endif %}
+
+            {% if page < max_pages %}
+                <a href="{{ url_for('users.users_list', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Siguiente</button>
+                </a>
+            {% else %}
+                <button disabled>Siguiente</button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No se encontraron usuarios en el sistema. </p>
     {% endif %}
 
 
@@ -53,3 +117,4 @@
 
 
 {% endblock %}
+
