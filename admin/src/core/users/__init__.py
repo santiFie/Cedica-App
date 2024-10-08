@@ -5,15 +5,15 @@ from src.core import auth
 from src.core.models.users import RolePermission, Role
 
 
-def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, exclude_email=None):
+def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, exclude_user=None):
     per_page = 25
 
     # consulta general, obtengo todos los usuarios
     query = User.query
 
     # excluyo el mail del usuario que inicio sesion
-    if(exclude_email):
-        query = query.filter(User.email != exclude_email)
+    if(exclude_user):
+        query = query.filter(User.email != exclude_user)
     
 
     # Filtros opcionales
