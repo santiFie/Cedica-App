@@ -9,7 +9,7 @@
 
 {% block content %}
     <h1>Usuarios del sistema</h1>
-    <button>crear usuario</button>
+    <button>Crear Usuario</button>
     <h2>Buscar usuarios</h2>
     <form action="{{ url_for('users.users_list') }}" method="get">
         <label for="email">Email:</label>
@@ -76,12 +76,12 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#">
-                            <button>Modificar</button>
+                        <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                            <button type="button">Modificar</button>
                         </a>
                     </td>
                     <td>
-                        <a href="#">
+                        <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
                             <button>Eliminar</button>
                         </a>
                     </td>
@@ -117,3 +117,4 @@
 
 
 {% endblock %}
+

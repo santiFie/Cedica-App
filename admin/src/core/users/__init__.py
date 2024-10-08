@@ -85,3 +85,29 @@ def has_permissions(session, permission):
     permissions = get_permissions(user)
 
     return permission in permissions
+
+
+def user_delete(user_email):
+    """
+    Deletes a user
+    """
+    user = auth.find_user_by_email(user_email)
+    auth.db.session.delete(user)
+    auth.db.session.commit()
+    return True
+
+
+def edit(**kwargs):
+    """
+    Edits a user with the given parameters and returns the user
+    """
+    user = auth.find_user_by_email(kwargs["email"])
+    if user:
+        user.nickname = kwargs["nickname"]
+        user.system_admin = kwargs["system_admin"]
+        user.role_id = kwargs["role_id"]
+        auth.db.session.commit()
+        return user
+    return None
+
+

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.core import users 
-
+from src.core import users, auth
+from src.core.models.users import Role
 
 bp = Blueprint('users',__name__,url_prefix="/users")
 
@@ -27,19 +27,67 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
     else:
         active = None  # No aplicar filtro
 
+    print(email)
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
     all_users, max_pages = users.find_users(page=page, email=email, active=active, role_name=role, sort_by=sort_by, exclude_user=current_user)
-
-    #if not all_users:
-     #   flash("No hay usuarios cargados en el sistema.", "info")
-      #  return render_template("home.html")
         
     return render_template("users/show_users.html", list = all_users, page=page, max_pages=max_pages)
 
 
 
-        
-        
+@bp.post("/update")
+def user_update():
+    """
+    Updates a user
+    """
+    user_mail = request.args.get('user_email')
+    print(user_mail)
+    user = users.edit(
+        email=user_mail,
+        nickname=request.form["nickname"],
+        system_admin=request.form.get("system_admin", False),
+        role_id=1
+    )
+
+    if not user:
+        flash("No existe el usuario")
+    else:
+        flash("Usuario actualizado")
+    return redirect(url_for("users.users_list", flash=flash) )
+
+@bp.get("/edit")
+def user_edit():
+    """
+    Edits a user
+    """
+    user_mail = request.args.get('user_email')
+    user = auth.find_user_by_email(user_mail)
+    roles = Role.query.all()
+    return render_template("users/edit_user.html", user=user,roles=roles)
 
 
+@bp.get("/delete_user")
+def delete_user():
+    user_email = request.args.get("user_email")
+    print(user_email)
+    users.user_delete(user_email)
+    flash("User deleted successfully")
+    return redirect(url_for("users.users_list", flash=flash) )
+
+
+@bp.route("/register", methods=["GET", "POST"])
+def user_create():
+
+    if request.method == "POST":
+        user = auth.check_user(request.form["email"], request.form["password"])
+
+        if not user:
+            auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"], role_id=request.form["role_id"])
+            flash("Usuario creado exitosamente")
+        else:
+            flash("El usuario ingresado ya existe", "info")
+        
+    roles = Role.query.all()
+
+    return render_template("users/register.html", roles=roles)  
 
