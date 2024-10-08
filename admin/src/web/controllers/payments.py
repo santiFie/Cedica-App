@@ -15,7 +15,7 @@ def index_payments():
 
     all_payments, max_pages = find_payments(start_date, end_date, payment_type, order_by, page)
 
-    return render_template("payments/show_payments.html", payments = all_payments, max_pages = max_pages )
+    return render_template("payments/show_payments.html", payments = all_payments, max_pages = max_pages, current_page=page)
 
 @bp.get('/payment_register_form')
 def payment_register_form():

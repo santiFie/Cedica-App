@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
+
 db = SQLAlchemy()
 
 def init_app(app):
@@ -27,8 +28,10 @@ def config(app):
     return app
 
 def reset():
+    from src.core.payments import create_enums
     db.drop_all()
     #db.session.commit()
     db.create_all()
+    create_enums()
     #db.session.commit()
     print("Database reset complete.")

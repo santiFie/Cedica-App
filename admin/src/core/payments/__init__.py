@@ -82,3 +82,9 @@ def create_payment(**kwargs):
     db.session.commit()
 
     return payment
+
+
+def create_enums():
+    from src.core.models.payment import PaymentType
+
+    PaymentType.create(db.engine, checkfirst=True)
