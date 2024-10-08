@@ -19,8 +19,7 @@ def find_payments(start_date=None, end_date=None, payment_type=None, order_by='a
 
     # Filtro por tipo de pago
     if payment_type:
-        payment_type_enum = PaymentType(payment_type)
-        query = query.filter(Payment.payment_type == payment_type_enum)
+        query = query.filter(Payment.payment_type == payment_type)
 
     # Ordeno por fecha de pago
     if order_by == 'asc':
@@ -85,6 +84,6 @@ def create_payment(**kwargs):
 
 
 def create_enums():
-    from src.core.models.payment import PaymentType
+   # from src.core.models.payment import PaymentType
 
     PaymentType.create(db.engine, checkfirst=True)

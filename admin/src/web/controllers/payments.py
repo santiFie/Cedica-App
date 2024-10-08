@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core.payments import find_payments, create_payment
+from datetime import datetime
 
 bp = Blueprint('payments',__name__,url_prefix="/payments")
 
@@ -36,6 +37,12 @@ def payment_register():
             flash("Todos los campos obligatorios deben ser completados", "error")
             return redirect(url_for('payments.payment_form'))  # Redirige al formulario si faltan datos
         
+        # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
+        obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
+
+        if obj_payment_date > datetime.today().date() :
+            flash("La fecha de pago no puede ser una fecha futura.", "error")
+            return render_template('payments/payment_register.html')
 
         new_payment = create_payment(amount = amount,
                                      payment_date = payment_date,
@@ -43,7 +50,11 @@ def payment_register():
                                      description = description,
                                      beneficiary_id = beneficiary_id)
 
-    return redirect(url_for('payments.index_payments')) # Redirijo a listado con el nuevo pago
+    # Mostrar mensaje de éxito
+    flash("Pago registrado exitosamente", "success")
+
+    # Renderiza la misma página con un mensaje de éxito o en caso de error
+    return render_template("payments/payment_register.html")
 
 
 

@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+#from src.core.payments import create_enums
 
 db = SQLAlchemy()
 
