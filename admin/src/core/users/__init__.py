@@ -5,11 +5,15 @@ from src.core import auth
 from src.core.models.users import RolePermission, Role
 
 
-def find_users(page=1, email=None, active=None, role_name=None, sort_by=None):
+def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, exclude_email=None):
     per_page = 25
 
     # consulta general, obtengo todos los usuarios
     query = User.query
+
+    # excluyo el mail del usuario que inicio sesion
+    if(exclude_email):
+        query = query.filter(User.email != exclude_email)
     
 
     # Filtros opcionales
@@ -36,12 +40,20 @@ def find_users(page=1, email=None, active=None, role_name=None, sort_by=None):
         query = query.order_by(User.inserted_at.desc())
         
     total_users = query.count()
+
+    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    if total_users == 0:
+        return [], 1
     
     max_pages = (total_users + per_page - 1) // per_page  # Redondeo hacia arriba
         
+    # Aseguramos que page sea al menos 1
+    if page < 1:
+        page = 1
+    
     # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
     if page > max_pages:
-            page = max_pages
+        page = max_pages
         
         
     offset = (page - 1) * per_page

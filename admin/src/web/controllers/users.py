@@ -10,6 +10,9 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
     #obtengo nro de pagina o por defecto tomo el 1
     page = request.args.get('page', 1, type=int) 
 
+    # obtengo el usuario iniciado en sesion
+    current_user = session.get("user")
+
     # obtengo los filtros del formulario
     email = request.args.get('email', None)
     active = request.args.get('active', None)
@@ -25,11 +28,11 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
         active = None  # No aplicar filtro
 
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
-    all_users, max_pages = users.find_users(page=page, email=email, active=active, role_name=role, sort_by=sort_by)
+    all_users, max_pages = users.find_users(page=page, email=email, active=active, role_name=role, sort_by=sort_by, exclude_user=current_user)
 
-    if not all_users:
-        flash("No hay usuarios cargados en el sistema.", "info")
-        return render_template("home.html")
+    #if not all_users:
+     #   flash("No hay usuarios cargados en el sistema.", "info")
+      #  return render_template("home.html")
         
     return render_template("users/show_users.html", list = all_users, page=page, max_pages=max_pages)
 
