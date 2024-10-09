@@ -23,7 +23,7 @@ disability_certificate_enum = ENUM(
     'Trastorno Alimentario', 
     'OTRO',
     name='disability_certificate_enum',
-    create_type=False  # Para no crear el tipo si ya existe
+    create_type=False
 )
 
 disability_type_enum= ENUM(
@@ -55,10 +55,10 @@ pension_enum= ENUM(
 days_enum = ENUM(
     'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo',
     name='days_of_week_enum',  # Nombre del tipo ENUM en PostgreSQL
-    create_type=False  # Creamos el tipo si no existe
+    create_type=False
 )
 
-# nombre del modelo dudas plural?
+# nombre del modelo dudas plural? mal declarado
 class RidersAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomens'
     dni = database.db.Column(database.db.String(8), primary_key=True)
@@ -71,16 +71,22 @@ class RidersAndHorsewoman(database.db.Model):
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(13), nullable=False)
     scholarship = database.db.Column(database.db.Boolean, nullable=False)
+    scholarship_percentage = database.db.Column(database.db.String(2), nullable=True)
     observations = database.db.Column(database.db.String(120), nullable=True)
     disability_certificate = database.db.Column(disability_certificate_enum, nullable=True, default=None)
     others = database.db.Column(database.db.String(120), nullable=True)
     disability_type = database.db.Column(disability_type_enum, nullable=False)
     family_allowance = database.db.Column(family_allowance_enum, nullable= True, default= None)
     pension = database.db.Column(pension_enum, nullable= True, default= None)
+    name_institution = database.db.Column(database.db.String(120), nullable=False)
+    address_institution = database.db.Column(database.db.String(120), nullable=False)
+    phone_institution = database.db.Column(database.db.String(13), nullable=False)
+    current_grade = database.db.Column(database.db.String(2), nullable=False)
+    observations_institution = database.db.Column(database.db.String(120), nullable=True)
 
 class Tutor(database.db.Model):
     __tablename__ = 'tutors'
-    dni = database.db.Column(database.db.String(8), primary_key=True)
+    dni = database.db.Column(database.db.String(8), nullable=False)
     relationship = database.db.Column(database.db.String(120), nullable=False)
     name = database.db.Column(database.db.String(120), nullable=False)
     address = database.db.Column(database.db.String(120), nullable=False)
@@ -89,23 +95,21 @@ class Tutor(database.db.Model):
     education_level = database.db.Column(database.db.String(120), nullable=False)
     occupation = database.db.Column(database.db.String(120), nullable=False)
 
-#tabla intermedia entre tutor y jinetes
+    riders_and_horsewoman_id = database.db.Column(database.db.Integer, database.db.ForeignKey('user.id'), nullable=False)
 
-# class WorkDays(database.db.Model):
-#     __tablename__ = 'work_days'
+    # Relación con el modelo User
+    #riders_and_horsewoman = database.db.relationship('RidersAndHorsewoman', backref=database.db.backref('tutors', lazy=True))
+    riders_and_horsewoman = database.db.relationship('RidersAndHorsewoman', back_populates='tutors')
 
-#     day = database.db.Column(days_enum, nullable=False, primary_key=True)
-#     work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), nullable=False, primary_key=True)
 
 # class WorkInInstitution(database.db.Model):
 #     __tablename__ = 'work_in_institutions'
 #     proposal = database.db.Column(database.db.String(120), nullable=False)
 #     condition = database.db.Column(database.db.String(120), nullable=False)
 #     seat = database.db.Column(database.db.String(120), nullable=False)
-#     #therapist = 
-#     #rider =
-#     #horse =
-#     #track_assistant=
+#     #therapist = clave foranea
+#     #rider = clave foranea
+#     #horse = clave foranea
+#     #track_assistant= clave foranea
 
-#     # Relación many-to-many con los días
-#     days = database.db.relationship('Day', secondary=WorkDays, back_populates='tasks')
+#     days =
