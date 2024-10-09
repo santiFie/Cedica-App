@@ -59,7 +59,7 @@ days_enum = ENUM(
 )
 
 # nombre del modelo dudas plural? mal declarado
-class RidersAndHorsewoman(database.db.Model):
+class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomens'
     dni = database.db.Column(database.db.String(8), primary_key=True)
     name = database.db.Column(database.db.String(120), nullable=False)
@@ -84,6 +84,8 @@ class RidersAndHorsewoman(database.db.Model):
     current_grade = database.db.Column(database.db.String(2), nullable=False)
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
 
+    tutors = database.db.relationship('Tutor', back_poulates='rider_and_horsewomen')
+
 class Tutor(database.db.Model):
     __tablename__ = 'tutors'
     dni = database.db.Column(database.db.String(8), nullable=False)
@@ -95,11 +97,11 @@ class Tutor(database.db.Model):
     education_level = database.db.Column(database.db.String(120), nullable=False)
     occupation = database.db.Column(database.db.String(120), nullable=False)
 
-    riders_and_horsewoman_id = database.db.Column(database.db.Integer, database.db.ForeignKey('user.id'), nullable=False)
+    rider_and_horsewoman_id = database.db.Column(database.db.Integer, database.db.ForeignKey('riders_and_horsewomens'), nullable=False)
 
     # Relación con el modelo User
     #riders_and_horsewoman = database.db.relationship('RidersAndHorsewoman', backref=database.db.backref('tutors', lazy=True))
-    riders_and_horsewoman = database.db.relationship('RidersAndHorsewoman', back_populates='tutors')
+    rider_and_horsewoman = database.db.relationship('RiderAndHorsewoman', back_populates='tutors')
 
 
 # class WorkInInstitution(database.db.Model):
