@@ -51,13 +51,6 @@ pension_enum= ENUM(
     create_type= False
 )
 
-# Definimos el ENUM para los días de la semana
-days_enum = ENUM(
-    'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo',
-    name='days_of_week_enum',  # Nombre del tipo ENUM en PostgreSQL
-    create_type=False
-)
-
 # nombre del modelo dudas plural? mal declarado
 class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomens'
@@ -94,13 +87,12 @@ class Tutor(database.db.Model):
     address = database.db.Column(database.db.String(120), nullable=False)
     phone = database.db.Column(database.db.String(13), nullable=False)
     email = database.db.Column(database.db.String(120), nullable=False)
-    education_level = database.db.Column(database.db.String(120), nullable=False)
+    education_level = database.db.Column(database.db.String(120), nullable=False) #ENUMMMMM
     occupation = database.db.Column(database.db.String(120), nullable=False)
 
     rider_and_horsewoman_id = database.db.Column(database.db.Integer, database.db.ForeignKey('riders_and_horsewomens'), nullable=False)
 
     # Relación con el modelo User
-    #riders_and_horsewoman = database.db.relationship('RidersAndHorsewoman', backref=database.db.backref('tutors', lazy=True))
     rider_and_horsewoman = database.db.relationship('RiderAndHorsewoman', back_populates='tutors')
 
 
