@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}Miembros del equipo CEDICA{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Miembros del equipo CEDICA</h1>
+    {% if list %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Informacion</th>
+                    <th>Modificacion</th>
+                    <th>Eliminacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team_member in list %}
+                <tr>
+                    <td>{{ team_member.name }}</td>
+                    <td>{{ team_member.last_name }}</td>
+                    <td>{{ team_member.email }}</td>
+                    <td>
+                        <a href="{{ url_for('team_members.show_team_member', team_member_email=team_member.email) }}"> 
+                            <button>Mostrar informacion</button>
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="#">
+                            <button type="button">Modificar</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                            <button>Eliminar</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>No hay miembros del equipo registrados</p>
+    
+    {% endif %}
+
+
+    
+
+
+{% endblock %}
