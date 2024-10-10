@@ -25,6 +25,6 @@ def create():
         flash("El miembro de equipo ya existe")
         return redirect(url_for("team_members.new"))
     
-    flash = tm.create(request.form)
-
+    tm.create(request.form)
+    
     return redirect(url_for("team_members.new"))
