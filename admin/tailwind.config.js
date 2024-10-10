@@ -7,7 +7,12 @@ module.exports = {
     './static/js/**/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+      xs: '480px', // Define tu propio valor para xs
+      xxs: '300px'
+      },
+    },
   },
   plugins: [],
 }
