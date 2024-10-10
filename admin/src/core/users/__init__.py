@@ -2,23 +2,65 @@ from src.core.database import db
 from src.core.models.users import User
 from flask import session
 from src.core import auth
-from src.core.models.users import RolePermission
+from src.core.models.users import RolePermission, Role
 
 
-def find_users(page=1):
-   per_page = 25
-   total_users = User.query.count()
-   
-   max_pages = (total_users + per_page - 1) // per_page  # Redondeo hacia arriba
+def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, exclude_user=None):
+    per_page = 25
+
+    # consulta general, obtengo todos los usuarios
+    query = User.query
+
+    # excluyo el mail del usuario que inicio sesion
+    if(exclude_user):
+        query = query.filter(User.email != exclude_user)
+    
+
+    # Filtros opcionales
+    if email:
+        query = query.filter(User.email.ilike(f'%{email}%'))  # búsqueda insensible a mayúsculas
+    if active is not None:
+        query = query.filter(User.active == active)
+    if role_name:
+        # averiguo el nro de rol por que desde el formulario llega el nombre del rol
+        role = Role.query.filter(Role.name == role_name).first()
+        if role:
+            query = query.filter(User.role_id == role.id)
+        else:
+            pass 
+
+    # Ordenamiento
+    if sort_by == 'email_asc':
+        query = query.order_by(User.email.asc())
+    elif sort_by == 'email_desc':
+        query = query.order_by(User.email.desc())
+    elif sort_by == 'inserted_at_asc':
+        query = query.order_by(User.inserted_at.asc())
+    elif sort_by == 'inserted_at_desc':
+        query = query.order_by(User.inserted_at.desc())
+        
+    total_users = query.count()
+
+    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    if total_users == 0:
+        return [], 1
+    
+    max_pages = (total_users + per_page - 1) // per_page  # Redondeo hacia arriba
+        
+    # Aseguramos que page sea al menos 1
+    if page < 1:
+        page = 1
     
     # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
-   if page > max_pages:
-     page = max_pages
-    
-   offset = (page - 1) * per_page
-   users = User.query.offset(offset).limit(per_page).all()
-    
-   return users
+    if page > max_pages:
+        page = max_pages
+        
+        
+    offset = (page - 1) * per_page
+    users = query.offset(offset).limit(per_page).all()
+
+    return users, max_pages 
+
 
 def get_permissions(user):
     """

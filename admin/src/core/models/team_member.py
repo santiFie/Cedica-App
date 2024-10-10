@@ -62,6 +62,7 @@ class TeamMember(database.db.Model):
     job_position = database.db.Column(JobEnum, nullable=False)
     profession = database.db.Column(ProfessionEnum, nullable=False)
     health_insurance = database.db.relationship('HealthInsurance', back_populates='team_members')
+    equestrians = database.db.relationship('Equestrian', secondary='equestrian_team_members', back_populates='team_members')
 
     def __repr__(self):
         return self.name
