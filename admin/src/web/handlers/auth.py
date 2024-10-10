@@ -1,6 +1,5 @@
 from functools import wraps
-from flask import session
-from flask import abort, redirect, url_for, request
+from flask import session, abort, redirect, url_for, request
 
 def is_authenticated(session):
     return session.get("user") is not None
