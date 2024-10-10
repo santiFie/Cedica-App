@@ -1,6 +1,9 @@
 from src.core import database
 from datetime import datetime
 from flask import flash
+from sqlalchemy import or_
+from src.core import utils
+
 
 def create_enums():
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
@@ -30,9 +33,15 @@ def create(form):
     end_date = form["end_date"]
     if end_date == '':
         end_date = None
+    else:
+        end_date = utils.string_to_date(end_date)
 
-    #if not validate_dates(form["initial_date"], end_date):
-    #    return flash("Las fechas no son válidas")
+
+
+    initial_date = utils.string_to_date(form["initial_date"])
+
+    if not utils.validate_dates(initial_date, end_date):
+        return flash("Las fechas ingresadas no son válidas")
 
     team_member = TeamMember(
         name=form["name"],
@@ -108,3 +117,34 @@ def edit(**kwargs):
         database.db.session.commit()
     return team_member
 
+
+
+def list_emails_from_trainers_and_handlers(**kwargs):
+    """
+    List emails from trainers and handlers
+    """
+    from src.core.models.team_member import TeamMember
+
+    query = TeamMember.query.filter(
+    or_(
+        TeamMember.job_position == 'PROFESOR_DE_ENTRENAMIENTO',
+        TeamMember.job_position == 'MANEJADOR'
+        )
+    )
+
+    
+
+    # Ejecutar la consulta y obtener solo los correos electrónicos
+    emails = [member.email for member in query.all()]
+
+    return emails
+
+def find_team_member_by_email(email):
+    """
+    Find a team member by email
+    """
+    from src.core.models.team_member import TeamMember
+
+    team_member = TeamMember.query.filter_by(email=email).first()
+
+    return team_member
