@@ -52,3 +52,51 @@ def show_team_member():
     team_member = tm.check_team_member_by_email(team_member_email)
     
     return render_template("team_members/view_team_member.html", team_member=team_member)
+
+@bp.get("/edit")
+def edit_team_member():
+
+    professions = ProfessionEnum.enums
+    conditions = ConditionEnum.enums
+    jobs = JobEnum.enums
+
+    team_member_email = request.args.get('team_member_email')
+
+    team_member = tm.check_team_member_by_email(team_member_email)
+
+    health_insurances = hi.get_all()
+
+    return render_template("team_members/edit_team_member.html", team_member = team_member, health_insurances = health_insurances, professions = professions, conditions = conditions, jobs = jobs)
+
+
+@bp.post("/update")
+def update_team_member():
+
+    team_member_email = request.args.get('team_member_email')
+
+    
+
+    team_member = tm.edit(
+        name = request.form['name'],
+        last_name = request.form['last_name'],
+        address = request.form['address'],
+        email = team_member_email,
+        locality = request.form['locality'],
+        phone = request.form['phone'],
+        end_date = request.form['end_date'],
+        emergency_contact = request.form['emergency_contact'],
+        emergency_phone = request.form['emergency_phone'],
+        health_insurance = request.form['health_insurance'],
+        condition = request.form['condition'],
+        job_position = request.form['job_position'],
+        profession = request.form['profession']
+    )
+
+    professions = ProfessionEnum.enums
+    conditions = ConditionEnum.enums
+    jobs = JobEnum.enums
+    health_insurances = hi.get_all()
+
+    flash("Usuario actualizado")
+    return render_template("team_members/edit_team_member.html", team_member = team_member, health_insurances = health_insurances, professions = professions, conditions = conditions, jobs = jobs) 
+

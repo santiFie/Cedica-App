@@ -81,3 +81,30 @@ def find_team_members(page=1):
     team_members = TeamMember.query.offset(offset).limit(per_page).all()
     
     return team_members
+
+def edit(**kwargs):
+    from src.core.models.team_member import TeamMember
+
+    team_member = TeamMember.query.filter_by(email=kwargs['email']).first()
+
+    end_date = kwargs['end_date']
+    if(end_date == ''):
+        end_date = None
+    
+
+    if team_member:
+        team_member.name = kwargs['name']
+        team_member.last_name = kwargs['last_name']
+        team_member.address = kwargs['address']
+        team_member.locality = kwargs['locality']
+        team_member.phone = kwargs['phone']
+        team_member.end_date = end_date
+        team_member.emergency_contact = kwargs['emergency_contact']
+        team_member.emergency_phone = kwargs['emergency_phone']
+        team_member.health_insurance_id = kwargs['health_insurance']
+        team_member.condition = kwargs['condition']
+        team_member.job_position = kwargs['job_position']
+        team_member.profession = kwargs['profession']
+        database.db.session.commit()
+    return team_member
+
