@@ -3,41 +3,41 @@ from enum import Enum
 from sqlalchemy.dialects.postgresql import ENUM
 
 ProfessionEnum = ENUM(
-    'PSYCHOLOGIST',
-    'PSYCHOMOTRICIAN',
-    'DOCTOR',
-    'PHYSIOTHERAPIST',
-    'OCCUPATIONAL_THERAPIST',
-    'EDUCATIONAL_PSYCHOLOGIST',
-    'TEACHER',
-    'PROFESSOR',
-    'SPEECH_THERAPIST',
-    'VETERINARIAN',
-    'OTHER',
+    'PSICOLOGO',
+    'PSICOMOTRICISTA',
+    'MEDICO',
+    'FISIOTERAPEUTA',
+    'TERAPEUTA_OCUPACIONAL',
+    'PSICOLOGO_EDUCATIVO',
+    'MAESTRO',
+    'PROFESOR',
+    'FONOAUDIOLOGO',
+    'VETERINARIO',
+    'OTRO',
     name='professionenum',
     create_type=False
 )
         
 JobEnum = ENUM(
-    'ADMINISTRATIVE',
-    'THERAPIST',
-    'HANDLER',
-    'TRACK_ASSISTANT',
-    'BLACKSMITH',
-    'VETERINARIAN',
-    'HORSE_TRAINER',
-    'HORSE_TAMER',
-    'EQUESTRIAN_TEACHER',
-    'TRAINING_TEACHER',
-    'MAINTENANCE_ASSISTANT',
-    'OTHER',
+    'ADMINISTRATIVO',
+    'TERAPEUTA',
+    'MANEJADOR',
+    'ASISTENTE_DE_PISTA',
+    'HERRERO',
+    'VETERINARIO',
+    'ENTRENADOR_DE_CABALLOS',
+    'DOMADOR_DE_CABALLOS',
+    'PROFESOR_DE_EQUITACION',
+    'PROFESOR_DE_ENTRENAMIENTO',
+    'ASISTENTE_DE_MANTENIMIENTO',
+    'OTRO',
     name='jobenum',
     create_type=False
 )
 
 ConditionEnum = ENUM(
-    'VOLUNTEER',
-    'PAID_STAFF',
+    'VOLUNTARIO',
+    'PERSONAL_PAGADO',
     name='conditionenum',
     create_type=False
 )

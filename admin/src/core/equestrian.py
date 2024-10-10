@@ -2,6 +2,7 @@ from src.core import database
 from src.core.models.equestrian import Equestrian
 from src.core import team_member as tm
 from src.core import utils
+from flask import flash
 
 
 db = database.db
@@ -19,7 +20,13 @@ def equestrian_create(form):
     date_of_entry = utils.string_to_date(form['date_of_entry'])
 
     if not utils.validate_dates(date_of_birth, date_of_entry):
-        return None
+        return flash("Las fechas ingresadas no son válidas")
+    
+    emails = form.getlist("emails")
+    if not emails:
+        return flash("Debe seleccionar al menos un entrenador o cuidador")
+    
+
 
     equestrian = Equestrian(
         name=form["name"],
@@ -35,7 +42,7 @@ def equestrian_create(form):
     db.session.add(equestrian)
     db.session.commit()
 
-    emails = form.getlist("emails")
+    
 
     # Añadir el equipo a los entrenadores relacionados de una manera más directa
     # Esto se puede hacer así porque los modelos de Equestrian y TeamMember están relacionados mediante una relación many-to-many usnado secondary
@@ -46,7 +53,7 @@ def equestrian_create(form):
 
     db.session.commit()
     
-    return equestrian
+    return flash("Equestre creado exitosamente")
 
 def find_equestrian_by_name(name):
     """

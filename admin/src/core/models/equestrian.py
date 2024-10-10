@@ -1,6 +1,6 @@
 from src.core import database
 from sqlalchemy.dialects.postgresql import ARRAY
-from src.core.models.team_member import TeamMember
+from src.core.models.team_member import TeamMember, JobEnum
 
 db = database.db
 
@@ -17,7 +17,7 @@ class Equestrian(db.Model):
     date_of_entry = db.Column(db.DateTime, nullable=False)
     headquarters  = db.Column(db.String(100), nullable=False)
 
-    #job_in_institution = db.Column(ARRAY(job_in_institution_enum), nullable=False)
+    jobs_in_institution = db.Column(ARRAY(JobEnum), nullable=True)
 
     team_members = db.relationship('TeamMember', secondary="equestrian_team_members", back_populates='equestrians')
 
