@@ -8,7 +8,7 @@
     <h1>Nuevo Equestre</h1>
 
     <div class="container">
-        <form action="{{ url_for('equestrians.create') }}" method="POST">
+        <form action="{{ url_for('equestrian.create') }}" method="POST">
             <!-- Nombre -->
             <div class="form-group">
                 <label for="name">Nombre:</label>
@@ -63,12 +63,7 @@
                 <input type="text" id="headquarters" name="headquarters" required>
             </div>
 
-            <!-- Sede -->
-            <div class="form-group">
-                <label for="headquarters">Sede:</label>
-                <input type="text" id="headquarters" name="headquarters" required>
-            </div>
-
+            <!-- Entrenadores/Conductores -->
             <div class="form-group">
                 <label>Seleccionar Entrenadores/Conductores:</label>
                 <div id="email_checkbox_list">

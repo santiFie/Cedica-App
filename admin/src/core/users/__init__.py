@@ -106,7 +106,7 @@ def edit(**kwargs):
         user.nickname = kwargs["nickname"]
         user.system_admin = kwargs["system_admin"]
         user.role_id = kwargs["role_id"]
-        auth.db.session.commit()
+        db.session.commit()
         return user
     return None
 

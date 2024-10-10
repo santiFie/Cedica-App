@@ -39,6 +39,8 @@ def reset_model(model):
     """
     Resets a specific model in the database
     """
+    # Creates the team member enums
+    tm.create_enums()
     model.__table__.drop(db.engine)
     model.__table__.create(db.engine)
     print(f"Model {model.__name__} reset complete.")

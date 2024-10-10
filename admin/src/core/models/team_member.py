@@ -21,7 +21,7 @@ ProfessionEnum = ENUM(
 JobEnum = ENUM(
     'ADMINISTRATIVE',
     'THERAPIST',
-    'DRIVER',
+    'HANDLER',
     'TRACK_ASSISTANT',
     'BLACKSMITH',
     'VETERINARIAN',

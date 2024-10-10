@@ -46,7 +46,7 @@ def user_update():
         email=user_mail,
         nickname=request.form["nickname"],
         system_admin=request.form.get("system_admin", False),
-        role_id=1
+        role_id=request.form["role_id"]
     )
 
     if not user:

@@ -6,6 +6,7 @@ from src.web import errors
 from src.core import database
 from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
+from src.core.models.equestrian import Equestrian
 from src.core.models.users import User, Role, RolePermission, Permission
 from src.core.config import config
 

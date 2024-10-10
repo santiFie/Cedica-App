@@ -1,6 +1,8 @@
 from src.core import database
 from datetime import datetime
 from flask import flash
+from sqlalchemy import or_
+
 
 def create_enums():
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
@@ -70,3 +72,31 @@ def create(form):
     database.db.session.commit()
 
     return flash("Miembro de equipo creado exitosamente")
+
+def list_emails_from_trainers_and_handlers(**kwargs):
+    """
+    List emails from trainers and handlers
+    """
+    from src.core.models.team_member import TeamMember
+
+    query = TeamMember.query.filter(
+    or_(
+        TeamMember.job_position == 'TRAINING_TEACHER',
+        TeamMember.job_position == 'HANDLER'
+        )
+    )
+
+    # Ejecutar la consulta y obtener solo los correos electrónicos
+    emails = [member.email for member in query.all()]
+
+    return emails
+
+def find_team_member_by_email(email):
+    """
+    Find a team member by email
+    """
+    from src.core.models.team_member import TeamMember
+
+    team_member = TeamMember.query.filter_by(email=email).first()
+
+    return team_member
