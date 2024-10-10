@@ -57,25 +57,26 @@
             <tbody>
                 {% for payment in payments %}
                 <tr>
-                    <td> {{ payment.beneficiary.name if payment.beneficiary else 'Externo' }} </td> <!-- deberia ser el nombre del usuario no el id pero por ahora queda-->
+                    <td> {{ payment.beneficiary.email if payment.beneficiary else 'Externo' }} </td> <!-- deberia ser el nombre del usuario no el id pero por ahora queda-->
                     <td> {{ payment.amount }} </td>
                     <td> {{ payment.payment_date }} </td>
                     <td> {{ payment.payment_type }} </td>
                     <td> {{ payment.description }} </td>
                     <td>
-                        <a href="#">
+                        <a href="{{ url_for('payments.show_detail_payment', payment_id=payment.id) }}">
                             <button>Ver Detalles</button>
                         </a>
                     </td>
                     <td>
-                        <a href="#">
+                        <a href="{{ url_for('payments.edit_payment_form', payment_id=payment.id) }}">
                             <button type="button">Modificar</button>
                         </a>
                     </td>
                     <td>
-                        <a href="#" method="post">
-                            <button>Eliminar</button>
-                        </a>
+                        <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
+                        <form action="{{ url_for('payments.delete_payment', payment_id=payment.id) }}" method="post" onsubmit="return confirmDelete();">
+                            <button type="submit">Eliminar</button>
+                        </form>
                     </td>
 
                 </tr>
@@ -102,6 +103,13 @@
     {% else %}
         <p>No se encontraron pagos</p>
     {% endif %}
+    
 
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este pago? Esta acción no se puede deshacer.');
+        }
+    </script>
 
 {% endblock %}
+

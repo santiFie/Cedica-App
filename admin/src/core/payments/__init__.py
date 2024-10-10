@@ -63,10 +63,6 @@ def create_payment(**kwargs):
     # si no hay beneficiario por que es otro tipo de pago, le mando vacio
     if beneficiary_id == '':
         beneficiary_id = None
-    else:
-        # Verificar si el beneficiario existe
-        if not User.query.filter_by(email=beneficiary_id).first():
-            raise ValueError("El beneficiario no existe en la base de datos.")
 
     payment = Payment(
         amount=kwargs["amount"],
@@ -87,3 +83,43 @@ def create_enums():
    # from src.core.models.payment import PaymentType
 
     PaymentType.create(db.engine, checkfirst=True)
+
+
+def find_payment(id):
+
+    # recupero pago por id
+    payment = Payment.query.get(id)
+
+    return payment
+
+
+def delete_a_payment(payment):
+
+    db.session.delete(payment)
+    db.session.commit()
+
+    return True
+
+def edit_a_payment(**kwargs):
+
+    # agarro el payment a editar
+    payment = find_payment(kwargs["payment_id"])
+    print(payment)
+    # si existe modifico los datos y devuelvo el payment actualizado
+    if payment:
+        beneficiary_id = kwargs.get('beneficiary_id', payment.beneficiary_id)
+
+         # Si el beneficiario es "Externo", asignar None para que el campo sea NULL
+        if beneficiary_id == 'Externo':
+            payment.beneficiary_id = None
+        else:
+            payment.beneficiary_id = beneficiary_id
+        
+        payment.amount = kwargs.get('amount', payment.amount)
+        payment.payment_date = datetime.strptime(kwargs.get('payment_date'), '%Y-%m-%d')
+        payment.payment_type = kwargs.get('payment_type', payment.payment_type)
+        payment.description = kwargs.get('description', payment.description)
+
+        db.session.commit()
+        return payment
+    return None
