@@ -4,6 +4,10 @@ from flask_bcrypt import Bcrypt
 from src.web import routes
 from src.web import errors
 from src.core import database
+from src.core.models.health_insurance import HealthInsurance
+from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
+from src.core.models.equestrian import Equestrian
+from src.core.models.users import User, Role, RolePermission, Permission
 from src.core.config import config
 
 session = Session()
@@ -33,6 +37,11 @@ def create_app(env="production", static_folder="../../static"):
     @app.cli.command(name="reset-db")
     def reset_db():
         database.reset()
+
+    @app.cli.command(name="reset-model")
+    def reset_model():
+        database.reset_model(TeamMember)
+ 
 
     @app.cli.command(name="users-db")
     def users_db():
