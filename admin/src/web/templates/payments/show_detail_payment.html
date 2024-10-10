@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Detalle de Pago{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Detalle de Pago</h1>
+
+    <table>
+        <tr>
+            <th>ID del Pago:</th>
+                <td>{{ payment.id }}</td>
+            </tr>
+            <tr>
+            <th>Monto:</th>
+                <td>${{ payment.amount }}</td>
+            </tr>
+            <tr>
+            <th>Fecha:</th>
+                <td>{{ payment.payment_date.strftime('%d/%m/%Y') }}</td> <!-- Formateo de la fecha -->
+            </tr>
+            <tr>
+                <th>Descripción:</th>
+                <td>{{ payment.description }}</td>
+            </tr>
+            <tr>
+                <th>Beneficiario:</th>
+                <td>{{ payment.beneficiary.nickname if payment.beneficiary else 'Externo' }}</td>
+        </tr>
+    </table>
+
+    <a href="{{ url_for('payments.index_payments') }}"><button type="button">Volver a la lista de pagos</button></a>
+
+{% endblock %}

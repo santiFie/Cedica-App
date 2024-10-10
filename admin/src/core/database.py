@@ -29,12 +29,15 @@ def config(app):
     return app
 
 def reset():
+    from src.core.payments import create_enums
     db.drop_all()
     # Create all the rideders and horsewomen enums
     rh.create_enums()
     # Creates the team member enums
     tm.create_enums()
     db.create_all()
+    create_enums() # enum de payments
+    #db.session.commit()
     print("Database reset complete.")
 
 def reset_model(model):

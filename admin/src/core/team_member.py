@@ -36,6 +36,8 @@ def create(form):
     else:
         end_date = utils.string_to_date(end_date)
 
+
+
     initial_date = utils.string_to_date(form["initial_date"])
 
     if not utils.validate_dates(initial_date, end_date):
@@ -62,6 +64,60 @@ def create(form):
     database.db.session.commit()
 
     return flash("Miembro de equipo creado exitosamente")
+
+
+def find_team_members(page=1):
+    from src.core.models.team_member import TeamMember
+
+    per_page = 25
+    total_team_members = TeamMember.query.count()
+   
+    # Calcula el número máximo de páginas (redondeo hacia arriba)
+    max_pages = (total_team_members + per_page - 1) // per_page
+    
+    # Aseguramos que la página solicitada esté dentro de los límites
+    if page < 1:
+        page = 1
+    elif page > max_pages:
+        page = max_pages
+    
+    offset = (page - 1) * per_page
+    
+    # Si no hay miembros de equipo, devolver una lista vacía
+    if total_team_members == 0:
+        return []
+    
+    team_members = TeamMember.query.offset(offset).limit(per_page).all()
+    
+    return team_members
+
+def edit(**kwargs):
+    from src.core.models.team_member import TeamMember
+
+    team_member = TeamMember.query.filter_by(email=kwargs['email']).first()
+
+    end_date = kwargs['end_date']
+    if(end_date == ''):
+        end_date = None
+    
+
+    if team_member:
+        team_member.name = kwargs['name']
+        team_member.last_name = kwargs['last_name']
+        team_member.address = kwargs['address']
+        team_member.locality = kwargs['locality']
+        team_member.phone = kwargs['phone']
+        team_member.end_date = end_date
+        team_member.emergency_contact = kwargs['emergency_contact']
+        team_member.emergency_phone = kwargs['emergency_phone']
+        team_member.health_insurance_id = kwargs['health_insurance']
+        team_member.condition = kwargs['condition']
+        team_member.job_position = kwargs['job_position']
+        team_member.profession = kwargs['profession']
+        database.db.session.commit()
+    return team_member
+
+
 
 def list_emails_from_trainers_and_handlers(**kwargs):
     """
