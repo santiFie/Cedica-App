@@ -98,5 +98,5 @@ def update_team_member():
     health_insurances = hi.get_all()
 
     flash("Usuario actualizado")
-    return render_template("team_members/edit_team_member.html", team_member = team_member, health_insurances = health_insurances, professions = professions, conditions = conditions, jobs = jobs) 
+    return redirect(url_for('team_members.team_members_list'))
 
