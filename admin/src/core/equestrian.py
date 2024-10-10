@@ -1,6 +1,7 @@
 from src.core import database   
 from src.core.models.equestrian import Equestrian
 from src.core import team_member as tm
+from src.core import utils
 
 
 db = database.db
@@ -14,16 +15,20 @@ def equestrian_create(form):
     bought = form['bought'] # O cualquier fuente de datos
     bought = True if bought == 'true' else False  # Convertir el valor
 
-    
+    date_of_birth = utils.string_to_date(form['date_of_birth'])
+    date_of_entry = utils.string_to_date(form['date_of_entry'])
+
+    if not utils.validate_dates(date_of_birth, date_of_entry):
+        return None
 
     equestrian = Equestrian(
         name=form["name"],
-        date_of_birth=form["date_of_birth"],
+        date_of_birth=date_of_birth,
         sex=form["sex"],
         race=form["race"],
         coat=form["coat"],
         bought = bought,
-        date_of_entry=form["date_of_entry"],
+        date_of_entry=date_of_entry,
         headquarters=form["headquarters"]
     )
 

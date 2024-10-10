@@ -2,6 +2,7 @@ from src.core import database
 from datetime import datetime
 from flask import flash
 from sqlalchemy import or_
+from src.core import utils
 
 
 def create_enums():
@@ -21,22 +22,7 @@ def check_team_member_by_email(email):
 
     return team_member
 
-def validate_dates(initial_date, end_date):
-    """
-    Check if the dates are valid
-    """
-    initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
-    end_date = datetime.strptime(end_date, '%Y-%m-%d') if end_date is not None else None
 
-    print(type(initial_date))
-    if initial_date > datetime.now():
-        return False
-
-    if end_date is not None:
-        if initial_date > end_date:
-            return False
-
-    return True
 
 def create(form):
     """
@@ -47,8 +33,12 @@ def create(form):
     end_date = form["end_date"]
     if end_date == '':
         end_date = None
+    else:
+        end_date = utils.string_to_date(end_date)
 
-    if not validate_dates(form["initial_date"], end_date):
+    initial_date = utils.string_to_date(form["initial_date"])
+
+    if not utils.validate_dates(initial_date, end_date):
         return flash("Las fechas ingresadas no son válidas")
 
     team_member = TeamMember(

@@ -21,8 +21,9 @@ def create():
         flash("El equestre ya existe")
         return redirect(url_for("equestrian.new"))
     
-    eq.equestrian_create(request.form)
-
+    if eq.equestrian_create(request.form) is None:
+        flash("Las fechas ingresadas no son válidas")
+      
     flash("Equestre creado con éxito")
 
     return redirect(url_for("equestrian.new"))
