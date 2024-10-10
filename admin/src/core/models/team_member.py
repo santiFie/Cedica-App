@@ -20,6 +20,7 @@ class TeamMember(database.db.Model):
     health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
 
     health_insurance = database.db.relationship('HealthInsurance', back_populates='team_members')
+    equestrians = database.db.relationship('Equestrian', secondary='equestrian_team_members', back_populates='team_members')
 
     def __repr__(self):
         return self.name
