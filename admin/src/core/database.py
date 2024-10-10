@@ -35,8 +35,8 @@ def reset():
     rh.create_enums()
     # Creates the team member enums
     tm.create_enums()
-    db.create_all()
     create_enums() # enum de payments
+    db.create_all()
     #db.session.commit()
     print("Database reset complete.")
 
