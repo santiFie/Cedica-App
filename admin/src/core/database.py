@@ -1,10 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
 #from src.core.payments import create_enums
 
-=======
 from src.core import team_member as tm 
->>>>>>> dev
 db = SQLAlchemy()
 
 def init_app(app):
@@ -39,11 +36,8 @@ def reset():
     tm.create_enums()
 
     db.create_all()
-<<<<<<< HEAD
     create_enums()
     #db.session.commit()
-=======
->>>>>>> dev
     print("Database reset complete.")
 
 def reset_model(model):
