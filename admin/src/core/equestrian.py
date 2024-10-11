@@ -1,5 +1,6 @@
 from src.core import database   
 from src.core.models.equestrian import Equestrian
+from src.core.models.team_member import JobEnum
 from src.core import team_member as tm
 from src.core import utils
 from flask import flash
@@ -33,10 +34,10 @@ def equestrian_create(form):
     if equestrian:
         return flash("El equestre ya existe")
    
-    # Add the jobs in the institution to the equestrian    
-    jobs_in_institution = form.getlist("jobs_in_institution")
-    if jobs_in_institution:
-        equestrian.jobs_in_institution = jobs_in_institution
+    # Add the proposals in the institution to the equestrian    
+    proposals = form.getlist("proposals")
+    if proposals:
+        equestrian.proposals = proposals
 
     # Create the equestrian
     equestrian = Equestrian(
@@ -96,10 +97,10 @@ def equestrian_update(id, form):
     if not selected_emails:
         return flash("Debe seleccionar al menos un entrenador o cuidador")
     
-    # Add the jobs in the institution to the equestrian
-    jobs_in_institution = form.getlist("jobs")
-    if jobs_in_institution:
-        equestrian.jobs_in_institution = jobs_in_institution
+    # Add the proposals in the institution to the equestrian
+    proposals = form.getlist("proposals")
+    if proposals:
+        equestrian.proposals = proposals
     
     # Check if the name already exists for other equestrian
     equestrian = find_equestrian_by_name(form["name"])
@@ -107,7 +108,14 @@ def equestrian_update(id, form):
         return flash("El equestre ya existe")
 
     # Update the equestrian
+    equestrian.name = form["name"]
+    equestrian.sex = form["sex"]
+    equestrian.headquarters = form["headquarters"]
+    equestrian.coat = form["coat"]
+    equestrian.race = form["race"]
     equestrian.date_of_birth = date_of_birth
+    equestrian.date_of_entry = date_of_entry
+    equestrian.bought = bought
 
     # Eliminar todos los miembros del equipo del equestre
     equestrian.team_members.clear() 
@@ -136,3 +144,50 @@ def find_equestrian_by_id(id):
         return None, 404
     
     return equestrian
+
+def list_equestrians(page=1, name=None, proposals=None, date_of_birth=None, date_of_entry= None, sort_by=None):
+    per_page = 25
+
+    # consulta general, obtengo todos los usuarios
+    query = Equestrian.query
+
+    # Filtros opcionales
+    if name:
+        query = query.filter(Equestrian.name.ilike(f'%{name}%'))
+    if proposals:
+        query = query.filter(Equestrian.proposals == proposals)
+
+    # Ordenamiento
+    if sort_by == 'name_asc':
+        query = query.order_by(Equestrian.name.asc())
+    elif sort_by == 'name_desc':
+        query = query.order_by(Equestrian.name.desc())
+    elif sort_by == 'date_of_birth_asc':
+        query = query.order_by(Equestrian.date_of_birth.asc())
+    elif sort_by == 'date_of_birth_desc':
+        query = query.order_by(Equestrian.date_of_birth.desc())
+    elif sort_by == 'date_of_entry_asc':
+        query = query.order_by(Equestrian.date_of_entry.asc())
+    elif sort_by == 'date_of_entry_desc':
+        query = query.order_by(Equestrian.date_of_entry.desc())
+        
+    total_equestrians = query.count()
+
+    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    if total_equestrians == 0:
+        return [], 1
+    
+    max_pages = (total_equestrians + per_page - 1) // per_page  # Redondeo hacia arriba
+        
+    # Aseguramos que page sea al menos 1
+    if page < 1:
+        page = 1
+    
+    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+    if page > max_pages:
+        page = max_pages
+        
+    offset = (page - 1) * per_page
+    equestrians = query.offset(offset).limit(per_page).all()
+
+    return equestrians, max_pages 

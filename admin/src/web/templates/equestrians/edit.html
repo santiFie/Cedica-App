@@ -79,14 +79,14 @@
             </div>
 
             <div class="form-group">
-                <label> Trabajos: </label>
-                <div id="job_checkbox_list">
-                    {% for job in job_list %}
+                <label> Propuestas: </label>
+                <div id="proposal_checkbox_list">
+                    {% for proposal in proposals %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="jobs" value="{{ job }}"
-                                {% if job in selected_jobs %} checked {% endif %}>
-                                {{ job.replace("_", " ").title() }}
+                                <input type="checkbox" name="proposals" value="{{ proposal }}"
+                                {% if proposal in selected_proposals %} checked {% endif %}>
+                                {{ proposal.replace("_", " ").title() }}
                             </label>
                         </div>
                     {% endfor %}

@@ -1,7 +1,8 @@
+from datetime import datetime
 from src.core import database
 from sqlalchemy.dialects.postgresql import ARRAY
-from src.core.models.team_member import TeamMember, JobEnum
-
+from src.core.models.team_member import TeamMember
+from src.core.models.riders_and_horsewomen import proposal_enum
 db = database.db
 
 
@@ -17,8 +18,8 @@ class Equestrian(db.Model):
     bought = db.Column(db.Boolean, nullable=False)
     date_of_entry = db.Column(db.DateTime, nullable=False)
     headquarters = db.Column(db.String(100), nullable=False)
-
-    jobs_in_institution = db.Column(ARRAY(JobEnum), nullable=True)
+    inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
+    proposals = db.Column(ARRAY(proposal_enum), nullable=True)
 
     team_members = db.relationship(
         "TeamMember", secondary="equestrian_team_members", back_populates="equestrians"

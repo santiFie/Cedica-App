@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado Ecuestres{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Ecuestres del sistema</h1>
+    <a href="{{ url_for('equestrian.new') }}"><button type="button">Crear Ecuestre</button></a>
+
+    <h2>Buscar ecuestres</h2>
+    <form action="{{ url_for('equestrian.list') }}" method="get">
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
+
+        <label for="proposal">Tipos de J&A asignados:</label>
+        <select name="proposal" id="proposal">
+            <option value="">-- Seleccionar --</option>
+            {% for proposal in all_proposals %}
+            <option value="{{ proposal }}" {% if request.args.get('proposal') == proposal %}selected{% endif %}>{{ proposal.replace('_', ' ').title() }}</option>
+            {% endfor %}
+        </select>
+
+        <h3>Ordenar por:</h3>
+        <label>
+            <input type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
+            Nombre Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
+            Nombre Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="date_of_birth_asc" {% if request.args.get('sort_by') == 'date_of_birth_asc' %}checked{% endif %}>
+            Fecha de nacimiento Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="date_of_birth_desc" {% if request.args.get('sort_by') == 'date_of_birth_desc' %}checked{% endif %}>
+            Fecha de nacimiento Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="date_of_entry_asc" {% if request.args.get('sort_by') == 'date_of_entry_asc' %}checked{% endif %}>
+            Fecha de ingreso Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="date_of_entry_desc" {% if request.args.get('sort_by') == 'date_of_entry_desc' %}checked{% endif %}>
+            Fecha de ingreso Descendente
+        </label>
+        </label>
+
+    
+        <button type="submit">Buscar</button>
+    </form>
+    
+
+    {% if list %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipos de J&A asignados</th>
+                    <th>Información</th>
+                    <th>Modificación</th>
+                    <th>Eliminacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equestrian in list %}
+                <tr>
+                    <td>{{ equestrian.name }}</td>
+                    <td>
+                        {% if equestrian.proposals %}
+                            {% for proposal in equestrian.proposals %}
+                                {{ proposal.replace('_', ' ').title() }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            No asignado
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="#">
+                            <button>Mostrar informacion</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('equestrian.edit', id=equestrian.id) }}">
+                            <button type="button">Modificar</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" method="post">
+                            <button>Eliminar</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <!-- Botones de Paginación -->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('equestrian.list', page=page-1,proposal=request.args.get('proposal', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Previo</button>
+                </a>
+            {% else %}
+                <button disabled>Previo</button>
+            {% endif %}
+
+            {% if page < max_pages %}
+                <a href="{{ url_for('equestrian.list', page=page-1,proposal=request.args.get('proposal', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Previo</button>
+                    <button>Siguiente</button>
+                </a>
+            {% else %}
+                <button disabled>Siguiente</button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No se encontraron ecuestres en el sistema. </p>
+    {% endif %}
+
+
+    
+
+
+{% endblock %}
+
