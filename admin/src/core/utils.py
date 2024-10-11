@@ -18,3 +18,6 @@ def string_to_date(string_date):
         return datetime.strptime(string_date, '%Y-%m-%d')
     except:
         return Exception("Invalid date format in 'string_to_date' function")
+
+def date_to_string(date):
+    return date.strftime('%Y-%m-%d')
