@@ -79,3 +79,8 @@ def list():
 def delete(id):
     eq.equestrian_delete(id)
     return redirect(url_for("equestrian.list"))
+
+@bp.get("/show<int:id>")
+def show(id):
+    equestrian = eq.find_equestrian_by_id(id)
+    return render_template("equestrians/show.html", equestrian=equestrian)
