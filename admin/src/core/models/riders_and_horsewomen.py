@@ -1,4 +1,5 @@
 from src.core import database
+from datetime import datetime
 from sqlalchemy.dialects.postgresql import ENUM, ARRAY
 
 
@@ -124,6 +125,8 @@ class RiderAndHorsewoman(database.db.Model):
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
     institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
+
 
 class WorkInInstitution(database.db.Model):
     __tablename__ = 'work_in_institutions'
