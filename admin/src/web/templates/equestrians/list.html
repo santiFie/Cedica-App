@@ -91,7 +91,7 @@
                         </a>
                     </td>
                     <td>
-                        <form action="{{ url_for('equestrian.delete', id=equestrian.id) }}" method="post" style="display:inline;">
+                        <form action="{{ url_for('equestrian.delete', id=equestrian.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
                             <button type="submit">Eliminar</button>
                         </form>
                     </td>
@@ -124,6 +124,11 @@
 
 
     
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este pago? Esta acción no se puede deshacer.');
+        }
+    </script>
 
 
 {% endblock %}
