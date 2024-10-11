@@ -63,7 +63,6 @@ def list():
     # obtengo los filtros del formulario
     name = request.args.get('name', None)
     proposal = request.args.get('proposal', None)
-    print(type(proposal), "------------------------------------------------------------------------------")
     date_of_birth = request.args.get('date_of_birth', None)
     date_of_entry = request.args.get('date_of_entry', None)
     sort_by = request.args.get('sort_by', None)
@@ -75,3 +74,8 @@ def list():
     all_users, max_pages = eq.list_equestrians(page=page, name=name, proposal=proposal, date_of_birth=date_of_birth, date_of_entry=date_of_entry, sort_by=sort_by)
         
     return render_template("equestrians/list.html",list = all_users, page=page, max_pages=max_pages,all_proposals=all_proposals)
+
+@bp.post("/delete<int:id>")
+def delete(id):
+    eq.equestrian_delete(id)
+    return redirect(url_for("equestrian.list"))

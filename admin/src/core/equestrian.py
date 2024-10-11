@@ -191,3 +191,15 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
     equestrians = query.offset(offset).limit(per_page).all()
 
     return equestrians, max_pages 
+
+
+def equestrian_delete(id):
+    equestrian = Equestrian.query.filter_by(id=id).first()
+
+    if not equestrian:
+        return flash("El equestre no existe")
+    
+    db.session.delete(equestrian)
+    db.session.commit()
+
+    return flash("Equestre eliminado exitosamente")
