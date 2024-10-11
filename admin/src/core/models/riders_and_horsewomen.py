@@ -124,8 +124,13 @@ class RiderAndHorsewoman(database.db.Model):
     current_grade = database.db.Column(database.db.String(2), nullable=False)
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
-    institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+
+    # necesario para Collection
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
+
+    collections = database.db.relationship('Collection', back_populates='rider')
 
 
 class WorkInInstitution(database.db.Model):
@@ -139,12 +144,15 @@ class WorkInInstitution(database.db.Model):
     horse = database.db.Column(database.db.BigInteger, database.db.ForeignKey('equestrians.id'), nullable=False )
     track_assistant= database.db.Column(database.db.BigInteger, database.db.ForeignKey('team_members.id'), nullable=False )
     days = database.db.Column(ARRAY(days_enum), nullable=False)
-    riders_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
+    riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='riders_horsewomen_institution', back_populates='work_in_institutions')
+    #rider_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
 
 class RiderHorsewomanInstitution(database.db.Model):
     __tablename__ = 'riders_horsewomen_institution'
-    rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
-    institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
+    rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
+    work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True)
+    # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
+    # institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
 
 
 class Tutor(database.db.Model):

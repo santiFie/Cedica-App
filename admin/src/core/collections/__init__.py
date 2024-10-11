@@ -59,3 +59,59 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
     collections = query.offset(offset).limit(per_page).all()
 
     return collections, max_pages 
+
+
+def create_collection(**kwargs):
+
+    payment_type_str = kwargs["payment_method"]  # Captura el string del metodo de pago
+
+    collection = Collection(
+        amount=kwargs["amount"],
+        payment_date=kwargs["payment_date"],
+        payment_method=payment_type_str,
+        observations=kwargs.get("observations", ""),
+        team_member_id=kwargs["team_member_id"],
+        rider_id=kwargs["rider_dni"],
+
+        # PREGUNTAR TEMA DE LA DEUDA, SI SE GENERA EL COBRO ES POR QUE NO DEBE ESTE COBRO, PERO COMO REGISTRO LO DEMAS QUE DEBE
+        # POR MES TENGO QUE TENER UN COBRO CREADO Y CUANDO SE PAGA CAMBIAR EL VALOR DE DEBT?
+        debt=False   # cambio el valor de la deuda a false ya que se realizo el pago
+    )
+
+    # Agregar el pago a la base de datos
+    db.session.add(collection)
+    db.session.commit()
+
+    return collection
+
+def find_collection(id):
+
+    collection = Collection.query.get(id)
+
+    return collection
+
+
+def edit_a_collection(**kwargs):
+
+    collection = find_collection(kwargs["collection_id"])
+
+    if collection:
+
+        collection.rider_dni = kwargs.get('rider_dni', collection.rider_dni)
+        collection.team_member_id = kwargs.get('team_member_id', collection.team_member_id)
+        collection.amount = kwargs.get('amount', collection.amount)
+        collection.payment_date = datetime.strptime(kwargs.get('payment_date'), '%Y-%m-%d')
+        collection.payment_method = kwargs.get('payment_method', collection.payment_method)
+        collection.observations = kwargs.get('description', collection.observations)
+
+        db.session.commit()
+        return collection
+    return None
+
+
+def delete_a_collection(collection):
+
+    db.session.delete(collection)
+    db.session.commit()
+
+    return True

@@ -27,7 +27,7 @@ class Collection(database.db.Model):
     amount = database.db.Column(database.db.Float, nullable = False)
     observations = database.db.Column(database.db.String(120), nullable=True)
     # miembro del equipo que recibe el pago
-    teammember_id = database.db.Column(database.db.String(100), database.db.ForeignKey('teammember.email'), nullable=True)
+    team_member_id = database.db.Column(database.db.String(100), database.db.ForeignKey('team_members.email'), nullable=True)
 
     # si debe el pago
     debt = database.db.Column(database.db.Boolean, default=True)

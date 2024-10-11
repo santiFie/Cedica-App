@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}Detalle de Cobro{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Detalle de Cobro</h1>
+
+    <table>
+        <tr>
+            <th>ID del Cobro:</th>
+                <td>{{ collection.id }}</td>
+            </tr>
+            <tr>
+            <th>Monto:</th>
+                <td>${{ collection.amount }}</td>
+            </tr>
+            <tr>
+            <th>Fecha:</th>
+                <td>{{ collection.payment_date.strftime('%d/%m/%Y') }}</td> <!-- Formateo de la fecha -->
+            </tr>
+            <th>Metodo de Pago:</th>
+                <td>{{ collection.payment_method }}</td> <!-- Formateo de la fecha -->
+            </tr>
+            <tr>
+                <th>Observaciones:</th>
+                <td>{{ payment.observations }}</td>
+            </tr>
+            <tr>
+                <th>DNI de Jinete o Amazonas que realizo el pago:</th>
+                <td>{{ collection.rider_dni }}</td>
+            </tr>
+            <tr>
+                <th>Miembro del equipo al que se le pago:</th>
+                <td>{{ collection.team_member_id }}</td>
+            </tr>
+        </tr>
+    </table>
+
+    <a href="{{ url_for('collections.index_collections') }}"><button type="button">Volver a la lista de cobros</button></a>
+
+{% endblock %}
