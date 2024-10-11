@@ -111,8 +111,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('equestrian.list', page=page-1,proposal=request.args.get('proposal', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
-                    <button>Previo</button>
+                <a href="{{ url_for('equestrian.list', page=page+1,proposal=request.args.get('proposal', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
                     <button>Siguiente</button>
                 </a>
             {% else %}

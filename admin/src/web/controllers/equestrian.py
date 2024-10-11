@@ -62,7 +62,8 @@ def list():
 
     # obtengo los filtros del formulario
     name = request.args.get('name', None)
-    proposals = request.args.get('proposals', None)
+    proposal = request.args.get('proposal', None)
+    print(type(proposal), "------------------------------------------------------------------------------")
     date_of_birth = request.args.get('date_of_birth', None)
     date_of_entry = request.args.get('date_of_entry', None)
     sort_by = request.args.get('sort_by', None)
@@ -71,6 +72,6 @@ def list():
 
 
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
-    all_users, max_pages = eq.list_equestrians(page=page, name=name, proposals=proposals, date_of_birth=date_of_birth, date_of_entry=date_of_entry, sort_by=sort_by)
+    all_users, max_pages = eq.list_equestrians(page=page, name=name, proposal=proposal, date_of_birth=date_of_birth, date_of_entry=date_of_entry, sort_by=sort_by)
         
     return render_template("equestrians/list.html",list = all_users, page=page, max_pages=max_pages,all_proposals=all_proposals)

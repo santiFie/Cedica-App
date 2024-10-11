@@ -145,7 +145,7 @@ def find_equestrian_by_id(id):
     
     return equestrian
 
-def list_equestrians(page=1, name=None, proposals=None, date_of_birth=None, date_of_entry= None, sort_by=None):
+def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_of_entry= None, sort_by=None):
     per_page = 25
 
     # consulta general, obtengo todos los usuarios
@@ -154,8 +154,8 @@ def list_equestrians(page=1, name=None, proposals=None, date_of_birth=None, date
     # Filtros opcionales
     if name:
         query = query.filter(Equestrian.name.ilike(f'%{name}%'))
-    if proposals:
-        query = query.filter(Equestrian.proposals == proposals)
+    if proposal:
+        query = query.filter(Equestrian.proposals.contains([proposal]))
 
     # Ordenamiento
     if sort_by == 'name_asc':
