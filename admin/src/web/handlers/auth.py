@@ -14,7 +14,6 @@ def login_required(func):
             else:
                 abort(401)
 
-
         return func(*args, **kwargs)
     
     return decorated_function

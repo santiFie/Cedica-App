@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}Editar Pago{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Editar Informacion de Pago</h1>
+
+    <form method="POST" action="{{ url_for('payments.edit_payment', payment_id=payment.id) }}">
+        <div>
+            <label for="beneficiary_id">Beneficiario:</label>
+            <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}" required>
+        </div>
+        <div>
+            <label for="amount">Monto:</label>
+            <input type="number" id="amount" name="amount" step="0.01" value="{{ payment.amount }}" required>
+        </div>
+        <div>
+            <label for="payment_date">Fecha de Pago:</label>
+            <input type="date" id="payment_date" name="payment_date" value="{{ payment.payment_date.strftime('%Y-%m-%dT%H:%M') }}" required>
+        </div>
+        <div>
+            <label for="payment_type">Tipo de Pago:</label>
+            <select id="payment_type" name="payment_type" required>
+                <option value="HONORARIOS" {% if payment.payment_type == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
+                <option value="PROVEEDOR" {% if payment.payment_type == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
+                <option value="GASTOS VARIOS" {% if payment.payment_type == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
+            </select>
+        </div>
+        <div>
+            <label for="description">Descripción:</label>
+            <input type="text" id="description" name="description" value="{{ payment.description }}">
+        </div>
+        <button type="submit">Actualizar Pago</button>
+    </form>
+
+    
+    <a href="{{ url_for('payments.index_payments') }}"> <button type="button" >Volver a listado de pagos </button> </a>
+
+
+
+{% endblock %}

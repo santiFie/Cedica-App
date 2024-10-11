@@ -15,6 +15,9 @@ class User(database.db.Model):
     # Relación con roles
     role = database.db.relationship('Role', back_populates='users')
 
+    # Relación con pagos
+    payments = database.db.relationship('Payment', back_populates='beneficiary')
+
 
 # Modelo Role
 class Role(database.db.Model):

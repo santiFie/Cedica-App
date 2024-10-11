@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from src.web import routes
 from src.web import errors
 from src.core import database
+from src.core.models.riders_and_horsewomen import RiderAndHorsewoman, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
 from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
 from src.core.models.equestrian import Equestrian

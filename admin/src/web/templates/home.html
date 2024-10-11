@@ -13,12 +13,22 @@
         <button type="submit">Ver Usuarios</button>
     </form>
 
+    <form action="{{ url_for('payments.index_payments') }}">
+        <button type="submit">Ver Pagos</button>
+    </form>
+
     <form action="{{ url_for('users.user_create') }}">
         <button type="submit">Crear Usuario</button>
     </form>
 
-    <form action="{{ url_for('team_members.new') }}">
-        <button type="submit">Crear Miembro de Esquipo</button>   
+    <form action="{{ url_for('team_members.team_members_list') }}">
+        <button type="submit">Ver Miembros del Equipo</button>   
     </form>
+
+    <form action="{{ url_for('team_members.new') }}">
+        <button type="submit">Crear Miembro de Equipo</button>   
+    </form>
+
+    
 
 {% endblock %}
