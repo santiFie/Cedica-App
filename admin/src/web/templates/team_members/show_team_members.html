@@ -37,20 +37,12 @@
             Nombre Descendente
         </label>
         <label>
-            <input type="radio" name="sort_by" value="surname_asc" {% if request.args.get('sort_by') == 'surname_asc' %}checked{% endif %}>
+            <input type="radio" name="sort_by" value="last_name_asc" {% if request.args.get('sort_by') == 'last_name_asc' %}checked{% endif %}>
             Apellido Ascendente
         </label>
         <label>
-            <input type="radio" name="sort_by" value="surname_desc" {% if request.args.get('sort_by') == 'surname_desc' %}checked{% endif %}>
+            <input type="radio" name="sort_by" value="last_name_desc" {% if request.args.get('sort_by') == 'last_name_desc' %}checked{% endif %}>
             Apellido Descendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
-            Fecha de creación Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
-            Fecha de creación Descendente
         </label>
 
     

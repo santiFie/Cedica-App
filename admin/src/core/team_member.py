@@ -67,7 +67,7 @@ def create(form):
     return flash("Miembro de equipo creado exitosamente")
 
 
-def find_team_members(page=1, email=None, name=None, surname=None, jobs=None, dni=None, sort_by=None):
+def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, dni=None, sort_by=None):
     from src.core.models.team_member import TeamMember
 
     per_page = 25
@@ -80,26 +80,22 @@ def find_team_members(page=1, email=None, name=None, surname=None, jobs=None, dn
         query = query.filter(TeamMember.email.ilike(f'%{email}%'))  # búsqueda insensible a mayúsculas
     if name:
         query = query.filter(TeamMember.name.ilike(f'%{name}%'))
-    if surname:
-        query = query.filter(TeamMember.surname.ilike(f'%{surname}%'))
+    if last_name:
+        query = query.filter(TeamMember.last_name.ilike(f'%{last_name}%'))
     if jobs:
-        query = query.filter(TeamMember.jobs == jobs)
+        query = query.filter(TeamMember.job_position == jobs)
     if dni:
-        query = query.filter(TeamMember.dni == dni)
+        query = query.filter(TeamMember.dni.ilike(f'%{dni}%'))
 
     # Ordenamiento
     if sort_by == 'name_asc':
         query = query.order_by(TeamMember.name.asc())
     elif sort_by == 'name_desc':
         query = query.order_by(TeamMember.name.desc())
-    elif sort_by == 'surname_asc':
-        query = query.order_by(TeamMember.surname.asc())
-    elif sort_by == 'surname_desc':
-        query = query.order_by(TeamMember.surname.desc())
-    elif sort_by == 'inserted_at_asc':
-        query = query.order_by(TeamMember.inserted_at.asc())
-    elif sort_by == 'inserted_at_desc':
-        query = query.order_by(TeamMember.inserted_at.desc())
+    elif sort_by == 'last_name_asc':
+        query = query.order_by(TeamMember.last_name.asc())
+    elif sort_by == 'last_name_desc':
+        query = query.order_by(TeamMember.last_name.desc())
         
     all_team_members = query.count()
 

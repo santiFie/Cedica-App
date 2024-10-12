@@ -13,17 +13,18 @@ def team_members_list():
 
     # obtengo los filtros del formulario
     name = request.args.get('name', None)
-    surname = request.args.get('surname', None)
+    last_name = request.args.get('last_name', None)
     dni = request.args.get('dni', None)
     email = request.args.get('email', None)
-    jobs = request.args.get('jobs', None)
+    jobs = request.args.get('job', None)
     sort_by = request.args.get('sort_by', None)
+
+    print(jobs)
 
 
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
-    all_team_members, max_pages = tm.find_team_members(page=page, email=email, name=name, surname=surname, dni=dni, jobs=jobs, sort_by=sort_by)
+    all_team_members, max_pages = tm.find_team_members(page=page, email=email, name=name, last_name=last_name, dni=dni, jobs=jobs, sort_by=sort_by)
     all_jobs = JobEnum.enums
-    print(all_jobs)
 
     return render_template("team_members/show_team_members.html", list=all_team_members, max_pages = max_pages, page=page, jobs = all_jobs)
 
@@ -100,10 +101,6 @@ def update_team_member():
         profession = request.form['profession']
     )
 
-    professions = ProfessionEnum.enums
-    conditions = ConditionEnum.enums
-    jobs = JobEnum.enums
-    health_insurances = hi.get_all()
 
     flash("Usuario actualizado")
     return redirect(url_for('team_members.team_members_list'))
