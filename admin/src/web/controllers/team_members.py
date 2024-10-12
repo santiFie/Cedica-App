@@ -22,8 +22,10 @@ def team_members_list():
 
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
     all_team_members, max_pages = tm.find_team_members(page=page, email=email, name=name, surname=surname, dni=dni, jobs=jobs, sort_by=sort_by)
+    all_jobs = JobEnum.enums
+    print(all_jobs)
 
-    return render_template("team_members/show_team_members.html", list=all_team_members, max_pages = max_pages, page=page)
+    return render_template("team_members/show_team_members.html", list=all_team_members, max_pages = max_pages, page=page, jobs = all_jobs)
 
 @bp.get("/new")
 def new():

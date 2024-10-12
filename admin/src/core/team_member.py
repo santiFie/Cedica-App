@@ -46,6 +46,7 @@ def create(form):
     team_member = TeamMember(
         name=form["name"],
         last_name=form["last_name"],
+        dni=form["dni"],
         address=form["address"],
         email=form["email"],
         locality=form["locality"],

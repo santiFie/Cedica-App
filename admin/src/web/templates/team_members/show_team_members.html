@@ -23,7 +23,7 @@
         <select name="job" id="job">
             <option value="">-- Seleccionar --</option>
             {% for job in jobs %}
-            <option value="{{ job }}" {% if request.args.get('job') == job %}selected{% endif %}>{{ job.replace('_', ' ').title }}</option>
+            <option value="{{ job }}" {% if request.args.get('job') == job %}selected{% endif %}>{{ job.replace('_', ' ').title() }}</option>
             {% endfor %}
         </select>
 
