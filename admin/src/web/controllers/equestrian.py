@@ -2,8 +2,10 @@ from flask import Blueprint
 from src.core import team_member as tm
 from src.core.models.riders_and_horsewomen import proposal_enum
 from src.core import equestrian as eq
-from flask import render_template, request, flash, url_for, redirect
+from flask import render_template, request, flash, url_for, redirect, send_file, abort
 from src.core import utils
+import mimetypes
+
 
 bp = Blueprint("equestrian", __name__, url_prefix="/equestrians")
 
@@ -106,3 +108,44 @@ def delete(id):
 def show(id):
     equestrian = eq.find_equestrian_by_id(id)
     return render_template("equestrians/show.html", equestrian=equestrian)
+
+@bp.get("/view_file/<int:id>/<string:filename>")
+def view_file(id, filename):
+
+    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+
+    if not file_data:
+        return "Archivo no encontrado", 404
+
+     # If the content type is not provided, try to guess it from the filename
+    if not content_type:
+        content_type, _ = mimetypes.guess_type(filename)
+    
+    # For PDF files
+    if content_type == 'application/pdf':
+        return send_file(
+            file_data,
+            mimetype='application/pdf',
+            as_attachment=False,
+            download_name=filename
+        )
+    
+    # For images
+    elif content_type.startswith('image/'):
+        return send_file(
+            file_data,
+            mimetype=content_type,
+            as_attachment=False,
+            download_name=filename
+        )
+    
+    # For other files, force download
+    else:
+        return send_file(
+            file_data,
+            mimetype=content_type,
+            as_attachment=True,
+            download_name=filename
+        )
+
+

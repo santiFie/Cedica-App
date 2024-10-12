@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import current_app
 from os import fstat
+from io import BytesIO
 from src.web.storage import BUCKET_NAME
 
 def validate_dates(initial_date, end_date=None):
@@ -47,3 +48,17 @@ def delete_file_from_minio(prefix, filename, user_id):
         client.remove_object(BUCKET_NAME, object_name)
     except Exception as e:
         current_app.logger.error(f"Error deleting file from MinIO: {str(e)}")
+
+def get_file_from_minio(prefix, user_id, filename):
+    """
+    Get a file from MinIO
+    """
+    client = current_app.storage.client
+    object_name = f"{prefix}/{user_id}-{filename}"
+    print(object_name)
+    try:
+        response = client.get_object(BUCKET_NAME, object_name)
+        return BytesIO(response.read()), response.headers['content-type']
+    except Exception as e:
+        current_app.logger.error(f"Error getting file from MinIO: {str(e)}")
+        return None, None

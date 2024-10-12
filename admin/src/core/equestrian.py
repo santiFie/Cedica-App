@@ -57,12 +57,6 @@ def equestrian_create(form, files):
             utils.upload_file(prefix="ecuestres", file=file , user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
-
-    # for file in files:
-    #     utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
-    #     setattr(equestrian, file.filename)
-
-
     # Add the selected team members to the equestrianTeamMember table
     # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
     for email in selected_emails:
