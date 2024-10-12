@@ -8,7 +8,7 @@ from flask import flash
 
 db = database.db
 
-def equestrian_create(form):
+def equestrian_create(form, files):
     """
     Creates a new equestrian
     """
@@ -33,11 +33,6 @@ def equestrian_create(form):
     equestrian = find_equestrian_by_name(form["name"])
     if equestrian:
         return flash("El equestre ya existe")
-   
-    # Add the proposals in the institution to the equestrian    
-    proposals = form.getlist("proposals")
-    if proposals:
-        equestrian.proposals = proposals
 
     # Create the equestrian
     equestrian = Equestrian(
@@ -47,6 +42,7 @@ def equestrian_create(form):
         race=form["race"],
         coat=form["coat"],
         bought = bought,
+        proposals = form.getlist("proposals"),
         date_of_entry=date_of_entry,
         headquarters=form["headquarters"]
     )
@@ -55,7 +51,17 @@ def equestrian_create(form):
     db.session.add(equestrian)
     db.session.commit()
 
-    
+    for key, file in files.items():
+        if file:
+            print(key)
+            utils.upload_file(prefix="ecuestres", file=file , user_id=equestrian.id)
+            setattr(equestrian, key, file.filename)
+
+
+    # for file in files:
+    #     utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
+    #     setattr(equestrian, file.filename)
+
 
     # Add the selected team members to the equestrianTeamMember table
     # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
@@ -69,8 +75,22 @@ def equestrian_create(form):
     return flash("Equestre creado exitosamente")
 
 
+def update_equestrians_files(equestrian_id, files_dict):
+    equestrian = find_equestrian_by_id(equestrian_id)
 
-def equestrian_update(id, form):
+    if not equestrian:
+        return flash("El equestre no existe")
+    
+
+
+    for key, file in files_dict.items():
+        if file:
+            utils.delete_file_from_minio("ecuestres", getattr(equestrian, key), equestrian.id)
+            utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
+            setattr(equestrian, key, file.filename)
+
+
+def equestrian_update(id, form, files):
     """
     Updates an equestrian
     """
@@ -116,11 +136,18 @@ def equestrian_update(id, form):
     equestrian.date_of_birth = date_of_birth
     equestrian.date_of_entry = date_of_entry
     equestrian.bought = bought
+    
+    update_equestrians_files(equestrian.id, files)
 
-    # Eliminar todos los miembros del equipo del equestre
+    # # Save the equestrian to the database
+    # for file in files:
+    #     utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
+
+
+    # Delete all the team members of the equestrian
     equestrian.team_members.clear() 
     
-    # Agregar los miembros del equipo seleccionados
+    # Add the selected team members to the equestrianTeamMember table
     for email in selected_emails:
         team_member = tm.find_team_member_by_email(email)
         if team_member:

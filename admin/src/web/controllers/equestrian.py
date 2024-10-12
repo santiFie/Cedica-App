@@ -7,27 +7,38 @@ from src.core import utils
 
 bp = Blueprint("equestrian", __name__, url_prefix="/equestrians")
 
+
+ # Routes for create a new equestrian
 @bp.get("/new")
 def new():
 
     email_lists = tm.list_emails_from_trainers_and_handlers()
-    proposal = proposal_enum.enums
+    proposals = proposal_enum.enums
 
-    return render_template("equestrians/new.html", email_list=email_lists, job_list=proposal)
+    return render_template("equestrians/new.html", email_list=email_lists, proposals=proposals)
 
 @bp.post("/create")
 def create():
 
     equestrian = eq.find_equestrian_by_name(request.form["name"])
-    
+
     if equestrian:
         flash("El equestre ya existe")
         return redirect(url_for("equestrian.new"))
     
-    eq.equestrian_create(request.form)
+
+    # files = request.files.listvalues() # => list of lists
+    # files = [file for sublist in files for file in sublist] # => flatten the list to a single list
+
+    file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
+    files = {key: request.files[key] for key in file_keys if key in request.files}
+
+    eq.equestrian_create(request.form, files)
 
     return redirect(url_for("equestrian.new"))
 
+
+# Routes for update a equestrian
 @bp.get("/edit<int:id>")
 def edit(id):
 
@@ -50,11 +61,18 @@ def edit(id):
 
 @bp.post("/update<int:id>")
 def update(id):
-    eq.equestrian_update(id, request.form)
-    return redirect(url_for("equestrian.edit", id=id))
+    
+    # files = request.files.listvalues() # => list of lists
+    # files = [file for sublist in files for file in sublist if file.filename != ''] # => flatten the list to a single list and check if the file is not empty
+
+    file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
+    files = {key: request.files[key] for key in file_keys if key in request.files}
+
+    eq.equestrian_update(id, request.form, files)
+    return redirect(url_for("equestrian.list"))
 
 
-
+# Routes for list all equestrians
 @bp.get("/list")
 def list():
     #obtengo nro de pagina o por defecto tomo el 1
@@ -75,11 +93,15 @@ def list():
         
     return render_template("equestrians/list.html",list = all_users, page=page, max_pages=max_pages,all_proposals=all_proposals)
 
+
+# Routes for delete a equestrian
 @bp.post("/delete<int:id>")
 def delete(id):
     eq.equestrian_delete(id)
     return redirect(url_for("equestrian.list"))
 
+
+# Routes for show a equestrian
 @bp.get("/show<int:id>")
 def show(id):
     equestrian = eq.find_equestrian_by_id(id)

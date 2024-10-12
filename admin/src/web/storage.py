@@ -1,5 +1,7 @@
 from minio import Minio
 
+BUCKET_NAME = 'grupo43'
+
 class Storage:
     def __init__(self, app=None):
         self.client = None
