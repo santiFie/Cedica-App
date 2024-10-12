@@ -7,8 +7,56 @@
 {% endblock %}
 
 
+
 {% block content %}
     <h1>Miembros del equipo CEDICA</h1>
+
+    <h2>Buscar Miembro del equipo</h2>
+    <form action="{{ url_for('team_members.team_members_list') }}" method="get">
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
+
+        <label for="dni">DNI</label>
+        <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}">
+    
+        <label for="job">Posición Laboral:</label>
+        <select name="job" id="job">
+            <option value="">-- Seleccionar --</option>
+            {% for job in jobs %}
+            <option value="{{ job }}" {% if request.args.get('job') == job %}selected{% endif %}>{{ job.replace('_', ' ').title }}</option>
+            {% endfor %}
+        </select>
+
+        <h3>Ordenar por:</h3>
+        <label>
+            <input type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
+            Nombre Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
+            Nombre Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="surname_asc" {% if request.args.get('sort_by') == 'surname_asc' %}checked{% endif %}>
+            Apellido Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="surname_desc" {% if request.args.get('sort_by') == 'surname_desc' %}checked{% endif %}>
+            Apellido Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
+            Fecha de creación Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
+            Fecha de creación Descendente
+        </label>
+
+    
+        <button type="submit">Buscar</button>
+    </form>
+
     {% if list %}
         <table>
             <thead>
@@ -47,6 +95,25 @@
                 {% endfor %}
             </tbody>
         </table>
+
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('team_members.team_members_list', page=page-1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Previo</button>
+                </a>
+            {% else %}
+                <button disabled>Previo</button>
+            {% endif %}
+
+            {% if page < max_pages %}
+                <a href="{{ url_for('team_members.team_members_list', page=page+1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Siguiente</button>
+                </a>
+            {% else %}
+                <button disabled>Siguiente</button>
+            {% endif %}
+        </div>
 
     {% else %}
         <p>No hay miembros del equipo registrados</p>
