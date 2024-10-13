@@ -2,6 +2,7 @@ from src.core.database import db
 from src.core.models.collection import Collection, PaymentMethod
 from src.core.models.team_member import TeamMember
 from datetime import datetime
+from sqlalchemy.orm import aliased
 
 
 def find_collections(start_date=None, end_date=None, payment_method=None, name=None, last_name=None, order_by='asc', page=1):
@@ -21,13 +22,18 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
     if payment_method:
         query = query.filter(Collection.payment_method == payment_method)
 
+   # Crear alias para la tabla TeamMember para evitar el 'DuplicateAlias'
+    if name or last_name:
+        team_member_alias_name = aliased(TeamMember)
+        team_member_alias_last_name = aliased(TeamMember)
+
     # Filtro por nombre del receptor del pago (miembro del equipo)
     if name:
-        query = query.join(TeamMember).filter(TeamMember.first_name.ilike(f'%{name}%'))
+        query = query.join(team_member_alias_name, team_member_alias_name.email == Collection.team_member_id).filter(team_member_alias_name.name.ilike(f'%{name}%'))
     
     # Filtro por apellido del receptor del pago (miembro del equipo)
     if last_name:
-        query = query.join(TeamMember).filter(TeamMember.last_name.ilike(f'%{last_name}%'))
+        query = query.join(team_member_alias_last_name, team_member_alias_last_name.email == Collection.team_member_id).filter(team_member_alias_last_name.last_name.ilike(f'%{last_name}%'))
 
 
     # Ordeno por fecha de pago
@@ -71,7 +77,7 @@ def create_collection(**kwargs):
         payment_method=payment_type_str,
         observations=kwargs.get("observations", ""),
         team_member_id=kwargs["team_member_id"],
-        rider_id=kwargs["rider_dni"],
+        rider_dni=kwargs["rider_dni"],
 
         # PREGUNTAR TEMA DE LA DEUDA, SI SE GENERA EL COBRO ES POR QUE NO DEBE ESTE COBRO, PERO COMO REGISTRO LO DEMAS QUE DEBE
         # POR MES TENGO QUE TENER UN COBRO CREADO Y CUANDO SE PAGA CAMBIAR EL VALOR DE DEBT?
@@ -115,3 +121,9 @@ def delete_a_collection(collection):
     db.session.commit()
 
     return True
+
+
+def create_enums_collection():
+   # from src.core.models.payment import PaymentType
+
+    PaymentMethod.create(db.engine, checkfirst=True)

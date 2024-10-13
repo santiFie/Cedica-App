@@ -17,6 +17,6 @@ def create_enums():
 def find_rider(dni):
     from src.core.models.riders_and_horsewomen import RiderAndHorsewoman
 
-    rider = RiderAndHorsewoman.query.get(dni)
+    rider = RiderAndHorsewoman.query.filter_by(dni=dni).first()
 
     return rider

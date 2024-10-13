@@ -40,6 +40,8 @@ def register_collection():
         observations = request.form.get('observations', '')
         team_member_id = request.form.get('team_member_id')
         rider_dni = request.form.get('rider_dni')
+
+        print(rider_dni)
         
         # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
         obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()

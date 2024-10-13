@@ -9,7 +9,7 @@ PaymentMethod = ENUM (
     'TARJETA DE CREDITO',
     'TARJETA DE DEBITO',
     'TRANSFERENCIA',
-    name = 'payment_type_enum',
+    name = 'payment_method_enum',
     create_type = False
 )
 

@@ -9,6 +9,7 @@
 {% block content %}
     <h1>Cobros</h1>
     <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
+    <a href="#"> <button type="button">Ver Deudas</button> </a>
 
     <form method="GET" action="{{ url_for('collections.index_collections') }}">
         <div>
@@ -60,7 +61,6 @@
                     <th>Detalle</th>
                     <th>Modificacion</th>
                     <th>Eliminacion</th>
-                    <th>Deudas</th>
 
                 </tr>
             </thead>
@@ -85,14 +85,9 @@
                     </td>
                     <td>
                         <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
-                        <form action="{{ url_for('delete_collection', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
+                        <form action="{{ url_for('collections.delete_collection', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
                             <button type="submit">Eliminar</button>
                         </form>
-                    </td>
-                    <td>
-                        <a href="#">
-                            <button type="button">Ver Deudas</button>
-                        </a>
                     </td>
 
                 </tr>
