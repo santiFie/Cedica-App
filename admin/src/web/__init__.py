@@ -15,7 +15,11 @@ from src.core.config import config
 session = Session()
 bcrypt = Bcrypt()
 
-def create_app(env="development", static_folder="../../static"):
+import os 
+
+print(os.environ.get("DATABASE_URL"))
+
+def create_app(env="production", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
     # Init configuration
     app.config.from_object(config[env])
