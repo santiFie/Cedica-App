@@ -46,6 +46,7 @@ def create(form):
     team_member = TeamMember(
         name=form["name"],
         last_name=form["last_name"],
+        dni=form["dni"],
         address=form["address"],
         email=form["email"],
         locality=form["locality"],
@@ -66,30 +67,56 @@ def create(form):
     return flash("Miembro de equipo creado exitosamente")
 
 
-def find_team_members(page=1):
+def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, dni=None, sort_by=None):
     from src.core.models.team_member import TeamMember
 
     per_page = 25
-    total_team_members = TeamMember.query.count()
-   
-    # Calcula el número máximo de páginas (redondeo hacia arriba)
-    max_pages = (total_team_members + per_page - 1) // per_page
+
+    # consulta general
+    query = TeamMember.query
+
+    # Filtros opcionales
+    if email:
+        query = query.filter(TeamMember.email.ilike(f'%{email}%'))  # búsqueda insensible a mayúsculas
+    if name:
+        query = query.filter(TeamMember.name.ilike(f'%{name}%'))
+    if last_name:
+        query = query.filter(TeamMember.last_name.ilike(f'%{last_name}%'))
+    if jobs:
+        query = query.filter(TeamMember.job_position == jobs)
+    if dni:
+        query = query.filter(TeamMember.dni.ilike(f'%{dni}%'))
+
+    # Ordenamiento
+    if sort_by == 'name_asc':
+        query = query.order_by(TeamMember.name.asc())
+    elif sort_by == 'name_desc':
+        query = query.order_by(TeamMember.name.desc())
+    elif sort_by == 'last_name_asc':
+        query = query.order_by(TeamMember.last_name.asc())
+    elif sort_by == 'last_name_desc':
+        query = query.order_by(TeamMember.last_name.desc())
+        
+    all_team_members = query.count()
+
+    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    if all_team_members == 0:
+        return [], 1
     
-    # Aseguramos que la página solicitada esté dentro de los límites
+    max_pages = (all_team_members + per_page - 1) // per_page  # Redondeo hacia arriba
+        
+    # Aseguramos que page sea al menos 1
     if page < 1:
         page = 1
-    elif page > max_pages:
+    
+    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+    if page > max_pages:
         page = max_pages
-    
+        
     offset = (page - 1) * per_page
-    
-    # Si no hay miembros de equipo, devolver una lista vacía
-    if total_team_members == 0:
-        return []
-    
-    team_members = TeamMember.query.offset(offset).limit(per_page).all()
-    
-    return team_members
+    team_members = query.offset(offset).limit(per_page).all()
+
+    return team_members, max_pages 
 
 def edit(**kwargs):
     from src.core.models.team_member import TeamMember
