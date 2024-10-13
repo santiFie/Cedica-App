@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_session import Session
 from flask_bcrypt import Bcrypt
-#from src.web.storage import storage
+from src.web.storage import storage
 from src.web import routes
 from src.web import errors
 from src.core import database
@@ -27,7 +27,7 @@ def create_app(env="production", static_folder="../../static"):
     # Init bcrypt
     bcrypt.init_app(app)
     # Init storage
-    #storage.init_app(app)
+    storage.init_app(app)
 
     # Register routes
     routes.register(app)
