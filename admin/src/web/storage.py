@@ -4,7 +4,7 @@ BUCKET_NAME = 'grupo43'
 
 class Storage:
     def __init__(self, app=None):
-        self.client = None
+        self._client = None
         if app is not None:
             self.init_app(app)
 
@@ -16,7 +16,7 @@ class Storage:
         secure = app.config.get('MINIO_SECURE', False)
 
         # Initialize the MinIO client
-        self.client = Minio(
+        self._client = Minio(
             minio_server, access_key=access_key, secret_key=secret_key, secure=secure
         )
 
