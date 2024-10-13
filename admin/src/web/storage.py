@@ -6,7 +6,7 @@ class Storage:
     def __init__(self, app=None):
         self.client = None
         if app is not None:
-            self.__init__(app)
+            self.init_app(app)
 
     def init_app(self, app):
         """Initializate the MinIO client and """
