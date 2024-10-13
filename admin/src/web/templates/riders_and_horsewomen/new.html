@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block title %}Registrar jinete o amazona{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block navbar %}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Registrar jinete/amazona</h1>
+    <form action="" method="post" novalidate>
+        <label for="dni">dni</label>
+        <input type="text" name="dni" id="dni" required>
+        <label for="name">nombre</label>
+        <input type="text" name="name" id="name" required>
+        <label for="last_name">apellido</label>
+        <input type="text" name="last_name" id="last_name" required>
+        <label for="age">edad</label>
+        <input type="number" name="age" id="age" min="5" max="90" required>
+        <label for="date_of_birth">fecha de nacimiento</label>
+        <input type="date" name="date_of_birth" id="date_of_birth" required>
+        <label for="place_of_birth">lugar de nacimiento</label>
+        <input type="text" name="place_of_birth" id="place_of_birth" required>
+        <label for="address">domicilio</label>
+        <input type="text" name="place_of_birth" id="place_of_birth" required>
+        <label for="phone">numero de telefono</label>
+        <input type="text" name="phone" id="phone" required>
+        <label for="emergency_contact">contacto de emergencia</label>
+        <input type="text" name="emergency_contact" id="emergency_contact" required>
+        <label for="emergency_phone">telefono de contacto de emergencia</label> 
+        <input type="text" name="emergency_phone" id="emergency_phone" required>
+        <label for="scholarship">Becado</label> 
+        <input type="checkbox" name="scholarship" id="scholarship">
+        <progress value="50" max="100">porcentaje de beca</progress>
+        <label for="observations_scholarship">observaciones</label>
+        <input type="text" name="observations_scholarship" id="observations_scholarship">
+
+        <!-- disability_certificate -->
+        <div>
+            <input type="checkbox" name="scholarship" id="scholarship">
+            <label for="disability_certificate">Certificado de disponibilidad</label>
+            <select id="disability_certificate" name="disability_certificate">
+                {% for disability_certificate in disability_certificate_options %}
+                    <option value="{{ disability_certificate }}">{{ disability_certificate }}</option>
+                {% endfor %}
+            </select>
+            <label for="others">Otro</label>
+            <input type="text" name="others" id="others">
+        </div>
+
+        <!-- disability_type -->
+        <div>
+            <label for="disability_type">Tipo de discapacidad</label>
+            <select id="disability_type" name="disability_type">
+                {% for disability_type in disability_type_options %}
+                    <option value="{{ disability_type }}">{{ disability_type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- family_allowance -->
+        <div>
+            <input type="checkbox" name="family_allowance_boolean" id="family_allowance_boolean">
+            <label for="family_allowance">Asignación Familiar</label>
+            <select id="family_allowance" name="family_allowance">
+                {% for family_allowance in family_allowance_options %}
+                    <option value="{{ family_allowance }}">{{ family_allowance }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- pension -->
+        <div>
+            <input type="checkbox" name="pension_boolean" id="pension_boolean">
+            <label for="pension">beneficiario de alguna pensión</label>
+            <select id="pension" name="pension">
+                {% for pension in pension_options %}
+                    <option value="{{ pension }}">{{ pension }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <label for="name_institution">Nombre de la institucion</label>
+        <input type="text" name="name_institution" id="name_institution">
+        <label for="address_institution">Direccion de la institucion</label>
+        <input type="text" name="address_institution" id="address_institution">
+        <label for="phone_institution">Telefono de la institucion</label>
+        <input type="text" name="phone_institution" id="phone_institution">
+        <label for="current_grade">Grado actual</label>
+        <input type="text" name="current_grade" id="current_grade">
+        <label for="observations_institution">observacion de la institucion</label>
+        <input type="text" name="observations_institution" id="observations_institution">
+
+        <input type="submit" value="Siguiente">
+    </form>
+{% endblock %}

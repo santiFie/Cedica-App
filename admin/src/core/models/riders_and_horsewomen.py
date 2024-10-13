@@ -100,8 +100,9 @@ education_level_enum = ENUM(
 class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomen'
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
-    dni = database.db.Column(database.db.String(8), unique=True)
+    dni = database.db.Column(database.db.String(8), unique=True, nullable=False)
     name = database.db.Column(database.db.String(120), nullable=False)
+    last_name = database.db.Column(database.db.String(120), nullable=False)
     age = database.db.Column(database.db.Integer, nullable=False)
     date_of_birth = database.db.Column(database.db.Date, nullable=False)
     place_of_birth = database.db.Column(database.db.String(120), nullable=False)
@@ -120,7 +121,7 @@ class RiderAndHorsewoman(database.db.Model):
     name_institution = database.db.Column(database.db.String(120), nullable=False)
     address_institution = database.db.Column(database.db.String(120), nullable=False)
     phone_institution = database.db.Column(database.db.String(13), nullable=False)
-    current_grade = database.db.Column(database.db.String(2), nullable=False)
+    current_grade = database.db.Column(database.db.String(120), nullable=False)
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
     work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
@@ -154,6 +155,7 @@ class Tutor(database.db.Model):
     dni = database.db.Column(database.db.String(8), nullable=False)
     relationship = database.db.Column(database.db.String(120), nullable=False)
     name = database.db.Column(database.db.String(120), nullable=False)
+    last_name = database.db.Column(database.db.String(120), nullable=False)
     address = database.db.Column(database.db.String(120), nullable=False)
     phone = database.db.Column(database.db.String(13), nullable=False)
     email = database.db.Column(database.db.String(120), nullable=False)

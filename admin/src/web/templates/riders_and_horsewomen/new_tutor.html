@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}Registrar jinete o amazona{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <h1>Registrar tutor de jinete/amazona</h1>
+    <form action="" method="post" novalidate>
+        <label for="dni">dni</label>
+        <input type="text" name="dni" id="dni" required>
+        
+        <label for="relationship">parentesco</label>
+        <input type="text" name="relationship" id="relationship" required>
+
+        <label for="name">nombre</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="last_name">nombre</label>
+        <input type="text" name="last_name" id="last_name" required>
+
+        <label for="address">domicilio actual</label>
+        <input type="text" name="address" id="address" required>
+
+        <label for="phone">telefono</label>
+        <input type="text" name="phone" id="phone" required>
+
+        <label for="email">email</label>
+        <input type="text" name="email" id="email" required>
+
+        <!-- education_level -->
+        <div>
+            <label for="education_level">Nivel de escolaridad</label>
+            <select id="education_level" name="education_level">
+                {% for education in education_level_options %}
+                    <option value="{{ education }}">{{ education }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <label for="occupation">Ocupacion</label>
+        <input type="text" name="occupation" id="occupation" required>
+        
+        <input type="submit" value="Registrar tutor de jinete/amazona">    
+    </form>
+{% endblock %}
