@@ -53,7 +53,6 @@ def equestrian_create(form, files):
 
     for key, file in files.items():
         if file:
-            print(key)
             utils.upload_file(prefix="ecuestres", file=file , user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
@@ -224,3 +223,6 @@ def equestrian_delete(id):
     db.session.commit()
 
     return flash("Equestre eliminado exitosamente")
+
+def get_all_equestrians():
+    return Equestrian.query.all()

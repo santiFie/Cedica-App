@@ -30,6 +30,9 @@ class Equestrian(db.Model):
         "TeamMember", secondary="equestrian_team_members", back_populates="equestrians"
     )
 
+    def get_files(self):
+        return [self.evolution_report, self.veterinary_record, self.training_plan, self.images, self.horse_sheet]
+
 
 class EquestrianTeamMember(db.Model):
     __tablename__ = "equestrian_team_members"

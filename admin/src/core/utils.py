@@ -41,7 +41,6 @@ def delete_file_from_minio(prefix, filename, user_id):
     Delete a file from MinIO
     """
     object_name = f"{prefix}/{user_id}-{filename}"
-    print(object_name)
 
     client = current_app.storage.client
     try:
@@ -55,10 +54,8 @@ def get_file_from_minio(prefix, user_id, filename):
     """
     client = current_app.storage.client
     object_name = f"{prefix}/{user_id}-{filename}"
-    print(object_name)
     try:
         response = client.get_object(BUCKET_NAME, object_name)
         return BytesIO(response.read()), response.headers['content-type']
     except Exception as e:
-        current_app.logger.error(f"Error getting file from MinIO: {str(e)}")
         return None, None

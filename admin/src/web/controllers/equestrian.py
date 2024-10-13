@@ -109,6 +109,15 @@ def show(id):
     equestrian = eq.find_equestrian_by_id(id)
     return render_template("equestrians/show.html", equestrian=equestrian)
 
+#Routes for list all equestrian files
+@bp.get("/list_files")
+def list_files():
+    equestrians = eq.get_all_equestrians()
+
+    return render_template("equestrians/list_files.html", equestrians=equestrians)
+
+
+# Routes for files management
 @bp.get("/view_file/<int:id>/<string:filename>")
 def view_file(id, filename):
 
@@ -149,3 +158,16 @@ def view_file(id, filename):
         )
 
 
+@bp.get("/dowload_file/<int:id>/<string:filename>")
+def download_file(id, filename):
+    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+
+    if not file_data:
+        return "Archivo no encontrado", 404
+
+    return send_file(
+        file_data,
+        mimetype=content_type,
+        as_attachment=True,
+        download_name=filename
+    )
