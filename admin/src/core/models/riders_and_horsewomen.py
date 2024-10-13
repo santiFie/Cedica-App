@@ -126,6 +126,8 @@ class RiderAndHorsewoman(database.db.Model):
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
     work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
     #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
 
     # necesario para Collection
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
@@ -146,9 +148,15 @@ class WorkInInstitution(database.db.Model):
     days = database.db.Column(ARRAY(days_enum), nullable=False)
     riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='riders_horsewomen_institution', back_populates='work_in_institutions')
     #rider_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
+    riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='riders_horsewomen_institution', back_populates='work_in_institutions')
+    #rider_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
 
 class RiderHorsewomanInstitution(database.db.Model):
     __tablename__ = 'riders_horsewomen_institution'
+    rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
+    work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True)
+    # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
+    # institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
     rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
     work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True)
     # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )

@@ -47,6 +47,7 @@ class TeamMember(database.db.Model):
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
     name = database.db.Column(database.db.String(120), nullable=False)
     last_name = database.db.Column(database.db.String(120), nullable=False)
+    dni = database.db.Column(database.db.String(8), unique=True)
     address = database.db.Column(database.db.String(120), nullable=False)
     email = database.db.Column(database.db.String(120), nullable=False, unique=True)
     locality = database.db.Column(database.db.String(120), nullable=False)

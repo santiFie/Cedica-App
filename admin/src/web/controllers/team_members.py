@@ -9,15 +9,24 @@ bp = Blueprint('team_members',__name__,url_prefix="/team_members")
 @bp.get("/")
 def team_members_list():
 
-    page = request.args.get('page', 1, type=int) ##Obtengo el numero de pag
+    page = request.args.get('page', 1, type=int) 
 
-    team_members = tm.find_team_members(page) #Muestro los primeros 25 users
+    # obtengo los filtros del formulario
+    name = request.args.get('name', None)
+    last_name = request.args.get('last_name', None)
+    dni = request.args.get('dni', None)
+    email = request.args.get('email', None)
+    jobs = request.args.get('job', None)
+    sort_by = request.args.get('sort_by', None)
 
-    if not team_members:
-        flash("No hay miembros del equipo cargados en el sistema", "info")
-        return render_template("home.html")
-    
-    return render_template("team_members/show_team_members.html", list = team_members)
+    print(jobs)
+
+
+    # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
+    all_team_members, max_pages = tm.find_team_members(page=page, email=email, name=name, last_name=last_name, dni=dni, jobs=jobs, sort_by=sort_by)
+    all_jobs = JobEnum.enums
+
+    return render_template("team_members/show_team_members.html", list=all_team_members, max_pages = max_pages, page=page, jobs = all_jobs)
 
 @bp.get("/new")
 def new():
@@ -92,10 +101,6 @@ def update_team_member():
         profession = request.form['profession']
     )
 
-    professions = ProfessionEnum.enums
-    conditions = ConditionEnum.enums
-    jobs = JobEnum.enums
-    health_insurances = hi.get_all()
 
     flash("Usuario actualizado")
     return redirect(url_for('team_members.team_members_list'))

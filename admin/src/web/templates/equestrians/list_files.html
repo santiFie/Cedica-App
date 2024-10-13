@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div>
+        <h1>Archivos de los Ecuestres</h1>  
+    </div>
+
+    {% if equestrians %}
+        {% for equestrian in equestrians %}
+            <div>
+                <label> Ecuestre: {{ equestrian.name }} </label>
+                <ul>
+                {% for file in equestrian.get_files() %}
+                    <li>
+                        <label>{{ file }}</label>
+                        <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=file) }}">Ver</a>
+                        <a href="{{ url_for('equestrian.download_file', id=equestrian.id, filename=file) }}">Descargar</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>
+            <label>No hay archivos disponibles</label>
+        </div>
+    {% endif %}
+
+{% endblock %}
