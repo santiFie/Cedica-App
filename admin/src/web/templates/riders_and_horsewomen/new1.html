@@ -6,6 +6,10 @@
     {{ super() }}
 {% endblock %}
 
+{% block scripts %}
+
+{% endblock %}
+
 {% block content %}
     <section class="text-gray-700 body-font m-2 p-0 relative"></section>
 
@@ -38,19 +42,55 @@
                                 <input type="text" name="last_name" placeholder="" id="last_name"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
-
-
-
-
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Designation</label>
-                                <input type="text" name="last-name" placeholder="Gate Pass Officer" id="last-name"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <label for="age" class="block text-sm font-medium text-gray-700">Edad</label>
+                                <input type="number" name="age" placeholder="" id="age"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
-
-
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="place_of_birth" class="block text-sm font-medium text-gray-700">Lugar de nacimiento</label>
+                                <input type="text" name="place_of_birth" id="place_of_birth"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
+                                <input type="date" name="date_of_birth" id="date_of_birth"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="address" class="block text-sm font-medium text-gray-700">Direccion</label>
+                                <input type="text" name="address" id="address"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Numero de telefono</label>
+                                <input type="text" name="phone" id="phone"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="emergency_contact" class="block text-sm font-medium text-gray-700">Contacto de emergencia</label>
+                                <input type="text" name="emergency_contact" id="emergency_contact"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="emergency_phone" class="block text-sm font-medium text-gray-700">Telefono de contacto de emergencia</label>
+                                <input type="text" name="emergency_phone" id="emergency_phone"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="scholarship" class="block text-sm font-medium text-gray-700">Becado</label> 
+                                <input type="checkbox" name="scholarship" id="scholarship">
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="scholarship_percentage" class="block text-sm font-medium text-gray-700">Porcentaje de Beca:</label>
+                                <div class="flex items-center mt-1">
+                                    <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="50" 
+                                    class="block w-full" disabled
+                                    oninput="this.nextElementSibling.value = this.value">
+                                    <output id="percentage_display" class="ml-2">50</output><span>%</span>
+                                </div>
+                            </div>
+                            
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="country" class="block text-sm font-medium text-gray-700">
@@ -85,13 +125,6 @@
                                     <option>other</option>
                                 </select>
                             </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Age</label>
-                                <input type="text" name="last-name" placeholder="above 18" id="last-name"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
 
 
                             <div class="col-span-6 sm:col-span-3">
@@ -103,13 +136,6 @@
                                     <option>2</option>
                                     <option>3</option>
                                 </select>
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Job Lavel</label>
-                                <input type="text" name="last-name" id="last-name" placeholder="internee officer"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
 
 
@@ -124,46 +150,14 @@
                                     <option>Mexico</option>
                                 </select>
                             </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Section</label>
-                                <input type="text" name="last-name" placeholder="gate managment" id="last-name"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
 
-
-
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Academic Qualification</label>
-                                <input type="text" name="last-name" placeholder="BBA" id="last-name"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    Required experience</label>
-                                <input type="text" name="last-name" placeholder="2 years or above" id="last-name"
-                                    autocomplete="family-name"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-
+                            
                             <div class="col-span-6 sm:col-span-6">
                                 <label for="email-address" class="block text-sm font-medium text-gray-700">Email
                                     description</label>
                                 <input type="text" name="email-address"
                                     placeholder="1- 334343434 It should be an editor to fill the job description of around 5 to 10 Lines ."
                                     id="email-address" autocomplete="email"
-                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-
-
-                            <div class="col-span-6 sm:col-span-3">
-                                <label for="last-name" class="block text-sm font-medium text-gray-700">
-                                    No. of meetings/interviews</label>
-                                <input type="text" name="last-name" placeholder="3" id="last-name"
-                                    autocomplete="family-name"
                                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
 
