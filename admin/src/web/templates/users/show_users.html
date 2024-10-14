@@ -20,7 +20,6 @@
 {% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
 
 <div class="flex border-none">
     <button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
@@ -96,58 +95,6 @@
         <div class="overflow-hidden rounded-lg border-none border-gray-200 m-5 w-3/4">
             <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
             <thead class="bg-gray-50">
-=======
-    <h1>Usuarios del sistema</h1>
-    <a href="{{ url_for('users.user_register_form') }}"><button type="button">Crear Usuario</button></a>
-
-    <h2>Buscar usuarios</h2>
-    <form action="{{ url_for('users.users_list') }}" method="get">
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
-    
-        <label for="active">Activo:</label>
-        <select name="active" id="active">
-            <option value="">-- Seleccionar --</option>
-            <option value="SI" {% if request.args.get('active') == 'SI' %}selected{% endif %}>SI</option>
-            <option value="NO" {% if request.args.get('active') == 'NO' %}selected{% endif %}>NO</option>
-        </select>
-    
-        <label for="role">Rol:</label>
-        <select name="role" id="role">
-            <option value="">-- Seleccionar --</option>
-            <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Técnica</option>
-            <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
-            <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
-            <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
-        </select>
-
-        <h3>Ordenar por:</h3>
-        <label>
-            <input type="radio" name="sort_by" value="email_asc" {% if request.args.get('sort_by') == 'email_asc' %}checked{% endif %}>
-            Email Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="email_desc" {% if request.args.get('sort_by') == 'email_desc' %}checked{% endif %}>
-            Email Descendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
-            Fecha de creación Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
-            Fecha de creación Descendente
-        </label>
-
-    
-        <button type="submit">Buscar</button>
-    </form>
-    
-
-    {% if list %}
-        <table>
-            <thead>
->>>>>>> dev
                 <tr>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">Alias/Email</th>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">State</th>
@@ -158,7 +105,6 @@
             </thead>
             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                 {% for user in list %}
-<<<<<<< HEAD
                 <tr class="hover:bg-gray-50">
                 <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
                     <div class="text-sm">
