@@ -3,7 +3,7 @@ from src.core import team_member as tm
 from src.core.models.riders_and_horsewomen import proposal_enum
 from src.core import equestrian as eq
 from flask import render_template, request, flash, url_for, redirect, send_file, abort
-from src.core import utils
+from src.core import utils, minio
 import mimetypes
 
 
@@ -135,7 +135,7 @@ def list_files():
 @bp.get("/view_file/<int:id>/<string:filename>")
 def view_file(id, filename):
 
-    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+    file_data, content_type = minio.get_file("ecuestres", id, filename) 
 
     if not file_data:
         return "Archivo no encontrado", 404
@@ -175,7 +175,7 @@ def view_file(id, filename):
 
 @bp.get("/dowload_file/<int:id>/<string:filename>")
 def download_file(id, filename):
-    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+    file_data, content_type = minio.get_file("ecuestres", id, filename) 
 
     if not file_data:
         return "Archivo no encontrado", 404

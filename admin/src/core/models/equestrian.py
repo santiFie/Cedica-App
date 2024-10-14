@@ -1,6 +1,6 @@
 from datetime import datetime
 from src.core import database
-from src.core import utils
+from src.core import minio
 from sqlalchemy.dialects.postgresql import ARRAY
 from src.core.models.team_member import TeamMember
 from src.core.models.riders_and_horsewomen import proposal_enum
@@ -36,7 +36,7 @@ class Equestrian(db.Model):
     
     def get_file_date(self, filename, user_id):
         prefix="ecuestres"
-        return utils.get_file_date_from_minio(prefix, user_id, filename)
+        return minio.get_file_date(prefix, user_id, filename)
 
 
 

@@ -3,11 +3,12 @@ from datetime import datetime
 from src.core.models.equestrian import Equestrian
 from src.core.models.team_member import JobEnum
 from src.core import team_member as tm
-from src.core import utils
+from src.core import utils, minio
 from flask import flash
 
 
 db = database.db
+PREFIX="ecuestres"
 
 def equestrian_create(form, files):
     """
@@ -54,7 +55,7 @@ def equestrian_create(form, files):
 
     for key, file in files.items():
         if file:
-            utils.upload_file(prefix="ecuestres", file=file , user_id=equestrian.id)
+            minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
     # Add the selected team members to the equestrianTeamMember table
@@ -79,8 +80,8 @@ def update_equestrians_files(equestrian_id, files_dict):
 
     for key, file in files_dict.items():
         if file:
-            utils.delete_file_from_minio("ecuestres", getattr(equestrian, key), equestrian.id)
-            utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
+            minio.delete_file(PREFIX, getattr(equestrian, key), equestrian.id)
+            minio.upload_file(prefix=PREFIX, file=file, user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
 
@@ -239,6 +240,21 @@ def order_files(sort_by, file):
         file.sort(key=lambda x: x['upload_date'] or datetime.min, reverse=True)
     return file
 
+def check_dates(initial_date, final_date):
+    # Parse the dates outside the loop
+    if initial_date:
+        initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
+        if initial_date > datetime.now():
+            return False
+    if final_date:
+        final_date = datetime.strptime(final_date, '%Y-%m-%d')
+
+    # Check if the dates are valid
+    if not utils.validate_dates(initial_date, final_date):
+        return False
+    
+    return True
+
 def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
     per_page = 25
 
@@ -256,10 +272,11 @@ def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None
     if final_date:
         final_date = datetime.strptime(final_date, '%Y-%m-%d')
 
-    # Check if the dates are valid
-    if not utils.validate_dates(initial_date, final_date):
-        flash("Las fechas ingresadas no son válidas")
-        return [], 1
+    if final_date and initial_date:
+        # Check if the dates are valid
+        if not utils.validate_dates(initial_date, final_date):
+            flash("Las fechas ingresadas no son válidas")
+            return [], 1
 
     # Iterate over all the equestrians
     for equestrian in equestrians:
@@ -268,7 +285,7 @@ def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None
         for file in equestrian_files:
             if file:
                 # Get the date of the file
-                file_date = utils.get_file_date_from_minio(prefix="ecuestres", user_id=equestrian.id, filename=file)
+                file_date = minio.get_file_date(prefix=PREFIX, user_id=equestrian.id, filename=file)
             
                 # Apply the name filter
                 if name and name not in file:
