@@ -42,115 +42,157 @@
         </div>
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
             <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                <a href="" class="">Crear usuario</a>
+                <a href="{{ url_for('users.user_register_form') }}" class="">Crear usuario</a>
             </div>
-            <div role="" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                <input type="text" placeholder="Search">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email">
             </div>
-            <div role="" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                A
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                <label for="active">Activo:</label>
+                <select name="active" id="active">
+                    <option value="">-- Seleccionar --</option>
+                    <option value="SI" {% if request.args.get('active') == 'SI' %}selected{% endif %}>SI</option>
+                    <option value="NO" {% if request.args.get('active') == 'NO' %}selected{% endif %}>NO</option>
+                </select>
+            </div>
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                <label for="role">Rol:</label>
+                <select name="role" id="role">
+                    <option value="">-- Seleccionar --</option>
+                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Técnica</option>
+                    <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
+                    <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
+                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
+                </select>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                <h6>Ordenar por:</h6>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                Email Ascendente
+                <input type="radio" name="sort_by" value="email_asc" {% if request.args.get('sort_by') == 'email_asc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+                Email Descendente
+                <input type="radio" name="sort_by" value="email_desc" {% if request.args.get('sort_by') == 'email_desc' %}checked{% endif %}>
             </div>
             <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                Books
-            </div>
-            <div role="checkbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                <input type="checkbox" name="opcion1" value="opcion1">primerfiltro
+                Fecha de creación Ascendente
+                <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
             </div>
             <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                Profile
+                Fecha de creación Descendente
+                <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
             </div>
             <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                Settings
-            </div>
-            <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                Buscar
+                <button type="submit">Buscar</button>
             </div>
         </nav>
     </div>
 
     {% if list %}    
-    <div class="overflow-hidden rounded-lg border-none border-gray-200 m-5 w-3/4">
-        <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
-          <thead class="bg-gray-50">
-            <tr>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Alias/Email</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">State</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Role</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Informacion</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-            {% for user in list %}
-            <tr class="hover:bg-gray-50">
-              <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                <div class="text-sm">
-                  <div class="font-medium text-gray-700">{{ user.nickname }}</div>
-                  <div class="text-gray-400">{{ user.email }}</div>
-                </div>
-              </th>
-              <td class="px-6 py-4">
-                <span
-                  class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
-                >
-                  <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                  Active
-                </span>
-              </td>
-              <td class="px-6 py-4">{{ user.role }}</td>
-              <td class="px-6 py-4">
-                <div class="flex gap-2">
-                  <a href="#"
-                    class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                    ver más
-                  </a>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex justify-end gap-4">
-                  <a href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="h-6 w-6"
+        <div class="overflow-hidden rounded-lg border-none border-gray-200 m-5 w-3/4">
+            <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+            <thead class="bg-gray-50">
+                <tr>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Alias/Email</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">State</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Role</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Informacion</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                {% for user in list %}
+                <tr class="hover:bg-gray-50">
+                <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                    <div class="text-sm">
+                    <div class="font-medium text-gray-700">{{ user.nickname }}</div>
+                    <div class="text-gray-400">{{ user.email }}</div>
+                    </div>
+                </th>
+                <td class="px-6 py-4">
+                    <span
+                    class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                      />
-                    </svg>
-                  </a>
-                  <a href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="h-6 w-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+                    <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                    Active
+                    </span>
+                </td>
+                <td class="px-6 py-4">{{ user.role }}</td>
+                <td class="px-6 py-4">
+                    <div class="flex gap-2">
+                    <a href="#"
+                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                        ver más
+                    </a>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex justify-end gap-4">
+                    <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="h-6 w-6"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                        />
+                        </svg>
+                    </a>
+                    <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="h-6 w-6"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                        />
+                        </svg>
+                    </a>
+                    </div>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <!-- Botones de Paginación -->
+        <div>
+            {% if page > 1 %}
+                <a href="{{ url_for('users.users_list', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Previo</button>
+                </a>
+            {% else %}
+                <button disabled>Previo</button>
+            {% endif %}
+
+            {% if page < max_pages %}
+                <a href="{{ url_for('users.users_list', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <button>Siguiente</button>
+                </a>
+            {% else %}
+                <button disabled>Siguiente</button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No se encontraron usuarios en el sistema.</p>
     {% endif %}
 
 </div>
-
 
 
 {% endblock %}
