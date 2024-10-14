@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_session import Session
 from flask_bcrypt import Bcrypt
+from src.web.storage import storage
 from src.web import routes
 from src.web import errors
 from src.core import database
@@ -14,6 +15,7 @@ from src.core.config import config
 session = Session()
 bcrypt = Bcrypt()
 
+
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
     # Init configuration
@@ -24,6 +26,8 @@ def create_app(env="development", static_folder="../../static"):
     session.init_app(app)
     # Init bcrypt
     bcrypt.init_app(app)
+    # Init storage
+    storage.init_app(app)
 
     # Register routes
     routes.register(app)

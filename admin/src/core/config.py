@@ -6,9 +6,17 @@ class Config(object):
     SESSION_TYPE = "filesystem"
 
 class ProductionConfig(Config):
+    MINIO_SERVER = environ.get("MINIO_SERVER")
+    MINIO_ACCESS_KEY = environ.get("MINIO_ACCESS_KEY")
+    MINIO_SECRET_KEY = environ.get("MINIO_SECRET_KEY")
+    MINIO_SECURE = True
     SQLALCHEMY_DATABASE_URI = environ.get("DATABASE_URL")
 
 class DevelopmentConfig(Config):
+    MINIO_SERVER = "localhost:9000"
+    MINIO_ACCESS_KEY = "0yNExytlaQ2opQLb19vp"
+    MINIO_SECRET_KEY = "AaVEC9YEuvJ56Yag943XT6Vex7VaQXyhhH6Qh5G5"
+    MINIO_SECURE = False
     DEBUG = True
     DB_USER = "grupo43"
     DB_PASSWORD = "1234"

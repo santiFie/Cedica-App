@@ -47,6 +47,7 @@ class TeamMember(database.db.Model):
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
     name = database.db.Column(database.db.String(120), nullable=False)
     last_name = database.db.Column(database.db.String(120), nullable=False)
+    dni = database.db.Column(database.db.String(8), unique=True)
     address = database.db.Column(database.db.String(120), nullable=False)
     email = database.db.Column(database.db.String(120), nullable=False, unique=True)
     locality = database.db.Column(database.db.String(120), nullable=False)
@@ -63,6 +64,10 @@ class TeamMember(database.db.Model):
     profession = database.db.Column(ProfessionEnum, nullable=False)
     health_insurance = database.db.relationship('HealthInsurance', back_populates='team_members')
     equestrians = database.db.relationship('Equestrian', secondary='equestrian_team_members', back_populates='team_members')
+
+    # relacion con Collection
+    collections = database.db.relationship('Collection', back_populates='teammember')
+
 
     def __repr__(self):
         return self.name

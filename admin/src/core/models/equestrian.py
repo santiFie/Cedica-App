@@ -20,10 +20,18 @@ class Equestrian(db.Model):
     headquarters = db.Column(db.String(100), nullable=False)
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
     proposals = db.Column(ARRAY(proposal_enum), nullable=True)
+    evolution_report = db.Column(db.String(100), nullable=True)
+    veterinary_record = db.Column(db.String(100), nullable=True)
+    training_plan = db.Column(db.String(100), nullable=True)
+    images = db.Column(db.String(100), nullable=True)
+    horse_sheet = db.Column(db.String(100), nullable=True)
 
     team_members = db.relationship(
         "TeamMember", secondary="equestrian_team_members", back_populates="equestrians"
     )
+
+    def get_files(self):
+        return [self.evolution_report, self.veterinary_record, self.training_plan, self.images, self.horse_sheet]
 
 
 class EquestrianTeamMember(db.Model):

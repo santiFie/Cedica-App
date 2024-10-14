@@ -12,3 +12,11 @@ def create_enums():
     seat_enum.create(database.db.engine, checkfirst=True)
     proposal_enum.create(database.db.engine, checkfirst=True)
     education_level_enum.create(database.db.engine, checkfirst=True)
+
+
+def find_rider(dni):
+    from src.core.models.riders_and_horsewomen import RiderAndHorsewoman
+
+    rider = RiderAndHorsewoman.query.filter_by(dni=dni).first()
+
+    return rider

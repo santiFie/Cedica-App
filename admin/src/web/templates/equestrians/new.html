@@ -8,7 +8,7 @@
     <h1>Nuevo Equestre</h1>
 
     <div class="container">
-        <form action="{{ url_for('equestrian.create') }}" method="POST">
+        <form action="{{ url_for('equestrian.create') }}" method="POST" enctype="multipart/form-data">
             <!-- Nombre -->
             <div class="form-group">
                 <label for="name">Nombre:</label>
@@ -77,16 +77,48 @@
                 </div>
             </div>
 
+            <!-- Propuestas -->
             <div class="form-group">
-                <label> Trabajos: </label>
-                <div id="job_checkbox_list">
-                    {% for job in job_list %}
+                <label> Tipos de J&A asignados: </label>
+                <div id="proposals">
+                    {% for proposal in proposals %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="jobs" value="{{ job }}"> {{ job.replace("_", " ").title() }}
+                                <input type="checkbox" name="proposals" value="{{ proposal }}"> {{ proposal.replace("_", " ").title() }}
                             </label>
                         </div>
                     {% endfor %}
+            </div>
+
+            <!-- Archivos -->
+            <!-- Ficha del caballo -->
+            <div>
+                <label for="files">Ficha General del Caballo:</label>
+                <input type="file" id="files" name="horse_sheet" enctype="multipart/form-data"required>
+            </div>
+
+            <!-- Planificación de entrenamiento -->
+            <div>
+                <label for="training_plan">Planificación de Entrenamiento:</label>
+                <input type="file" id="files" name="training_plan" enctype="multipart/form-data" required>
+            </div>
+
+            <!-- Informe de evolución -->
+            <div>
+                <label for="evolution_report">Informe de Evolución:</label>
+                <input type="file" id="files" name="evolution_report" enctype="multipart/form-data" required>
+            </div>
+
+            <!-- Carga de Imágenes -->
+            <div>
+                <label for="images">Carga de Imágenes:</label>
+                <input type="file" id="files" name="images" enctype="multipart/form-data" required>
+            </div>
+
+            <!-- Registro veterinario -->
+            <div>
+                <label for="veterinary_record">Registro Veterinario:</label>
+                <input type="file" id="files" name="veterinary_record" enctype="multipart/form-data" required>
             </div>
 
             <!-- Submit Button -->
