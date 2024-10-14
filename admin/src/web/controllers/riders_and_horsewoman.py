@@ -19,7 +19,7 @@ def new():
     disability_type_options = disability_type_enum.enums
     family_allowance_options = family_allowance_enum.enums
     pension_options = pension_enum.enums
-    return render_template("riders_and_horsewomen/new.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options)
+    return render_template("riders_and_horsewomen/new1.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options)
 
 @bp.get("/new/tutor")
 @login_required

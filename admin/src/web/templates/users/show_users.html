@@ -37,18 +37,19 @@
         </svg>
     </button>
     <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-1 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 mt-1.5">
+        <form action="{{ url_for('users.users_list') }}" method="get">
         <div class="mb-2 p-4">
           <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Usuarios del sistema</h5>
         </div>
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-            <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                <a href="{{ url_for('users.user_create') }}" class="">Crear usuario</a>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <a role="button" href="{{ url_for('users.user_create') }}" class="">Crear usuario</a>
             </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
-                <label for="email">Email:</label>
-                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email">
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
             </div>
-            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <label for="active">Activo:</label>
                 <select name="active" id="active">
                     <option value="">-- Seleccionar --</option>
@@ -56,7 +57,7 @@
                     <option value="NO" {% if request.args.get('active') == 'NO' %}selected{% endif %}>NO</option>
                 </select>
             </div>
-            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <label for="role">Rol:</label>
                 <select name="role" id="role">
                     <option value="">-- Seleccionar --</option>
@@ -66,29 +67,30 @@
                     <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
                 </select>
             </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <h6>Ordenar por:</h6>
             </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 Email Ascendente
                 <input type="radio" name="sort_by" value="email_asc" {% if request.args.get('sort_by') == 'email_asc' %}checked{% endif %}>
             </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 Email Descendente
                 <input type="radio" name="sort_by" value="email_desc" {% if request.args.get('sort_by') == 'email_desc' %}checked{% endif %}>
             </div>
-            <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 Fecha de creación Ascendente
                 <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
             </div>
-            <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 Fecha de creación Descendente
                 <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
             </div>
-            <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-50 hover:bg-opacity-90 outline-none">
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <button type="submit">Buscar</button>
             </div>
         </nav>
+        </form>
     </div>
 
     {% if list %}    
@@ -98,7 +100,7 @@
                 <tr>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">Alias/Email</th>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">State</th>
-                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Role</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Rol</th>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">Informacion</th>
                 <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                 </tr>
@@ -120,7 +122,7 @@
                     Active
                     </span>
                 </td>
-                <td class="px-6 py-4">{{ user.role }}</td>
+                <td class="px-6 py-4">{{ user.role.name }}</td>
                 <td class="px-6 py-4">
                     <div class="flex gap-2">
                     <a href="#"
