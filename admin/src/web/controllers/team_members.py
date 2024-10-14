@@ -102,6 +102,21 @@ def update_team_member():
     )
 
 
-    flash("Usuario actualizado")
+    flash("Miembro del equipo actualizado")
     return redirect(url_for('team_members.team_members_list'))
 
+
+
+@bp.post("/switch")
+def switch_state_team_member():
+
+
+    team_member_email = request.args.get('team_member_email')
+    team_member = tm.check_team_member_by_email(team_member_email)
+
+    if team_member:
+        tm.switch_state(team_member)
+    
+    flash("Se cambio el estado del miembro del equipo")
+
+    return redirect(url_for('team_members.team_members_list'))

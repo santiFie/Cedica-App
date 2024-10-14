@@ -175,3 +175,13 @@ def find_team_member_by_email(email):
     team_member = TeamMember.query.filter_by(email=email).first()
 
     return team_member
+
+
+def switch_state(team_member):
+
+    if(team_member.active == False):
+        team_member.active = True
+    else:
+        team_member.active = False
+    database.db.session.commit()
+    return team_member
