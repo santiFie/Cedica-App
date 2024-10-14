@@ -9,7 +9,7 @@
 {% block content %}
     <h1>Cobros</h1>
     <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
-    <a href="#"> <button type="button">Ver Deudas</button> </a>
+    <a href="{{ url_for('collections.index_debts') }}"> <button type="button">Ver Deudas</button> </a>
 
     <form method="GET" action="{{ url_for('collections.index_collections') }}">
         <div>

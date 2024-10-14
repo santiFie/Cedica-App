@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection
+from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection, find_debtors, calculate_debt
 from src.core.team_member import find_team_member_by_email 
 from src.core.riders_and_horsewomen import find_rider
 from datetime import datetime
@@ -40,8 +40,6 @@ def register_collection():
         observations = request.form.get('observations', '')
         team_member_id = request.form.get('team_member_id')
         rider_dni = request.form.get('rider_dni')
-
-        print(rider_dni)
         
         # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
         obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
@@ -165,3 +163,18 @@ def delete_collection(collection_id):
     
     flash("Cobro eliminado exitosamente.")
     return redirect(url_for('collections.index_collections')) 
+
+
+@bp.get('/index_debts')
+def index_debts():
+    # busco deudores
+    debtors = find_debtors()
+    
+    return render_template("collections/show_debtors.html", debtors=debtors)
+
+@bp.get('/detail_debt/<string:debtor_dni>')
+def show_detail_debt(debtor_dni):
+    # muestro detalle de que meses debe ese rider
+    debt_details, debtor = calculate_debt(debtor_dni)
+
+    return render_template("collections/show_debt_detail.html", debt_details=debt_details, debtor=debtor)

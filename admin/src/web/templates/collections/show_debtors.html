@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado de Deudores{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Deudores</h1>
+
+    {% if debtors %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Fecha de Ingreso:</th>
+                    <th>Detalle de Deuda</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for debtor in debtors %}
+                <tr>
+                    <td>{{ debtor.name }}</td>
+                    <td>{{ debtor.dni }}</td>
+                    <td>{{ debtor.inserted_at }}</td>
+                    <td>
+                        <a href="{{ url_for('collections.show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
+                            <button>Ver Detalles de Deuda</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>No hay deudores.</p>
+    {% endif %}
+
+    <a href="{{ url_for('collections.index_collections') }}"><button type="button">Volver a la lista de cobros</button></a>
+
+    
+{% endblock %}
