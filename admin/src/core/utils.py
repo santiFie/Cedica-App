@@ -18,11 +18,16 @@ def validate_dates(initial_date, end_date=None):
 
     return True
 
+
 def string_to_date(string_date):
     try:
         return datetime.strptime(string_date, '%Y-%m-%d')
-    except:
-        return Exception("Invalid date format in 'string_to_date' function")
+    except ValueError:
+        try:
+            return datetime.strptime(string_date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return Exception("Invalid date format in 'string_to_date' function")
+
 
 def date_to_string(date):
     return date.strftime('%Y-%m-%d')
@@ -34,7 +39,10 @@ def upload_file(file, prefix, user_id):
     """
     size = fstat(file.fileno()).st_size
     client = current_app.storage.client
-    client.put_object(BUCKET_NAME, f"{prefix}/{user_id}-{file.filename}", file, size, content_type=file.content_type)
+    meta = {"X-Amz-Meta-Uploaded-Date": datetime.now().isoformat()}
+    #client.fput_object(BUCKET_NAME, f"{prefix}/{user_id}-{file.filename}", size, file.content_type, metadata={"uploaded-date": datetime.now().isoformat()})
+    client.put_object(BUCKET_NAME, f"{prefix}/{user_id}-{file.filename}", file, size, content_type= file.content_type, metadata=meta)
+
 
 def delete_file_from_minio(prefix, filename, user_id):
     """
@@ -56,6 +64,21 @@ def get_file_from_minio(prefix, user_id, filename):
     object_name = f"{prefix}/{user_id}-{filename}"
     try:
         response = client.get_object(BUCKET_NAME, object_name)
+        stat = client.stat_object(BUCKET_NAME, object_name)
+        # Metadata is in `stat.metadata`
+        uploaded_date = datetime.fromisoformat(stat.metadata["X-Amz-Meta-Uploaded-Date"])
         return BytesIO(response.read()), response.headers['content-type']
     except Exception as e:
         return None, None
+    
+def get_file_date_from_minio(prefix, user_id, filename):
+    """
+    Get the uploaded date of a file from MinIO
+    """
+    client = current_app.storage.client
+    object_name = f"{prefix}/{user_id}-{filename}"
+    try:
+        stat = client.stat_object(BUCKET_NAME, object_name)
+        return datetime.fromisoformat(stat.metadata["X-Amz-Meta-Uploaded-Date"])
+    except Exception as e:
+        return None
