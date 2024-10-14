@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1> Perfil de : {{ team_member.name }} {{ team_member.last_name }} </h1>
+    <h2> Dni : {{ team_member.dni }}</h2>
+    <h2> Email : {{ team_member.email }}</h2>
+    <h2> Direccion : {{ team_member.address }}</h2>
+    <h2> Localidad : {{ team_member.locality }}</h2>
+    <h2> Celular : {{ team_member.phone }}</h2>
+    <h2> Fecha de inicio : {{ team_member.initial_date }}</h2>
+    <h2> Contacto de emergencia : {{ team_member.emergency_contact }}</h2>
+    <h2> Telefono de emergencia : {{ team_member.emergency_phone }}</h2>
+    <h2> Condicion : {{ team_member.condition }}</h2>
+    <h2> Puesto de trabajo : {{ team_member.job_position }}</h2>
+    <h2> Profesion : {{ team_member.profession }}</h2>    
+
+{% endblock %}

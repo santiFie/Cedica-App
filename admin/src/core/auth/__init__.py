@@ -20,9 +20,16 @@ def find_user_by_email(email):
 
     return user
 
+def find_user_by_id(id):
+    user = User.query.filter_by(id = id).first()
+    return user
+
 def user_is_active(user):
     return user.active
 
+def find_user_by_id(user_id):
+    user = User.query.filter_by(email = user_id).first()
+    return user
 
 def check_user(email, password):
     user = find_user_by_email(email)

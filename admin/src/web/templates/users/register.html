@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}Registrar nuevo usuario{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -23,16 +23,23 @@
     {% endif %}
     {% endwith %}
 
-    <h1>Registrarse</h1>
-    <form action="{{ url_for('auth.register') }}" method="post">
+    <h1>Registrar usuario</h1>
+    <form action="{{ url_for('users.user_create') }}" method="post">
         <label for="email">Email</label>
         <input type="text" name="email" id="email" required>
         <label for="nickname">Alias</label>
         <input type="text" name="nickname" id="nickname" required>
         <label for="password">Contraseña</label>
         <input type="password" name="password" id="password" required>
+        <div>
+            <label for="role_id">Rol:</label>
+            <select id="role_id" name="role_id">
+            {% for role in roles %}
+                <option value="{{ role.id }}" >{{ role.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
         <input type="submit" value="Registrarse">
     </form>
 
-    <p>¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
 {% endblock %}
