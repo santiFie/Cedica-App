@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, redirect, session, flash
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash, login_required
 from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection, find_debtors, calculate_debt
 from src.core.team_member import find_team_member_by_email 
 from src.core.riders_and_horsewomen import find_rider
@@ -9,6 +9,7 @@ bp = Blueprint('collections',__name__,url_prefix="/collections")
 
 
 @bp.get('/')
+@login_required
 def index_collections():
 
     # Obtener parámetros de búsqueda del formulario
@@ -26,11 +27,13 @@ def index_collections():
 
 
 @bp.get('/collection_register_form')
+@login_required
 def collection_register_form():
     return render_template("collections/collection_register_form.html")
 
 
 @bp.post('/register_collection')
+@login_required
 def register_collection():
         
         # Obtener los datos del formulario
@@ -80,6 +83,7 @@ def register_collection():
 
 
 @bp.get('/collection_detail/<int:collection_id>')
+@login_required
 def show_detail_collection(collection_id):
      
     collection = find_collection(collection_id)
@@ -93,11 +97,13 @@ def show_detail_collection(collection_id):
 
 
 @bp.get('/edit_collection_form/<int:collection_id>')
+@login_required
 def edit_collection_form(collection_id):
     collection = find_collection(collection_id)
     return render_template("collections/edit_collection_form.html", collection=collection)
 
 @bp.post('/edit_collection/<int:collection_id>')
+@login_required
 def edit_collection(collection_id):
 
     collection = find_collection(collection_id)
@@ -151,6 +157,7 @@ def edit_collection(collection_id):
 
 
 @bp.post('/delete_collection/<int:collection_id>')
+@login_required
 def delete_collection(collection_id):
 
     collection = find_collection(collection_id)
@@ -166,6 +173,7 @@ def delete_collection(collection_id):
 
 
 @bp.get('/index_debts')
+@login_required
 def index_debts():
     # obtengo parametros del filtro
     # Obtener parámetros de búsqueda del formulario
@@ -181,6 +189,7 @@ def index_debts():
     return render_template("collections/show_debtors.html", debtors=debtors, max_pages=max_pages, current_page=page)
 
 @bp.get('/detail_debt/<string:debtor_dni>')
+@login_required
 def show_detail_debt(debtor_dni):
     # muestro detalle de que meses debe ese rider
     debt_details, debtor = calculate_debt(debtor_dni)
