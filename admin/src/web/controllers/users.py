@@ -1,11 +1,15 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core import users, auth
 from src.core.models.users import Role
+from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 
 bp = Blueprint('users',__name__,url_prefix="/users")
 
 @bp.get("/")
-def users_list():  # preguntar como tienen que ser los nombres list_users o users_list
+@check_permissions("user_index")
+@login_required
+def user_index():  # preguntar como tienen que ser los nombres list_users o users_list
 
     #obtengo nro de pagina o por defecto tomo el 1
     page = request.args.get('page', 1, type=int) 
@@ -27,7 +31,6 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
     else:
         active = None  # No aplicar filtro
 
-    print(email)
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
     all_users, max_pages = users.find_users(page=page, email=email, active=active, role_name=role, sort_by=sort_by, exclude_user=current_user)
         
@@ -36,6 +39,8 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
 
 
 @bp.post("/update")
+@check_permissions("user_update")
+@login_required
 def user_update():
     """
     Updates a user
@@ -56,6 +61,8 @@ def user_update():
     return redirect(url_for("users.users_list", flash=flash) )
 
 @bp.get("/edit")
+@check_permissions("user_edit")
+@login_required
 def user_edit():
     """
     Edits a user
@@ -67,23 +74,23 @@ def user_edit():
 
 
 @bp.get("/delete_user")
-def delete_user():
+@check_permissions("user_delete")
+@login_required
+def user_delete():
     user_email = request.args.get("user_email")
-    print(user_email)
     users.user_delete(user_email)
     flash("User deleted successfully")
     return redirect(url_for("users.users_list", flash=flash) )
 
 
-@bp.get("/user_register_form")
-def user_register_form():
-    roles = Role.query.all()
-    return render_template("users/register.html", roles=roles)
-
+# @bp.get("/user_register_form")
+# def user_register_form():
+#     roles = Role.query.all()
+#     return render_template("users/register.html", roles=roles)
 
 
 @bp.route("/register", methods=["GET", "POST"])
-def user_create():
+def user_new():
 
     if request.method == "POST":
         user = auth.check_user(request.form["email"], request.form["password"])
@@ -98,3 +105,4 @@ def user_create():
 
     return render_template("users/register.html", roles=roles)  
 
+# Show user???

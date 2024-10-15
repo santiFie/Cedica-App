@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-
+from src.web.handlers.auth import login_required
 from src.core import auth
 
 bp = Blueprint('auth',__name__,url_prefix="/auth")
@@ -33,6 +33,7 @@ def verification():
     return redirect(url_for("auth.login"))
 
 @bp.get("/logout")
+@login_required
 def logout():
     if(session.get('user')):
         del session['user']

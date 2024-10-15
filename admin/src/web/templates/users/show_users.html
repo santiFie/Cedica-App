@@ -9,10 +9,10 @@
 
 {% block content %}
     <h1>Usuarios del sistema</h1>
-    <a href="{{ url_for('users.user_register_form') }}"><button type="button">Crear Usuario</button></a>
+    <a href="{{ url_for('users.user_new') }}"><button type="button">Crear Usuario</button></a>
 
     <h2>Buscar usuarios</h2>
-    <form action="{{ url_for('users.users_list') }}" method="get">
+    <form action="{{ url_for('users.user_index') }}" method="get">
         <label for="email">Email:</label>
         <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
     
@@ -82,7 +82,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
+                        <a href="{{ url_for('users.user_delete', user_email=user.email) }}" method="post">
                             <button>Eliminar</button>
                         </a>
                     </td>
@@ -94,7 +94,7 @@
         <!-- Botones de Paginación -->
         <div class="pagination">
             {% if page > 1 %}
-                <a href="{{ url_for('users.users_list', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                <a href="{{ url_for('users.user_index', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
                     <button>Previo</button>
                 </a>
             {% else %}
@@ -102,7 +102,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('users.users_list', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
+                <a href="{{ url_for('users.user_index', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
                     <button>Siguiente</button>
                 </a>
             {% else %}
