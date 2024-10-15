@@ -167,10 +167,18 @@ def delete_collection(collection_id):
 
 @bp.get('/index_debts')
 def index_debts():
+    # obtengo parametros del filtro
+    # Obtener parámetros de búsqueda del formulario
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    dni = request.args.get('dni')
+    order_by = request.args.get('order_by', 'asc')
+    page = request.args.get('page', 1, type=int)
+
     # busco deudores
-    debtors = find_debtors()
+    debtors, max_pages = find_debtors(start_date, end_date, dni, order_by, page)
     
-    return render_template("collections/show_debtors.html", debtors=debtors)
+    return render_template("collections/show_debtors.html", debtors=debtors, max_pages=max_pages, current_page=page)
 
 @bp.get('/detail_debt/<string:debtor_dni>')
 def show_detail_debt(debtor_dni):

@@ -4,6 +4,7 @@ from src.core.models.team_member import TeamMember
 from src.core.models.riders_and_horsewomen import RiderAndHorsewoman
 from src.core.riders_and_horsewomen import find_rider
 from datetime import datetime, timedelta
+import locale
 from sqlalchemy.orm import aliased
 from sqlalchemy import extract
 
@@ -81,15 +82,19 @@ def create_collection(**kwargs):
         observations=kwargs.get("observations", ""),
         team_member_id=kwargs["team_member_id"],
         rider_dni=kwargs["rider_dni"],
-
-        # PREGUNTAR TEMA DE LA DEUDA, SI SE GENERA EL COBRO ES POR QUE NO DEBE ESTE COBRO, PERO COMO REGISTRO LO DEMAS QUE DEBE
-        # POR MES TENGO QUE TENER UN COBRO CREADO Y CUANDO SE PAGA CAMBIAR EL VALOR DE DEBT?
-        debt=False   # cambio el valor de la deuda a false ya que se realizo el pago
     )
 
     # Agregar el pago a la base de datos
     db.session.add(collection)
     db.session.commit()
+
+    # calcular si el rider es deudor, si no lo es le cambio debtor = False
+    rider = find_rider(kwargs["rider_dni"])
+
+    if rider:
+        has_debt = check_debtor(rider)
+        rider.debtor = has_debt
+        db.session.commit()
 
     return collection
 
@@ -132,48 +137,90 @@ def create_enums_collection():
     PaymentMethod.create(db.engine, checkfirst=True)
 
 
-def find_debtors():
+def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=1):
+
+    per_page = 25
+
+    # me quedo con todos los riders que son deudores
+    query = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.debtor == True)
+    
+     # Filtro por rango de fechas (opcional)
+    if start_date:
+        query = query.filter(RiderAndHorsewoman.inserted_at >= datetime.strptime(start_date, '%Y-%m-%d'))
+    if end_date:
+        query = query.filter(RiderAndHorsewoman.inserted_at <= datetime.strptime(end_date, '%Y-%m-%d'))
+
+    # Filtro por DNI (opcional)
+    if dni:
+        query = query.filter(RiderAndHorsewoman.dni.ilike(f'%{dni}%'))
+
+    # Ordenar por fecha de pago
+    if order_by == 'asc':
+        query = query.order_by(RiderAndHorsewoman.inserted_at.asc())
+    else:
+        query = query.order_by(RiderAndHorsewoman.inserted_at.desc())
+
+    # Contar el número total de deudores que cumplen los filtros
+    total_debtors = query.count()
+
+    # Si no hay resultados, retornamos una lista vacía y 0 páginas
+    if total_debtors == 0:
+        return [], 0
+
+    max_pages = (total_debtors + per_page - 1) // per_page  # Redondeo hacia arriba para calcular las páginas
+
+    # Aseguramos que la página solicitada esté dentro del rango válido
+    if page < 1:
+        page = 1
+    
+    if page > max_pages:
+        page = max_pages
+
+    # Paginación: calculamos el offset y limitamos los resultados
+    offset = (page - 1) * per_page
+    debtors = query.offset(offset).limit(per_page).all()
+
+    return debtors, max_pages
+
+
+def check_debtor(rider):
     # Obtener la fecha actual
     current_date = datetime.now()
 
-    # Obtener todos los riders
-    riders = RiderAndHorsewoman.query.all()
-    deudores = []
+    # Si no tiene fecha de inserción, pasamos al siguiente rider
+    if not rider.inserted_at:
+        return False
 
-    for rider in riders:
-        # Si no tiene fecha de inserción, pasamos al siguiente rider
-        if not rider.inserted_at:
-            continue
+    # Calcular la diferencia en meses desde su fecha de inserción hasta el mes actual
+    months_diff = (current_date.year - rider.inserted_at.year) * 12 + current_date.month - rider.inserted_at.month
 
-        # Calcular la diferencia en meses desde su fecha de inserción hasta el mes actual
-        months_diff = (current_date.year - rider.inserted_at.year) * 12 + current_date.month - rider.inserted_at.month
+    # Verificar si falta algún pago de cada mes transcurrido
+    for month_offset in range(months_diff):
+        # Obtener el primer día del mes transcurrido
+        first_day_of_month = rider.inserted_at.replace(year=current_date.year, month=current_date.month, day=1)
+           
+        # Obtener el primer y el último día del mes en formato de fecha completa
+        start_of_month = first_day_of_month
+        end_of_month = (first_day_of_month + timedelta(days=32)).replace(day=1) - timedelta(days=1)
 
-        # Verificar si falta algún pago de cada mes transcurrido
-        has_debt = False
-        for month_offset in range(months_diff):
-            # Obtener el primer día del mes transcurrido
-            first_day_of_month = rider.inserted_at.replace(year=current_date.year, month=current_date.month, day=1)
-            
-            # Obtener el primer y el último día del mes en formato de fecha completa
-            start_of_month = first_day_of_month
-            end_of_month = (first_day_of_month + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+        # Verificar si existe un pago para ese mes
+        existing_payment = Collection.query.filter_by(rider_dni=rider.dni).filter(Collection.payment_date >= start_of_month, Collection.payment_date <= end_of_month).first()
 
-            # Verificar si existe un pago para ese mes
-            existing_payment = Collection.query.filter_by(rider_dni=rider.dni).filter(Collection.payment_date >= start_of_month, Collection.payment_date <= end_of_month).first()
+        # Si no hay pago para ese mes, el rider tiene deuda
+        if not existing_payment:
+            return True
 
-            # Si no hay pago para ese mes, el rider tiene deuda
-            if not existing_payment:
-                has_debt = True
-                break  # No seguimos verificando más meses si ya encontramos una deuda
-
-        if has_debt:
-            # Si el rider tiene deuda, agregarlo a la lista de deudores
-            deudores.append(rider)
-
-    return deudores
+    return False
 
 
 def calculate_debt(debtor_dni): 
+
+    # arreglo de meses en Español
+    meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ]
+
     # Obtener la fecha de inserción del rider
     rider = find_rider(debtor_dni)
     insertion_date = rider.inserted_at
@@ -204,7 +251,8 @@ def calculate_debt(debtor_dni):
                        .first())
 
             if not payment:
-                # Si no existe un cobro para ese mes y año, agregar a la lista de pagos faltantes
-                missing_payments.append(f"{month:02d}-{year}")  # Formato "YYYY-MM"
+                # obtengo el nombre del mes
+                month_name = meses[month - 1]  # Restamos 1 porque el arreglo empieza en 0
+                missing_payments.append(f"{month_name} de {year}")
 
     return missing_payments, rider

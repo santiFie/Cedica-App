@@ -103,7 +103,7 @@
             {% endif %}
         
             {% if current_page < max_pages %}
-                <a href="{{ url_for('payments.index_payments', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
+                <a href="{{ url_for('collections.index_collections', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
                     <button>Siguiente</button>
                 </a>
             {% endif %}
