@@ -18,44 +18,16 @@ def validate_dates(initial_date, end_date=None):
 
     return True
 
+
 def string_to_date(string_date):
     try:
         return datetime.strptime(string_date, '%Y-%m-%d')
-    except:
-        return Exception("Invalid date format in 'string_to_date' function")
+    except ValueError:
+        try:
+            return datetime.strptime(string_date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return Exception("Invalid date format in 'string_to_date' function")
+
 
 def date_to_string(date):
     return date.strftime('%Y-%m-%d')
-
-
-def upload_file(file, prefix, user_id):
-    """
-    Upload a file to Minio server
-    """
-    size = fstat(file.fileno()).st_size
-    client = current_app.storage.client
-    client.put_object(BUCKET_NAME, f"{prefix}/{user_id}-{file.filename}", file, size, content_type=file.content_type)
-
-def delete_file_from_minio(prefix, filename, user_id):
-    """
-    Delete a file from MinIO
-    """
-    object_name = f"{prefix}/{user_id}-{filename}"
-
-    client = current_app.storage.client
-    try:
-        client.remove_object(BUCKET_NAME, object_name)
-    except Exception as e:
-        current_app.logger.error(f"Error deleting file from MinIO: {str(e)}")
-
-def get_file_from_minio(prefix, user_id, filename):
-    """
-    Get a file from MinIO
-    """
-    client = current_app.storage.client
-    object_name = f"{prefix}/{user_id}-{filename}"
-    try:
-        response = client.get_object(BUCKET_NAME, object_name)
-        return BytesIO(response.read()), response.headers['content-type']
-    except Exception as e:
-        return None, None

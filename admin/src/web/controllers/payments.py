@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, redirect, session, flash
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash, login_required
 from src.core.payments import find_payments, create_payment, find_payment, delete_a_payment, edit_a_payment
 from src.core.auth import find_user_by_email
 from datetime import datetime
@@ -6,6 +6,7 @@ from datetime import datetime
 bp = Blueprint('payments',__name__,url_prefix="/payments")
 
 @bp.get('/')
+@login_required
 def index_payments():
 
     # Obtener parámetros de búsqueda del formulario
@@ -20,10 +21,12 @@ def index_payments():
     return render_template("payments/show_payments.html", payments = all_payments, max_pages = max_pages, current_page=page)
 
 @bp.get('/payment_register_form')
+@login_required
 def payment_register_form():
     return render_template("payments/payment_register.html")
 
 @bp.route("/payment_register", methods=["GET", "POST"])
+@login_required
 def payment_register():
 
     if request.method == "POST":
@@ -67,6 +70,7 @@ def payment_register():
 
 
 @bp.get('/payment_detail/<int:payment_id>')
+@login_required
 def show_detail_payment(payment_id):
 
     #recupero payment que quiero ver 
@@ -80,12 +84,14 @@ def show_detail_payment(payment_id):
     return render_template("payments/show_detail_payment.html", payment=payment)
     
 @bp.get('edit_payment_form/<int:payment_id>')
+@login_required
 def edit_payment_form(payment_id):
     payment = find_payment(payment_id)
     return render_template("payments/edit_payment_form.html", payment=payment)
 
 
 @bp.post('/edit_payment/<int:payment_id>')
+@login_required
 def edit_payment(payment_id):
     print(payment_id)
     # agarro el payment para el edit payment form
@@ -128,6 +134,7 @@ def edit_payment(payment_id):
 
    
 @bp.post('/delete_payment/<int:payment_id>', endpoint='delete_payment')
+@login_required
 def delete_payment(payment_id):
 
     #obtengo pago a eliminar

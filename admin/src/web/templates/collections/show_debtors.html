@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado de Deudores{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Deudores</h1>
+
+    <form method="GET" action="{{ url_for('collections.index_debts') }}">
+        <div>
+            <label for="start_date">Fecha de ingreso (Desde):</label>
+            <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
+        </div>
+        <div>
+            <label for="end_date">Fecha de ingreso (Hasta):</label>
+            <input type="date" id="end_date" name="end_date" value="{{ request.args.get('end_date', '') }}">
+        </div>
+        <div>
+            <label for="dni">Buscar por dni:</label>
+            <input type="text" id="dni" name="dni" value="{{ request.args.get('dni', '') }}">
+        </div>
+        <div>
+            <label for="order_by">Ordenar por fecha de pago:</label>
+            <select id="order_by" name="order_by">
+                <option value="asc" {% if request.args.get('order_by') == 'asc' %}selected{% endif %}>Ascendente</option>
+                <option value="desc" {% if request.args.get('order_by') == 'desc' %}selected{% endif %}>Descendente</option>
+            </select>
+        </div>
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if debtors %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Fecha de Ingreso:</th>
+                    <th>Detalle de Deuda</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for debtor in debtors %}
+                <tr>
+                    <td>{{ debtor.name }}</td>
+                    <td>{{ debtor.dni }}</td>
+                    <td>{{ debtor.inserted_at }}</td>
+                    <td>
+                        <a href="{{ url_for('collections.show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
+                            <button>Ver Detalles de Deuda</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <div>
+            {% if current_page > 1 %}
+                <a href="{{ url_for('collections.index_debts', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
+                    <button>Anterior</button>
+                </a>
+            {% endif %}
+        
+            {% if current_page < max_pages %}
+                <a href="{{ url_for('collections.index_debts', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
+                    <button>Siguiente</button>
+                </a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p>No hay deudores.</p>
+    {% endif %}
+
+    <a href="{{ url_for('collections.index_collections') }}"><button type="button">Volver a la lista de cobros</button></a>
+
+    
+{% endblock %}
