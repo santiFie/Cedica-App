@@ -45,12 +45,6 @@
             <input type="email" id="team_member_id" name="team_member_id" value="{{ collection.teammember.email if collection.teammember else '' }}" required>
         </div>
 
-        <!-- PREGUNTAR MAÑANA SI SE CAMBIA EL ESTADO DE LA DEUDA ACA O SE VA 'ACTUALIZANDO' CON CADA REGISTRO DE COBRO -->
-        <div>
-            <label for="debt">Debe:</label>
-            <input type="checkbox" id="debt" name="debt" value="True" {% if collection.debt %}checked{% endif %}>
-        </div>
-
         <button type="submit">Actualizar Cobro</button>
     </form>
 

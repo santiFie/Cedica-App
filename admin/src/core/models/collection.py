@@ -30,7 +30,7 @@ class Collection(database.db.Model):
     team_member_id = database.db.Column(database.db.String(100), database.db.ForeignKey('team_members.email'), nullable=True)
 
     # si debe el pago
-    debt = database.db.Column(database.db.Boolean, default=True)
+    #debt = database.db.Column(database.db.Boolean, default=True)
 
     # relaciones entre quien recibe el pago y quien lo hace 
     teammember = database.db.relationship('TeamMember', back_populates = 'collections' )
