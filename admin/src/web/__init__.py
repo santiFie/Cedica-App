@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_session import Session
 from flask_bcrypt import Bcrypt
+from src.web.storage import storage
 from src.web import routes
 from src.web import errors
 from src.core import database
+from src.core.models.riders_and_horsewomen import RiderAndHorsewoman, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
 from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
 from src.core.models.equestrian import Equestrian
@@ -12,6 +14,7 @@ from src.core.config import config
 
 session = Session()
 bcrypt = Bcrypt()
+
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
@@ -23,6 +26,8 @@ def create_app(env="development", static_folder="../../static"):
     session.init_app(app)
     # Init bcrypt
     bcrypt.init_app(app)
+    # Init storage
+    storage.init_app(app)
 
     # Register routes
     routes.register(app)

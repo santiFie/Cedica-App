@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div>
+        <h1>Archivos de los Ecuestres</h1>  
+    </div>
+
+    <h2>Buscar archivos</h2>
+    <form action="{{ url_for('equestrian.list_files') }}" method="get">
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
+
+        <label for="initial_date">Entre:</label>
+        <input type="date" name="initial_date" id="initial_date" value="{{ request.args.get('initial_date','') }}">
+        
+        <label for="final_date">y:</label>
+        <input type="date" name="final_date" id="final_date" value="{{ request.args.get('final_date','') }}">
+
+        <h3>Ordenar por:</h3>
+        <label>
+            <input type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
+            Nombre Ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
+            Nombre Descendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="downloaded_date_asc" {% if request.args.get('sort_by') == 'downloaded_date_asc' %}checked{% endif %}>
+            Fecha de subida ascendente
+        </label>
+        <label>
+            <input type="radio" name="sort_by" value="downloaded_date_desc" {% if request.args.get('sort_by') == 'downloaded_date_desc' %}checked{% endif %}>
+            Fecha de subida descendente
+        </label>
+    
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if files %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ecuestre</th>
+                    <th>Fecha de subida</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file['filename'] }}</td>
+                    <td>{{ file['equestrian_name'] }}</td>
+                    <td>{{ file['upload_date'] }}</td>
+                    <td>
+                        <a href="{{ url_for('equestrian.view_file', id=file['equestrian_id'], filename=file['filename']) }}">Ver</a>
+                        <a href="{{ url_for('equestrian.download_file', id=file['equestrian_id'], filename=file['filename']) }}">Descargar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+
+            <!-- Botones de Paginación -->
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="{{ url_for('equestrian.list_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                        <button>Previo</button>
+                    </a>
+                {% else %}
+                    <button disabled>Previo</button>
+                {% endif %}
+    
+                {% if page < max_pages %}
+                    <a href="{{ url_for('equestrian.list_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                        <button>Siguiente</button>
+                    </a>
+                {% else %}
+                    <button disabled>Siguiente</button>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>No se encontraron archivos en el sistema. </p>
+        {% endif %}
+    
+    
+        
+        <script>
+            function confirmDelete() {
+                return confirm('¿Estás seguro de que deseas eliminar este pago? Esta acción no se puede deshacer.');
+            }
+        </script>
+
+{% endblock %}

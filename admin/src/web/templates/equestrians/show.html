@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}Ver Equestre{% endblock %}
+
+
+{% block content %}
+
+    <h1>Equestre {{ equestrian.name }} </h1>
+
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <td>{{ equestrian.name }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de Nacimiento</th>
+            <td>{{ equestrian.date_of_birth }}</td>
+        </tr>
+        <tr>
+            <th>Sexo</th>
+            <td>{{ equestrian.sex }}</td>
+        </tr>
+        <tr>
+            <th>Raza</th>
+            <td>{{ equestrian.race }}</td>
+        </tr>
+        <tr>
+            <th>Capa</th>
+            <td>{{ equestrian.coat }}</td>
+        </tr>
+        <tr>
+            <th>Comprado</th>
+            <td>{{ 'Sí' if equestrian.bought else 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de Entrada</th>
+            <td>{{ equestrian.date_of_entry }}</td>
+        </tr>
+        <tr>
+            <th>Sede</th>
+            <td>{{ equestrian.headquarters }}</td>
+        </tr>
+        <tr>
+            <th>Propuestas</th>
+            <td>
+                {% if equestrian.proposals %}
+                    <ul>
+                        {% for proposal in equestrian.proposals %}
+                            <li>{{ proposal }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    No hay propuestas disponibles
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <div class="team-members">
+        <h2>Miembros del Equipo</h2>
+        {% if equestrian.team_members %}
+            <ul>
+                {% for member in equestrian.team_members %}
+                    <li>{{ member.name }} - {{ member.job_position.replace("_", " ").title() }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay miembros del equipo asociados con este ecuestre.</p>
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.horse_sheet) }}">
+        <button type="button">Ver Ficha General del Caballo</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.evolution_report) }}">
+        <button type="button">Ver Informe de Evolución</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.veterinary_record) }}">
+        <button type="button">Ver Registro Veterinario</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.training_plan) }}">
+        <button type="button">Ver Plan de Entrenamiento</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.images) }}">
+        <button type="button">Ver Imágenes</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.edit', id=equestrian.id) }}">
+        <button type="button">Modificar</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.delete', id=equestrian.id) }}" method="post">
+        <button>Eliminar</button>
+    </a>
+
+    <a href="{{ url_for('equestrian.list') }}">
+        <button type="button">Volver</button>
+    </a>
+
+
+{% endblock %}

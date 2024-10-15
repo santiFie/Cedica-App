@@ -1,66 +1,65 @@
 {% extends "layout.html" %}
 
-{% block title %}Nuevo Equestre{% endblock %}
-
+{% block title %}Editar Equestre{% endblock %}
 
 {% block content %}
 
-    <h1>Nuevo Equestre</h1>
+    <h1>Editar Equestre</h1>
 
     <div class="container">
-        <form action="{{ url_for('equestrian.create') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ url_for('equestrian.update', id=equestrian.id) }}" method="POST" enctype="multipart/form-data">
             <!-- Nombre -->
             <div class="form-group">
                 <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="{{ equestrian.name }}" required>
             </div>
 
             <!-- Fecha de Nacimiento -->
             <div class="form-group">
                 <label for="date_of_birth">Fecha de Nacimiento:</label>
-                <input type="date" id="date_of_birth" name="date_of_birth" required>
+                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ equestrian.date_of_birth }}" required>
             </div>
 
             <!-- Sexo -->
             <div class="form-group">
                 <label for="sex">Sexo:</label>
                 <select id="sex" name="sex" required>
-                    <option value="M">Macho</option>
-                    <option value="F">Hembra</option>
+                    <option value="M" {% if equestrian.sex == 'M' %}selected{% endif %}>Macho</option>
+                    <option value="F" {% if equestrian.sex == 'F' %}selected{% endif %}>Hembra</option>
                 </select>
             </div>
 
             <!-- Raza -->
             <div class="form-group">
                 <label for="race">Raza:</label>
-                <input type="text" id="race" name="race" required>
+                <input type="text" id="race" name="race" value="{{ equestrian.race }}" required>
             </div>
 
             <!-- Pelaje -->
             <div class="form-group">
                 <label for="coat">Pelaje:</label>
-                <input type="text" id="coat" name="coat" required>
+                <input type="text" id="coat" name="coat" value="{{ equestrian.coat }}" required>
             </div>
 
             <!-- Comprado -->
             <div class="form-group">
                 <label for="bought">Comprado:</label>
                 <select id="bought" name="bought" required>
-                    <option value="true">Sí</option>
-                    <option value="false">No</option>
+                    <option value="true" {% if equestrian.bought == 'true' %}selected{% endif %}>Sí</option>
+                    <option value="false" {% if equestrian.bought == 'false' %}selected{% endif %}>No</option>
                 </select>
             </div>
 
             <!-- Fecha de Entrada -->
             <div class="form-group">
                 <label for="date_of_entry">Fecha de Entrada:</label>
-                <input type="date" id="date_of_entry" name="date_of_entry" required>
+                <input type="date" id="date_of_entry" name="date_of_entry" value="{{ equestrian.date_of_entry }}" required>
             </div>
 
             <!-- Sede -->
             <div class="form-group">
                 <label for="headquarters">Sede:</label>
-                <input type="text" id="headquarters" name="headquarters" required>
+                <input type="text" id="headquarters" name="headquarters" value="{{ equestrian.headquarters }}" required>
             </div>
 
             <!-- Entrenadores/Conductores -->
@@ -70,55 +69,59 @@
                     {% for email in email_list %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="emails" value="{{ email }}"> {{ email }}
+                                <input type="checkbox" name="emails" value="{{ email }}" 
+                                {% if email in selected_emails %}checked{% endif %}> 
+                                {{ email }}
                             </label>
                         </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Propuestas -->
             <div class="form-group">
-                <label> Tipos de J&A asignados: </label>
-                <div id="proposals">
+                <label> Propuestas: </label>
+                <div id="proposal_checkbox_list">
                     {% for proposal in proposals %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="proposals" value="{{ proposal }}"> {{ proposal.replace("_", " ").title() }}
+                                <input type="checkbox" name="proposals" value="{{ proposal }}"
+                                {% if proposal in selected_proposals %} checked {% endif %}>
+                                {{ proposal.replace("_", " ").title() }}
                             </label>
                         </div>
                     {% endfor %}
+                </div>
             </div>
 
             <!-- Archivos -->
             <!-- Ficha del caballo -->
             <div>
                 <label for="files">Ficha General del Caballo:</label>
-                <input type="file" id="files" name="horse_sheet" enctype="multipart/form-data"required>
+                <input type="file" id="files" name="horse_sheet" enctype="multipart/form-data">
             </div>
 
             <!-- Planificación de entrenamiento -->
             <div>
                 <label for="training_plan">Planificación de Entrenamiento:</label>
-                <input type="file" id="files" name="training_plan" enctype="multipart/form-data" required>
+                <input type="file" id="files" name="training_plan" enctype="multipart/form-data">
             </div>
 
             <!-- Informe de evolución -->
             <div>
                 <label for="evolution_report">Informe de Evolución:</label>
-                <input type="file" id="files" name="evolution_report" enctype="multipart/form-data" required>
+                <input type="file" id="files" name="evolution_report" enctype="multipart/form-data">
             </div>
 
             <!-- Carga de Imágenes -->
             <div>
                 <label for="images">Carga de Imágenes:</label>
-                <input type="file" id="files" name="images" enctype="multipart/form-data" required>
+                <input type="file" id="files" name="images" enctype="multipart/form-data">
             </div>
 
             <!-- Registro veterinario -->
             <div>
                 <label for="veterinary_record">Registro Veterinario:</label>
-                <input type="file" id="files" name="veterinary_record" enctype="multipart/form-data" required>
+                <input type="file" id="files" name="veterinary_record" enctype="multipart/form-data">
             </div>
 
             <!-- Submit Button -->
@@ -126,7 +129,10 @@
                 <button type="submit">Enviar</button>
             </div>
         </form>
-    </div>
 
+        <a href="{{ url_for('equestrian.list') }}">
+            <button type="button">Volver</button>
+        </a>
+    </div>
 
 {% endblock %}
