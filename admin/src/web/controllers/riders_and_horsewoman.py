@@ -24,12 +24,16 @@ def new():
     if request.method == "POST":
         rider = rh.find_rider(request.form["dni"])
 
-        if not rider:
-            #se checkean todos los campos
-            flash("El jinete/Amazona se creado exitosamente")
+        if len(request.form["dni"]) >= 8:
+
+            rider = rh.find_rider(request.form["dni"])
+            if not rider:
+                #se checkean todos los campos
+                flash("El jinete/Amazona se creado exitosamente")
+            else:
+                flash("El dni ingresado ya existe", "info")
         else:
-            flash("El dni ingresado ya existe", "info")
-    
+            flash("El dni ingresado no es valido", "error")
     
     return render_template("riders_and_horsewomen/new.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options)
 
