@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, url_for, redirect, session, flash, login_required
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core.payments import find_payments, create_payment, find_payment, delete_a_payment, edit_a_payment
 from src.core.auth import find_user_by_email
+from src.web.handlers.auth import login_required
 from datetime import datetime
 
 bp = Blueprint('payments',__name__,url_prefix="/payments")

@@ -2,11 +2,13 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
 from src.core import team_member as tm
 from src.core import health_insurance as hi
+from src.web.handlers.auth import login_required
 
 bp = Blueprint('team_members',__name__,url_prefix="/team_members")
 
 
 @bp.get("/")
+@login_required
 def team_members_list():
 
     page = request.args.get('page', 1, type=int) 
@@ -29,6 +31,7 @@ def team_members_list():
     return render_template("team_members/show_team_members.html", list=all_team_members, max_pages = max_pages, page=page, jobs = all_jobs)
 
 @bp.get("/new")
+@login_required
 def new():
 
     professions = ProfessionEnum.enums
@@ -40,6 +43,7 @@ def new():
     return render_template("team_members/new.html", professions=professions, conditions=conditions, job_positions=jobs, health_insurances=health_insurances)
 
 @bp.post("/create")
+@login_required
 def create():
 
     team_member = tm.check_team_member_by_email(request.form["email"])
@@ -53,16 +57,20 @@ def create():
     return redirect(url_for("team_members.new"))
 
 @bp.get("show_team_member")
+@login_required
 def show_team_member():
     team_member_email = request.args.get('team_member_email')   ##Deberia tomarlo por el id?
 
     
 
     team_member = tm.check_team_member_by_email(team_member_email)
+
+    health_insurance = hi.get_by_id(team_member.health_insurance_id)
     
-    return render_template("team_members/view_team_member.html", team_member=team_member)
+    return render_template("team_members/view_team_member.html", team_member=team_member, health_insurance = health_insurance)
 
 @bp.get("/edit")
+@login_required
 def edit_team_member():
 
     professions = ProfessionEnum.enums
@@ -79,6 +87,7 @@ def edit_team_member():
 
 
 @bp.post("/update")
+@login_required
 def update_team_member():
 
     team_member_email = request.args.get('team_member_email')
@@ -108,6 +117,7 @@ def update_team_member():
 
 
 @bp.post("/switch")
+@login_required
 def switch_state_team_member():
 
 

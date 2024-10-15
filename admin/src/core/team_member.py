@@ -56,6 +56,7 @@ def create(form):
         emergency_contact=form["emergency_contact"],
         emergency_phone=form["emergency_phone"],
         health_insurance_id=form["health_insurance_id"],
+        health_insurance_number=form["health_insurance_number"],
         condition=form["condition"].upper(),
         job_position=form["job_position"].upper(),
         profession=form["profession"].upper(),

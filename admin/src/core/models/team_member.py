@@ -58,6 +58,7 @@ class TeamMember(database.db.Model):
     emergency_phone = database.db.Column(database.db.String(120), nullable=False)
     active = database.db.Column(database.db.Boolean, nullable=False, default=True)
     health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
+    asocciated_number = database.db.Column(database.db.String(120), nullable=False)
 
     condition = database.db.Column(ConditionEnum, nullable=False)
     job_position = database.db.Column(JobEnum, nullable=False)

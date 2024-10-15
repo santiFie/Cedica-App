@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, url_for, redirect, session, flash, login_required
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection, find_debtors, calculate_debt
 from src.core.team_member import find_team_member_by_email 
+from src.web.handlers.auth import login_required
 from src.core.riders_and_horsewomen import find_rider
 from datetime import datetime
 
