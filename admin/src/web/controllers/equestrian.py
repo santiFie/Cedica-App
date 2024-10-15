@@ -5,7 +5,7 @@ from src.core import equestrian as eq
 from flask import render_template, request, flash, url_for, redirect, send_file, abort
 from src.core import utils, minio
 import mimetypes
-
+from wtforms import Form, StringField, validators
 
 bp = Blueprint("equestrian", __name__, url_prefix="/equestrians")
 
