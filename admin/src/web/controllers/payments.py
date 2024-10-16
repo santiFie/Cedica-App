@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, url_for, redirect, session, flash, login_required
+from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core.payments import find_payments, create_payment, find_payment, delete_a_payment, edit_a_payment
 from src.core.auth import find_user_by_email
+from src.web.handlers.auth import login_required
+from src.web.forms import PaymentForm
 from datetime import datetime
 
 bp = Blueprint('payments',__name__,url_prefix="/payments")
@@ -23,50 +25,37 @@ def index_payments():
 @bp.get('/payment_register_form')
 @login_required
 def payment_register_form():
-    return render_template("payments/payment_register.html")
+    form = PaymentForm() # aseguro que se le envia un formulario por mas que sea un get
+    return render_template("payments/payment_register.html", form=form)
 
 @bp.route("/payment_register", methods=["GET", "POST"])
 @login_required
 def payment_register():
 
-    if request.method == "POST":
-        # Obtener los datos del formulario
-        amount = request.form.get('amount')
-        payment_date = request.form.get('payment_date')
-        payment_type = request.form.get('payment_type')
-        description = request.form.get('description', '')
-        beneficiary_id = request.form.get('beneficiary_id')  # Este campo puede ser opcional
+    form = PaymentForm(request.form)
 
+    if request.method == "POST" and form.validate():
+        # Crear el nuevo pago con los datos validados del formulario
+        beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else None
 
-        if not amount or not payment_type or not payment_date:
-            flash("Todos los campos obligatorios deben ser completados", "error")
-            return redirect(url_for('payments.payment_form'))  # Redirige al formulario si faltan datos
-        
-        # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
-        obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
+        # Si se ingreso un beneficiario y no se encontro en la bd
+        if form.beneficiary_id.data and not beneficiary:
+            flash("El beneficiario no existe.", "error")
+            return render_template('payments/payment_register.html', form=form)
 
-        if obj_payment_date > datetime.today().date() :
-            flash("La fecha de pago no puede ser una fecha futura.", "error")
-            return render_template('payments/payment_register.html')
-        
-        # chequeo si al cargar el beneficiario se ingresa un usuario cargado en el sistema
-        if beneficiary_id:
-            beneficiary = find_user_by_email(beneficiary_id)
-            if not beneficiary:
-                flash("El beneficiario no existe.", "error")
-                return render_template('payments/payment_register.html')
+        new_payment = create_payment(
+            amount=form.amount.data,
+            payment_date=form.payment_date.data,
+            payment_type=form.payment_type.data,
+            description=form.description.data,
+            beneficiary_id=beneficiary.email if beneficiary else ''
+        )
 
-        new_payment = create_payment(amount = amount,
-                                     payment_date = payment_date,
-                                     payment_type = payment_type,
-                                     description = description,
-                                     beneficiary_id = beneficiary.email if beneficiary else '')
+        flash("Pago registrado exitosamente", "success")
+        return redirect(url_for('payments.payment_register'))
 
-    # Mostrar mensaje de éxito
-    flash("Pago registrado exitosamente", "success")
-
-    # Renderiza la misma página con un mensaje de éxito o en caso de error
-    return render_template("payments/payment_register.html")
+    # Si el formulario tiene errores o es GET, renderizar la página con el formulario
+    return render_template("payments/payment_register.html", form=form)
 
 
 @bp.get('/payment_detail/<int:payment_id>')
@@ -87,48 +76,46 @@ def show_detail_payment(payment_id):
 @login_required
 def edit_payment_form(payment_id):
     payment = find_payment(payment_id)
-    return render_template("payments/edit_payment_form.html", payment=payment)
+    form = PaymentForm(obj=payment)
+
+    return render_template("payments/edit_payment_form.html", payment=payment, form=form)
 
 
-@bp.post('/edit_payment/<int:payment_id>')
+@bp.route('/edit_payment/<int:payment_id>', methods=["POST"])
 @login_required
 def edit_payment(payment_id):
-    print(payment_id)
+
     # agarro el payment para el edit payment form
     payment = find_payment(payment_id)
+    form = PaymentForm(request.form)  # Crea una instancia del formulario y pasa los datos del formulario
+    print(form.data)
+    # Pre-llenar los campos del formulario con los valores actuales del pago
+    form.amount.data = payment.amount
+    form.payment_date.data = payment.payment_date.date() if payment.payment_date else None
+    form.payment_type.data = payment.payment_type
+    form.description.data = payment.description
+    form.beneficiary_id.data = payment.beneficiary_id
 
-    # agarro fecha para hacer chequeo de fecha futura
-    payment_date = request.form.get('payment_date')
-    beneficiary_id = request.form.get('beneficiary_id')
-
-    # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
-    obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
-
-    if obj_payment_date > datetime.today().date() :
-        flash("La fecha de pago no puede ser una fecha futura.", "error")
-        return render_template('payments/edit_payment_form.html', payment=payment)
+    # validate_on_submit chequea el tipo de solicitud, en este caso que sea post  
+    if request.method == 'POST' and form.validate():
+        # Si el formulario es válido, actualizamos los datos
+        payment = edit_a_payment(
+            payment_id=payment_id,
+            beneficiary_id=form.beneficiary_id.data,
+            amount=form.amount.data,
+            payment_date=form.payment_date.data,
+            payment_type=form.payment_type.data,
+            description=form.description.data,
+        )
+        
+        if payment:
+            flash("Datos del pago actualizado")
+            return redirect(url_for('payments.index_payments'))
+        else:
+            flash("El pago seleccionado no existe", "error")
     
-    # chequeo si al cambiar el beneficiario se ingresa un usuario cargado en el sistema
-    if beneficiary_id:
-            beneficiary = find_user_by_email(beneficiary_id)
-            if not beneficiary:
-                flash("El beneficiario no existe.", "error")
-                return render_template('payments/edit_payment_form.html', payment=payment)
-    
-    payment = edit_a_payment(
-        payment_id=payment_id,
-        beneficiary_id = request.form.get('beneficiary_id'),
-        amount = float(request.form.get('amount')),
-        payment_date = request.form.get('payment_date'),
-        payment_type = request.form.get('payment_type'),
-        description = request.form.get('description', ''),
-    )
-
-    if not payment:
-        flash("El pago seleccionado no exite", "error")
-    else:
-        flash("Datos del pago actualizado")
-    return redirect(url_for('payments.index_payments'))
+    # Si el formulario tiene errores o es GET, renderizar la página con el formulario
+    return render_template('payments/edit_payment_form.html', form=form, payment=payment)
 
 
 
