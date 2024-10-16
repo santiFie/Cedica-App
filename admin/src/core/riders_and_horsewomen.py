@@ -154,6 +154,9 @@ def create_rider_horsewoman(form):
     database.db.session.add(rider_horsewoman)
     database.db.session.commit()
 
+    for email in form["team_members"]:
+        member = check_team_member_by_email(email)
+        create_caring_professional(rider_horsewoman.id, member.id)
     rider = find_rider(form["dni"])
     member = check_team_member_by_email(form["email_member"])
     create_caring_professional(rider.id,member.id)
