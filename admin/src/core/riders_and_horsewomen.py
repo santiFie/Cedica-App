@@ -40,11 +40,11 @@ def create_caring_professional(id_rh, id_tm):
 
 def create_tutor(form, id):
     """
-    Create tutor
+    Create first tutor
     """
     from src.core.models.riders_and_horsewomen import Tutor
 
-    tutor = Tutor(
+    first_tutor = Tutor(
         dni = form["dni_first_tutor"],
         relationship = form["relationship_first_tutor"],
         name = form["name_first_tutor"],
@@ -57,10 +57,32 @@ def create_tutor(form, id):
         rider_and_horsewoman_id = id
     )
 
-    database.db.session.add(tutor)
+    database.db.session.add(first_tutor)
     database.db.session.commit()
 
-    return flash("tutor creado exitosamente")
+
+    if form.get("dni_second_tutor"):
+        second_tutor = Tutor(
+            dni = form["dni_second_tutor"],
+            relationship = form["relationship_second_tutor"],
+            name = form["name_second_tutor"],
+            last_name = form["last_name_second_tutor"],
+            address = form["address_second_tutor"],
+            phone = form["phone_second_tutor"],
+            email = form["email_second_tutor"],
+            education_level = form["education_level_second_tutor"],
+            occupation = form["occupation_second_tutor"],
+            rider_and_horsewoman_id = id
+        )
+
+        database.db.session.add(second_tutor)
+        database.db.session.commit()
+
+        flash("Tutores creados exitosamente")
+    else:
+        flash("Primer tutor creado exitosamente")
+
+
 
 
 def create_rider_horsewoman(form):
@@ -126,6 +148,8 @@ def create_rider_horsewoman(form):
         current_grade = form["current_grade"],
         observations_institution = form["observations_institution"],
     )
+
+    # Personales que lo atienden
 
     database.db.session.add(rider_horsewoman)
     database.db.session.commit()

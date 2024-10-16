@@ -4,9 +4,12 @@
 
 {% block head %}
     {{ super() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 {% endblock %}
 
 {% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -391,6 +394,13 @@
                     <div class="mb-2 p-4  bg-white">
                         <h5 class="font-sans text-xl font-semibold text-gray-900">TRABAJO EN NUESTRA INSTITUCIÓN</h5>
                     </div>
+                    <div class="col-span-6 sm:col-span-3">
+                        <label for="select_state" class="block text-sm font-medium text-gray-700">Seleccione las personas que lo atienden</label>
+                            <select id="select-state" name="team_members" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Pick a state...">
+                            {% for person in team_members %}
+                                  <option value="{{ person }}">{{ person }}</option>
+                            {% endfor %}
+                    </div>                    
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
                         <a href="javascript:history.back()">
                             <button  type="button"  class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>

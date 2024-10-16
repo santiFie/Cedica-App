@@ -1,17 +1,30 @@
 from flask import Blueprint, render_template, request, flash
-from src.core.models.riders_and_horsewomen import disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum, days_enum, condition_enum, seat_enum, proposal_enum, education_level_enum 
+from src.core.models.riders_and_horsewomen import (
+    disability_certificate_enum,
+    disability_type_enum,
+    family_allowance_enum,
+    pension_enum,
+    days_enum,
+    condition_enum,
+    seat_enum,
+    proposal_enum,
+    education_level_enum,
+)
 from src.core import riders_and_horsewomen as rh
+from src.core import team_member as tm
+from src.core import equestrian as eq
 from src.core import health_insurance as hi
 from src.web.forms import RiderHorsewomanForm as riderForm
 from src.web.handlers.auth import login_required
 
-bp = Blueprint('riders_and_horsewomen',__name__,url_prefix="/riders_and_horsewomen")
+bp = Blueprint("riders_and_horsewomen", __name__, url_prefix="/riders_and_horsewomen")
 
 
 @bp.get("/")
 @login_required
 def riders_and_horsewomen_list():
-    return 
+    return
+
 
 @bp.route("/new", methods=["GET", "POST"])
 @login_required
@@ -21,25 +34,41 @@ def new():
     family_allowance_options = family_allowance_enum.enums
     pension_options = pension_enum.enums
     education_level_options = education_level_enum.enums
+    team_members = tm.get_all()
+    team_members = [tm.email for tm in team_members]
+    therapists = [tm.email for tm in tm.get_all_therapists()]
+    riders= [tm.email for tm in tm.get_all_riders()]
+    horses = [eq.name for eq in eq.get_all_equestrians()]
+    track_asistenaces = [tm.email for tm in tm.get_all_track_asistances()]
 
     form = riderForm(request.form)
-    #se checkean todos los campos
+    # se checkean todos los campos
     if request.method == "POST":
         if form.validate():
-            #chckeo que no este cargado en la base de datos
+            # chckeo que no este cargado en la base de datos
             rider = rh.find_rider(request.form["dni"])
-            print("llegue hasta aca")
             if not rider:
-                print("a")
-                #cargo en la base de datos
+                # cargo en la base de datos
                 flash("El jinete/Amazona se creado exitosamente")
             else:
                 flash("El dni ingresado ya existe", "info")
         else:
-            print("faltan datos para completar")
             flash("faltan datos para completar", "error")
 
-    return render_template("riders_and_horsewomen/new.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
+    return render_template(
+        "riders_and_horsewomen/new.html",
+        team_members=team_members,
+        disability_certificate_options=disability_certificate_options,
+        disability_type_options=disability_type_options,
+        family_allowance_options=family_allowance_options,
+        pension_options=pension_options,
+        education_level_options=education_level_options,
+        form=form,
+        therapists=therapists,
+        riders=riders,
+        horses=horses,
+        track_asistenaces=track_asistenaces,
+    )
 
 
 @bp.route("/new/institution", methods=["GET", "POST"])
