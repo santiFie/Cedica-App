@@ -21,6 +21,8 @@ def new():
     family_allowance_options = family_allowance_enum.enums
     pension_options = pension_enum.enums
     education_level_options = education_level_enum.enums
+    days_options = days_enum.enums
+    
 
     form = riderForm(request.form)
     #se checkean todos los campos
@@ -39,7 +41,7 @@ def new():
             print("faltan datos para completar")
             flash("faltan datos para completar", "error")
 
-    return render_template("riders_and_horsewomen/new.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
+    return render_template("riders_and_horsewomen/new.html", days_options=days_options, disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
 
 
 @bp.route("/new/institution", methods=["GET", "POST"])
