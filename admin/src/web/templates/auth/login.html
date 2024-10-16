@@ -5,7 +5,6 @@
 {% block head %}
     {{ super() }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}"/> -->
 {% endblock %}
 
 
@@ -17,24 +16,6 @@
 {% block content %}
     <section>
         <div class="bg-sky-100 relative flex justify-center items-center h-screen">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <div class="absolute top-4 w-full flex justify-center">
-                <ul>
-                    {% for category, message in messages %}
-                        <li>
-                            <div class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700 max-w-sm mx-auto" role="alert">
-                                <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                                <div>
-                                    <span class="font-medium"> ¡{{ message }}! </span>
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-            {% endwith %}
             <div class= "lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2 relative z-10">
                 <h1 class="text-2xl font-semibold mb-4">Iniciar Sesión</h1>
                 <form action="{{ url_for('auth.verification') }}" method="POST">
