@@ -114,9 +114,9 @@ def edit_a_collection(**kwargs):
         collection.rider_dni = kwargs.get('rider_dni', collection.rider_dni)
         collection.team_member_id = kwargs.get('team_member_id', collection.team_member_id)
         collection.amount = kwargs.get('amount', collection.amount)
-        collection.payment_date = datetime.strptime(kwargs.get('payment_date'), '%Y-%m-%d')
+        collection.payment_date = kwargs.get('payment_date')
         collection.payment_method = kwargs.get('payment_method', collection.payment_method)
-        collection.observations = kwargs.get('description', collection.observations)
+        collection.observations = kwargs.get('observations', collection.observations)
 
         db.session.commit()
         return collection
