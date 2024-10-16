@@ -68,6 +68,7 @@ class TeamMember(database.db.Model):
     # relacion con Collection
     collections = database.db.relationship('Collection', back_populates='teammember')
 
+    riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='caring_professionals', back_populates='team_members')
 
     def __repr__(self):
         return self.name

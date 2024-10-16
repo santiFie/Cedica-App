@@ -30,6 +30,8 @@
         $("#disability_certificate_boolean").change(function(event){
             event.preventDefault();
             $("#disability-certificate-box").toggle();
+            $("#disability-certificate-box2").toggle();
+            $("#disability-certificate-box3").toggle();
             $("#disability-type-box").toggle();
         });
     });family-allowance-box
@@ -43,13 +45,25 @@
         });
     });
 </script>
+<script>
+    function handleSelectChange() {
+        const select = document.getElementById('disability_certificate');
+        const otroInput = document.getElementById('disability_certificate_otro');
+
+        if (select.value === 'OTRO') {
+            otroInput.removeAttribute('readonly');
+        } else {
+            otroInput.setAttribute('readonly', 'readonly');
+        }
+    }
+</script>
 {% endblock %}
 
 {% block content %}
 
     <div class="container mx-auto">
         <div class="mt-1 md:mt-4 md:col-span-2">
-            <form action="{{ url_for('riders_and_horsewomen.new') }}" method="POST" novalidate>
+            <form action="{{ url_for('riders_and_horsewomen.new') }}" method="POST">
                 <div class="shadow overflow-hidden sm:rounded-md bg-white">
                     <div class="mb-2 p-4  bg-white">
                         <h2 class="font-sans text-xl font-semibold text-gray-900">Registrar jinete/amazona</h2>
@@ -157,14 +171,19 @@
                             <div id="disability-certificate-box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="disability_certificate" class="block text-sm font-medium text-gray-700">Diagnóstico</label>
                                 <select id="disability_certificate" name="disability_certificate"
-                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm"
+                                    onchange="handleSelectChange()">
                                     {% for disability_certificate in disability_certificate_options %}
                                     <option value="{{ disability_certificate }}">{{ disability_certificate }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div id="disability-certificate-box2" class="col-span-6 sm:col-span-3">
-
+                            <div id="disability-certificate-box2" class=" hidden col-span-6 sm:col-span-3">
+                                <label for="disability_certificate_otro" class="block text-sm font-medium text-gray-700">Otro</label>
+                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" readonly>
+                            </div>
+                            <div id="disability-certificate-box3" class="col-span-6 sm:col-span-3">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <div class="flex items-center">

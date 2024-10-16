@@ -24,19 +24,20 @@ def new():
 
     form = riderForm(request.form)
     #se checkean todos los campos
-    if request.method == "POST" and form.validate():
-        #chckeo que no este cargado en la base de datos
-        rider = rh.find_rider(request.form["dni"])
-        print("llegue hasta aca")
-        if not rider:
-            print("a")
-            #cargo en la base de datos
-            flash("El jinete/Amazona se creado exitosamente")
+    if request.method == "POST":
+        if form.validate():
+            #chckeo que no este cargado en la base de datos
+            rider = rh.find_rider(request.form["dni"])
+            print("llegue hasta aca")
+            if not rider:
+                print("a")
+                #cargo en la base de datos
+                flash("El jinete/Amazona se creado exitosamente")
+            else:
+                flash("El dni ingresado ya existe", "info")
         else:
-            flash("El dni ingresado ya existe", "info")
-    else:
-        print("faltan datos para completar")
-        flash("faltan datos para completar", "error")
+            print("faltan datos para completar")
+            flash("faltan datos para completar", "error")
 
     return render_template("riders_and_horsewomen/new.html", disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
 

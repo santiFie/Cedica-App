@@ -111,12 +111,11 @@ class RiderAndHorsewoman(database.db.Model):
     phone = database.db.Column(database.db.String(13), nullable=False)
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(13), nullable=False)
-    scholarship = database.db.Column(database.db.Boolean, nullable=False)
     scholarship_percentage = database.db.Column(database.db.String(2), nullable=True)
     observations = database.db.Column(database.db.String(120), nullable=True)
     disability_certificate = database.db.Column(disability_certificate_enum, nullable=True, default=None)
     others = database.db.Column(database.db.String(120), nullable=True)
-    disability_type = database.db.Column(disability_type_enum, nullable=False)
+    disability_type = database.db.Column(disability_type_enum, nullable=True)
     family_allowance = database.db.Column(family_allowance_enum, nullable= True, default= None)
     pension = database.db.Column(pension_enum, nullable= True, default= None)
     name_institution = database.db.Column(database.db.String(120), nullable=False)
@@ -126,14 +125,17 @@ class RiderAndHorsewoman(database.db.Model):
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
     work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
-    #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
-    work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
-    #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    team_members = database.db.relationship('TeamMember', secondary='caring_professionals', back_populates='riders_and_horsewomen')
 
     # necesario para Collection
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
 
     collections = database.db.relationship('Collection', back_populates='rider')
+
+class CaringProfessional(database.db.Model):
+    __tablename__ = 'caring_professionals'
+    rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
+    team_member_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('team_members.id'), primary_key=True)
 
 
 class WorkInInstitution(database.db.Model):
@@ -149,8 +151,6 @@ class WorkInInstitution(database.db.Model):
     days = database.db.Column(ARRAY(days_enum), nullable=False)
     riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='riders_horsewomen_institution', back_populates='work_in_institutions')
     #rider_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
-    riders_and_horsewomen = database.db.relationship('RiderAndHorsewoman', secondary='riders_horsewomen_institution', back_populates='work_in_institutions')
-    #rider_horsewoman = database.db.relationship('RiderAndHorsewoman', secondary= 'riders_horsewomen_institution', back_populates='work_in_institutions')
 
 class RiderHorsewomanInstitution(database.db.Model):
     __tablename__ = 'riders_horsewomen_institution'
@@ -158,11 +158,6 @@ class RiderHorsewomanInstitution(database.db.Model):
     work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True)
     # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
     # institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
-    rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
-    work_in_institution_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True)
-    # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
-    # institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
-
 
 class Tutor(database.db.Model):
     __tablename__ = 'tutors'
