@@ -25,7 +25,7 @@ def index_payments():
 @bp.get('/payment_register_form')
 @login_required
 def payment_register_form():
-    form = PaymentForm() # aseguro que se le envia un formulario por mas que sea un get
+    form = PaymentForm()
     return render_template("payments/payment_register.html", form=form)
 
 @bp.route("/payment_register", methods=["GET", "POST"])
@@ -81,23 +81,27 @@ def edit_payment_form(payment_id):
     return render_template("payments/edit_payment_form.html", payment=payment, form=form)
 
 
-@bp.route('/edit_payment/<int:payment_id>', methods=["POST"])
+@bp.route('/edit_payment/<int:payment_id>', methods=["GET", "POST"])
 @login_required
 def edit_payment(payment_id):
 
     # agarro el payment para el edit payment form
     payment = find_payment(payment_id)
-    form = PaymentForm(request.form)  # Crea una instancia del formulario y pasa los datos del formulario
-    print(form.data)
-    # Pre-llenar los campos del formulario con los valores actuales del pago
-    form.amount.data = payment.amount
-    form.payment_date.data = payment.payment_date.date() if payment.payment_date else None
-    form.payment_type.data = payment.payment_type
-    form.description.data = payment.description
-    form.beneficiary_id.data = payment.beneficiary_id
+    form = PaymentForm(request.form) 
 
     # validate_on_submit chequea el tipo de solicitud, en este caso que sea post  
     if request.method == 'POST' and form.validate():
+        
+        # si el beneficiario no es Externo entonces lo busco en la bd
+        if form.beneficiary_id.data != 'Externo':
+            # Crear el nuevo pago con los datos validados del formulario
+            beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else 'Externo'
+
+            # Si se ingreso un beneficiario y no se encontro en la bd
+            if form.beneficiary_id.data and not beneficiary:
+                flash("El beneficiario no existe.", "error")
+                return render_template('payments/edit_payment_form.html', form=form, payment=payment)
+
         # Si el formulario es válido, actualizamos los datos
         payment = edit_a_payment(
             payment_id=payment_id,
