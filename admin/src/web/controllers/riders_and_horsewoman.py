@@ -40,7 +40,8 @@ def new():
     riders= [tm.email for tm in tm.get_all_riders()]
     horses = [eq.name for eq in eq.get_all_equestrians()]
     track_asistenaces = [tm.email for tm in tm.get_all_track_asistances()]
-
+    days_options = days_enum.enums
+    
 
     form = riderForm(request.form)
     # se checkean todos los campos
@@ -64,12 +65,12 @@ def new():
         family_allowance_options=family_allowance_options,
         pension_options=pension_options,
         education_level_options=education_level_options,
-        form=form,
         therapists=therapists,
         riders=riders,
         horses=horses,
         track_asistenaces=track_asistenaces,
     )
+    return render_template("riders_and_horsewomen/new.html", days_options=days_options, disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
 
 
 @bp.route("/new/institution", methods=["GET", "POST"])

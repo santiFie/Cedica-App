@@ -47,6 +47,7 @@ class RiderHorsewomanForm(Form):
     ])
     email_first_tutor = StringField('email_first_tutor', validators=[DataRequired(), Email(message='Ingresa una dirección de correo válida.'), Length(max=50, message= 'El campo ingresado supera el limite de caracteres'), Length(min=1, message='El campo no puede estar vacio.')] )
     occupation_first_tutor = StringField('occupation_first_tutor', validators=[DataRequired(), Length(max=50, message= 'El campo ingresado supera el limite de caracteres'), Length(min=1, message='El campo no puede estar vacio.')] )
+    membership_number
 
 class SecondTutorForm(Form):
     dni_second_tutor = StringField('dni_second_tutor', validators=[
