@@ -36,10 +36,17 @@ def new():
     education_level_options = education_level_enum.enums
     team_members = tm.get_all()
     team_members = [tm.email for tm in team_members]
+<<<<<<< HEAD
     therapists = [tm.email for tm in tm.get_all_therapists()]
     riders= [tm.email for tm in tm.get_all_riders()]
     horses = [eq.name for eq in eq.get_all_equestrians()]
     track_asistenaces = [tm.email for tm in tm.get_all_track_asistances()]
+=======
+    therapists = tm.get_all_therapists()
+    riders= tm.get_all_riders()
+    horses = eq.get_all_equestrians()
+    track_asistenaces = tm.get_all_track_asistances()
+>>>>>>> 4249277db0f1da53af49a43a69273748ee0e5916
 
     form = riderForm(request.form)
     # se checkean todos los campos

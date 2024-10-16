@@ -394,6 +394,7 @@
                     <div class="mb-2 p-4  bg-white">
                         <h5 class="font-sans text-xl font-semibold text-gray-900">TRABAJO EN NUESTRA INSTITUCIÓN</h5>
                     </div>
+<<<<<<< HEAD
                     <div class="col-span-6 sm:col-span-3">
                         <label for="select_state" class="block text-sm font-medium text-gray-700">Seleccione las personas que lo atienden</label>
                             <select id="select-state" name="team_members" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Pick a state...">
@@ -401,6 +402,16 @@
                                   <option value="{{ person }}">{{ person }}</option>
                             {% endfor %}
                     </div>                    
+=======
+                    <div>
+                        <select id="select-state" placeholder="Pick a state...">
+                            <option value="">Seleccionar Person que lo atiende</option>
+                            {% for person in team_members %}
+                                <option value="{{ person }}">{{ person }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+>>>>>>> 4249277db0f1da53af49a43a69273748ee0e5916
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
                         <a href="javascript:history.back()">
                             <button  type="button"  class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
