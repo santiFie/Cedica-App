@@ -175,3 +175,31 @@ def find_team_member_by_email(email):
     team_member = TeamMember.query.filter_by(email=email).first()
 
     return team_member
+
+def get_all():
+    from src.core.models.team_member import TeamMember
+
+    team_members = TeamMember.query.all()
+
+    return team_members
+
+def get_all_therapists():
+    from src.core.models.team_member import TeamMember
+
+    therapists = TeamMember.query.filter_by(job_position='TERAPEUTA').all()
+
+    return therapists
+
+def get_all_riders():
+    from src.core.models.team_member import TeamMember
+
+    riders = TeamMember.query.filter_by(job_position='MANEJADOR').all()
+
+    return riders
+
+def get_all_track_asistances():
+    from src.core.models.team_member import TeamMember
+
+    track_asistances = TeamMember.query.filter_by(job_position='ASISTENTE_DE_PISTA').all()
+
+    return track_asistances

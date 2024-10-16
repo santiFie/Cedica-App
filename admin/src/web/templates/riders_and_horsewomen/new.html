@@ -391,6 +391,14 @@
                     <div class="mb-2 p-4  bg-white">
                         <h5 class="font-sans text-xl font-semibold text-gray-900">TRABAJO EN NUESTRA INSTITUCIÓN</h5>
                     </div>
+                    <div>
+                        <select id="select-state" placeholder="Pick a state...">
+                            <option value="">Seleccionar Person que lo atiende</option>
+                            {% for person in team_members %}
+                                <option value="{{ person }}">{{ person }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
                         <a href="javascript:history.back()">
                             <button  type="button"  class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
