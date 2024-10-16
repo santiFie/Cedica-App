@@ -3,6 +3,7 @@ from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
 from src.core import team_member as tm
 from src.core import health_insurance as hi
 from src.core import auth as au
+from src.core import users as us
 from src.web.handlers.auth import login_required
 
 bp = Blueprint('team_members',__name__,url_prefix="/team_members")
@@ -128,7 +129,8 @@ def switch_state_team_member():
     if team_member:
         tm.switch_state(team_member)
         user_associated=au.find_user_by_email(team_member_email)
-        ##Terminar de bloquear el usuario
+        if user_associated:
+            us.switch_state(team_member_email)
         flash("Se cambio el estado del miembro del equipo")
     
 
