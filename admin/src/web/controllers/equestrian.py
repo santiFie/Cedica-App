@@ -107,6 +107,7 @@ def delete(id):
 @bp.get("/show<int:id>")
 def show(id):
     equestrian = eq.find_equestrian_by_id(id)
+    print(equestrian.horse_sheet)
     return render_template("equestrians/show.html", equestrian=equestrian)
 
 #Routes for list all equestrian files
@@ -128,7 +129,6 @@ def list_files():
         
     return render_template("equestrians/list_files.html",files= all_files, page=page, max_pages=max_pages)
 
-    return render_template("equestrians/list_files.html", equestrians=equestrians)
 
 
 # Routes for files management
