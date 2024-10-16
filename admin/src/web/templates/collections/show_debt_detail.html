@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}Detalle de Deuda{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Detalle de Deuda</h1>
+
+    <h2>Deudor: {{ debtor.name }} - {{ debtor.dni }}</h2>
+
+    <h3>Debe:</h3>
+    <ul>
+        {% for month in debt_details %}
+            <li> {{ month }} </li>
+        {% endfor %}
+    </ul>
+
+
+    <a href="{{ url_for('collections.index_debts') }}"><button type="button">Volver a la lista de deudores</button></a>
+{% endblock %}

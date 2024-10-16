@@ -3,9 +3,9 @@ from src.core import team_member as tm
 from src.core.models.riders_and_horsewomen import proposal_enum
 from src.core import equestrian as eq
 from flask import render_template, request, flash, url_for, redirect, send_file, abort
-from src.core import utils
+from src.core import utils, minio
 import mimetypes
-
+from wtforms import Form, StringField, validators
 
 bp = Blueprint("equestrian", __name__, url_prefix="/equestrians")
 
@@ -72,7 +72,7 @@ def update(id):
 
     eq.equestrian_update(id, request.form, files)
     return redirect(url_for("equestrian.list"))
-
+new
 
 # Routes for list all equestrians
 @bp.get("/list")
@@ -114,6 +114,20 @@ def show(id):
 def list_files():
     equestrians = eq.get_all_equestrians()
 
+    # Get the page number or default to 1
+    page = request.args.get('page', 1, type=int) 
+
+    # Get the filters from the form
+    name = request.args.get('name', None)
+    initial_date = request.args.get('initial_date', None)
+    final_date = request.args.get('final_date', None)
+    sort_by = request.args.get('sort_by', None)
+
+    # find_equestrians_files also returns the max number of pages
+    all_files, max_pages = eq.list_equestrians_files(page=page, name=name, initial_date=initial_date, final_date=final_date, sort_by=sort_by)
+        
+    return render_template("equestrians/list_files.html",files= all_files, page=page, max_pages=max_pages)
+
     return render_template("equestrians/list_files.html", equestrians=equestrians)
 
 
@@ -121,7 +135,7 @@ def list_files():
 @bp.get("/view_file/<int:id>/<string:filename>")
 def view_file(id, filename):
 
-    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+    file_data, content_type = minio.get_file("ecuestres", id, filename) 
 
     if not file_data:
         return "Archivo no encontrado", 404
@@ -129,6 +143,7 @@ def view_file(id, filename):
      # If the content type is not provided, try to guess it from the filename
     if not content_type:
         content_type, _ = mimetypes.guess_type(filename)
+
     
     # For PDF files
     if content_type == 'application/pdf':
@@ -160,7 +175,7 @@ def view_file(id, filename):
 
 @bp.get("/dowload_file/<int:id>/<string:filename>")
 def download_file(id, filename):
-    file_data, content_type = utils.get_file_from_minio("ecuestres", id, filename) 
+    file_data, content_type = minio.get_file("ecuestres", id, filename) 
 
     if not file_data:
         return "Archivo no encontrado", 404
