@@ -57,6 +57,14 @@
         }
     }
 </script>
+<script>
+    $(document).ready(function(){
+        $("#second_tutor_boolean").change(function(event){
+            event.preventDefault();
+            $("#second-tutor").toggle();
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -316,7 +324,72 @@
                                 <input type="text" name="occupation_first_tutor" id="occupation_first_tutor"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
+                            <div class="flex items-center">
+                                <div class="text-sm">
+                                    <label for="second_tutor_boolean" class="text-base font-medium text-gray-700">Segundo tutor</label>
+                                </div>
+                                <div class="flex items-center h-5 ml-2">
+                                    <input id="second_tutor_boolean" name="second_tutor_boolean" type="checkbox"
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                </div>
+                            </div>
                         </div>
+                        <div id="second-tutor" class="hidden">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="name_first_tutor" class="block text-sm font-medium text-gray-700">Nombre del segundo tutor</label>
+                                <input type="text" name="name_first_tutor" id="name_first_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="dni_second_tutor" class="block text-sm font-medium text-gray-700">Dni del segundo tutor</label>
+                                <input type="text" name="dni_second_tutor" id="dni_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="last_name_second_tutor" class="block text-sm font-medium text-gray-700">Apellido del segundo tutor</label>
+                                <input type="text" name="last_name_second_tutor" id="last_name_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="relationship_second_tutor" class="block text-sm font-medium text-gray-700">Parentesco del segundo tutor</label>
+                                <input type="text" name="relationship_second_tutor" id="relationship_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="address_second_tutor" class="block text-sm font-medium text-gray-700">Direccion del segundo tutor</label>
+                                <input type="text" name="address_second_tutor" id="address_second_tutor"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="phone_second_tutor" class="block text-sm font-medium text-gray-700">Numero de telefono del segundo tutor</label>
+                                <input type="text" name="phone_second_tutor" id="phone_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="email_second_tutor" class="block text-sm font-medium text-gray-700">Email del segundo tutor</label>
+                                <input type="text" name="email_second_tutor" id="email_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="education_level_second_tutor" class="block text-sm font-medium text-gray-700">Nivel de escolaridad alcanzado del segundo tutor</label>
+                                <select id="education_level_second_tutor" name="education_level_second_tutor"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for education_level in education_level_options %}
+                                        <option value="{{ education_level }}">{{ education_level }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="occupation_second_tutor" class="block text-sm font-medium text-gray-700">Ocupacion del segundo tutor</label>
+                                <input type="text" name="occupation_second_tutor" id="occupation_second_tutor"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4  bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">TRABAJO EN NUESTRA INSTITUCIÓN</h5>
                     </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
                         <a href="javascript:history.back()">

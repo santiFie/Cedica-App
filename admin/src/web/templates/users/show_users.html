@@ -178,15 +178,19 @@
                     <button>Previo</button>
                 </a>
             {% else %}
-                <button disabled>Previo</button>
+                <a href="#" class="hidden" disabled>
+                    Previo
+                </a>
             {% endif %}
 
             {% if page < max_pages %}
                 <a href="{{ url_for('users.users_list', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}">
-                    <button>Siguiente</button>
+                    Siguiente
                 </a>
             {% else %}
-                <button disabled>Siguiente</button>
+                <a href="#" class="hidden" disabled>
+                    Siguiente
+                </a>
             {% endif %}
         </div>
     {% else %}
