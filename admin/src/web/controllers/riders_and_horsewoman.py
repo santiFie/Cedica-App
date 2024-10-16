@@ -35,13 +35,11 @@ def new():
     pension_options = pension_enum.enums
     education_level_options = education_level_enum.enums
     team_members = tm.get_all()
-    team_members = [tm.email for tm in team_members]
-    therapists = [tm.email for tm in tm.get_all_therapists()]
-    riders= [tm.email for tm in tm.get_all_riders()]
-    horses = [eq.name for eq in eq.get_all_equestrians()]
-    track_asistenaces = [tm.email for tm in tm.get_all_track_asistances()]
+    therapists = tm.get_all_therapists()
+    riders = tm.get_all_riders()
+    horses = eq.get_all_equestrians()
+    track_asistenaces = tm.get_all_track_asistances()
     days_options = days_enum.enums
-    
 
     form = riderForm(request.form)
     # se checkean todos los campos
@@ -57,20 +55,24 @@ def new():
         else:
             flash("faltan datos para completar", "error")
 
+
     return render_template(
         "riders_and_horsewomen/new.html",
-        team_members=team_members,
+        days_options=days_options,
         disability_certificate_options=disability_certificate_options,
         disability_type_options=disability_type_options,
         family_allowance_options=family_allowance_options,
         pension_options=pension_options,
         education_level_options=education_level_options,
+        pro_members_options = team_members,
         therapists=therapists,
+        condition_options=condition_enum.enums,
+        seat_options = seat_enum.enums,
+        porposal_options = proposal_enum.enums,
         riders=riders,
         horses=horses,
         track_asistenaces=track_asistenaces,
     )
-    return render_template("riders_and_horsewomen/new.html", days_options=days_options, disability_certificate_options=disability_certificate_options, disability_type_options=disability_type_options, family_allowance_options=family_allowance_options, pension_options=pension_options, education_level_options= education_level_options, form =form)
 
 
 @bp.route("/new/institution", methods=["GET", "POST"])
