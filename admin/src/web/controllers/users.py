@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core import users, auth
 from src.core.models.users import Role
+from src.web.forms import registerForm as rf
 
 bp = Blueprint('users',__name__,url_prefix="/users")
 
@@ -41,7 +42,6 @@ def user_update():
     Updates a user
     """
     user_mail = request.args.get('user_email')
-    print(user_mail)
     user = users.edit(
         email=user_mail,
         nickname=request.form["nickname"],
@@ -69,16 +69,9 @@ def user_edit():
 @bp.get("/delete_user")
 def delete_user():
     user_email = request.args.get("user_email")
-    print(user_email)
     users.user_delete(user_email)
     flash("User deleted successfully")
     return redirect(url_for("users.users_list", flash=flash) )
-
-
-@bp.get("/user_register_form")
-def user_register_form():
-    roles = Role.query.all()
-    return render_template("users/register.html", roles=roles)
 
 
 
@@ -86,13 +79,19 @@ def user_register_form():
 def user_create():
 
     if request.method == "POST":
-        user = auth.check_user(request.form["email"], request.form["password"])
 
-        if not user:
-            auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"], role_id=request.form["role_id"])
-            flash("Usuario creado exitosamente")
+
+        form = rf(request.form)
+        if form.validate():
+            user = auth.check_user(request.form["email"], request.form["password"])
+
+            if not user:
+                auth.create_user(email=request.form["email"], nickname=request.form["nickname"], password=request.form["password"], role_id=request.form["role_id"])
+                flash("Usuario creado exitosamente")
+            else:
+                flash("El usuario ingresado ya existe", "info")
         else:
-            flash("El usuario ingresado ya existe", "info")
+            flash("Faltan campos por completar", "info")
         
     roles = Role.query.all()
 

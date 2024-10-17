@@ -59,9 +59,6 @@ def create():
         else:
              flash("El miembro de equipo ya existe", "info")
     else:
-        for field, errors in form.errors.items():
-            for error in errors:
-                print(f"Error en el campo {field}: {error}")
         flash("Faltan campos por completar", "info")
     
     return redirect(url_for("team_members.new"))
