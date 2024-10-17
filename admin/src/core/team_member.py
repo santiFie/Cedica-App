@@ -128,30 +128,50 @@ def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, 
 
     return team_members, max_pages 
 
-def edit(**kwargs):
+
+
+def update_team_member_files(team_member, files):
+
+    for key, file in files.items():
+        if file:
+            minio.delete_file(PREFIX,getattr(team_member,key), team_member.id)
+            minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
+            setattr(team_member, key, file.filename)
+
+
+
+
+def edit(email, form, files):
     from src.core.models.team_member import TeamMember
 
-    team_member = TeamMember.query.filter_by(email=kwargs['email']).first()
+    team_member = TeamMember.query.filter_by(email=email).first()
 
-    end_date = kwargs['end_date']
+    end_date = form['end_date']
     if(end_date == ''):
         end_date = None
     
+    print(team_member.cv)
 
     if team_member:
-        team_member.name = kwargs['name']
-        team_member.last_name = kwargs['last_name']
-        team_member.address = kwargs['address']
-        team_member.locality = kwargs['locality']
-        team_member.phone = kwargs['phone']
+        team_member.name = form['name']
+        team_member.last_name = form['last_name']
+        team_member.address = form['address']
+        team_member.locality = form['locality']
+        team_member.phone = form['phone']
         team_member.end_date = end_date
-        team_member.emergency_contact = kwargs['emergency_contact']
-        team_member.emergency_phone = kwargs['emergency_phone']
-        team_member.health_insurance_id = kwargs['health_insurance']
-        team_member.condition = kwargs['condition']
-        team_member.job_position = kwargs['job_position']
-        team_member.profession = kwargs['profession']
-        database.db.session.commit()
+        team_member.emergency_contact = form['emergency_contact']
+        team_member.emergency_phone = form['emergency_phone']
+        team_member.health_insurance_id = form['health_insurance']
+        team_member.condition = form['condition']
+        team_member.job_position = form['job_position']
+        team_member.profession = form['profession']
+    
+    update_team_member_files(team_member,files)
+
+    
+
+    database.db.session.commit()
+
     return team_member
 
 

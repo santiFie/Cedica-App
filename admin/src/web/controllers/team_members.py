@@ -102,24 +102,11 @@ def update_team_member():
 
     team_member_email = request.args.get('team_member_email')
 
-    
+    file_keys = ['title', 'dni_copy', 'cv']
+    files = {key: request.files[key] for key in file_keys if key in request.files}
 
-    team_member = tm.edit(
-        name = request.form['name'],
-        last_name = request.form['last_name'],
-        address = request.form['address'],
-        email = team_member_email,
-        locality = request.form['locality'],
-        phone = request.form['phone'],
-        end_date = request.form['end_date'],
-        emergency_contact = request.form['emergency_contact'],
-        emergency_phone = request.form['emergency_phone'],
-        health_insurance = request.form['health_insurance'],
-        condition = request.form['condition'],
-        job_position = request.form['job_position'],
-        profession = request.form['profession']
-    )
-
+    tm.edit(team_member_email, request.form, files)
+        
 
     flash("Miembro del equipo actualizado")
     return redirect(url_for('team_members.team_members_list'))
