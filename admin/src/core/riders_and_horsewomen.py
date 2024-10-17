@@ -3,7 +3,7 @@ from flask import flash, redirect, url_for
 from src.core import utils
 from src.core import team_member as tm
 from src.core.models.team_member import TeamMember
-from src.core.models.riders_and_horsewomen import CaringProfessional, RiderAndHorsewoman, Tutor, WorkInInstitution, RiderHorsewomanInstitution
+from src.core.models.riders_and_horsewomen import CaringProfessional, RiderAndHorsewoman, Tutor, WorkInInstitution
 from sqlalchemy.orm import aliased
 from src.web.forms import SecondTutorForm, FirstTutorForm, RiderHorsewomanForm, WorkInInstitutionForm
 
@@ -101,7 +101,7 @@ def create_tutors(form, id):
         flash("Segundo tutor creado exitosamente")
 
 
-def create_work_in_institution(form, id):
+def create_work_in_institution(form, rider_horsewoman_id):
     """
     Create work in institution and the intermediate table
     """
@@ -113,21 +113,14 @@ def create_work_in_institution(form, id):
             condition = form["condition"],
             seat = form["seat"],
             therapist = form["therapist"],
-            rider = form["rider"],
+            rider_id = form["rider"],
+            rider_horsewoman_id = rider_horsewoman_id,
             horse = form["horse"],
             track_assistant = form["track_assistant"],
             days = form.getlist("days")
         )
 
         database.db.session.add(work)
-        database.db.session.commit()
-
-        rider_institution = RiderHorsewomanInstitution(
-            rider_horsewoman_id = id,
-            work_in_institution_id = work.id
-        )
-
-        database.db.session.add(rider_institution)
         database.db.session.commit()
 
         flash("Trabajo en institución creado exitosamente", "success")
@@ -469,16 +462,38 @@ def update_work_in_institution(form, id):
 #!!!!!!!!
 def delete_a_rider(rider):
 
+   # Eliminar tutores asociados
+    for tutor in rider.tutors:
+        database.db.session.delete(tutor)
+
+    # Eliminar relaciones con team_members a través de caring_professionals
+    caring_professionals = CaringProfessional.query.filter_by(
+        rider_horsewoman_id=rider.id
+    ).all()  # Obtener todas las relaciones
+    for caring_professional in caring_professionals:
+        database.db.session.delete(caring_professional)
+
+    # Eliminar relaciones con work_in_institution
+    work_in_institutions = WorkInInstitution.query.filter_by(
+        rider_horsewoman_id=rider.id
+    ).all()  # Obtener todas las relaciones
+    for work_in_institution in work_in_institutions:
+        database.db.session.delete(work_in_institution)
+
+    # Eliminar las colecciones relacionadas con el rider
+    collections = rider.collections
+    for collection in collections:
+        database.db.session.delete(collection)
+
+    # Finalmente eliminar el rider
     database.db.session.delete(rider)
     database.db.session.commit()
-
-    return True
 
 def get_work_in_institutions_by_rider_id(rider_id):
     """
     Get work in institution by rider id
     """
-    work_in_institutions = WorkInInstitution.query.join(RiderHorsewomanInstitution).filter(RiderHorsewomanInstitution.rider_horsewoman_id == rider_id).first()
+    work_in_institutions = WorkInInstitution.query.filter(WorkInInstitution.rider_horsewoman_id == rider_id).first()
 
     return work_in_institutions
 
