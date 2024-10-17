@@ -1,5 +1,5 @@
 from src.core.database import db
-from src.core.models.users import User
+from src.core.models.users import Permission, User
 from flask import session
 from src.core import auth
 from src.core.models.users import RolePermission, Role
@@ -64,10 +64,10 @@ def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, ex
 
 def get_permissions(user):
     """
-    Returns the permissions of the user
+    Returns the names of the permissions of the user
     """
-
-    return RolePermission.query.filter_by(role_id = user.role_id).all()
+    permissions = Permission.query.join(RolePermission).filter_by(role_id=user.role_id).all()
+    return [permission.name for permission in permissions]
 
 def has_permissions(session, permission):
     """

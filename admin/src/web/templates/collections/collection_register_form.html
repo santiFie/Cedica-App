@@ -22,7 +22,7 @@
     {% endif %}
 
 
-    <form method="POST" action="{{ url_for('collections.register_collection') }}">
+    <form method="POST" action="{{ url_for('collections.collection_register') }}">
         <div>
             <label for="rider_dni">J&A (DNI):</label>
             <input type="text" id="rider_dni" name="rider_dni" required>
@@ -61,7 +61,7 @@
         <button type="submit">Registrar Cobro</button>
     </form>
 
-    <a href="{{ url_for('collections.index_collections') }}"> <button type="button" >Volver a listado de cobros </button> </a>
+    <a href="{{ url_for('collections.collection_index') }}"> <button type="button" >Volver a listado de cobros </button> </a>
 
 
 {% endblock %}

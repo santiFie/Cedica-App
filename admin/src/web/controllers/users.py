@@ -117,8 +117,3 @@ def switch_state_user():
 
         
     return redirect(url_for("users.users_list") )
-    
-    
-        
-
-# Show user???

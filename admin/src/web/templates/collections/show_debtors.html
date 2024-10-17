@@ -9,7 +9,7 @@
 {% block content %}
     <h1>Deudores</h1>
 
-    <form method="GET" action="{{ url_for('collections.index_debts') }}">
+    <form method="GET" action="{{ url_for('collections.collection_index_debts') }}">
         <div>
             <label for="start_date">Fecha de ingreso (Desde):</label>
             <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
@@ -49,7 +49,7 @@
                     <td>{{ debtor.dni }}</td>
                     <td>{{ debtor.inserted_at }}</td>
                     <td>
-                        <a href="{{ url_for('collections.show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
+                        <a href="{{ url_for('collections.collection_show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
                             <button>Ver Detalles de Deuda</button>
                         </a>
                     </td>
@@ -61,13 +61,13 @@
 
         <div>
             {% if current_page > 1 %}
-                <a href="{{ url_for('collections.index_debts', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
+                <a href="{{ url_for('collections.collection_index_debts', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
                     <button>Anterior</button>
                 </a>
             {% endif %}
         
             {% if current_page < max_pages %}
-                <a href="{{ url_for('collections.index_debts', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
+                <a href="{{ url_for('collections.collecion_index_debts', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), order_by=request.args.get('order_by'), dni=request.args.get('dni')) }}">
                     <button>Siguiente</button>
                 </a>
             {% endif %}
@@ -77,7 +77,7 @@
         <p>No hay deudores.</p>
     {% endif %}
 
-    <a href="{{ url_for('collections.index_collections') }}"><button type="button">Volver a la lista de cobros</button></a>
+    <a href="{{ url_for('collections.collection_index') }}"><button type="button">Volver a la lista de cobros</button></a>
 
     
 {% endblock %}

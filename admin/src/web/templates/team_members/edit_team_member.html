@@ -19,7 +19,7 @@
     {% endwith %}
 
     <h1>Editar Miembro del Equipo</h1>
-    <form action="{{ url_for('team_members.update_team_member', team_member_email = team_member.email) }}" method="post">
+    <form action="{{ url_for('team_members.team_member_update', team_member_email = team_member.email) }}" method="post">
         <div>
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" value="{{ team_member.name }}">

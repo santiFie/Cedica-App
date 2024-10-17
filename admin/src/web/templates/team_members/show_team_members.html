@@ -12,7 +12,7 @@
     <h1>Miembros del equipo CEDICA</h1>
 
     <h2>Buscar Miembro del equipo</h2>
-    <form action="{{ url_for('team_members.team_members_list') }}" method="get">
+    <form action="{{ url_for('team_members.team_member_index') }}" method="get">
         <label for="email">Email:</label>
         <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
 
@@ -68,18 +68,18 @@
                     <td>{{ team_member.last_name }}</td>
                     <td>{{ team_member.email }}</td>
                     <td>
-                        <a href="{{ url_for('team_members.show_team_member', team_member_email=team_member.email) }}"> 
+                        <a href="{{ url_for('team_members.team_member_show', team_member_email=team_member.email) }}"> 
                             <button>Mostrar informacion</button>
                         </a>
 
                     </td>
                     <td>
-                        <a href="{{ url_for('team_members.edit_team_member', team_member_email=team_member.email) }}">
+                        <a href="{{ url_for('team_members.team_member_edit', team_member_email=team_member.email) }}">
                             <button type="button">Modificar</button>
                         </a>
                     </td>
                     <td>
-                        <form action="{{ url_for('team_members.switch_state_team_member', team_member_email=team_member.email) }}" method="POST">
+                        <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email) }}" method="POST">
                             {% if team_member.active %}
                                 <button type="submit">Desactivar</button>
                             {% else %}
@@ -95,7 +95,7 @@
 
         <div class="pagination">
             {% if page > 1 %}
-                <a href="{{ url_for('team_members.team_members_list', page=page-1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
+                <a href="{{ url_for('team_members.team_member_index', page=page-1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
                     <button>Previo</button>
                 </a>
             {% else %}
@@ -103,7 +103,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('team_members.team_members_list', page=page+1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
+                <a href="{{ url_for('team_members.team_member_index', page=page+1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
                     <button>Siguiente</button>
                 </a>
             {% else %}

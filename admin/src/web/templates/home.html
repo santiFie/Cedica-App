@@ -9,28 +9,42 @@
 {% block content %}
     <h1>Bienvenido</h1>
 
+
+    {% if check_permissions(session,"user_index") %}
     <form action="{{ url_for('users.user_index') }}">
         <button type="submit">Ver Usuarios</button>
     </form>
+    {% endif %}
 
-    <form action="{{ url_for('payments.index_payments') }}">
+    {% if check_permissions(session,"payment_index") %}
+    <form action="{{ url_for('payments.payment_index') }}">
         <button type="submit">Ver Pagos</button>
     </form>
+    {% endif %}
 
+    {% if check_permissions(session,"user_new") %}
     <form action="{{ url_for('users.user_new') }}">
         <button type="submit">Crear Usuario</button>
     </form>
+    {% endif %}
 
-    <form action="{{ url_for('team_members.team_members_list') }}">
+    {% if check_permissions(session,"team_member_index") %}
+    <form action="{{ url_for('team_members.team_member_index') }}">
         <button type="submit">Ver Miembros del Equipo</button>   
     </form>
+    {% endif %}
 
-    <form action="{{ url_for('team_members.new') }}">
+    {% if check_permissions(session,"team_member_new") %}
+    <form action="{{ url_for('team_members.team_member_new') }}">
         <button type="submit">Crear Miembro de Equipo</button>   
     </form>
+    {% endif %}
 
-    <form action="{{ url_for('collections.index_collections') }}">
+    {% if check_permissions(session,"collection_index") %}
+    <form action="{{ url_for('collections.collection_index') }}">
         <button type="submit">Ver Cobros</button>   
     </form>
+    {% endif %}
+
 
 {% endblock %}
