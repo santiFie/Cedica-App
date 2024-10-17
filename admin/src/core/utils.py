@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import current_app
+from flask import current_app, flash
 from os import fstat
 from io import BytesIO
 from src.web.storage import BUCKET_NAME
@@ -18,44 +18,55 @@ def validate_dates(initial_date, end_date=None):
 
     return True
 
+
 def string_to_date(string_date):
     try:
         return datetime.strptime(string_date, '%Y-%m-%d')
-    except:
-        return Exception("Invalid date format in 'string_to_date' function")
+    except ValueError:
+        try:
+            return datetime.strptime(string_date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return Exception("Invalid date format in 'string_to_date' function")
+
 
 def date_to_string(date):
     return date.strftime('%Y-%m-%d')
 
+def riders_and_horsewomen_errors(riders_form):
+    """
+    Return errors from a form
+    """
+    flash("Error al crear el jinete/Amazona", "error")
+    field_labels = {
+            "dni": "DNI",
+            "name": "Nombre",
+            "last_name": "Apellido",
+            "age": "Edad",
+            "date_of_birth": "Fecha de Nacimiento",
+            "place_of_birth": "Lugar de Nacimiento",
+            "address": "Dirección",
+            "phone": "Teléfono",
+            "emergency_contact": "Contacto de Emergencia",
+            "emergency_phone": "Teléfono de Emergencia",
+            "scholarship_percentage": "Porcentaje de Beca",
+            "observations": "Observaciones",
+            "disability_certificate": "Certificado de Discapacidad",
+            "others": "Otros",
+            "disability_type": "Tipo de Discapacidad",
+            "family_allowance": "Asignación Familiar",
+            "pension": "Pensión",
+            "name_institution": "Nombre de la Institución",
+            "address_institution": "Dirección de la Institución",
+            "phone_institution": "Teléfono de la Institución",
+            "current_grade": "Grado Actual",
+            "observations_institution": "Observaciones de la Institución",
+            "health_insurance": "Obra Social",
+            "membership_number": "Número de Afiliado",
+            "curatela": "Curatela",
+            "pension_situation_observations": "Observaciones de la Situación de Pensión"
+    }
 
-def upload_file(file, prefix, user_id):
-    """
-    Upload a file to Minio server
-    """
-    size = fstat(file.fileno()).st_size
-    client = current_app.storage.client
-    client.put_object(BUCKET_NAME, f"{prefix}/{user_id}-{file.filename}", file, size, content_type=file.content_type)
-
-def delete_file_from_minio(prefix, filename, user_id):
-    """
-    Delete a file from MinIO
-    """
-    object_name = f"{prefix}/{user_id}-{filename}"
-
-    client = current_app.storage.client
-    try:
-        client.remove_object(BUCKET_NAME, object_name)
-    except Exception as e:
-        current_app.logger.error(f"Error deleting file from MinIO: {str(e)}")
-
-def get_file_from_minio(prefix, user_id, filename):
-    """
-    Get a file from MinIO
-    """
-    client = current_app.storage.client
-    object_name = f"{prefix}/{user_id}-{filename}"
-    try:
-        response = client.get_object(BUCKET_NAME, object_name)
-        return BytesIO(response.read()), response.headers['content-type']
-    except Exception as e:
-        return None, None
+    for field, errors in riders_form.errors.items():
+        label = field_labels.get(field, field)
+        for error in errors:
+            flash(f"Error en {label}: {error}")

@@ -1,12 +1,14 @@
 from src.core import database   
+from datetime import datetime
 from src.core.models.equestrian import Equestrian
 from src.core.models.team_member import JobEnum
 from src.core import team_member as tm
-from src.core import utils
+from src.core import utils, minio
 from flask import flash
 
 
 db = database.db
+PREFIX="ecuestres"
 
 def equestrian_create(form, files):
     """
@@ -53,7 +55,7 @@ def equestrian_create(form, files):
 
     for key, file in files.items():
         if file:
-            utils.upload_file(prefix="ecuestres", file=file , user_id=equestrian.id)
+            minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
     # Add the selected team members to the equestrianTeamMember table
@@ -78,8 +80,8 @@ def update_equestrians_files(equestrian_id, files_dict):
 
     for key, file in files_dict.items():
         if file:
-            utils.delete_file_from_minio("ecuestres", getattr(equestrian, key), equestrian.id)
-            utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
+            minio.delete_file(PREFIX, getattr(equestrian, key), equestrian.id)
+            minio.upload_file(prefix=PREFIX, file=file, user_id=equestrian.id)
             setattr(equestrian, key, file.filename)
 
 
@@ -191,13 +193,13 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
     elif sort_by == 'date_of_entry_desc':
         query = query.order_by(Equestrian.date_of_entry.desc())
         
-    total_equestrians = query.count()
+    total_files = query.count()
 
     # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
-    if total_equestrians == 0:
+    if total_files == 0:
         return [], 1
     
-    max_pages = (total_equestrians + per_page - 1) // per_page  # Redondeo hacia arriba
+    max_pages = (total_files + per_page - 1) // per_page  # Redondeo hacia arriba
         
     # Aseguramos que page sea al menos 1
     if page < 1:
@@ -226,3 +228,95 @@ def equestrian_delete(id):
 
 def get_all_equestrians():
     return Equestrian.query.all()
+
+def order_files(sort_by, file):
+    if sort_by == 'name_asc':
+        file.sort(key=lambda x: x['filename'])
+    elif sort_by == 'name_desc':
+        file.sort(key=lambda x: x['filename'], reverse=True)
+    elif sort_by == 'downloaded_date_asc':
+        file.sort(key=lambda x: x['upload_date'] or datetime.min)
+    elif sort_by == 'downloaded_date_desc':
+        file.sort(key=lambda x: x['upload_date'] or datetime.min, reverse=True)
+    return file
+
+def check_dates(initial_date, final_date):
+    # Parse the dates outside the loop
+    if initial_date:
+        initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
+        if initial_date > datetime.now():
+            return False
+    if final_date:
+        final_date = datetime.strptime(final_date, '%Y-%m-%d')
+
+    # Check if the dates are valid
+    if not utils.validate_dates(initial_date, final_date):
+        return False
+    
+    return True
+
+def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
+    per_page = 25
+
+    # Get all the ecuestrians
+    equestrians = Equestrian.query.all()
+    # Create a list to store the files that meet the conditions
+    files_in_conditions = []
+
+    # Parse the dates outside the loop
+    if initial_date:
+        initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
+        if initial_date > datetime.now():
+            flash("No se pueden listar archivos que no fueron subidos aún")
+            return [], 1
+    if final_date:
+        final_date = datetime.strptime(final_date, '%Y-%m-%d')
+
+    if final_date and initial_date:
+        # Check if the dates are valid
+        if not utils.validate_dates(initial_date, final_date):
+            flash("Las fechas ingresadas no son válidas")
+            return [], 1
+
+    # Iterate over all the equestrians
+    for equestrian in equestrians:
+        # Get the files of the equest
+        equestrian_files = equestrian.get_files()
+        for file in equestrian_files:
+            if file:
+                # Get the date of the file
+                file_date = minio.get_file_date(prefix=PREFIX, user_id=equestrian.id, filename=file)
+            
+                # Apply the name filter
+                if name and name not in file:
+                    # If the name is not in the file name, continue with the next file
+                    continue
+                
+                # Apply the date filter
+                if initial_date and final_date:
+                    if not (file_date and initial_date <= file_date <= final_date):
+                        continue
+                
+                # Add the file to the list
+                files_in_conditions.append({
+                    'equestrian_id': equestrian.id,
+                    'equestrian_name': equestrian.name,
+                    'filename': file,
+                    'upload_date': file_date
+                })
+
+    # Order the files
+    files_in_conditions = order_files(sort_by, files_in_conditions)
+
+    # Calcular la paginación
+    total = len(files_in_conditions)
+    max_pages = (total + per_page - 1) // per_page  # Redondeo hacia arriba
+    
+    # Asegurar que la página sea válida
+    page = max(1, min(page, max_pages))
+    
+    start = (page - 1) * per_page
+    end = start + per_page
+    files = files_in_conditions[start:end]
+
+    return files, max_pages 

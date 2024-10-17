@@ -1,4 +1,5 @@
 from src.core import database
+from datetime import datetime
 from sqlalchemy.dialects.postgresql import ENUM, ARRAY
 
 
@@ -51,16 +52,16 @@ pension_enum= ENUM(
 )
 
 days_enum = ENUM(
-        'LUNES',
-        'MARTES',
-        'MIERCOLES',
-        'JUEVES',
-        'VIERNES',
-        'SABADO',
-        'DOMINGO',
-        name='days_of_week_enum',
-        create_type=False
-    )
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sabado',
+    'Domingo',
+    name='days_of_week_enum',
+    create_type=False
+)
 
 condition_enum = ENUM(
     'REGULAR',
@@ -100,8 +101,9 @@ education_level_enum = ENUM(
 class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomen'
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
-    dni = database.db.Column(database.db.String(8), unique=True)
+    dni = database.db.Column(database.db.String(8), unique=True, nullable=False)
     name = database.db.Column(database.db.String(120), nullable=False)
+    last_name = database.db.Column(database.db.String(120), nullable=False)
     age = database.db.Column(database.db.Integer, nullable=False)
     date_of_birth = database.db.Column(database.db.Date, nullable=False)
     place_of_birth = database.db.Column(database.db.String(120), nullable=False)
@@ -109,22 +111,38 @@ class RiderAndHorsewoman(database.db.Model):
     phone = database.db.Column(database.db.String(13), nullable=False)
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(13), nullable=False)
-    scholarship = database.db.Column(database.db.Boolean, nullable=False)
     scholarship_percentage = database.db.Column(database.db.String(2), nullable=True)
     observations = database.db.Column(database.db.String(120), nullable=True)
     disability_certificate = database.db.Column(disability_certificate_enum, nullable=True, default=None)
     others = database.db.Column(database.db.String(120), nullable=True)
-    disability_type = database.db.Column(disability_type_enum, nullable=False)
+    disability_type = database.db.Column(disability_type_enum, nullable=True)
     family_allowance = database.db.Column(family_allowance_enum, nullable= True, default= None)
     pension = database.db.Column(pension_enum, nullable= True, default= None)
     name_institution = database.db.Column(database.db.String(120), nullable=False)
     address_institution = database.db.Column(database.db.String(120), nullable=False)
     phone_institution = database.db.Column(database.db.String(13), nullable=False)
-    current_grade = database.db.Column(database.db.String(2), nullable=False)
+    current_grade = database.db.Column(database.db.String(120), nullable=False)
     observations_institution = database.db.Column(database.db.String(120), nullable=True)
+    health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
+    membership_number = database.db.Column(database.db.BigInteger, nullable=False)
+    curatela = database.db.Column(database.db.Boolean, default=False)
+    pension_situation_observations = database.db.Column(database.db.String(120), nullable=True)
     tutors = database.db.relationship('Tutor', back_populates='rider_and_horsewoman')
     work_in_institutions = database.db.relationship('WorkInInstitution', secondary='riders_horsewomen_institution', back_populates='riders_and_horsewomen')
-    #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
+    team_members = database.db.relationship('TeamMember', secondary='caring_professionals', back_populates='riders_and_horsewomen')
+
+    # necesario para Collection
+    debtor = database.db.Column(database.db.Boolean, default=True)
+
+    inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
+
+    collections = database.db.relationship('Collection', back_populates='rider')
+
+class CaringProfessional(database.db.Model):
+    __tablename__ = 'caring_professionals'
+    rider_horsewoman_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True)
+    team_member_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('team_members.id'), primary_key=True)
+
 
 class WorkInInstitution(database.db.Model):
     __tablename__ = 'work_in_institutions'
@@ -147,13 +165,13 @@ class RiderHorsewomanInstitution(database.db.Model):
     # rider_horsewoman = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), primary_key=True, nullable=False )
     # institution = database.db.Column(database.db.BigInteger, database.db.ForeignKey('work_in_institutions.id'), primary_key=True, nullable=False )
 
-
 class Tutor(database.db.Model):
     __tablename__ = 'tutors'
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
     dni = database.db.Column(database.db.String(8), nullable=False)
     relationship = database.db.Column(database.db.String(120), nullable=False)
     name = database.db.Column(database.db.String(120), nullable=False)
+    last_name = database.db.Column(database.db.String(120), nullable=False)
     address = database.db.Column(database.db.String(120), nullable=False)
     phone = database.db.Column(database.db.String(13), nullable=False)
     email = database.db.Column(database.db.String(120), nullable=False)

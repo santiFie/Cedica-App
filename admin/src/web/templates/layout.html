@@ -1,55 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
         {% block head %}
-        <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-        />
-
         <title>{% block title %}{% endblock %}</title>
         {% endblock %}
+
+
+        <script>
+            // Elimina los mensajes flash después de 7 segundos
+            setTimeout(function() {
+                const successMessage = document.getElementById('success-message');
+                const errorMessage = document.getElementById('error-message');
+                if (successMessage) {
+                    successMessage.remove();
+                }
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }, 7000);
+        </script>
+        {% block scripts %}
+        {% endblock %}
     </head>
-    <body>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
+    <body  class="bg-sky-100">
 
+        <div class="overflow-visible w-full min-w-full mx-auto">
+            {% block navbar %}
+            <div class="flex justify-between items-center bg-gray-100 p-1 shadow-md">
 
-        <div>{% block navbar %}
-            <div class="navbar">
-                <div class="logo"> 
-                    <img src="/static/images/logoCEDICA.png" alt="Logo" style="height: 40px;">
+                <!-- Logo -->
+                <div>
+                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="max-[800px]:hidden pr-1 h-10"></a>
+                    <div class="relative menu-logo"> 
+                        <a href="#"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="min-[800px]:hidden pr-1 h-10"></a>
+                        <div class="logo-dropdown-content absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                            <a href="{{ url_for('home') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Home</a>
+                            <a href="{{ url_for('payments.index_payments') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">J&A</a>
+                            <a href="{{ url_for('equestrian.list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
+                            <a href="{{ url_for('team_members.team_members_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
+                            <a href="{{ url_for('users.users_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Usuarios</a>
+                        </div>
+                    </div>
                 </div>
+
                 <!-- Menú de navegación -->
-                <div class="menu">
-                    <button>J&A</button>
-                    <button>Ecuestre</button>
-                    <button>Equipo</button>
+                <div class="menu flex space-x-2">
+                    <a href="{{ url_for('payments.index_payments') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
+                    <a href="{{ url_for('collections.index_collections') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
+                    <a href="#" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
+                    <a href="{{ url_for('equestrian.list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
+                    <a href="{{ url_for('team_members.team_members_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
+                    <a href="{{ url_for('users.users_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
                 </div>
-        
+
                 <!-- Perfil de usuario -->
-                <div class="user-menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                <div class="user-menu relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-800 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.8 21a8.38 8.38 0 0 0-7.8-4.5h-2c-3.6 0-6.7 2-7.8 4.5"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <div class="dropdown-content">
-                        <a href="#">Perfil</a>
-                        <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Perfil</a>
+                        <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
-            {% endblock %}</div>
-        <div id="container">
+            <script>
+                document.querySelector('.user-menu').addEventListener('click', function() {
+                this.querySelector('.dropdown-content').classList.toggle('hidden');
+                });
+            </script>
+            <script>
+                document.querySelector('.menu-logo').addEventListener('click', function() {
+                this.querySelector('.logo-dropdown-content').classList.toggle('hidden');
+                });
+            </script>
+            {% endblock %}
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="absolute top-4 w-full flex justify-center">
+            <ul>
+                {% for category, message in messages %}
+                    <li>
+                        {% if category == "message" %}
+                        <div id="success-message" class="flex bg-green-100 rounded-lg p-4 mb-4 text-sm text-green-700 max-w-sm mx-auto" role="alert">
+                        {% else %}
+                        <div id="error-message" class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700 max-w-sm mx-auto" role="alert">
+                        {% endif %}
+                            <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                            <div>
+                                <span class="font-medium"> ¡{{ message }}! </span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+        <div>
             {% block content %}
+
             {% endblock %}
         </div>
         <div>{% block footer %}{% endblock %}</div>

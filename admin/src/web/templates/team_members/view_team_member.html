@@ -16,8 +16,38 @@
     <h2> Fecha de inicio : {{ team_member.initial_date }}</h2>
     <h2> Contacto de emergencia : {{ team_member.emergency_contact }}</h2>
     <h2> Telefono de emergencia : {{ team_member.emergency_phone }}</h2>
+    <h2> Obra Social : {{ health_insurance.name }}</h2>
+    <h2> Numero de afiliado a la obra social : {{ team_member.asocciated_number }}</h2>
     <h2> Condicion : {{ team_member.condition }}</h2>
     <h2> Puesto de trabajo : {{ team_member.job_position }}</h2>
-    <h2> Profesion : {{ team_member.profession }}</h2>    
+    <h2> Profesion : {{ team_member.profession }}</h2>
+    
+    
+    
+    {% if team_member.title %}
+    <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}">
+        <button type="button">Ver Archivo</button>
+    </a>
+    {% else %}
+        <p>No hay archivo cargado</p>
+    {% endif %}
+
+    {% if team_member.dni_copy %}
+    <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}">
+        <button type="button">Ver Archivo</button>
+    </a>
+    {% else %}
+    <p>No hay archivo cargado</p>
+    {% endif %}
+
+
+    {% if team_member.cv %}
+    <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}">
+        <button type="button">Ver Archivo</button>
+    </a>
+    {% else %}
+    <p>No hay archivo cargado</p>
+    {% endif %}
+
 
 {% endblock %}

@@ -19,7 +19,7 @@
     {% endwith %}
 
     <h1>Editar Miembro del Equipo</h1>
-    <form action="{{ url_for('team_members.update_team_member', team_member_email = team_member.email) }}" method="post">
+    <form action="{{ url_for('team_members.update_team_member', team_member_email = team_member.email) }}" method="post" enctype="multipart/form-data">
         <div>
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" value="{{ team_member.name }}">
@@ -64,6 +64,11 @@
             {% endfor %}
         </select>
 
+        <div>
+            <label for="health_insurance_number">Numero de afiliado obra social:</label>
+            <input type="text" id="health_insurance_number" name="health_insurance_number" value="{{ team_member.health_insurance_number }}">
+        </div>
+
 
         <label for="condition">Condición:</label>
                 <select id="condition" name="condition">
@@ -85,6 +90,22 @@
                     <option value="{{ profession }}">{{ profession }}</option>
                 {% endfor %}
             </select>
+
+
+        <div>
+            <label for="title">Titulo:</label>
+            <input type="file" id="files" name="title" enctype="multipart/form-data">
+        </div>
+
+        <div>
+            <label for="dni_copy">Copia DNI:</label>
+            <input type="file" id="files" name="dni_copy" enctype="multipart/form-data">
+        </div>
+
+        <div>
+            <label for="cv">CV :</label>
+            <input type="file" id="files" name="cv" enctype="multipart/form-data">
+        </div>
         <div>
             <button type="submit">Guardar</button>
         </div>
