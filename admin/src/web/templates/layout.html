@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% block head %}
         <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
+        {% block head %}
         <title>{% block title %}{% endblock %}</title>
         {% endblock %}
 
@@ -31,11 +31,11 @@
             <div class="navbar flex justify-between items-center bg-gray-100 p-4 shadow-md">
                 <!-- Logo -->
                 <div class="logo"> 
-                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="pr-1 lg:h-10 xl:h-10 xxs:h-5"></a>
+                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="pr-1 lg:h-10 xl:h-10 xxs:h-7"></a>
                 </div>
 
                 <!-- Menú de navegación -->
-                <div class="menu flex space-x-2.5">
+                <div class="menu flex space-x-2">
                     <a href="{{ url_for('payments.index_payments') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
                     <a href="{{ url_for('collections.index_collections') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
                     <a href="#" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
