@@ -806,6 +806,10 @@ video {
   min-width: 240px;
 }
 
+.min-w-full {
+  min-width: 100%;
+}
+
 .max-w-sm {
   max-width: 24rem;
 }
@@ -1029,6 +1033,10 @@ video {
 
 .fill-current {
   fill: currentColor;
+}
+
+.p-1 {
+  padding: 0.25rem;
 }
 
 .p-2 {
@@ -1357,6 +1365,22 @@ video {
   --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity));
 }
 
+@media (max-width: 1024px) {
+  .max-\[1024px\]\:top-4 {
+    top: 1rem;
+  }
+
+  .max-\[1024px\]\:mt-10 {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .max-\[1000px\]\:w-full {
+    width: 100%;
+  }
+}
+
 @media (max-width: 825px) {
   .max-\[825px\]\:ml-4 {
     margin-left: 1rem;
@@ -1391,6 +1415,59 @@ video {
   }
 }
 
+@media (max-width: 560px) {
+  .max-\[560px\]\:w-\[5\%\] {
+    width: 5%;
+  }
+
+  .max-\[560px\]\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .max-\[480px\]\:ml-0\.5 {
+    margin-left: 0.125rem;
+  }
+
+  .max-\[480px\]\:h-4 {
+    height: 1rem;
+  }
+
+  .max-\[480px\]\:w-\[5\%\] {
+    width: 5%;
+  }
+
+  .max-\[480px\]\:space-x-0\.5 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.125rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.125rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .max-\[480px\]\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .max-\[480px\]\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .max-\[450px\]\:w-\[2\%\] {
+    width: 2%;
+  }
+}
+
+@media (max-width: 420px) {
+  .max-\[420px\]\:w-0\.5 {
+    width: 0.125rem;
+  }
+}
+
 @media (min-width: 300px) {
   .xxs\:fixed {
     position: fixed;
@@ -1410,10 +1487,6 @@ video {
 
   .xxs\:h-9 {
     height: 2.25rem;
-  }
-
-  .xxs\:w-full {
-    width: 100%;
   }
 }
 
@@ -1440,10 +1513,6 @@ video {
 
   .xs\:w-10 {
     width: 2.5rem;
-  }
-
-  .xs\:w-full {
-    width: 100%;
   }
 }
 
@@ -1478,10 +1547,6 @@ video {
 
   .sm\:w-11 {
     width: 2.75rem;
-  }
-
-  .sm\:w-3\/4 {
-    width: 75%;
   }
 
   .sm\:rounded-md {
@@ -1588,6 +1653,12 @@ video {
 
   .lg\:p-36 {
     padding: 9rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .min-\[1200px\]\:w-3\/4 {
+    width: 75%;
   }
 }
 

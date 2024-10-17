@@ -19,22 +19,22 @@
 {% endblock %}
 
 {% block content %}
+    <button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
+        <svg
+            class="md:w-12 md:h-12 xs:w-10 xs:h-10 xxs:h-9 sm:w-11 sm:h-11 fill-current inline-block"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+            fill-rule="evenodd"
+            d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            clip-rule="evenodd"
+            ></path>
+        </svg>
+    </button>
     <div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
-        <button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
-          <svg
-              class="md:w-12 md:h-12 xs:w-10 xs:h-10 xxs:h-9 sm:w-11 sm:h-11 fill-current inline-block"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-        </button>
-        <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[46rem] p-3 shadow-blue-gray-900/5 mt-3">
+        <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[46rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4">
             <form action="{{ url_for('equestrian.list') }}" method="get">
             <div class="mb-1 p-3">
               <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Ecuestres del sistema</h5>
@@ -94,20 +94,20 @@
         </div>
 
         {% if list %}    
-            <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 w-full sm:w-3/4 xs:w-full xxs:w-full mx-auto max-[825px]:ml-4">
+            <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 mx-auto max-[825px]:ml-4 max-[480px]:ml-0.5 max-[480px]:w-[5%] max-[450px]:w-[2%] max-[420px]:w-0.5 min-[1200px]:w-3/4 max-[1000px]:w-full items-center">
                 <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
                 <thead class="bg-gray-50">
                     <tr>
-                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">Alias/Email</th>
-                    <th scope="col" class="max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Tipos de J&A asignados</th>
-                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">Informacion</th>
-                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                    <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Alias/Email</th>
+                    <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Tipos de J&A asignados</th>
+                    <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
+                    <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                     {% for equestrian in list %}
                     <tr class="hover:bg-gray-50">
-                    <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                    <th class="max-[560px]:w-[5%]  max-[560px]:px-2 flex gap-3 px-6 py-4 font-normal text-gray-900">
                         <div class="text-sm">
                         <div class="font-medium text-gray-700">{{ equestrian.name }}</div>
                         </div>
