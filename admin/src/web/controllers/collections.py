@@ -1,7 +1,10 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection
+from src.core.collections import find_collections, create_collection, find_collection, delete_a_collection, edit_a_collection, find_debtors, calculate_debt
 from src.core.team_member import find_team_member_by_email 
+from src.web.handlers.auth import login_required
 from src.core.riders_and_horsewomen import find_rider
+from src.web.handlers.auth import login_required
+from src.web.forms import CollectionForm
 from datetime import datetime
 
 
@@ -9,6 +12,7 @@ bp = Blueprint('collections',__name__,url_prefix="/collections")
 
 
 @bp.get('/')
+@login_required
 def index_collections():
 
     # Obtener parámetros de búsqueda del formulario
@@ -26,62 +30,51 @@ def index_collections():
 
 
 @bp.get('/collection_register_form')
+@login_required
 def collection_register_form():
-    return render_template("collections/collection_register_form.html")
+    form = CollectionForm()
+    return render_template("collections/collection_register_form.html", form=form)
 
 
-@bp.post('/register_collection')
+@bp.route('/register_collection', methods=["GET", "POST"])
+@login_required
 def register_collection():
+    
+    form = CollectionForm(request.form)
         
-        # Obtener los datos del formulario
-        amount = request.form.get('amount')
-        payment_date = request.form.get('payment_date')
-        payment_method = request.form.get('payment_method')
-        observations = request.form.get('observations', '')
-        team_member_id = request.form.get('team_member_id')
-        rider_dni = request.form.get('rider_dni')
+    if request.method == "POST" and form.validate():
+        team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
+        rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
 
-        print(rider_dni)
-        
-        # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
-        obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
+        # Verificar si el miembro del equipo existe
+        if form.team_member_id.data and not team_member:
+            flash("El miembro de equipo no existe.", "error")
+            return render_template('collections/collection_register_form.html', form=form)
 
-        if obj_payment_date > datetime.today().date() :
-            flash("La fecha de pago no puede ser una fecha futura.", "error")
-            return render_template('collections/collection_register_form.html')
-        
-        # chequeo si al cargar el team_member se ingresa un usuario cargado en el sistema
-        if team_member_id:
-            team_member = find_team_member_by_email(team_member_id)
-            if not team_member:
-                flash("El miembro de equipo no existe.", "error")
-                return render_template('collections/collection_register_form.html')
+        # Verificar si el jinete existe
+        if form.rider_dni.data and not rider:
+            flash("El jinete o amazona no existe.", "error")
+            return render_template('collections/collection_register_form.html', form=form)
 
-        # chequeo si al cargar el rider se ingresa un usuario cargado en el sistema
-        if rider_dni:
-             rider = find_rider(rider_dni)
-             if not rider:
-                flash("El jinete o amazona no existe.", "error")
-                return render_template('collections/collection_register_form.html')
-        
+        # Crear la nueva colección
         new_collection = create_collection(
-             amount=amount,
-             payment_date = payment_date,
-             payment_method = payment_method,
-             observations = observations,
-             team_member_id = team_member.email,
-             rider_dni = rider.dni
+            amount=form.amount.data,
+            payment_date=form.payment_date.data,
+            payment_method=form.payment_method.data,
+            observations=form.observations.data,
+            team_member_id=team_member.email if team_member else '',
+            rider_dni=rider.dni if rider else ''
         )
 
-
-         # Mostrar mensaje de éxito
         flash("Cobro registrado exitosamente", "success")
+        return redirect(url_for('collections.collection_register_form'))
 
-        # Renderiza la misma página con un mensaje de éxito o en caso de error
-        return render_template("collections/collection_register_form.html")
+    # Si el formulario tiene errores o es GET, renderizar la página con el formulario
+    return render_template('collections/collection_register_form.html', form=form)
 
 
 @bp.get('/collection_detail/<int:collection_id>')
+@login_required
 def show_detail_collection(collection_id):
      
     collection = find_collection(collection_id)
@@ -95,64 +88,60 @@ def show_detail_collection(collection_id):
 
 
 @bp.get('/edit_collection_form/<int:collection_id>')
+@login_required
 def edit_collection_form(collection_id):
     collection = find_collection(collection_id)
-    return render_template("collections/edit_collection_form.html", collection=collection)
+    form = CollectionForm()
+    return render_template("collections/edit_collection_form.html", form=form, collection=collection)
 
-@bp.post('/edit_collection/<int:collection_id>')
+@bp.route('/edit_collection/<int:collection_id>', methods=["GET", "POST"])
+@login_required
 def edit_collection(collection_id):
 
     collection = find_collection(collection_id)
+    form = CollectionForm(request.form)
 
-    # para hacer el chequeo por fecha
-    payment_date = request.form.get('payment_date')
+    if request.method == 'POST' and form.validate():
 
-    # para buscar J&A y team_member en el sistema
-    rider_dni = request.form.get('rider_dni')
-    team_member_id = request.form.get('team_member_id')
+    # Buscar el miembro del equipo y el jinete con los datos validados
+        team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
+        rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
 
-    # convierto el parametro de la fecha a un datetime para poder comparar con la fecha actual
-    obj_payment_date = datetime.strptime(payment_date, "%Y-%m-%d").date()
-
-    if obj_payment_date > datetime.today().date() :
-        flash("La fecha de cobro no puede ser una fecha futura.", "error")
-        return render_template('collectios/edit_collection_form.html', collection=collection)
-    
-     # chequeo si al cargar el team_member se ingresa un usuario cargado en el sistema
-    if team_member_id:
-        team_member = find_team_member_by_email(team_member_id)
-        if not team_member:
+        # Verificar si el miembro del equipo existe
+        if form.team_member_id.data and not team_member:
             flash("El miembro de equipo no existe.", "error")
-            return render_template('collections/edit_collection_form.html', collection=collection)
+            return render_template('collections/edit_collection_form.html', form=form, collection=collection)
 
-    # chequeo si al cargar el rider se ingresa un usuario cargado en el sistema
-    if rider_dni:
-        rider = find_rider(rider_dni)
-        if not rider:
+        # Verificar si el jinete existe
+        if form.rider_dni.data and not rider:
             flash("El jinete o amazona no existe.", "error")
-            return render_template('collections/edit_collection_form.html', collection=collection)
-        
-    collection = edit_a_collection(
-        collection_id=collection_id,
-        rider_dni = request.form.get('rider_dni'),
-        team_member_id = request.form.get('team_member_id'),
-        amount = float(request.form.get('amount')),
-        payment_date = request.form.get('payment_date'),
-        payment_method = request.form.get('payment_method'),
-        observations = request.form.get('observations', ''),
+            return render_template('collections/edit_collection_form.html', form=form, collection=collection)
 
-    )
-    
+        # Actualizar la colección con los datos del formulario
+        updated_collection = edit_a_collection(
+            collection_id=collection_id,
+            rider_dni=form.rider_dni.data,
+            team_member_id=team_member.email if team_member else '',
+            amount=form.amount.data,
+            payment_date=form.payment_date.data,
+            payment_method=form.payment_method.data,
+            observations=form.observations.data,
+        )
 
-    if not collection:
-        flash("El cobro seleccionado no exite", "error")
-    else:
-        flash("Datos del cobro actualizado")
-    return redirect(url_for('collections.index_collections'))
+        if not updated_collection:
+            flash("El cobro seleccionado no existe", "error")
+        else:
+            flash("Datos del cobro actualizados", "success")
+
+        return redirect(url_for('collections.index_collections'))
+
+    # Si el formulario tiene errores o es un GET, renderiza el formulario con los errores
+    return render_template('collections/edit_collection_form.html', form=form, collection=collection)
 
 
 
 @bp.post('/delete_collection/<int:collection_id>')
+@login_required
 def delete_collection(collection_id):
 
     collection = find_collection(collection_id)
@@ -165,3 +154,28 @@ def delete_collection(collection_id):
     
     flash("Cobro eliminado exitosamente.")
     return redirect(url_for('collections.index_collections')) 
+
+
+@bp.get('/index_debts')
+@login_required
+def index_debts():
+    # obtengo parametros del filtro
+    # Obtener parámetros de búsqueda del formulario
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    dni = request.args.get('dni')
+    order_by = request.args.get('order_by', 'asc')
+    page = request.args.get('page', 1, type=int)
+
+    # busco deudores
+    debtors, max_pages = find_debtors(start_date, end_date, dni, order_by, page)
+    
+    return render_template("collections/show_debtors.html", debtors=debtors, max_pages=max_pages, current_page=page)
+
+@bp.get('/detail_debt/<string:debtor_dni>')
+@login_required
+def show_detail_debt(debtor_dni):
+    # muestro detalle de que meses debe ese rider
+    debt_details, debtor = calculate_debt(debtor_dni)
+
+    return render_template("collections/show_debt_detail.html", debt_details=debt_details, debtor=debtor)

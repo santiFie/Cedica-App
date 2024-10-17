@@ -9,6 +9,18 @@
 {% block content %}
     <h1>Editar Información del Cobro</h1>
 
+    {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <form method="POST" action="{{ url_for('collections.edit_collection', collection_id=collection.id) }}">
         <div>
             <label for="rider_dni">J&A (DNI):</label>
@@ -17,16 +29,16 @@
 
         <div>
             <label for="payment_date">Fecha de Pago:</label>
-            <input type="date" id="payment_date" name="payment_date" value="{{ collection.payment_date.strftime('%Y-%m-%dT%H:%M') }}" required>
+            <input type="date" id="payment_date" name="payment_date" value="{{ form.payment_date.data.strftime('%Y-%m-%d') if form.payment_date.data else collection.payment_date.strftime('%Y-%m-%d') }}" required>
         </div>
 
         <div>
             <label for="payment_method">Metodo de Pago:</label>
             <select id="payment_method" name="payment_method" required>
-                <option value="EFECTIVO" {% if collection.payment_method == 'EFECTIVO' %}selected{% endif %}>Efectivo</option>
-                <option value="TARJETA DE CREDITO" {% if collection.payment_method == 'TARJETA DE CREDITO' %}selected{% endif %}>Tarjeta de Credito</option>
-                <option value="TARJETA DE DEBITO" {% if collection.payment_method == 'TARJETA DE DEBITO' %}selected{% endif %}>Tarjeta de Debito</option>
-                <option value="TRANSFERENCIA" {% if collection.payment_method == 'TRANSFERENCIA' %}selected{% endif %}>Transferencia</option>
+                <option value="EFECTIVO" {% if form.payment_method.data == 'EFECTIVO' %}selected{% endif %}>Efectivo</option>
+                <option value="TARJETA DE CREDITO" {% if form.payment_method.data == 'TARJETA DE CREDITO' %}selected{% endif %}>Tarjeta de Credito</option>
+                <option value="TARJETA DE DEBITO" {% if form.payment_method.data == 'TARJETA DE DEBITO' %}selected{% endif %}>Tarjeta de Debito</option>
+                <option value="TRANSFERENCIA" {% if form.payment_method.data == 'TRANSFERENCIA' %}selected{% endif %}>Transferencia</option>
             </select>
         </div>
 
@@ -37,17 +49,12 @@
 
         <div>
             <label for="observations">Observaciones:</label>
-            <textarea id="observations" name="observations">{{ collection.observations }}</textarea>
+            <textarea id="observations" name="observations">{{ form.observations.data if form.observations.data else '' }}</textarea>
         </div>
 
         <div>
             <label for="team_member_id">Miembro del equipo (Email):</label>
             <input type="email" id="team_member_id" name="team_member_id" value="{{ collection.teammember.email if collection.teammember else '' }}" required>
-        </div>
-
-        <div>
-            <label for="debt">Debe:</label>
-            <input type="checkbox" id="debt" name="debt" value="True" {% if collection.debt %}checked{% endif %}>
         </div>
 
         <button type="submit">Actualizar Cobro</button>

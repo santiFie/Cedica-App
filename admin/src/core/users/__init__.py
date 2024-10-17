@@ -113,4 +113,24 @@ def edit(**kwargs):
         return user
     return None
 
+def switch_state(user_email):
+
+    user = auth.find_user_by_email(user_email)
+
+    ##Chequeo que no se intente desactivar un system admin
+    if(user.system_admin):
+        return False
+    
+
+    if user.active:
+        user.active = False
+    else:
+        user.active = True
+    db.session.commit()
+    ##Devuelvo verdadero si se pudo hacer el cambio
+    return True
+
+
+
+
 

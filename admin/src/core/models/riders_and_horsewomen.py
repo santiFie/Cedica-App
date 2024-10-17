@@ -130,6 +130,8 @@ class RiderAndHorsewoman(database.db.Model):
     #institution = database.db.relationship('WorkInInstitution', secondary= 'riders_horsewomen_institution', back_populates='riders_and_horsewomen')
 
     # necesario para Collection
+    debtor = database.db.Column(database.db.Boolean, default=True)
+
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
 
     collections = database.db.relationship('Collection', back_populates='rider')
