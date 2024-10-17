@@ -56,9 +56,6 @@ def new():
             else:
                 flash("El dni ingresado ya existe", "info")
         else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"Error in {field}: {error}")
             flash("faltan datos para completar", "error")
 
         return redirect(url_for("riders_and_horsewomen.new"))
