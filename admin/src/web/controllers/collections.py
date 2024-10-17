@@ -4,10 +4,7 @@ from src.core.team_member import find_team_member_by_email
 from src.web.handlers.auth import login_required
 from src.core.riders_and_horsewomen import find_rider
 from src.web.handlers.auth import login_required
-<<<<<<< HEAD
-=======
 from src.web.forms import CollectionForm
->>>>>>> dev
 from datetime import datetime
 
 
