@@ -33,7 +33,7 @@ def verification():
             flash("Tu cuenta ha sido desactivada. Por favor, contacta a un administrador", "info")
     else:
         flash("Faltan campos por completar", "info")
-
+    
     return redirect(url_for("auth.login"))
 
 @bp.get("/logout")

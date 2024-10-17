@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core import users, auth
 from src.core.models.users import Role
-from src.web.forms import registerForm as rf
+from src.web.forms import registerForm, userEditForm
 
 bp = Blueprint('users',__name__,url_prefix="/users")
 
@@ -28,7 +28,6 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
     else:
         active = None  # No aplicar filtro
 
-    print(email)
     # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
     all_users, max_pages = users.find_users(page=page, email=email, active=active, role_name=role, sort_by=sort_by, exclude_user=current_user)
         
@@ -42,18 +41,27 @@ def user_update():
     Updates a user
     """
     user_mail = request.args.get('user_email')
-    user = users.edit(
-        email=user_mail,
-        nickname=request.form["nickname"],
-        system_admin=request.form.get("system_admin", False),
-        role_id=request.form["role_id"]
-    )
 
-    if not user:
-        flash("No existe el usuario")
+    form = userEditForm(request.form)
+    if form.validate():
+
+        user = users.edit(
+            email=user_mail,
+            nickname=request.form["nickname"],
+            system_admin=request.form.get("system_admin", False),
+            role_id=request.form["role_id"]
+        )
+        if not user:
+            flash("No existe el usuario")
+        else:
+            flash("Usuario actualizado")
     else:
-        flash("Usuario actualizado")
-    return redirect(url_for("users.users_list", flash=flash) )
+        user = auth.find_user_by_email(user_mail)
+        roles = Role.query.all()
+        flash("No se puede dejar campos sin completar al editar", "info")
+        return render_template("users/edit_user.html", user=user,roles=roles)
+
+    return redirect(url_for("users.users_list") )
 
 @bp.get("/edit")
 def user_edit():
@@ -81,7 +89,7 @@ def user_create():
     if request.method == "POST":
 
 
-        form = rf(request.form)
+        form = registerForm(request.form)
         if form.validate():
             user = auth.check_user(request.form["email"], request.form["password"])
 

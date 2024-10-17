@@ -611,6 +611,21 @@ class registerForm(Form):
     )
 
 
+class userEditForm(Form):
+
+    nickname = StringField(
+        "nickname",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ]
+    )
+    
+
+
+
+
 
 
 
