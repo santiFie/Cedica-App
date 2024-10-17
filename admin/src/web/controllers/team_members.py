@@ -76,7 +76,6 @@ def show_team_member():
 
     health_insurance = hi.get_by_id(team_member.health_insurance_id)
 
-    print(team_member.title)
     
     return render_template("team_members/view_team_member.html", team_member=team_member, health_insurance = health_insurance)
 
