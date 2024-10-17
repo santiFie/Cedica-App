@@ -26,22 +26,34 @@
     </head>
     <body  class="bg-sky-100">
 
-        <div>
+        <div class="overflow-visible w-full min-w-full mx-auto">
             {% block navbar %}
-            <div class="navbar flex justify-between items-center bg-gray-100 p-4 shadow-md">
+            <div class="flex justify-between items-center bg-gray-100 p-1 shadow-md">
+
                 <!-- Logo -->
-                <div class="logo"> 
-                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="pr-1 lg:h-10 xl:h-10 xxs:h-7"></a>
+                <div>
+                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="max-[800px]:hidden pr-1 h-10"></a>
+                    <div class="relative menu-logo"> 
+                        <a href="#"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="min-[800px]:hidden pr-1 h-10"></a>
+                        <div class="logo-dropdown-content absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                            <a href="{{ url_for('home') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Home</a>
+                            <a href="{{ url_for('payments.index_payments') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">J&A</a>
+                            <a href="{{ url_for('equestrian.list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
+                            <a href="{{ url_for('team_members.team_members_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
+                            <a href="{{ url_for('users.users_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Usuarios</a>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Menú de navegación -->
                 <div class="menu flex space-x-2">
-                    <a href="{{ url_for('payments.index_payments') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
-                    <a href="{{ url_for('collections.index_collections') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
-                    <a href="#" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
-                    <a href="#" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
-                    <a href="{{ url_for('team_members.team_members_list') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
-                    <a href="{{ url_for('users.users_list') }}" class="bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
+                    <a href="{{ url_for('payments.index_payments') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
+                    <a href="{{ url_for('collections.index_collections') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
+                    <a href="#" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
+                    <a href="{{ url_for('equestrian.list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
+                    <a href="{{ url_for('team_members.team_members_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
+                    <a href="{{ url_for('users.users_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
                 </div>
 
                 <!-- Perfil de usuario -->
@@ -59,6 +71,11 @@
             <script>
                 document.querySelector('.user-menu').addEventListener('click', function() {
                 this.querySelector('.dropdown-content').classList.toggle('hidden');
+                });
+            </script>
+            <script>
+                document.querySelector('.menu-logo').addEventListener('click', function() {
+                this.querySelector('.logo-dropdown-content').classList.toggle('hidden');
                 });
             </script>
             {% endblock %}

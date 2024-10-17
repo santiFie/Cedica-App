@@ -9,6 +9,18 @@
 {% block content %}
     <h1>Editar Informacion de Pago</h1>
 
+    {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <form method="POST" action="{{ url_for('payments.edit_payment', payment_id=payment.id) }}">
         <div>
             <label for="beneficiary_id">Beneficiario:</label>
@@ -16,23 +28,23 @@
         </div>
         <div>
             <label for="amount">Monto:</label>
-            <input type="number" id="amount" name="amount" step="0.01" value="{{ payment.amount }}" required>
+            <input type="number" id="amount" name="amount" step="0.01" value="{{ form.amount.data }}" required>
         </div>
         <div>
             <label for="payment_date">Fecha de Pago:</label>
-            <input type="date" id="payment_date" name="payment_date" value="{{ payment.payment_date.strftime('%Y-%m-%dT%H:%M') }}" required>
+            <input type="date" id="payment_date" name="payment_date" value="{{ form.payment_date.data.strftime('%Y-%m-%d') if form.payment_date.data else '' }}" required>
         </div>
         <div>
             <label for="payment_type">Tipo de Pago:</label>
             <select id="payment_type" name="payment_type" required>
-                <option value="HONORARIOS" {% if payment.payment_type == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
-                <option value="PROVEEDOR" {% if payment.payment_type == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
-                <option value="GASTOS VARIOS" {% if payment.payment_type == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
+                <option value="HONORARIOS" {% if form.payment_type.data == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
+                <option value="PROVEEDOR" {% if form.payment_type.data == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
+                <option value="GASTOS VARIOS" {% if form.payment_type.data == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
             </select>
         </div>
         <div>
             <label for="description">Descripción:</label>
-            <input type="text" id="description" name="description" value="{{ payment.description }}">
+            <input type="text" id="description" name="description" value="{{ form.description.data }}">
         </div>
         <button type="submit">Actualizar Pago</button>
     </form>
