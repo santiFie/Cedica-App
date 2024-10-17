@@ -114,9 +114,10 @@ def edit_a_payment(**kwargs):
             payment.beneficiary_id = None
         else:
             payment.beneficiary_id = beneficiary_id
-        
+
+        # chequeo si la fecha es un objeto datetime, si no lo es, convertirla
+        payment.payment_date = kwargs.get('payment_date')
         payment.amount = kwargs.get('amount', payment.amount)
-        payment.payment_date = datetime.strptime(kwargs.get('payment_date'), '%Y-%m-%d')
         payment.payment_type = kwargs.get('payment_type', payment.payment_type)
         payment.description = kwargs.get('description', payment.description)
 

@@ -17,7 +17,7 @@ def delete_file(prefix, filename, user_id):
         current_app.logger.error(f"Error deleting file from MinIO: {str(e)}")
 
 
-def upload_file(file, prefix, user_id):
+def upload_file(prefix, file, user_id):
     """
     Upload a file to Minio server
     """

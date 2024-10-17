@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <form action="{{ url_for('team_members.create') }}" method="POST">
+        <form action="{{ url_for('team_members.create') }}" method="POST" enctype="multipart/form-data">
             <!-- Nombre -->
             <div class="form-group">
                 <label for="name">Nombre:</label>
@@ -83,6 +83,12 @@
                 </select>
             </div>
 
+             <!-- Numero de afiliado obra social -->
+             <div class="form-group">
+                <label for="emergency_phone">Numero de afiliado obra social:</label>
+                <input type="text" id="health_insurance_number" name="health_insurance_number" required>
+            </div>
+
             <!-- Condición -->
             <div class="form-group">
                 <label for="condition">Condición:</label>
@@ -111,6 +117,23 @@
                         <option value="{{ profession }}">{{ profession }}</option>
                     {% endfor %}
                 </select>
+            </div>
+
+            <!-- Archivos -->
+
+            <div>
+                <label for="title">Titulo:</label>
+                <input type="file" id="files" name="title" enctype="multipart/form-data">
+            </div>
+
+            <div>
+                <label for="dni_copy">Copia DNI:</label>
+                <input type="file" id="files" name="dni_copy" enctype="multipart/form-data">
+            </div>
+
+            <div>
+                <label for="cv">CV :</label>
+                <input type="file" id="files" name="cv" enctype="multipart/form-data">
             </div>
 
             <!-- Submit Button -->
