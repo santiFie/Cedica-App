@@ -1,8 +1,11 @@
 from src.core import database
 from flask import flash
 from src.core import utils
+from src.core import team_member as tm
 from src.core.models.riders_and_horsewomen import RiderAndHorsewoman
 from sqlalchemy.orm import aliased
+from src.web.forms import SecondTutorForm, FirstTutorForm
+
 
 def create_enums():
     from src.core.models.riders_and_horsewomen import disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum, days_enum, condition_enum, seat_enum, proposal_enum, education_level_enum
@@ -40,25 +43,62 @@ def create_caring_professional(id_rh, id_tm):
 
 def create_tutor(form, id):
     """
-    Create first tutor
+    Create tutor/s
     """
     from src.core.models.riders_and_horsewomen import Tutor
 
-    first_tutor = Tutor(
-        dni = form["dni_first_tutor"],
-        relationship = form["relationship_first_tutor"],
-        name = form["name_first_tutor"],
-        last_name = form["last_name_first_tutor"],
-        address = form["address_first_tutor"],
-        phone = form["phone_first_tutor"],
-        email = form["email_first_tutor"],
-        education_level = form["education_level_first_tutor"],
-        occupation = form["occupation_first_tutor"],
-        rider_and_horsewoman_id = id
-    )
+    first_tutor_form = FirstTutorForm(form)
+    second_tutor_form = None
+    if form["dni_second_tutor"]:
+        second_tutor_form = SecondTutorForm(form)
 
-    database.db.session.add(first_tutor)
-    database.db.session.commit()
+        
+
+    validation_first_tutor = first_tutor_form.validate()
+    validation_second_tutor = False
+    if second_tutor_form:
+        validation_second_tutor = second_tutor_form.validate()
+
+    if validation_first_tutor:
+        first_tutor = Tutor(
+            dni = form["dni_first_tutor"],
+            relationship = form["relationship_first_tutor"],
+            name = form["name_first_tutor"],
+            last_name = form["last_name_first_tutor"],
+            address = form["address_first_tutor"],
+            phone = form["phone_first_tutor"],
+            email = form["email_first_tutor"],
+            education_level = form["education_level_first_tutor"],
+            occupation = form["occupation_first_tutor"],
+            rider_and_horsewoman_id = id,
+        )
+        print(first_tutor.__dict__)
+        database.db.session.add(first_tutor)
+        database.db.session.commit()
+
+    
+    if validation_second_tutor:
+        second_tutor = Tutor(
+            dni = form["dni_second_tutor"],
+            relationship = form["relationship_second_tutor"],
+            name = form["name_second_tutor"],
+            last_name = form["last_name_second_tutor"],
+            address = form["address_second_tutor"],
+            phone = form["phone_second_tutor"],
+            email = form["email_second_tutor"],
+            education_level = form["education_level_second_tutor"],
+            occupation = form["occupation_second_tutor"],
+            rider_and_horsewoman_id = id
+        )
+        database.db.session.add(second_tutor)
+        database.db.session.commit()
+
+    if validation_first_tutor and validation_second_tutor:
+        flash("Tutores creados exitosamente")
+    elif validation_first_tutor:
+        flash("Primer tutor creado exitosamente")
+    else:
+        flash("Segundo tutor creado exitosamente")
 
 
     if form.get("dni_second_tutor"):
@@ -147,21 +187,23 @@ def create_rider_horsewoman(form):
         phone_institution = form["phone_institution"],
         current_grade = form["current_grade"],
         observations_institution = form["observations_institution"],
+        health_insurance_id = form["health_insurance"],
+        membership_number = form["membership_number"],
+        curatela = True if form["curatela"] == 'on' else False,
+        pension_situation_observations = form["observations_institution"]
     )
-
-    # Personales que lo atienden
 
     database.db.session.add(rider_horsewoman)
     database.db.session.commit()
 
-    for email in form["team_members"]:
-        member = check_team_member_by_email(email)
-        create_caring_professional(rider_horsewoman.id, member.id)
-    rider = find_rider(form["dni"])
-    member = check_team_member_by_email(form["email_member"])
-    create_caring_professional(rider.id,member.id)
-    create_tutor(form, rider.id)
-    return flash("Miembro de equipo creado exitosamente")
+    # Caring professionals
+    for i in range(1, 6):
+        id_key = f"select_pro_{i}"
+        if form.get(id_key):
+            create_caring_professional(rider_horsewoman.id, form[id_key])
+
+    # Tutors
+    create_tutor(form, rider_horsewoman.id)
 
 # FALTA EL PARAM Y FILTRO DE PROFESIONALES QUE LO ATIENDEN !!!!!!!!!!
 def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', page=1):
