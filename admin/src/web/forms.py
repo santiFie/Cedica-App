@@ -2,12 +2,13 @@ from wtforms import Form, StringField, IntegerField, DateField
 from wtforms.validators import DataRequired, Length, Regexp, NumberRange, Email
 from datetime import date
 
+DATA_REQUIRED_MESSAGE = "El campo no puede estar vacio."
 
 class RiderHorsewomanForm(Form):
     name = StringField(
         "name",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -15,7 +16,7 @@ class RiderHorsewomanForm(Form):
     dni = StringField(
         "dni",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
             ),
@@ -24,28 +25,28 @@ class RiderHorsewomanForm(Form):
     last_name = StringField(
         "last_name",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
     )
-    age = IntegerField("age", validators=[DataRequired(), NumberRange(min=0, max=99)])
+    age = IntegerField("age", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE), NumberRange(min=0, max=99)])
     place_of_birth = StringField(
         "place_of_birth",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
     )
     date_of_birth = DateField(
         "date_of_birth",
-        validators=[DataRequired(), lambda form, field: field.data <= date.today()],
+        validators=[DataRequired(message=DATA_REQUIRED_MESSAGE), lambda form, field: field.data <= date.today()],
     )
     address = StringField(
         "address",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=80, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -53,7 +54,7 @@ class RiderHorsewomanForm(Form):
     phone = StringField(
         "phone",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -63,7 +64,7 @@ class RiderHorsewomanForm(Form):
     emergency_contact = StringField(
         "emergency_contact",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -71,7 +72,7 @@ class RiderHorsewomanForm(Form):
     emergency_phone = StringField(
         "emergency_phone",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -81,7 +82,7 @@ class RiderHorsewomanForm(Form):
     name_institution = StringField(
         "name_intitution",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -89,7 +90,7 @@ class RiderHorsewomanForm(Form):
     address_institution = StringField(
         "address_institution",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=80, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -97,7 +98,7 @@ class RiderHorsewomanForm(Form):
     phone_institution = StringField(
         "phone_institution",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -107,7 +108,7 @@ class RiderHorsewomanForm(Form):
     current_grade = StringField(
         "current_grade",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -116,7 +117,7 @@ class RiderHorsewomanForm(Form):
     dni_first_tutor = StringField(
         "dni_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
             ),
@@ -125,7 +126,7 @@ class RiderHorsewomanForm(Form):
     relationship_first_tutor = StringField(
         "relationship_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -133,7 +134,7 @@ class RiderHorsewomanForm(Form):
     name_first_tutor = StringField(
         "name_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -141,7 +142,7 @@ class RiderHorsewomanForm(Form):
     last_name_first_tutor = StringField(
         "last_name_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -149,7 +150,7 @@ class RiderHorsewomanForm(Form):
     address_first_tutor = StringField(
         "address_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=80, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -157,7 +158,7 @@ class RiderHorsewomanForm(Form):
     phone_first_tutor = StringField(
         "phone_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -167,7 +168,7 @@ class RiderHorsewomanForm(Form):
     email_first_tutor = StringField(
         "email_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Ingresa una dirección de correo válida."),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
@@ -176,7 +177,7 @@ class RiderHorsewomanForm(Form):
     occupation_first_tutor = StringField(
         "occupation_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -184,7 +185,7 @@ class RiderHorsewomanForm(Form):
     membership_number = StringField(
         "membership_number",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{1,20}$",
                 message="El numero de afiliado debe tener entre 1 y 20 digitos.",
@@ -196,7 +197,7 @@ class FirstTutorForm(Form):
     dni_first_tutor = StringField(
         "dni_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
             ),
@@ -205,7 +206,7 @@ class FirstTutorForm(Form):
     relationship_first_tutor = StringField(
         "relationship_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -213,7 +214,7 @@ class FirstTutorForm(Form):
     name_first_tutor = StringField(
         "name_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -221,7 +222,7 @@ class FirstTutorForm(Form):
     last_name_first_tutor = StringField(
         "last_name_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -229,7 +230,7 @@ class FirstTutorForm(Form):
     address_first_tutor = StringField(
         "address_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=80, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -237,7 +238,7 @@ class FirstTutorForm(Form):
     phone_first_tutor = StringField(
         "phone_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -247,7 +248,7 @@ class FirstTutorForm(Form):
     email_first_tutor = StringField(
         "email_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Ingresa una dirección de correo válida."),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
@@ -256,7 +257,7 @@ class FirstTutorForm(Form):
     occupation_first_tutor = StringField(
         "occupation_first_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -266,7 +267,7 @@ class SecondTutorForm(Form):
     dni_second_tutor = StringField(
         "dni_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
             ),
@@ -275,7 +276,7 @@ class SecondTutorForm(Form):
     relationship_second_tutor = StringField(
         "relationship_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -283,7 +284,7 @@ class SecondTutorForm(Form):
     name_second_tutor = StringField(
         "name_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -291,7 +292,7 @@ class SecondTutorForm(Form):
     last_name_second_tutor = StringField(
         "last_name_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -299,7 +300,7 @@ class SecondTutorForm(Form):
     address_second_tutor = StringField(
         "address_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=80, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ],
@@ -307,7 +308,7 @@ class SecondTutorForm(Form):
     phone_second_tutor = StringField(
         "phone_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
                 r"^\d{7,15}$",
                 message="El numero de telefono debe tener entre 7 y 15 digitos.",
@@ -317,7 +318,7 @@ class SecondTutorForm(Form):
     email_second_tutor = StringField(
         "email_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Ingresa una dirección de correo válida."),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
@@ -326,8 +327,44 @@ class SecondTutorForm(Form):
     occupation_second_tutor = StringField(
         "occupation_second_tutor",
         validators=[
-            DataRequired(),
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+class WorkInInstitutionForm(Form):
+    proposal = StringField(
+        "proposal",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo ingresado supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+    condition = StringField(
+        "condition",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo ingresado supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+    seat = StringField(
+        "seat",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo ingresado supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+    therapist = IntegerField("therapist", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
+    rider = IntegerField("rider", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
+    horse = IntegerField("horse", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
+    track_assistant = IntegerField("track_assistant", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
+    days = StringField(
+        "days",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
         ],
     )

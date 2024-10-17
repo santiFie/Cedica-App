@@ -54,7 +54,7 @@ pension_enum= ENUM(
 days_enum = ENUM(
     'Lunes',
     'Martes',
-    'Miercoles',
+    'Miércoles',
     'Jueves',
     'Viernes',
     'Sabado',

@@ -572,8 +572,8 @@
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="days" class="block text-sm font-medium text-gray-700">Selecciona los días de la semana:</label>
                                 <ul>
-                                    {% for days in  days_options %}
-                                        <li><input id="day-{{days}}" name="day-{{days}}" type="checkbox" value="{{  days }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ days }} </li>
+                                    {% for day in  days_options %}
+                                        <li><input id="day-{{days}}" name="days" type="checkbox" value="{{ day }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ day }} </li>
                                     {% endfor %}
                                 </ul>
                             </div>
