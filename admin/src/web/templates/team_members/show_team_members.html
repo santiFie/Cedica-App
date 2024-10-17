@@ -18,6 +18,12 @@
 
         <label for="dni">DNI</label>
         <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}">
+
+        <label for="name">Nombre</label>
+        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
+
+        <label for="last_name">Apellido/label>
+        <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}">
     
         <label for="job">Posición Laboral:</label>
         <select name="job" id="job">
