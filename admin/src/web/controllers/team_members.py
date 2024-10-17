@@ -5,6 +5,7 @@ from src.core import health_insurance as hi
 from src.core import auth as au
 from src.core import users as us
 from src.core import minio
+from src.web.forms import TeamMember as tmForm
 import mimetypes
 from src.web.handlers.auth import login_required
 
@@ -49,19 +50,27 @@ def new():
 @bp.post("/create")
 #@login_required
 def create():
-
-    team_member = tm.check_team_member_by_email(request.form["email"])
-
-    if team_member:
-        flash("El miembro de equipo ya existe", "info")
-        return redirect(url_for("team_members.new"))
-    
-    
-
-    file_keys = ['title', 'dni_copy', 'cv']
-    files = {key: request.files[key] for key in file_keys if key in request.files}
-
-    tm.create(request.form, files)
+    form = tmForm(request.form)
+    print(request.form)
+    print (form)
+    print ("-----------------------------")
+    print (form.validate())
+    if form.validate() :
+        # missing_fields = tm.check_missing_fields(request.form)
+        # if missing_fields:
+        #     print("Campos no completados:", missing_fields)
+        team_member = tm.check_team_member_by_email(request.form["email"])
+        if not team_member:
+            file_keys = ['title', 'dni_copy', 'cv']
+            files = {key: request.files[key] for key in file_keys if key in request.files}
+            tm.create(request.form, files)
+        else:
+             flash("El miembro de equipo ya existe", "info")
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error en el campo {field}: {error}")
+        flash("Faltan campos por completar", "info")
     
     return redirect(url_for("team_members.new"))
 

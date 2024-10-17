@@ -99,7 +99,7 @@ def user_create():
     return render_template("users/register.html", roles=roles) 
 
 @bp.post("/user_switch_state")
-def switch_state_user():
+def user_switch_state():
     
     user_email =request.args.get('user_email')
     

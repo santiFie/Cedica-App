@@ -22,7 +22,7 @@
         <label for="name">Nombre</label>
         <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
 
-        <label for="last_name">Apellido/label>
+        <label for="last_name">Apellido</label>
         <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}">
     
         <label for="job">Posición Laboral:</label>
@@ -75,13 +75,13 @@
                     <td>{{ team_member.email }}</td>
                     <td>
                         <a href="{{ url_for('team_members.show_team_member', team_member_email=team_member.email) }}"> 
-                            <button>Mostrar informacion</button>
+                            Mostrar informacion
                         </a>
 
                     </td>
                     <td>
                         <a href="{{ url_for('team_members.edit_team_member', team_member_email=team_member.email) }}">
-                            <button type="button">Modificar</button>
+                            Modificar
                         </a>
                     </td>
                     <td>
