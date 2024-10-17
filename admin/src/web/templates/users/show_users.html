@@ -63,10 +63,10 @@
                 <select name="role" id="role"
                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                     <option value="">-- Seleccionar --</option>
-                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Técnica</option>
+                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Tecnica</option>
                     <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
                     <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
-                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
+                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administracion</option>
                 </select>
             </div>
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -116,20 +116,26 @@
                     <div class="text-gray-400">{{ user.email }}</div>
                     </div>
                 </th>
+                {% if user.active %}
                 <td class="max-[735px]:hidden px-6 py-4">
                     <span
                     class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
                     >
-                    {% if user.active %}
-                    <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                    <a href="{{ url_for('users.user_switch_state', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
                     Activo
-                    </span>
-                    {% else %}
-                    <span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                    inactivo
-                    </span>
-                    {% endif%}
+                    </span></a>
                 </td>
+                {% else %}
+                <td class="max-[735px]:hidden px-6 py-4">
+                    <span
+                    class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                    >
+                    <a href="{{ url_for('users.user_switch_state', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Inactivo
+                    </span></a>
+                </td>
+                {% endif%}
+                
                 <td class="max-[600px]:hidden px-6 py-4">{{ user.role.name }}</td>
                 <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex gap-2">
