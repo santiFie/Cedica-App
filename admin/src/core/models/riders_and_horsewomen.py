@@ -52,16 +52,16 @@ pension_enum= ENUM(
 )
 
 days_enum = ENUM(
-        'LUNES',
-        'MARTES',
-        'MIERCOLES',
-        'JUEVES',
-        'VIERNES',
-        'SABADO',
-        'DOMINGO',
-        name='days_of_week_enum',
-        create_type=False
-    )
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sabado',
+    'Domingo',
+    name='days_of_week_enum',
+    create_type=False
+)
 
 condition_enum = ENUM(
     'REGULAR',

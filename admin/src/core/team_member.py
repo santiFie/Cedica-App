@@ -197,9 +197,16 @@ def get_all_riders():
 
     return riders
 
-def get_all_track_asistances():
+def get_all_track_assistants():
     from src.core.models.team_member import TeamMember
 
-    track_asistances = TeamMember.query.filter_by(job_position='ASISTENTE_DE_PISTA').all()
+    track_assistants = TeamMember.query.filter_by(job_position='ASISTENTE_DE_PISTA').all()
 
-    return track_asistances
+    return track_assistants
+
+def find_team_member_by_id(id):
+    from src.core.models.team_member import TeamMember
+
+    team_member = TeamMember.query.filter_by(id=id).first()
+
+    return team_member

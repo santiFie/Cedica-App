@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+
+{% block title %}Editar jinete o amazona{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $("#pension_boolean").change(function(event){
+            event.preventDefault();
+            $("#pension-box").toggle();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#scholarship_boolean").change(function(event){
+            event.preventDefault();
+            $("#scholarship-box").toggle();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#disability_certificate_boolean").change(function(event){
+            event.preventDefault();
+            $("#disability-certificate-box").toggle();
+            $("#disability-certificate-box2").toggle();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#family_allowance_boolean").change(function(event){
+            event.preventDefault();
+            $("#family-allowance-box").toggle();
+            $("#family-allowance-box2").toggle();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#select_pro_1').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function () {
+        $('#select_pro_2').selectize({
+            sortField: 'text'
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+    <section class="text-gray-700 body-font m-2 p-0 relative"></section>
+
+    <div class="mb-2 p-4 bg-white">
+        <h1 class="font-sans text-xl font-semibold text-gray-900">Editar Jinete o Amazona</h1>
+    </div>
+
+    <div class="container mx-auto">
+        <div class="flex flex-col text-center w-full mb-1"></div>
+
+        <div class="mt-0 sm:mt-0 md:col-span-2">
+            <form action="{{ url_for('riders_and_horsewomen.edit', id=rider.id) }}" method="POST" enctype="multipart/form-data">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Nombre -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="name" class="block text-sm font-medium text-gray-700">Nombre:</label>
+                                <input type="text" id="name" name="name" value="{{ rider.name }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+
+                            <!-- Apellido -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido:</label>
+                                <input type="text" id="last_name" name="last_name" value="{{ rider.last_name }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+
+                            <!-- Fecha de Nacimiento -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento:</label>
+                                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ rider.date_of_birth }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+
+                            <!-- Certificado de Discapacidad -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <div class="flex items-center">
+                                    <div class="text-sm">
+                                        <label for="disability_certificate_boolean" class="text-base font-medium text-gray-700">Certificado de Discapacidad</label>
+                                    </div>
+                                    <div class="flex items-center h-5 ml-2">
+                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox" {% if rider.disability_certificate %}checked{% endif %} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="disability-certificate-box" class="{% if not rider.disability_certificate %}hidden{% endif %} col-span-6 sm:col-span-3">
+                                <label for="disability_certificate" class="block text-sm font-medium text-gray-700">Diagnóstico</label>
+                                <select id="disability_certificate" name="disability_certificate" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for disability_certificate in disability_certificate_options %}
+                                    <option value="{{ disability_certificate }}" {% if rider.disability_certificate == disability_certificate %}selected{% endif %}>{{ disability_certificate }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="disability-certificate-box2" class="{% if not rider.disability_certificate %}hidden{% endif %} col-span-6 sm:col-span-3">
+                                <label for="disability_certificate_otro" class="block text-sm font-medium text-gray-700">Otro</label>
+                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro" value="{{ rider.others }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" readonly>
+                            </div>
+
+                            <!-- Asignación Familiar -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <div class="flex items-center">
+                                    <div class="text-sm">
+                                        <label for="family_allowance_boolean" class="text-base font-medium text-gray-700">Asignación Familiar</label>
+                                    </div>
+                                    <div class="flex items-center h-5 ml-2">
+                                        <input id="family_allowance_boolean" name="family_allowance_boolean" type="checkbox" {% if rider.family_allowance %}checked{% endif %} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="family-allowance-box" class="{% if not rider.family_allowance %}hidden{% endif %} col-span-6 sm:col-span-3">
+                                <label for="family_allowance" class="block text-sm font-medium text-gray-700">Cual</label>
+                                <select id="family_allowance" name="family_allowance" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for family_allowance in family_allowance_options %}
+                                        <option value="{{ family_allowance }}" {% if rider.family_allowance == family_allowance %}selected{% endif %}>{{ family_allowance }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Pensión -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <div class="flex items-center">
+                                    <div class="text-sm">
+                                        <label for="pension_boolean" class="text-base font-medium text-gray-700">Pensión</label>
+                                    </div>
+                                    <div class="flex items-center h-5 ml-2">
+                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" {% if rider.pension %}checked{% endif %} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pension-box" class="{% if not rider.pension %}hidden{% endif %} col-span-6 sm:col-span-3">
+                                <label for="pension" class="block text-sm font-medium text-gray-700">Cual</label>
+                                <select id="pension" name="pension" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for pension in pension_options %}
+                                        <option value="{{ pension }}" {% if rider.pension == pension %}selected{% endif %}>{{ pension }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4 bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">SITUACIÓN PREVISIONAL</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="health_insurance" class="block text-sm font-medium text-gray-700">Obra Social del Alumno</label>
+                                <select id="health_insurance" name="health_insurance" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for health_insurance in health_insurance_options %}
+                                        <option value="{{ health_insurance.id }}" {% if rider.health_insurance_id == health_insurance.id %}selected{% endif %}>{{ health_insurance.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="membership_number" class="block text-sm font-medium text-gray-700">Nº afiliado</label>
+                                <input type="text" name="membership_number" id="membership_number" value="{{ rider.membership_number }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="curatela" class="block text-sm font-medium text-gray-700">Posee curatela</label>
+                                <input id="curatela" name="curatela" type="checkbox" {% if rider.curatela %}checked{% endif %} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                            </div>
+                            <div id="observations_institution_box" class="hidden col-span-6 sm:col-span-3">
+                                <label for="observations_institution" class="block text-sm font-medium text-gray-700">Observaciones</label>
+                                <input type="text" name="observations_institution" id="observations_institution" value="{{ rider.observations_institution }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4 bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">INSTITUCIÓN ESCOLAR a la que CONCURRE ACTUALMENTE</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="name_institution" class="block text-sm font-medium text-gray-700">Nombre de la institución</label>
+                                <input type="text" name="name_institution" id="name_institution" value="{{ rider.name_institution }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="address_institution" class="block text-sm font-medium text-gray-700">Dirección de la institución</label>
+                                <input type="text" name="address_institution" id="address_institution" value="{{ rider.address_institution }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="phone_institution" class="block text-sm font-medium text-gray-700">Teléfono de la institución</label>
+                                <input type="text" name="phone_institution" id="phone_institution" value="{{ rider.phone_institution }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="current_grade" class="block text-sm font-medium text-gray-700">Grado / año actual</label>
+                                <input type="text" name="current_grade" id="current_grade" value="{{ rider.current_grade }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="observations_institution" class="block text-sm font-medium text-gray-700">Observaciones de la institución</label>
+                                <input type="text" name="observations_institution" id="observations_institution" value="{{ rider.observations_institution }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4 bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">PROFESIONALES que lo ATIENDEN</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_1" class="block text-sm font-medium text-gray-700">Nombre del profesional</label>
+                                <select id="select_pro_1" name="select_pro_1" placeholder="Selecciona un profesional" norequired class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}" {% if pro_member.id in caring_professionals %}selected{% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <button id="more-pro-box" type="button" class="bg-gray-600 hover:bg-gray-700 text-white text-right font-semibold py-2 px-4 sm:px-6 ml-1 rounded h-10">+</button>
+                            </div>
+                            <div id="pro-2" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_pro_2" class="block text-sm font-medium text-gray-700">Nombre del profesional 2</label>
+                                <select id="select_pro_2" name="select_pro_2" placeholder="Selecciona un profesional" norequired class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}" {% if pro_member.id in caring_professionals %}selected{% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-white sm:px-6 text-center">
+                        <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg text-lg">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
