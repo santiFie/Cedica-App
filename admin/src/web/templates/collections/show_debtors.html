@@ -49,9 +49,11 @@
                     <td>{{ debtor.dni }}</td>
                     <td>{{ debtor.inserted_at }}</td>
                     <td>
-                        <a href="{{ url_for('collections.collection_show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
-                            <button>Ver Detalles de Deuda</button>
-                        </a>
+                        {% if check_permissions(session, 'collection_show_detail_debt')%}
+                            <a href="{{ url_for('collections.collection_show_detail_debt', debtor_dni=debtor.dni) }}"> <!-- le paso el dni del deudor -->
+                                <button>Ver Detalles de Deuda</button>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -77,7 +79,9 @@
         <p>No hay deudores.</p>
     {% endif %}
 
-    <a href="{{ url_for('collections.collection_index') }}"><button type="button">Volver a la lista de cobros</button></a>
+    {% if check_permissions(session, 'collection_index')%}
+        <a href="{{ url_for('collections.collection_index') }}"><button type="button">Volver a la lista de cobros</button></a>
+    {% endif %}
 
     
 {% endblock %}

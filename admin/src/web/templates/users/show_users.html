@@ -9,7 +9,9 @@
 
 {% block content %}
     <h1>Usuarios del sistema</h1>
-    <a href="{{ url_for('users.user_new') }}"><button type="button">Crear Usuario</button></a>
+    {% if check_permissions(session, 'user_new') %}
+        <a href="{{ url_for('users.user_new') }}"><button type="button">Crear Usuario</button></a>
+    {% endif %}
 
     <h2>Buscar usuarios</h2>
     <form action="{{ url_for('users.user_index') }}" method="get">
@@ -78,23 +80,29 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session, 'user_edit') %}
+                            <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('users.user_delete', user_email=user.email) }}" method="post">
-                            <button>Eliminar</button>
-                        </a>
+                        {% if check_permissions(session, 'user_delete') %}
+                            <a href="{{ url_for('users.user_delete', user_email=user.email) }}" method="post">
+                                <button>Eliminar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <form action="{{ url_for('users.switch_state_user', user_email=user.email) }}" method="POST">
-                            {% if user.active %}
-                                <button type="submit">Desactivar</button>
-                            {% else %}
-                                <button type="submit">Activar</button>
-                            {% endif %}
-                        </form>
+                        {% if check_permissions(session, 'switch_state_user') %}
+                            <form action="{{ url_for('users.switch_state_user', user_email=user.email) }}" method="POST">
+                                {% if user.active %}
+                                    <button type="submit">Desactivar</button>
+                                {% else %}
+                                    <button type="submit">Activar</button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

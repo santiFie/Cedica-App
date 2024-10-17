@@ -68,24 +68,29 @@
                     <td>{{ team_member.last_name }}</td>
                     <td>{{ team_member.email }}</td>
                     <td>
-                        <a href="{{ url_for('team_members.team_member_show', team_member_email=team_member.email) }}"> 
-                            <button>Mostrar informacion</button>
-                        </a>
-
+                        {% if check_permissions(session, 'team_member_show')%}
+                            <a href="{{ url_for('team_members.team_member_show', team_member_email=team_member.email) }}"> 
+                                <button>Mostrar informacion</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('team_members.team_member_edit', team_member_email=team_member.email) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session, 'team_member_edit')%}
+                            <a href="{{ url_for('team_members.team_member_edit', team_member_email=team_member.email) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email) }}" method="POST">
-                            {% if team_member.active %}
-                                <button type="submit">Desactivar</button>
-                            {% else %}
-                                <button type="submit">Activar</button>
-                            {% endif %}
-                        </form>
+                        {% if check_permissions(session, 'team_member_switch_state')%}
+                            <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email) }}" method="POST">
+                                {% if team_member.active %}
+                                    <button type="submit">Desactivar</button>
+                                {% else %}
+                                    <button type="submit">Activar</button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

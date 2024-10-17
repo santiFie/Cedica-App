@@ -8,8 +8,9 @@
 
 {% block content %}
     <h1>Pagos</h1>
-    <a href="{{ url_for('payments.payment_register_form') }}"> <button> Registrar Pago </button></a>
-
+    {% if check_permissions(session, 'payment_register_form') %}
+        <a href="{{ url_for('payments.payment_register_form') }}"> <button> Registrar Pago </button></a>
+    {% endif %}
 
     <form method="GET" action="{{ url_for('payments.payment_index') }}">
         <div>
@@ -63,22 +64,27 @@
                     <td> {{ payment.payment_type }} </td>
                     <td> {{ payment.description }} </td>
                     <td>
-                        <a href="{{ url_for('payments.payment_show_detail', payment_id=payment.id) }}">
-                            <button>Ver Detalles</button>
-                        </a>
+                        {% if check_permissions(session, 'payment_show_detail') %}
+                            <a href="{{ url_for('payments.payment_show_detail', payment_id=payment.id) }}">
+                                <button>Ver Detalles</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('payments.payment_edit_form', payment_id=payment.id) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session, 'payment_edit_form') %}
+                            <a href="{{ url_for('payments.payment_edit_form', payment_id=payment.id) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
-                        <form action="{{ url_for('payments.payment_delete', payment_id=payment.id) }}" method="post" onsubmit="return confirmDelete();">
-                            <button type="submit">Eliminar</button>
-                        </form>
+                        {% if check_permissions(session, 'payment_delete') %}
+                            <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
+                            <form action="{{ url_for('payments.payment_delete', payment_id=payment.id) }}" method="post" onsubmit="return confirmDelete();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>

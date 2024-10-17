@@ -9,10 +9,11 @@
 
 {% block content %}
     <h1>Ecuestres del sistema</h1>
-    <a href="{{ url_for('equestrian.new') }}"><button type="button">Crear Ecuestre</button></a>
-
+    {% if check_permissions(session,'equestrian_new') %}
+        <a href="{{ url_for('equestrian.equestrian_new') }}"><button type="button">Crear Ecuestre</button></a>
+    {% endif %}
     <h2>Buscar ecuestres</h2>
-    <form action="{{ url_for('equestrian.list') }}" method="get">
+    <form action="{{ url_for('equestrian.equestrian_index') }}" method="get">
         <label for="name">Nombre:</label>
         <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
 
@@ -81,19 +82,21 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('equestrian.show', id=equestrian.id) }}">
-                            <button>Mostrar informacion</button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('equestrian.edit', id=equestrian.id) }}">
-                            <button type="button">Modificar</button>
-                        </a>
-                    </td>
-                    <td>
-                        <form action="{{ url_for('equestrian.delete', id=equestrian.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
-                            <button type="submit">Eliminar</button>
-                        </form>
+                        {% if check_permissions(session,'equestrian_show') %}
+                            <a href="{{ url_for('equestrian.equestrian_show', id=equestrian.id) }}">
+                                <button>Mostrar informacion</button>
+                            </a>
+                        {% endif %}
+                        {% if check_permissions(session,'equestrian_edit') %}
+                            <a href="{{ url_for('equestrian.equestrian_edit', id=equestrian.id) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
+                        {% if check_permissions(session,'equestrian_delete') %}
+                            <form action="{{ url_for('equestrian.equestrian_delete', id=equestrian.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

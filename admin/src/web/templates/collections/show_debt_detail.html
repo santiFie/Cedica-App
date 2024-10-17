@@ -18,6 +18,7 @@
         {% endfor %}
     </ul>
 
-
-    <a href="{{ url_for('collections.collection_index_debts') }}"><button type="button">Volver a la lista de deudores</button></a>
+    {% if check_permissions(session,'collections.collection_index_debts') %}
+        <a href="{{ url_for('collections.collection_index_debts') }}"><button type="button">Volver a la lista de deudores</button></a>
+    {% endif %}
 {% endblock %}

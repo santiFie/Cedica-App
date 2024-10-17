@@ -8,8 +8,12 @@
 
 {% block content %}
     <h1>Cobros</h1>
-    <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
-    <a href="{{ url_for('collections.collection_index_debts') }}"> <button type="button">Ver Deudas</button> </a>
+    {% if check_permissions(session,'collection_register_form') %}
+        <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
+    {% endif %}
+    {% if check_permissions(session,'collection_index_debts') %}
+        <a href="{{ url_for('collections.collection_index_debts') }}"> <button type="button">Ver Deudas</button> </a>
+    {% endif %}
 
     <form method="GET" action="{{ url_for('collections.collection_index') }}">
         <div>
@@ -74,20 +78,26 @@
                     <td> {{ collection.team_member_id }} </td>
                     <td> {{ collection.observations }} </td>
                     <td>
-                        <a href="{{ url_for('collections.collection_show_detail', collection_id=collection.id) }}">
-                            <button>Ver Detalles</button>
-                        </a>
+                        {% if check_permissions(session,'collection_show_detail') %}
+                            <a href="{{ url_for('collections.collection_show_detail', collection_id=collection.id) }}">
+                                <button>Ver Detalles</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('collections.collection_edit_form', collection_id=collection.id) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session,'collection_edit_form') %}
+                            <a href="{{ url_for('collections.collection_edit_form', collection_id=collection.id) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
+                        {% if check_permissions(session,'collection_edit_form') %}
                         <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
-                        <form action="{{ url_for('collections.collection_delete', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
-                            <button type="submit">Eliminar</button>
-                        </form>
+                            <form action="{{ url_for('collections.collection_delete', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
                     </td>
 
                 </tr>
