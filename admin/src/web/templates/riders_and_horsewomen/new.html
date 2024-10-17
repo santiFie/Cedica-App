@@ -77,7 +77,27 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('select_pro').selectize({
+        $('#select_pro_1').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function () {
+        $('#select_pro_2').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function () {
+        $('#select_pro_3').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function () {
+        $('#select_pro_4').selectize({
+            sortField: 'text'
+        });
+    });
+    $(document).ready(function () {
+        $('#select_pro_5').selectize({
             sortField: 'text'
         });
     });
@@ -553,7 +573,7 @@
                                 <label for="days" class="block text-sm font-medium text-gray-700">Selecciona los días de la semana:</label>
                                 <ul>
                                     {% for days in  days_options %}
-                                        <li><input id="" name="" type="checkbox" value="{{  days }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ days }} </li>
+                                        <li><input id="day-{{days}}" name="day-{{days}}" type="checkbox" value="{{  days }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ days }} </li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -588,7 +608,7 @@
                                 <label for="track_assistant" class="block text-sm font-medium text-gray-700">Auxiliar de Pista</label>
                                 <select id="track_assistant" name="track_assistant"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    {% for track_assistant in track_assistants %}
+                                    {% for track_assistant in track_assistances %}
                                         <option value="{{ track_assistant.id }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% endfor %}
                                 </select>
