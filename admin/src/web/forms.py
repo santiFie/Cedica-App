@@ -2,7 +2,6 @@ from wtforms import Form, StringField, IntegerField, DateField, DecimalField, Se
 from wtforms.validators import DataRequired, Length, Regexp, NumberRange, Email, ValidationError
 from datetime import date
 
-<<<<<<< HEAD
 # Validador personalizado para fechas futuras
 def validate_date_not_in_future(form, field):
     if field.data > date.today():
@@ -40,7 +39,6 @@ class PaymentForm(Form):
         Length(max=50, message='El email no puede superar los 50 caracteres.')
     ], default='')
 
-=======
 
 class CollectionForm(Form):
     amount = DecimalField('Monto', validators=[DataRequired(), NumberRange(min=0, message="El monto debe ser positivo.")])
@@ -60,4 +58,3 @@ class CollectionForm(Form):
     def validate_payment_date(form, field):
         if field.data > date.today():
             raise ValidationError("La fecha de pago no puede ser una fecha futura.")
->>>>>>> dev
