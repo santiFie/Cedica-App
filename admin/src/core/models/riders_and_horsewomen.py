@@ -148,6 +148,9 @@ class RiderAndHorsewoman(database.db.Model):
 
     collections = database.db.relationship('Collection', back_populates='rider')
 
+    def get_files(self):
+        return File.query.filter_by(rider_id=self.id).all()
+
 class File(database.db.Model):
     __tablename__ = 'riders_files'
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)

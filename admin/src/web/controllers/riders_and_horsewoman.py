@@ -1,4 +1,6 @@
-from flask import Blueprint, redirect, render_template, request, flash, url_for
+import mimetypes
+from core import minio
+from flask import Blueprint, redirect, render_template, request, flash, send_file, url_for
 from src.core.models.riders_and_horsewomen import (
     disability_certificate_enum,
     disability_type_enum,
@@ -12,7 +14,7 @@ from src.core.models.riders_and_horsewomen import (
 )
 from src.core import riders_and_horsewomen as rh
 from src.core import team_member as tm
-from src.core import equestrian as eq
+from src.core import riders as eq
 from src.core import health_insurance as hi
 from src.web.forms import RiderHorsewomanForm as riderForm
 from src.web.handlers.auth import login_required
@@ -39,7 +41,7 @@ def new():
     team_members = tm.get_all()
     therapists = tm.get_all_therapists()
     riders = tm.get_all_riders()
-    horses = eq.get_all_equestrians()
+    horses = eq.get_all_riderss()
     track_assistants = tm.get_all_track_assistants()
 
     form = riderForm(request.form)
@@ -100,7 +102,7 @@ def edit(id):
     team_members = tm.get_all()
     therapists = tm.get_all_therapists()
     riders = tm.get_all_riders()
-    horses = eq.get_all_equestrians()
+    horses = eq.get_all_riderss()
     track_assistants = tm.get_all_track_assistants()
 
     return render_template(
@@ -137,7 +139,7 @@ def riders_and_horsewomen_update(id):
     return redirect(url_for("riders_and_horsewomen.edit", id=id))
 
 
-@bp.route("/new/institution", methods=["GET", "POST"])
+@bp.route("/new_institution", methods=["GET", "POST"])
 @login_required
 def new_institution():
     return render_template("riders_and_horsewomen/new_institution.html")
@@ -181,3 +183,62 @@ def riders_and_horsewomen_delete_link(rider_id):
         rh.delete_link(link_id)
     
     return redirect(url_for("riders_and_horsewomen.new", id=rider_id))
+
+@bp.get("/view_file/<int:id>")
+def view_file(id):
+    filename = rh.get_file_name(id)
+    file_data, content_type  = rh.get_file(id)
+    
+
+    if not file_data:
+        return "Archivo no encontrado", 404
+
+     # If the content type is not provided, try to guess it from the filename
+    if not content_type:
+        content_type, _ = mimetypes.guess_type(filename)
+
+    
+    # For PDF files
+    if content_type == 'application/pdf':
+        return send_file(
+            file_data,
+            mimetype='application/pdf',
+            as_attachment=False,
+            download_name=filename
+        )
+    
+    # For images
+    elif content_type.startswith('image/'):
+        return send_file(
+            file_data,
+            mimetype=content_type,
+            as_attachment=False,
+            download_name=filename
+        )
+    
+    # For other files, force download
+    else:
+        return send_file(
+            file_data,
+            mimetype=content_type,
+            as_attachment=True,
+            download_name=filename
+        )
+    
+
+#Routes for list all riders files
+@bp.get("/list_files")
+def list_files():
+    # Get the page number or default to 1
+    page = request.args.get('page', 1, type=int) 
+
+    # Get the filters from the form
+    name = request.args.get('name', None)
+    initial_date = request.args.get('initial_date', None)
+    final_date = request.args.get('final_date', None)
+    sort_by = request.args.get('sort_by', None)
+
+    # find_riderss_files also returns the max number of pages
+    all_files, max_pages = rh.list_riders_files(page=page, name=name, initial_date=initial_date, final_date=final_date, sort_by=sort_by)
+        
+    return render_template("riders_and_horsewomen/list_files.html",files= all_files, page=page, max_pages=max_pages)

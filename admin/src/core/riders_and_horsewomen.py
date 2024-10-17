@@ -1,10 +1,11 @@
+from datetime import datetime
 from core import minio
 from src.core import database
 from flask import flash, redirect, url_for
 from src.core import utils
 from src.core import team_member as tm
 from src.core.models.team_member import TeamMember
-from src.core.models.riders_and_horsewomen import File
+from src.core.models.riders_and_horsewomen import File, RiderAndHorsewoman
 from src.core.models.riders_and_horsewomen import (
     CaringProfessional,
     RiderAndHorsewoman,
@@ -603,3 +604,115 @@ def delete_link(rider_id, link_id):
         minio.upload_link(PREFIX, user_file.filename, rider_id)
         File.query.filter(File.id == link_id).delete()
         database.db.session.commit()
+
+def get_link(link_id):
+    """
+    Get the link of a rider
+    """
+    user_file = File.query.filter(File.id == link_id).first()
+
+
+    if user_file:
+        rider_id = user_file.rider_id
+        return minio.get_link(PREFIX, user_file.filename, rider_id)
+    return None
+
+def order_files(sort_by, file):
+    if sort_by == 'name_asc':
+        file.sort(key=lambda x: x['filename'])
+    elif sort_by == 'name_desc':
+        file.sort(key=lambda x: x['filename'], reverse=True)
+    elif sort_by == 'downloaded_date_asc':
+        file.sort(key=lambda x: x['upload_date'] or datetime.min)
+    elif sort_by == 'downloaded_date_desc':
+        file.sort(key=lambda x: x['upload_date'] or datetime.min, reverse=True)
+    return file
+
+
+def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
+    per_page = 25
+
+    # Get all the riders
+    riders = RiderAndHorsewoman.query.all()
+    # Create a list to store the files that meet the conditions
+    files_in_conditions = []
+
+    # Parse the dates outside the loop
+    if initial_date:
+        initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
+        if initial_date > datetime.now():
+            flash("No se pueden listar archivos que no fueron subidos aún")
+            return [], 1
+    if final_date:
+        final_date = datetime.strptime(final_date, '%Y-%m-%d')
+
+    if final_date and initial_date:
+        # Check if the dates are valid
+        if not utils.validate_dates(initial_date, final_date)filename:
+            flash("Las fechas ingresadas no son válidas")
+            return [], 1
+
+    # Iterate over all the riders
+    for rider in riders:
+        # Get the files of the rider
+        rider_files = [rider.filename for rider in rider.get_files()]
+        for file in rider_files:
+            if file:
+                # Get the date of the file
+                file_date = minio.get_file_date(prefix=PREFIX, user_id=rider.id, filename=file)
+            
+                # Apply the name filter
+                if name and name not in file:
+                    # If the name is not in the file name, continue with the next file
+                    continue
+                
+                # Apply the date filter
+                if initial_date and final_date:
+                    if not (file_date and initial_date <= file_date <= final_date):
+                        continue
+                
+                # Add the file to the list
+                files_in_conditions.append({
+                    'rider_id': rider.id,
+                    'rider_name': rider.name,
+                    'filename': file,
+                    'upload_date': file_date
+                })
+
+    # Order the files
+    files_in_conditions = order_files(sort_by, files_in_conditions)
+
+    # Calcular la paginación
+    total = len(files_in_conditions)
+    max_pages = (total + per_page - 1) // per_page  # Redondeo hacia arriba
+    
+    # Asegurar que la página sea válida
+    page = max(1, min(page, max_pages))
+    
+    start = (page - 1) * per_page
+    end = start + per_page
+    files = files_in_conditions[start:end]
+
+    return files, max_pages 
+
+
+def get_file(file_id):
+    """
+    Get the file of a rider by file ID
+    """
+    user_file = File.query.filter(File.id == file_id).first()
+
+    if user_file:
+        rider_id = user_file.rider_id
+        return minio.get_file(PREFIX, user_file.filename, rider_id)
+    return None
+
+def get_file_name(file_id):
+        """
+        Get the file name of a rider by file ID
+        """
+        user_file = File.query.filter(File.id == file_id).first()
+
+        if user_file:
+            return user_file.filename
+        return None
