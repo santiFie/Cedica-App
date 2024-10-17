@@ -56,6 +56,7 @@ def create(form):
         emergency_contact=form["emergency_contact"],
         emergency_phone=form["emergency_phone"],
         health_insurance_id=form["health_insurance_id"],
+        health_insurance_number=form["health_insurance_number"],
         condition=form["condition"].upper(),
         job_position=form["job_position"].upper(),
         profession=form["profession"].upper(),
@@ -174,4 +175,14 @@ def find_team_member_by_email(email):
 
     team_member = TeamMember.query.filter_by(email=email).first()
 
+    return team_member
+
+
+def switch_state(team_member):
+
+    if(team_member.active == False):
+        team_member.active = True
+    else:
+        team_member.active = False
+    database.db.session.commit()
     return team_member

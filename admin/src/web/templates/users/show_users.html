@@ -64,6 +64,7 @@
                     <th>Informacion</th>
                     <th>Modificacion</th>
                     <th>Eliminacion</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +86,15 @@
                         <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
                             <button>Eliminar</button>
                         </a>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('users.switch_state_user', user_email=user.email) }}" method="POST">
+                            {% if user.active %}
+                                <button type="submit">Desactivar</button>
+                            {% else %}
+                                <button type="submit">Activar</button>
+                            {% endif %}
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

@@ -96,5 +96,21 @@ def user_create():
         
     roles = Role.query.all()
 
-    return render_template("users/register.html", roles=roles)  
+    return render_template("users/register.html", roles=roles) 
+
+@bp.post("/user_switch_state")
+def switch_state_user():
+    
+    user_email =request.args.get('user_email')
+    
+    if not users.switch_state(user_email):
+        flash("No se puede desactivar a un administrador", "info")
+    else:
+        flash("Usuario bloqueado satisfactoriamente")
+
+        
+    return redirect(url_for("users.users_list") )
+    
+    
+        
 
