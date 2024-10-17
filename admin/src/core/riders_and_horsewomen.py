@@ -1,15 +1,40 @@
+from core import minio
 from src.core import database
 from flask import flash, redirect, url_for
 from src.core import utils
 from src.core import team_member as tm
 from src.core.models.team_member import TeamMember
-from src.core.models.riders_and_horsewomen import CaringProfessional, RiderAndHorsewoman, Tutor, WorkInInstitution, RiderHorsewomanInstitution
+from src.core.models.riders_and_horsewomen import File
+from src.core.models.riders_and_horsewomen import (
+    CaringProfessional,
+    RiderAndHorsewoman,
+    Tutor,
+    WorkInInstitution,
+    RiderHorsewomanInstitution,
+)
 from sqlalchemy.orm import aliased
-from src.web.forms import SecondTutorForm, FirstTutorForm, RiderHorsewomanForm, WorkInInstitutionForm
+from src.web.forms import (
+    SecondTutorForm,
+    FirstTutorForm,
+    RiderHorsewomanForm,
+    WorkInInstitutionForm,
+)
 
+PREFIX="Jinetes y Amazonas"
 
 def create_enums():
-    from src.core.models.riders_and_horsewomen import disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum, days_enum, condition_enum, seat_enum, proposal_enum, education_level_enum
+    from src.core.models.riders_and_horsewomen import (
+        disability_certificate_enum,
+        disability_type_enum,
+        files_enum,
+        family_allowance_enum,
+        pension_enum,
+        days_enum,
+        condition_enum,
+        seat_enum,
+        proposal_enum,
+        education_level_enum,
+    )
 
     disability_certificate_enum.create(database.db.engine, checkfirst=True)
     disability_type_enum.create(database.db.engine, checkfirst=True)
@@ -20,6 +45,7 @@ def create_enums():
     seat_enum.create(database.db.engine, checkfirst=True)
     proposal_enum.create(database.db.engine, checkfirst=True)
     education_level_enum.create(database.db.engine, checkfirst=True)
+    files_enum.create(database.db.engine, checkfirst=True)
 
 
 def find_rider(dni):
@@ -28,19 +54,18 @@ def find_rider(dni):
 
     return rider
 
+
 def create_caring_professional(id_rh, id_tm):
     """
     Create a caring professional
     """
     from src.core.models.riders_and_horsewomen import CaringProfessional
 
-    caring= CaringProfessional(
-        rider_horsewoman_id = id_rh,
-        team_member_id = id_tm
-    )
+    caring = CaringProfessional(rider_horsewoman_id=id_rh, team_member_id=id_tm)
 
     database.db.session.add(caring)
     database.db.session.commit()
+
 
 def create_tutors(form, id):
     """
@@ -53,8 +78,6 @@ def create_tutors(form, id):
     if form["dni_second_tutor"]:
         second_tutor_form = SecondTutorForm(form)
 
-        
-
     validation_first_tutor = first_tutor_form.validate()
     validation_second_tutor = False
     if second_tutor_form:
@@ -62,33 +85,32 @@ def create_tutors(form, id):
 
     if validation_first_tutor:
         first_tutor = Tutor(
-            dni = form["dni_first_tutor"],
-            relationship = form["relationship_first_tutor"],
-            name = form["name_first_tutor"],
-            last_name = form["last_name_first_tutor"],
-            address = form["address_first_tutor"],
-            phone = form["phone_first_tutor"],
-            email = form["email_first_tutor"],
-            education_level = form["education_level_first_tutor"],
-            occupation = form["occupation_first_tutor"],
-            rider_and_horsewoman_id = id,
+            dni=form["dni_first_tutor"],
+            relationship=form["relationship_first_tutor"],
+            name=form["name_first_tutor"],
+            last_name=form["last_name_first_tutor"],
+            address=form["address_first_tutor"],
+            phone=form["phone_first_tutor"],
+            email=form["email_first_tutor"],
+            education_level=form["education_level_first_tutor"],
+            occupation=form["occupation_first_tutor"],
+            rider_and_horsewoman_id=id,
         )
         database.db.session.add(first_tutor)
         database.db.session.commit()
 
-    
     if validation_second_tutor:
         second_tutor = Tutor(
-            dni = form["dni_second_tutor"],
-            relationship = form["relationship_second_tutor"],
-            name = form["name_second_tutor"],
-            last_name = form["last_name_second_tutor"],
-            address = form["address_second_tutor"],
-            phone = form["phone_second_tutor"],
-            email = form["email_second_tutor"],
-            education_level = form["education_level_second_tutor"],
-            occupation = form["occupation_second_tutor"],
-            rider_and_horsewoman_id = id
+            dni=form["dni_second_tutor"],
+            relationship=form["relationship_second_tutor"],
+            name=form["name_second_tutor"],
+            last_name=form["last_name_second_tutor"],
+            address=form["address_second_tutor"],
+            phone=form["phone_second_tutor"],
+            email=form["email_second_tutor"],
+            education_level=form["education_level_second_tutor"],
+            occupation=form["occupation_second_tutor"],
+            rider_and_horsewoman_id=id,
         )
         database.db.session.add(second_tutor)
         database.db.session.commit()
@@ -107,24 +129,22 @@ def create_work_in_institution(form, id):
     """
     work_form = WorkInInstitutionForm(form)
     if work_form.validate():
-        print(work_form.data)
         work = WorkInInstitution(
-            proposal = form["proposal"],
-            condition = form["condition"],
-            seat = form["seat"],
-            therapist = form["therapist"],
-            rider = form["rider"],
-            horse = form["horse"],
-            track_assistant = form["track_assistant"],
-            days = form.getlist("days")
+            proposal=form["proposal"],
+            condition=form["condition"],
+            seat=form["seat"],
+            therapist=form["therapist"],
+            rider=form["rider"],
+            horse=form["horse"],
+            track_assistant=form["track_assistant"],
+            days=form.getlist("days"),
         )
 
         database.db.session.add(work)
         database.db.session.commit()
 
         rider_institution = RiderHorsewomanInstitution(
-            rider_horsewoman_id = id,
-            work_in_institution_id = work.id
+            rider_horsewoman_id=id, work_in_institution_id=work.id
         )
 
         database.db.session.add(rider_institution)
@@ -137,7 +157,6 @@ def create_work_in_institution(form, id):
                 flash(f"Error in {field}: {error}")
 
         return redirect(url_for("riders_and_horsewomen.new"))
-    
 
 
 def create_rider_horsewoman(form):
@@ -153,7 +172,7 @@ def create_rider_horsewoman(form):
     family_allowance_boolean = form.get("family_allowance_boolean", False)
     pension_boolean = form.get("pension_boolean", False)
     curatela = form.get("curatela", False)
-    
+
     if scholarship_boolean:
         lista.append(form["scholarship_percentage"])
         if form["observations_scholarship"]:
@@ -169,8 +188,8 @@ def create_rider_horsewoman(form):
         lista.append(form["disability_certificate"])
         if form["disability_certificate"] == "OTRO":
             lista.append(form["disability_certificate_otro"])
-        else:    
-            lista.append(None) 
+        else:
+            lista.append(None)
     else:
         lista.append(None)
         lista.append(None)
@@ -188,32 +207,32 @@ def create_rider_horsewoman(form):
     riders_form = RiderHorsewomanForm(form)
     if riders_form.validate():
         rider_horsewoman = RiderAndHorsewoman(
-            dni = form["dni"],
-            name = form["name"],
-            last_name = form["last_name"],
-            age = form["age"],
-            date_of_birth = form["date_of_birth"],
-            place_of_birth = form["place_of_birth"],
-            address = form["address"],
-            phone = form["phone"],
-            emergency_contact = form["emergency_contact"],
-            emergency_phone = form["emergency_phone"],
-            scholarship_percentage = lista[0],
-            observations = lista[1],
-            disability_certificate = lista[3],
-            others = lista[4],
-            disability_type = lista[2],
-            family_allowance = lista[5],
-            pension = lista[6],
-            name_institution = form["name_institution"],
-            address_institution = form["address_institution"],
-            phone_institution = form["phone_institution"],
-            current_grade = form["current_grade"],
-            observations_institution = form["observations_institution"],
-            health_insurance_id = form["health_insurance"],
-            membership_number = form["membership_number"],
-            curatela = True if curatela == 'on' else False,
-            pension_situation_observations = form["observations_institution"]
+            dni=form["dni"],
+            name=form["name"],
+            last_name=form["last_name"],
+            age=form["age"],
+            date_of_birth=form["date_of_birth"],
+            place_of_birth=form["place_of_birth"],
+            address=form["address"],
+            phone=form["phone"],
+            emergency_contact=form["emergency_contact"],
+            emergency_phone=form["emergency_phone"],
+            scholarship_percentage=lista[0],
+            observations=lista[1],
+            disability_certificate=lista[3],
+            others=lista[4],
+            disability_type=lista[2],
+            family_allowance=lista[5],
+            pension=lista[6],
+            name_institution=form["name_institution"],
+            address_institution=form["address_institution"],
+            phone_institution=form["phone_institution"],
+            current_grade=form["current_grade"],
+            observations_institution=form["observations_institution"],
+            health_insurance_id=form["health_insurance"],
+            membership_number=form["membership_number"],
+            curatela=True if curatela == "on" else False,
+            pension_situation_observations=form["observations_institution"],
         )
 
         database.db.session.add(rider_horsewoman)
@@ -234,8 +253,9 @@ def create_rider_horsewoman(form):
     # Work In Institution
     create_work_in_institution(form, rider_horsewoman.id)
 
+
 # FALTA EL PARAM Y FILTRO DE PROFESIONALES QUE LO ATIENDEN !!!!!!!!!!
-def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', page=1):
+def find_all_riders(name=None, last_name=None, dni=None, order_by="asc", page=1):
 
     per_page = 25
 
@@ -246,25 +266,29 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', page=1)
         query = query.filter(RiderAndHorsewoman.dni == dni)
 
     if name or last_name:
-        # para poder buscar por ambos campos al mismo tiempo 
+        # para poder buscar por ambos campos al mismo tiempo
         rider_alias_name = aliased(RiderAndHorsewoman)
         rider_alias_last_name = aliased(RiderAndHorsewoman)
 
         # Filtro por nombre del rider
         if name:
-            query = query.filter(rider_alias_name.name.ilike(f'%{name}%'))
-        
+            query = query.filter(rider_alias_name.name.ilike(f"%{name}%"))
+
         # Filtro por apellido del rider
         if last_name:
-            query = query.filter(rider_alias_last_name.last_name.ilike(f'%{last_name}%'))
-
-    
+            query = query.filter(
+                rider_alias_last_name.last_name.ilike(f"%{last_name}%")
+            )
 
     # Ordeno por el campo adecuado
-    if order_by == 'asc':
-        query = query.order_by(RiderAndHorsewoman.name.asc())  # Puedes cambiarlo por el campo adecuado
+    if order_by == "asc":
+        query = query.order_by(
+            RiderAndHorsewoman.name.asc()
+        )  # Puedes cambiarlo por el campo adecuado
     else:
-        query = query.order_by(RiderAndHorsewoman.name.desc())  # Puedes cambiarlo por el campo adecuado
+        query = query.order_by(
+            RiderAndHorsewoman.name.desc()
+        )  # Puedes cambiarlo por el campo adecuado
 
     total_riders = query.count()
 
@@ -287,6 +311,7 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', page=1)
 
     return riders, max_pages
 
+
 def update(id, form):
     """
     Update a rider or horsewoman. Returns True if the rider was updated successfully, False otherwise.
@@ -296,14 +321,14 @@ def update(id, form):
 
     if not rider:
         return False
-    
+
     lista = []
     scholarship_boolean = form.get("scholarship_boolean", False)
     disability_certificate_boolean = form.get("disability_certificate_boolean", False)
     family_allowance_boolean = form.get("family_allowance_boolean", False)
     pension_boolean = form.get("pension_boolean", False)
     curatela = form.get("curatela", False)
-    
+
     if scholarship_boolean:
         lista.append(form["scholarship_percentage"])
         if form["observations_scholarship"]:
@@ -319,8 +344,8 @@ def update(id, form):
         lista.append(form["disability_certificate"])
         if form["disability_certificate"] == "OTRO":
             lista.append(form["disability_certificate_otro"])
-        else:    
-            lista.append(None) 
+        else:
+            lista.append(None)
     else:
         lista.append(None)
         lista.append(None)
@@ -337,7 +362,7 @@ def update(id, form):
 
     riders_form = RiderHorsewomanForm(form)
     if riders_form.validate():
-        
+
         rider.name = form["name"]
         rider.last_name = form["last_name"]
         rider.age = form["age"]
@@ -361,15 +386,13 @@ def update(id, form):
         rider.observations_institution = form["observations_institution"]
         rider.health_insurance_id = form["health_insurance"]
         rider.membership_number = form["membership_number"]
-        rider.curatela = True if curatela == 'on' else False
+        rider.curatela = True if curatela == "on" else False
         rider.pension_situation_observations = form["observations_institution"]
 
         database.db.session.commit()
     else:
         utils.riders_and_horsewomen_errors(riders_form)
         return redirect(url_for("riders_and_horsewomen.new"))
-    
-
 
     update_caring_professionals(form, id)
     update_tutors(form, id)
@@ -392,6 +415,7 @@ def update_caring_professionals(form, id):
         id_key = f"select_pro_{i}"
         if form.get(id_key):
             create_caring_professional(id, form[id_key])
+
 
 def update_tutors(form, id):
     """
@@ -441,6 +465,7 @@ def update_tutors(form, id):
     else:
         flash("Segundo tutor actualizado exitosamente")
 
+
 def update_work_in_institution(form, id):
     """
     Update work in institution and the intermediate table
@@ -466,6 +491,7 @@ def update_work_in_institution(form, id):
 
         return redirect(url_for("riders_and_horsewomen.new"))
 
+
 #!!!!!!!!
 def delete_a_rider(rider):
 
@@ -474,21 +500,32 @@ def delete_a_rider(rider):
 
     return True
 
+
 def get_work_in_institutions_by_rider_id(rider_id):
     """
     Get work in institution by rider id
     """
-    work_in_institutions = WorkInInstitution.query.join(RiderHorsewomanInstitution).filter(RiderHorsewomanInstitution.rider_horsewoman_id == rider_id).first()
+    work_in_institutions = (
+        WorkInInstitution.query.join(RiderHorsewomanInstitution)
+        .filter(RiderHorsewomanInstitution.rider_horsewoman_id == rider_id)
+        .first()
+    )
 
     return work_in_institutions
+
 
 def get_caring_professionals_by_rider_id(rider_id):
     """
     Get all caring professionals by rider id
     """
-    caring_professionals = TeamMember.query.join(CaringProfessional).filter(CaringProfessional.rider_horsewoman_id == rider_id).all()
+    caring_professionals = (
+        TeamMember.query.join(CaringProfessional)
+        .filter(CaringProfessional.rider_horsewoman_id == rider_id)
+        .all()
+    )
 
     return caring_professionals
+
 
 def get_rider_by_id(rider_id):
     """
@@ -498,11 +535,14 @@ def get_rider_by_id(rider_id):
 
     return rider
 
+
 def get_tutors_by_rider_id(rider_id):
     """
     Get all tutors by rider id
     """
-    num_of_tutors = Tutor.query.filter(Tutor.rider_and_horsewoman_id == rider_id).count()
+    num_of_tutors = Tutor.query.filter(
+        Tutor.rider_and_horsewoman_id == rider_id
+    ).count()
 
     if num_of_tutors == 1:
         tutor1 = Tutor.query.filter(Tutor.rider_and_horsewoman_id == rider_id).first()
@@ -512,3 +552,54 @@ def get_tutors_by_rider_id(rider_id):
         tutor2 = Tutor.query.filter(Tutor.rider_and_horsewoman_id == rider_id).all()[1]
 
     return tutor1, tutor2
+
+
+def new_file(filename, file_type, rider_id):
+    """
+    Create a new file for a rider
+    """
+
+    rider = get_rider_by_id(rider_id)
+
+    if rider:
+
+        file = File(filename=filename, file_type=file_type, rider_id=rider_id)
+
+        minio.upload_file(PREFIX, filename, rider_id)
+        database.db.session.add(file)
+        database.db.session.commit()
+
+def new_link(link, rider_id, file_type):
+    """
+    Create a new file for a rider
+    """
+
+    rider = get_rider_by_id(rider_id)
+
+    if rider:
+        file = File(filename=link, file_type=file_type, rider_id=rider_id)
+        minio.upload_link(PREFIX, link, rider_id)
+        database.db.session.add(file)
+        database.db.session.commit()
+
+def delete_file(rider_id, file_id):
+    """
+    Delete the file of a rider
+    """
+    user_file = File.query.filter(File.id == file_id).first()
+    
+    if user_file:
+        minio.upload_file(PREFIX, user_file.filename, rider_id)
+        File.query.filter(File.id == file_id).delete()
+        database.db.session.commit()
+
+def delete_link(rider_id, link_id):
+    """
+    Delete the link of a rider
+    """
+    user_file = File.query.filter(File.id == link_id).first()
+    
+    if user_file:
+        minio.upload_link(PREFIX, user_file.filename, rider_id)
+        File.query.filter(File.id == link_id).delete()
+        database.db.session.commit()

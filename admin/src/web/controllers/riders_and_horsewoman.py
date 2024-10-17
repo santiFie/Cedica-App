@@ -141,3 +141,43 @@ def riders_and_horsewomen_update(id):
 @login_required
 def new_institution():
     return render_template("riders_and_horsewomen/new_institution.html")
+
+@bp.post("/add_files")
+def riders_and_horsewomen_new_file():
+    filename = request.form.get("filename")
+    file_type = request.form.get("file_type")
+    rider_id = request.form.get("rider_id")
+    
+    if filename and file_type and rider_id:
+        rh.new_file(filename, file_type, rider_id)
+    
+    return redirect(url_for("riders_and_horsewomen.new", id=rider_id))
+
+@bp.post("/delete_file")
+def riders_and_horsewomen_delete_file(rider_id):
+
+    if request.args.get("file_id"):
+        file_id = request.args.get("file_id")
+        rh.delete_file(rider_id, file_id)
+    
+    return redirect(url_for("riders_and_horsewomen.new", id=rider_id))
+
+@bp.post("/add_link")
+def riders_and_horsewomen_new_link():
+    link = request.form.get("link")
+    file_type = request.form.get("file_type")
+    rider_id = request.form.get("rider_id")
+
+    if link:
+        rh.new_link(link, rider_id, file_type)
+    
+    return redirect(url_for("riders_and_horsewomen.new", id=rider_id))
+
+@bp.post("/delete_link")
+def riders_and_horsewomen_delete_link(rider_id):
+
+    if request.args.get("link_id"):
+        link_id = request.args.get("link_id")
+        rh.delete_link(link_id)
+    
+    return redirect(url_for("riders_and_horsewomen.new", id=rider_id))

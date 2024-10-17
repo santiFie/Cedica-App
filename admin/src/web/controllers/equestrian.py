@@ -72,7 +72,7 @@ def update(id):
 
     eq.equestrian_update(id, request.form, files)
     return redirect(url_for("equestrian.list"))
-new
+
 
 # Routes for list all equestrians
 @bp.get("/list")
@@ -107,7 +107,6 @@ def delete(id):
 @bp.get("/show<int:id>")
 def show(id):
     equestrian = eq.find_equestrian_by_id(id)
-    print(equestrian.horse_sheet)
     return render_template("equestrians/show.html", equestrian=equestrian)
 
 #Routes for list all equestrian files
@@ -173,7 +172,7 @@ def view_file(id, filename):
         )
 
 
-@bp.get("/dowload_file/<int:id>/<string:filename>")
+@bp.post("/dowload_file/<int:id>/<string:filename>")
 def download_file(id, filename):
     file_data, content_type = minio.get_file("ecuestres", id, filename) 
 

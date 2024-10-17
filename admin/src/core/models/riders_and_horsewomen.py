@@ -98,6 +98,16 @@ education_level_enum = ENUM(
     create_type= False
 )
 
+files_enum = ENUM(
+    'Entrevista',
+    'Evaluación',
+    'Planificaciones',
+    'Evolución',
+    'Crónicas',
+    'Documental',
+    name='files_enum',
+    create_type=False)
+
 class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomen'
     id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
@@ -137,6 +147,14 @@ class RiderAndHorsewoman(database.db.Model):
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
 
     collections = database.db.relationship('Collection', back_populates='rider')
+
+class File(database.db.Model):
+    __tablename__ = 'riders_files'
+    id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
+    filename = database.db.Column(database.db.String(120), nullable=False)
+    file_type = database.db.Column(files_enum, nullable=False)
+    rider_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), nullable=False)
+    created_at = database.db.Column(database.db.DateTime, default=datetime.now())
 
 class CaringProfessional(database.db.Model):
     __tablename__ = 'caring_professionals'
