@@ -58,7 +58,7 @@ def create(form, files):
         emergency_contact=form["emergency_contact"],
         emergency_phone=form["emergency_phone"],
         health_insurance_id=form["health_insurance_id"],
-        asocciated_number=form["associated_number"],
+        associated_number=form["associated_number"],
         condition=form["condition"].upper(),
         job_position=form["job_position"].upper(),
         profession=form["profession"].upper(),
@@ -150,7 +150,6 @@ def edit(email, form, files):
     if(end_date == ''):
         end_date = None
     
-    print(team_member.cv)
 
     if team_member:
         team_member.name = form['name']
@@ -162,6 +161,7 @@ def edit(email, form, files):
         team_member.emergency_contact = form['emergency_contact']
         team_member.emergency_phone = form['emergency_phone']
         team_member.health_insurance_id = form['health_insurance']
+        team_member.associated_number = form['associated_number']
         team_member.condition = form['condition']
         team_member.job_position = form['job_position']
         team_member.profession = form['profession']

@@ -8,15 +8,6 @@
 
 {% block content %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
 
     <h1>Editar Miembro del Equipo</h1>
     <form action="{{ url_for('team_members.update_team_member', team_member_email = team_member.email) }}" method="post" enctype="multipart/form-data">
@@ -65,8 +56,8 @@
         </select>
 
         <div>
-            <label for="health_insurance_number">Numero de afiliado obra social:</label>
-            <input type="text" id="health_insurance_number" name="health_insurance_number" value="{{ team_member.health_insurance_number }}">
+            <label for="associated_number">Numero de afiliado obra social:</label>
+            <input type="text" id="associated_number" name="associated_number" value="{{ team_member.associated_number }}">
         </div>
 
 

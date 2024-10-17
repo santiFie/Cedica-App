@@ -428,7 +428,7 @@ class CollectionForm(Form):
 
 
 
-class TeamMember(Form):
+class TeamMemberForm(Form):
     name = StringField(
     "name",
     validators=[
@@ -531,8 +531,29 @@ class TeamMember(Form):
         ]
     )
 
-    title = StringField(
-        "title",
+
+class teamMemberEditForm(Form):
+
+    name = StringField(
+    "name",
+    validators=[
+        DataRequired(message=DATA_REQUIRED_MESSAGE),
+        Length(max=50, message="El campo supera el limite de caracteres"),
+        Length(min=1, message="El campo no puede estar vacio."),
+    ],
+    ) 
+
+    last_name = StringField(
+        "last_name",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    address = StringField(
+        "address",
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
@@ -540,8 +561,8 @@ class TeamMember(Form):
         ],
     )
 
-    dni_copy = StringField(
-        "dni_copy",
+    locality = StringField(
+        "locality",
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
@@ -549,14 +570,47 @@ class TeamMember(Form):
         ],
     )
 
-    cv = StringField(
-        "cv",
+    phone = StringField(
+        "phone",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Regexp(
+                r"^\d{7,15}$",
+                message="El numero de telefono debe tener entre 7 y 15 digitos.",
+            ),
+        ],
+    )
+
+    emergency_contact = StringField(
+        "emergency_contact",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    emergency_phone = StringField(
+        "emergency_phone",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Regexp(
+                r"^\d{7,15}$",
+                message="El numero de telefono debe tener entre 7 y 15 digitos.",
+            ),
+        ],
+    )
+
+    associated_number = StringField(
+        "associated_number",
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
         ]
     )
+
+
 
 
 class authForm(Form):
@@ -609,6 +663,7 @@ class registerForm(Form):
             Length(min=1, message="El campo no puede estar vacio."),
         ]
     )
+
 
 
 class userEditForm(Form):
