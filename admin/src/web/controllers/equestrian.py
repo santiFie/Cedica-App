@@ -25,7 +25,7 @@ def create():
     equestrian = eq.find_equestrian_by_name(request.form["name"])
 
     if equestrian:
-        flash("El equestre ya existe")
+        flash("El equestre ya existe", "info")
         return redirect(url_for("equestrian.new"))
     
 

@@ -2,8 +2,10 @@ from src.core import database
 from datetime import datetime
 from flask import flash
 from sqlalchemy import or_
-from src.core import utils
+from src.core import utils, minio
 
+
+PREFIX="team_members"
 
 def create_enums():
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
@@ -24,7 +26,7 @@ def check_team_member_by_email(email):
 
 
 
-def create(form):
+def create(form, files):
     """
     Create a new team member
     """
@@ -56,13 +58,20 @@ def create(form):
         emergency_contact=form["emergency_contact"],
         emergency_phone=form["emergency_phone"],
         health_insurance_id=form["health_insurance_id"],
-        health_insurance_number=form["health_insurance_number"],
+        asocciated_number=form["health_insurance_number"],
         condition=form["condition"].upper(),
         job_position=form["job_position"].upper(),
         profession=form["profession"].upper(),
     )
 
     database.db.session.add(team_member)
+    database.db.session.commit()
+
+    for key, file in files.items():
+        if file:
+            minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
+            setattr(team_member, key, file.filename)
+
     database.db.session.commit()
 
     return flash("Miembro de equipo creado exitosamente")
@@ -186,3 +195,4 @@ def switch_state(team_member):
         team_member.active = False
     database.db.session.commit()
     return team_member
+
