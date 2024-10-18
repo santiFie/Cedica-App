@@ -55,7 +55,7 @@ def payment_register():
             beneficiary_id=beneficiary.email if beneficiary else ''
         )
 
-        flash("Pago registrado exitosamente", "success")
+        flash("Pago registrado exitosamente")
         return redirect(url_for('payments.payment_register'))
 
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario

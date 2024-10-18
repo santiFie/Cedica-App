@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Listado Usuarios{% endblock %}
+{% block title %}Listado de jinetes/amazonas{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -36,59 +36,50 @@
 </button>
 <div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
     <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4">
-        <form action="{{ url_for('users.user_index') }}" method="get">
+        <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_list') }}" method="get">
         <div class="mb-1 p-3">
-          <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Usuarios del sistema</h5>
+          <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Jines/Amazonas del sistema</h5>
         </div>
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
             {% if check_permissions(session, 'user_new') %}
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <a role="button" href="{{ url_for('users.user_new') }}" class="">Crear usuario</a>
+                <a role="button" href="{{ url_for('riders_and_horsewomen.new') }}" class="">Crear Jinete/Amazona</a>
             </div>
             {% endif %}
             <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}" placeholder="Nombre" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
+                <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}" placeholder="Apellido" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
+                <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}" placeholder="DNI" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
             </div>
             <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <label for="active" 
-                class="block text-sm font-medium text-gray-700">Activo:</label>
-                <select name="active" id="active"
+                <label for="order_by" 
+                class="block text-sm font-medium text-gray-700">Ordenar por:</label>
+                <select name="order_by" id="order_by"
                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                     <option value="">-- Seleccionar --</option>
-                    <option value="SI" {% if request.args.get('active') == 'SI' %}selected{% endif %}>SI</option>
-                    <option value="NO" {% if request.args.get('active') == 'NO' %}selected{% endif %}>NO</option>
+                    <option value="asc" {% if request.args.get('order_by') == 'asc' %}selected{% endif %}>Ascendente</option>
+                    <option value="desc" {% if request.args.get('order_by') == 'desc' %}selected{% endif %}>Descendente</option>
                 </select>
             </div>
             <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <label for="role" class="block text-sm font-medium text-gray-700">Rol:</label>
-                <select name="role" id="role"
+                <label for="professionenum" 
+                class="block text-sm font-medium text-gray-700">Profesión:</label>
+                <select id="professionenum" name="professionenum" 
                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                     <option value="">-- Seleccionar --</option>
-                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Tecnica</option>
-                    <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
-                    <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
-                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administracion</option>
+                    {% for pro_member in pro_member_options %}
+                        <option value="{{ pro_member.id }}">
+                            {{ pro_member.last_name }}, {{ pro_member.name }}
+                        </option>
+                    {% endfor %}
                 </select>
-            </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <h6 class="block font-normal text-gray-700 text-base">Ordenar por:</h6>
-            </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                <label for="email_asc">Email Ascendente</label>
-                <input id="email_asc" type="radio" name="sort_by" value="email_asc" {% if request.args.get('sort_by') == 'email_asc' %}checked{% endif %}>
-            </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                <label for="email_desc">Email Descendente</label>
-                <input type="radio" id="email_desc" name="sort_by" value="email_desc" {% if request.args.get('sort_by') == 'email_desc' %}checked{% endif %}>
-            </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                <label for="fech_asc">Fecha de creación Ascendente</label>
-                <input id="fech_asc" type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
-            </div>
-            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                <label for="fech_desc">Fecha de creación Descendente</label>
-                <input id="fech_desc" type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
             </div>
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none ">
                 <button type="submit">Buscar</button>
@@ -102,55 +93,22 @@
             <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
             <thead class="bg-gray-50">
                 <tr>
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Alias/Email</th>
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Estado</th>
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Rol</th>
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Apellido/Nombre</th>
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">DNI</th>
                 <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
                 <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                {% for user in list %}
+                {% for rider in riders %}
                 <tr class="hover:bg-gray-50">
                 <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
                     <div class="text-sm">
-                    <div class="font-medium text-gray-700">{{ user.nickname }}</div>
-                    <div class="text-gray-400">{{ user.email }}</div>
+                    <div class="font-medium text-gray-700">{{ rider.name }}</div>
+                    <div class="text-gray-400">{{ rider.last_name }}</div>
                     </div>
                 </th>
-                {% if user.active %}
-                <td class="max-[735px]:hidden px-6 py-4">
-                    <span
-                    class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
-                    >
-                    {% if check_permissions(session, 'switch_state_user') %}
-                    <a href="{{ url_for('users.switch_state_user', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                    Activo
-                    </span></a>
-                    {% else %}
-                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                        Activo
-                    </span></a>
-                    {% endif%}
-                </td>
-                {% else %}
-                <td class="max-[735px]:hidden px-6 py-4">
-                    <span
-                    class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
-                    >
-                    {% if check_permissions(session, 'switch_state_user') %}
-                    <a href="{{ url_for('users.switch_state_user', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                        Inactivo
-                    </span></a>
-                    {% else %}
-                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                        Inactivo
-                    </span></a>
-                    {% endif%}
-                </td>
-                {% endif%}
-                
-                <td class="max-[600px]:hidden px-6 py-4">{{ user.role.name }}</td>
+                <td class="max-[600px]:hidden px-6 py-4">{{ rider.dni }}</td>
                 <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex gap-2">
                     <a href="#"
@@ -162,7 +120,7 @@
                 <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex justify-end gap-4">
                     {% if check_permissions(session, 'user_edit') %}
-                    <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
+                    <a href="{{ url_for('riders_and_horsewomen.edit', id=rider.id ) }}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -209,7 +167,7 @@
         <!-- Botones de Paginación -->
         <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
             {% if page > 1 %}
-                <a href="{{ url_for('users.user_index', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_list', page=page-1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Previo
                 </a>
@@ -220,7 +178,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('users.user_index', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_list', page=page+1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Siguiente
                 </a>
@@ -239,7 +197,7 @@
 </div>
 <script>
     function confirmDelete() {
-        return confirm('¿Estás seguro de que deseas eliminar este Usuario? Esta acción no se puede deshacer.');
+        return confirm('¿Estás seguro de que deseas eliminar este ecuestre? Esta acción no se puede deshacer.');
     }
 </script>
 

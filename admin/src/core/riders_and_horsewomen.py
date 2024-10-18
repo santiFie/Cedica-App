@@ -257,7 +257,7 @@ def create_rider_horsewoman(form, files):
 
 
 # FALTA EL PARAM Y FILTRO DE PROFESIONALES QUE LO ATIENDEN !!!!!!!!!!
-def find_all_riders(name=None, last_name=None, dni=None, order_by="asc", page=1):
+def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', professional=None , page=1):
 
     per_page = 25
 
@@ -278,9 +278,11 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by="asc", page=1)
 
         # Filtro por apellido del rider
         if last_name:
-            query = query.filter(
-                rider_alias_last_name.last_name.ilike(f"%{last_name}%")
-            )
+            query = query.filter(rider_alias_last_name.last_name.ilike(f'%{last_name}%'))
+
+    # filtro por professional
+    if professional:
+        query = query.join(RiderAndHorsewoman.team_members).filter(TeamMember.id == professional)
 
     # Ordeno por el campo adecuado
     if order_by == "asc":

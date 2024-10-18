@@ -9,7 +9,7 @@ bp = Blueprint('users',__name__,url_prefix="/users")
 @bp.get("/")
 @check_permissions("user_index")
 @login_required
-def user_index():  # preguntar como tienen que ser los nombres list_users o users_list
+def user_index():
 
     #obtengo nro de pagina o por defecto tomo el 1
     page = request.args.get('page', 1, type=int) 
@@ -57,7 +57,7 @@ def user_update():
         flash("No existe el usuario")
     else:
         flash("Usuario actualizado")
-    return redirect(url_for("users.users_list", flash=flash) )
+    return redirect(url_for("users.user_index", flash=flash) )
 
 @bp.get("/edit")
 @check_permissions("user_edit")
@@ -79,7 +79,7 @@ def user_delete():
     user_email = request.args.get("user_email")
     users.user_delete(user_email)
     flash("User deleted successfully")
-    return redirect(url_for("users.users_list", flash=flash) )
+    return redirect(url_for("users.user_index", flash=flash) )
 
 
 # @bp.get("/user_register_form")
@@ -105,7 +105,7 @@ def user_new():
     return render_template("users/register.html", roles=roles) 
 
 @bp.get("/user_switch_state")
-def user_switch_state():
+def switch_state_user():
     
     user_email =request.args.get('user_email')
     
@@ -115,4 +115,4 @@ def user_switch_state():
         flash("Se cambio el estado satisfactoriamente")
 
         
-    return redirect(url_for("users.users_list") )
+    return redirect(url_for("users.user_index") )
