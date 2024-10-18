@@ -26,7 +26,7 @@ def equestrian_new():
 def equestrian_create():
     equestrian = eq.find_equestrian_by_name(request.form["name"])
     if equestrian:
-        flash("El equestre ya existe")
+        flash("El equestre ya existe", "info")
         return redirect(url_for("equestrian.new"))
 
     file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
@@ -96,6 +96,7 @@ def equestrian_delete(id):
 @login_required
 def equestrian_show(id):
     equestrian = eq.find_equestrian_by_id(id)
+    print(equestrian.horse_sheet)
     return render_template("equestrians/show.html", equestrian=equestrian)
 
 # Routes for list all equestrian files

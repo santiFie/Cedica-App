@@ -46,7 +46,6 @@ def user_update():
     Updates a user
     """
     user_mail = request.args.get('user_email')
-    print(user_mail)
     user = users.edit(
         email=user_mail,
         nickname=request.form["nickname"],
@@ -105,15 +104,15 @@ def user_new():
 
     return render_template("users/register.html", roles=roles) 
 
-@bp.post("/user_switch_state")
-def switch_state_user():
+@bp.get("/user_switch_state")
+def user_switch_state():
     
     user_email =request.args.get('user_email')
     
     if not users.switch_state(user_email):
-        flash("No se puede desactivar a un administrador", "info")
+        flash("No se puede cambiar el estado a un administrador", "info")
     else:
-        flash("Usuario bloqueado satisfactoriamente")
+        flash("Se cambio el estado satisfactoriamente")
 
         
     return redirect(url_for("users.users_list") )

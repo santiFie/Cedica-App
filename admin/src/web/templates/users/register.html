@@ -6,40 +6,57 @@
     {{ super() }}
 {% endblock %}
 
+{% block scripts %}
+{% endblock %}
+
 {% block content %}
 
-    <div>{% block navbar %}
-
-        {% endblock %}
-    </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-
-    <h1>Registrar usuario</h1>
-    <form action="{{ url_for('users.user_new') }}" method="post">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" required>
-        <label for="nickname">Alias</label>
-        <input type="text" name="nickname" id="nickname" required>
-        <label for="password">Contraseña</label>
-        <input type="password" name="password" id="password" required>
-        <div>
-            <label for="role_id">Rol:</label>
-            <select id="role_id" name="role_id">
-            {% for role in roles %}
-                <option value="{{ role.id }}" >{{ role.name }}</option>
-            {% endfor %}
-            </select>
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('users.user_new') }}" method="POST">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Registrar usuario</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="text" name="email" id="email"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="nickname" class="block text-sm font-medium text-gray-700">Alias</label>
+                                <input type="text" name="nickname" id="nickname"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                                <input type="password" name="password" id="password"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="role_id" class="block text-sm font-medium text-gray-700">Rol</label>
+                                <select id="role_id" name="role_id"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for role in roles %}
+                                        <option value="{{ role.id }}">{{ role.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>        
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="javascript:history.back()">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <input type="submit" value="Registrar">
-    </form>
-
+    </div>
 {% endblock %}
