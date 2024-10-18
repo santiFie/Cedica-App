@@ -62,13 +62,14 @@ def team_member_create():
             file_keys = ['title', 'dni_copy', 'cv']
             files = {key: request.files[key]
                      for key in file_keys if key in request.files}
+            print(request.files)
             tm.create(request.form, files)
         else:
             flash("El miembro de equipo ya existe", "info")
     else:
         flash("Faltan campos por completar", "info")
 
-    return redirect(url_for("team_members.new"))
+    return redirect(url_for("team_members.team_member_new"))
 
 
 @bp.get("show_team_member")
@@ -147,6 +148,9 @@ def team_member_switch_state():
 def view_file(id, filename):
 
     file_data, content_type = minio.get_file("team_members", id, filename)
+
+    print(file_data)
+    print(content_type)
 
     if not file_data:
         return "Archivo no encontrado", 404
