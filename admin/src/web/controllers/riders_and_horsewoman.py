@@ -39,7 +39,6 @@ def riders_and_horsewomen_index():
     return render_template('riders_and_horsewomen/show_riders.html',
                            pro_member_options=team_members ,riders = all_riders, max_pages = max_pages, current_page = page)
 
-
 @bp.route("/new", methods=["GET", "POST"])
 @login_required
 def new():
@@ -56,6 +55,27 @@ def new():
     riders = tm.get_all_riders()
     horses = eq.get_all_equestrians()
     track_assistants = tm.get_all_track_assistants()
+
+    if not horses:
+        flash("No hay caballos cargados en el sistema y son necesarios para registrar un jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not riders:
+        flash("No hay manejadores de caballos cargados en el sistema y son necesarios para registrar un jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+
+    if not team_members:
+        flash("No hay miembros de equipo cargados en el sistema y son necesarios para registrar un jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not track_assistants:
+        flash("No hay asistentes de pista cargados en el sistema y son necesarios para registrar un jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not therapists:
+        flash("No hay terapeutas cargados en el sistema y son necesarios para registrar un jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+
 
     form = riderForm(request.form)
     # se checkean todos los campos
@@ -114,6 +134,26 @@ def edit(id):
     horses = eq.get_all_equestrians()
     track_assistants = tm.get_all_track_assistants()
 
+    if not horses:
+        flash("No hay caballos cargados en el sistema y son necesarios para registrar a este jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not riders:
+        flash("No hay manejadores de caballos cargados en el sistema y son necesarios para registrar a este jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+
+    if not team_members:
+        flash("No hay miembros de equipo cargados en el sistema y son necesarios para registrar a este jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not track_assistants:
+        flash("No hay asistentes de pista cargados en el sistema y son necesarios para registrar a este jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+    
+    if not therapists:
+        flash("No hay terapeutas cargados en el sistema y son necesarios para registrar a este jinete/amazona", "error")
+        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
+
     return render_template(
         "riders_and_horsewomen/edit.html",
         rider=rider,
@@ -141,7 +181,7 @@ def edit(id):
 @bp.post("/update/<int:id>")
 @login_required
 def riders_and_horsewomen_update(id):
-    rh.update(id, request.form)
+    rh.update(id, request.form, request.files)
     flash("El jinete/Amazona se ha actualizado exitosamente")
 
     # ---------------------- Debería ir al index -----------------------

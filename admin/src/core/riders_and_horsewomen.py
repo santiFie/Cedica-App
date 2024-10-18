@@ -316,7 +316,7 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', profess
     return riders, max_pages
 
 
-def update(id, form):
+def update(id, form, files):
     """
     Update a rider or horsewoman. Returns True if the rider was updated successfully, False otherwise.
     """
@@ -402,7 +402,19 @@ def update(id, form):
     update_tutors(form, id)
     update_work_in_institution(form, id)
 
-    return True
+    rider_id = rider.id
+
+    for i in range(1, 4):  # Assuming there are 3 sets of file/link inputs
+        link = form.get(f"select_link_{i}")
+        filename = form.get(f"file_name_{i}")
+        file_type = form.get(f"type_select_file_{i}")
+        
+        if link != "":
+            new_link(link, filename, rider_id, file_type)
+        elif filename != "":
+            file = files[f"select_file_{i}"]
+            new_file(file, filename, file_type, rider_id)
+
 
 
 def update_caring_professionals(form, id):

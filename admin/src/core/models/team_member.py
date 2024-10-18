@@ -3,41 +3,41 @@ from enum import Enum
 from sqlalchemy.dialects.postgresql import ENUM
 
 ProfessionEnum = ENUM(
-    'PSICOLOGO',
-    'PSICOMOTRICISTA',
-    'MEDICO',
-    'FISIOTERAPEUTA',
-    'TERAPEUTA_OCUPACIONAL',
-    'PSICOLOGO_EDUCATIVO',
-    'MAESTRO',
-    'PROFESOR',
-    'FONOAUDIOLOGO',
-    'VETERINARIO',
-    'OTRO',
+    'Psicologo',
+    'Psicomotricista',
+    'Medico',
+    'Fisioterapeuta',
+    'Terapeuta_ocupacional',
+    'Psicologo_educativo',
+    'Maestro',
+    'Profesor',
+    'Fonoaudiologo',
+    'Veterinario',
+    'Otro',
     name='professionenum',
     create_type=False
 )
         
 JobEnum = ENUM(
-    'ADMINISTRATIVO',
-    'TERAPEUTA',
-    'MANEJADOR',
-    'ASISTENTE_DE_PISTA',
-    'HERRERO',
-    'VETERINARIO',
-    'ENTRENADOR_DE_CABALLOS',
-    'DOMADOR_DE_CABALLOS',
-    'PROFESOR_DE_EQUITACION',
-    'PROFESOR_DE_ENTRENAMIENTO',
-    'ASISTENTE_DE_MANTENIMIENTO',
-    'OTRO',
+    'Administrativo',
+    'Terapeuta',
+    'Manejador',
+    'Asistente_de_pista',
+    'Herrero',
+    'Veterinario',
+    'Entrenador_de_caballos',
+    'Domador_de_caballos',
+    'Profesor_de_equitacion',
+    'Profesor_de_entrenamiento',
+    'Asistente_de_mantenimiento',
+    'Otro',
     name='jobenum',
     create_type=False
 )
 
 ConditionEnum = ENUM(
-    'VOLUNTARIO',
-    'PERSONAL_PAGADO',
+    'Voluntario',
+    'Personal_pagado',
     name='conditionenum',
     create_type=False
 )
@@ -58,7 +58,7 @@ class TeamMember(database.db.Model):
     emergency_phone = database.db.Column(database.db.String(120), nullable=False)
     active = database.db.Column(database.db.Boolean, nullable=False, default=True)
     health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
-    asocciated_number = database.db.Column(database.db.String(120), nullable=False)
+    associated_number = database.db.Column(database.db.String(120), nullable=False)
 
     ##Archivos
     
