@@ -2,14 +2,16 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from src.core.payments import find_payments, create_payment, find_payment, delete_a_payment, edit_a_payment
 from src.core.auth import find_user_by_email
 from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 from src.web.forms import PaymentForm
 from datetime import datetime
 
 bp = Blueprint('payments',__name__,url_prefix="/payments")
 
 @bp.get('/')
+@check_permissions('payment_index')
 @login_required
-def index_payments():
+def payment_index():
 
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -23,44 +25,52 @@ def index_payments():
     return render_template("payments/show_payments.html", payments = all_payments, max_pages = max_pages, current_page=page)
 
 @bp.get('/payment_register_form')
+@check_permissions('payment_register_form')
 @login_required
 def payment_register_form():
     form = PaymentForm()
     return render_template("payments/payment_register.html", form=form)
 
 @bp.route("/payment_register", methods=["GET", "POST"])
+@check_permissions('payment_register')
 @login_required
 def payment_register():
-
+    
     form = PaymentForm(request.form)
+    
+    if request.method == "POST":
+        if form.validate():
+            # Crear el nuevo pago con los datos validados del formulario
+            beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else None
 
-    if request.method == "POST" and form.validate():
-        # Crear el nuevo pago con los datos validados del formulario
-        beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else None
+            # Si se ingreso un beneficiario y no se encontro en la bd
+            if form.beneficiary_id.data and not beneficiary:
+                flash("El beneficiario no existe.", "error")
+                return render_template('payments/payment_register.html', form=form)
 
-        # Si se ingreso un beneficiario y no se encontro en la bd
-        if form.beneficiary_id.data and not beneficiary:
-            flash("El beneficiario no existe.", "error")
-            return render_template('payments/payment_register.html', form=form)
+            new_payment = create_payment(
+                amount=form.amount.data,
+                payment_date=form.payment_date.data,
+                payment_type=form.payment_type.data,
+                description=form.description.data,
+                beneficiary_id=beneficiary.email if beneficiary else ''
+            )
 
-        new_payment = create_payment(
-            amount=form.amount.data,
-            payment_date=form.payment_date.data,
-            payment_type=form.payment_type.data,
-            description=form.description.data,
-            beneficiary_id=beneficiary.email if beneficiary else ''
-        )
-
-        flash("Pago registrado exitosamente", "success")
-        return redirect(url_for('payments.payment_register'))
+            flash("Pago registrado exitosamente")
+            return redirect(url_for('payments.payment_register'))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error in {field}: {error}")
 
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
     return render_template("payments/payment_register.html", form=form)
 
 
 @bp.get('/payment_detail/<int:payment_id>')
+@check_permissions('payment_show_detail')
 @login_required
-def show_detail_payment(payment_id):
+def payment_show_detail(payment_id):
 
     #recupero payment que quiero ver 
     payment = find_payment(payment_id)
@@ -73,8 +83,9 @@ def show_detail_payment(payment_id):
     return render_template("payments/show_detail_payment.html", payment=payment)
     
 @bp.get('edit_payment_form/<int:payment_id>')
+@check_permissions('payment_edit_form') 
 @login_required
-def edit_payment_form(payment_id):
+def payment_edit_form(payment_id):
     payment = find_payment(payment_id)
     form = PaymentForm(obj=payment)
 
@@ -82,8 +93,9 @@ def edit_payment_form(payment_id):
 
 
 @bp.route('/edit_payment/<int:payment_id>', methods=["GET", "POST"])
+@check_permissions('payment_edit')
 @login_required
-def edit_payment(payment_id):
+def payment_edit(payment_id):
 
     # agarro el payment para el edit payment form
     payment = find_payment(payment_id)
@@ -125,8 +137,9 @@ def edit_payment(payment_id):
 
    
 @bp.post('/delete_payment/<int:payment_id>', endpoint='delete_payment')
+@check_permissions('payment_delete')
 @login_required
-def delete_payment(payment_id):
+def payment_delete(payment_id):
 
     #obtengo pago a eliminar
     payment = find_payment(payment_id)

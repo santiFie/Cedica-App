@@ -5,11 +5,13 @@ from src.web.storage import storage
 from src.web import routes
 from src.web import errors
 from src.core import database
-from src.core.models.riders_and_horsewomen import RiderAndHorsewoman, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
+from src.core.models.riders_and_horsewomen import RiderAndHorsewoman, File, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
 from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
 from src.core.models.equestrian import Equestrian
 from src.core.models.users import User, Role, RolePermission, Permission
+from src.core.users import has_permissions
+from src.core.utils import is_link
 from src.core.config import config
 
 session = Session()
@@ -34,6 +36,9 @@ def create_app(env="production", static_folder="../../static"):
 
     # Error handlers
     errors.register_errors(app)
+
+    app.jinja_env.globals.update(check_permissions=has_permissions)
+    app.jinja_env.globals.update(is_link=is_link)
 
     @app.cli.command(name="reset-db")
     def reset_db():

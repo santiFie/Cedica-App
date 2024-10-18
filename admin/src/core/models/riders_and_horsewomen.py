@@ -52,20 +52,20 @@ pension_enum= ENUM(
 )
 
 days_enum = ENUM(
-    'LUNES',
-    'MARTES',
-    'MIERCOLES',
-    'JUEVES',
-    'VIERNES',
-    'SABADO',
-    'DOMINGO',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sabado',
+    'Domingo',
     name='days_of_week_enum',
     create_type=False
 )
 
 condition_enum = ENUM(
-    'REGULAR',
-    'DE BAJA',
+    'Regular',
+    'De baja',
     name='condition_enum',
     create_type=False
 )
@@ -97,6 +97,16 @@ education_level_enum = ENUM(
     name= 'education_level_enum',
     create_type= False
 )
+
+files_enum = ENUM(
+    'Entrevista',
+    'Evaluación',
+    'Planificaciones',
+    'Evolución',
+    'Crónicas',
+    'Documental',
+    name='files_enum',
+    create_type=False)
 
 class RiderAndHorsewoman(database.db.Model):
     __tablename__ = 'riders_and_horsewomen'
@@ -136,6 +146,19 @@ class RiderAndHorsewoman(database.db.Model):
     inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
 
     collections = database.db.relationship('Collection', back_populates='rider')
+
+    def get_files(self):
+        return File.query.filter_by(rider_id=self.id).all()
+
+class File(database.db.Model):
+    __tablename__ = 'riders_files'
+    id = database.db.Column(database.db.Integer, primary_key=True, autoincrement=True)
+    filename = database.db.Column(database.db.String(120), nullable=False)
+    is_link = database.db.Column(database.db.Boolean, default=False)
+    file_type = database.db.Column(files_enum, nullable=False)
+    rider_id = database.db.Column(database.db.BigInteger, database.db.ForeignKey('riders_and_horsewomen.id'), nullable=False)
+    created_at = database.db.Column(database.db.DateTime, default=datetime.now())
+
 
 class CaringProfessional(database.db.Model):
     __tablename__ = 'caring_professionals'
