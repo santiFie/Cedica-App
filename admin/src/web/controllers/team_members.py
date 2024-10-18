@@ -58,11 +58,11 @@ def team_member_create():
     form = TeamMemberForm(request.form)
     if form.validate():
         team_member = tm.check_team_member_by_email(request.form["email"])
+        # Cuando el DNI se repite da error tambien. O lo ponemos unique en el modelo o lo chequeamos aca
         if not team_member:
             file_keys = ['title', 'dni_copy', 'cv']
             files = {key: request.files[key]
                      for key in file_keys if key in request.files}
-            print(request.files)
             tm.create(request.form, files)
         else:
             flash("El miembro de equipo ya existe", "info")

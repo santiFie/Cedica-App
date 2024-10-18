@@ -79,7 +79,8 @@ def create(form, files):
         database.db.session.commit()
 
         return flash("Miembro de equipo creado exitosamente")
-    except:
+    except Exception as e:
+        raise(e)
         database.db.session.rollback()
         return flash("Error al crear miembro de equipo", "info")
 
