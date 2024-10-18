@@ -7,8 +7,8 @@ ProfessionEnum = ENUM(
     'Psicomotricista',
     'Medico',
     'Fisioterapeuta',
-    'Terapeuta_ocupacional',
-    'Psicologo_educativo',
+    'Terapeuta ocupacional',
+    'Psicologoeducativo',
     'Maestro',
     'Profesor',
     'Fonoaudiologo',
@@ -22,14 +22,14 @@ JobEnum = ENUM(
     'Administrativo',
     'Terapeuta',
     'Manejador',
-    'Asistente_de_pista',
+    'Asistente de pista',
     'Herrero',
     'Veterinario',
-    'Entrenador_de_caballos',
-    'Domador_de_caballos',
-    'Profesor_de_equitacion',
-    'Profesor_de_entrenamiento',
-    'Asistente_de_mantenimiento',
+    'Entrenador de caballos',
+    'Domador de caballos',
+    'Profesor de equitacion',
+    'Profesor de entrenamiento',
+    'Asistente de mantenimiento',
     'Otro',
     name='jobenum',
     create_type=False
@@ -37,7 +37,7 @@ JobEnum = ENUM(
 
 ConditionEnum = ENUM(
     'Voluntario',
-    'Personal_pagado',
+    'Personal pagado',
     name='conditionenum',
     create_type=False
 )

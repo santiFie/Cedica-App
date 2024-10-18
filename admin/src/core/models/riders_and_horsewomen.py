@@ -64,8 +64,8 @@ days_enum = ENUM(
 )
 
 condition_enum = ENUM(
-    'REGULAR',
-    'DE BAJA',
+    'Regular',
+    'De baja',
     name='condition_enum',
     create_type=False
 )
