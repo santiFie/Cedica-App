@@ -252,7 +252,7 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', profess
 
     # filtro por professional
     if professional:
-        query = query.join(RiderAndHorsewoman.team_members).filter(TeamMember.profession == professional)
+        query = query.join(RiderAndHorsewoman.team_members).filter(TeamMember.id == professional)
 
     # Ordeno por el campo adecuado
     if order_by == 'asc':

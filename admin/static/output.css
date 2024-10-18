@@ -762,6 +762,10 @@ video {
   height: 1.5rem;
 }
 
+.h-\[36rem\] {
+  height: 36rem;
+}
+
 .h-\[43rem\] {
   height: 43rem;
 }
@@ -1412,6 +1416,10 @@ video {
 }
 
 @media (max-width: 735px) {
+  .max-\[735px\]\:flex {
+    display: flex;
+  }
+
   .max-\[735px\]\:hidden {
     display: none;
   }
