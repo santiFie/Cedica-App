@@ -6,14 +6,7 @@ from src.core import utils
 from src.core import team_member as tm
 from src.core.models.team_member import TeamMember
 from src.core.models.riders_and_horsewomen import File, RiderAndHorsewoman
-from src.core.models.riders_and_horsewomen import (
-    CaringProfessional,
-    RiderAndHorsewoman,
-    Tutor,
-    WorkInInstitution,
-    RiderHorsewomanInstitution,
-)
-from src.core.models.riders_and_horsewomen import CaringProfessional, RiderAndHorsewoman, Tutor, WorkInInstitution
+from src.core.models.riders_and_horsewomen import CaringProfessional, Tutor, WorkInInstitution
 from sqlalchemy.orm import aliased
 from src.web.forms import (
     SecondTutorForm,
@@ -155,7 +148,7 @@ def create_work_in_institution(form, rider_horsewoman_id):
         return redirect(url_for("riders_and_horsewomen.new"))
 
 
-def create_rider_horsewoman(form):
+def create_rider_horsewoman(form, files):
     """
     Create a new rider or horsewoman and dependencys
     """
@@ -248,6 +241,19 @@ def create_rider_horsewoman(form):
 
     # Work In Institution
     create_work_in_institution(form, rider_horsewoman.id)
+
+    rider_id = rider_horsewoman.id
+
+    for i in range(1, 4):  # Assuming there are 3 sets of file/link inputs
+        link = form.get(f"select_link_{i}")
+        filename = form.get(f"file_name_{i}")
+        file_type = form.get(f"type_select_file_{i}")
+        
+        if link != "":
+            new_link(link, filename, rider_id, file_type)
+        elif filename != "":
+            file = files[f"select_file_{i}"]
+            new_file(file, filename, file_type, rider_id)
 
 
 # FALTA EL PARAM Y FILTRO DE PROFESIONALES QUE LO ATIENDEN !!!!!!!!!!
@@ -571,7 +577,7 @@ def get_tutors_by_rider_id(rider_id):
     return tutor1, tutor2
 
 
-def new_file(filename, file_type, rider_id):
+def new_file(file, filename, file_type, rider_id):
     """
     Create a new file for a rider
     """
@@ -580,24 +586,25 @@ def new_file(filename, file_type, rider_id):
 
     if rider:
 
-        file = File(filename=filename, file_type=file_type, rider_id=rider_id)
+        user_file = File(filename=filename, file_type=file_type, rider_id=rider_id)
 
-        minio.upload_file(PREFIX, filename, rider_id)
-        database.db.session.add(file)
+        minio.upload_file(PREFIX, file, rider_id, filename)
+        database.db.session.add(user_file)
         database.db.session.commit()
 
-def new_link(link, rider_id, file_type):
+def new_link(link, filename, rider_id, file_type):
     """
-    Create a new file for a rider
+    Create a new link for a rider
     """
 
     rider = get_rider_by_id(rider_id)
 
     if rider:
-        file = File(filename=link, file_type=file_type, rider_id=rider_id)
-        minio.upload_link(PREFIX, link, rider_id)
+        file = File(filename=filename,is_link=True,  file_type=file_type, rider_id=rider_id)
         database.db.session.add(file)
         database.db.session.commit()
+
+        minio.upload_link(PREFIX, link, filename, rider_id)
 
 def delete_file(rider_id, file_id):
     """
@@ -606,19 +613,8 @@ def delete_file(rider_id, file_id):
     user_file = File.query.filter(File.id == file_id).first()
     
     if user_file:
-        minio.upload_file(PREFIX, user_file.filename, rider_id)
+        minio.delete_file(PREFIX, user_file.filename, rider_id)
         File.query.filter(File.id == file_id).delete()
-        database.db.session.commit()
-
-def delete_link(rider_id, link_id):
-    """
-    Delete the link of a rider
-    """
-    user_file = File.query.filter(File.id == link_id).first()
-    
-    if user_file:
-        minio.upload_link(PREFIX, user_file.filename, rider_id)
-        File.query.filter(File.id == link_id).delete()
         database.db.session.commit()
 
 def get_link(link_id):
@@ -631,6 +627,7 @@ def get_link(link_id):
     if user_file:
         rider_id = user_file.rider_id
         return minio.get_link(PREFIX, user_file.filename, rider_id)
+    
     return None
 
 def order_files(sort_by, file):
@@ -664,19 +661,20 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
 
     if final_date and initial_date:
         # Check if the dates are valid
-        if not utils.validate_dates(initial_date, final_date)filename:
+        if not utils.validate_dates(initial_date, final_date):
             flash("Las fechas ingresadas no son válidas")
             return [], 1
 
     # Iterate over all the riders
     for rider in riders:
         # Get the files of the rider
-        rider_files = [rider.filename for rider in rider.get_files()]
+        rider_files = [file.filename for file in rider.get_files()]
         for file in rider_files:
             if file:
                 # Get the date of the file
-                file_date = minio.get_file_date(prefix=PREFIX, user_id=rider.id, filename=file)
-            
+                user_file = File.query.filter_by(filename = file, rider_id = rider.id).first()
+                file_date = user_file.created_at
+
                 # Apply the name filter
                 if name and name not in file:
                     # If the name is not in the file name, continue with the next file
@@ -691,8 +689,8 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
                 files_in_conditions.append({
                     'rider_id': rider.id,
                     'rider_name': rider.name,
-                    'filename': file,
-                    'upload_date': file_date
+                    'file': get_file_by_name_and_rider_id(file, rider.id),
+                    'upload_date': file_date.strftime('%Y-%m-%d %H:%M')
                 })
 
     # Order the files
@@ -711,24 +709,32 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
 
     return files, max_pages 
 
+def get_file_by_name_and_rider_id(filename, rider_id):
+
+    user_file = File.query.filter_by(filename = filename, rider_id = rider_id).first()
+
+    if user_file:
+        return user_file
+    return None
 
 def get_file(file_id):
     """
     Get the file of a rider by file ID
     """
-    user_file = File.query.filter(File.id == file_id).first()
+    user_file = File.query.filter_by(id=file_id).first()
 
     if user_file:
         rider_id = user_file.rider_id
-        return minio.get_file(PREFIX, user_file.filename, rider_id)
+        return  minio.get_file(PREFIX, rider_id, user_file.filename)
     return None
 
-def get_file_name(file_id):
-        """
-        Get the file name of a rider by file ID
-        """
-        user_file = File.query.filter(File.id == file_id).first()
+def get_filename(file_id):
+    """
+    Get the file name of a rider by file ID
+    """
 
-        if user_file:
-            return user_file.filename
-        return None
+    user_file = File.query.filter_by(id=file_id).first()
+    
+    if user_file:
+        return user_file.filename
+    return None

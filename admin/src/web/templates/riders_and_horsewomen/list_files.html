@@ -7,7 +7,7 @@
     </div>
 
     <h2>Buscar archivos</h2>
-    <form action="{{ url_for('riders_and_horsewomen.list_files') }}" method="get">
+    <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files') }}" method="get">
         <label for="name">Nombre:</label>
         <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
 
@@ -51,12 +51,17 @@
             <tbody>
                 {% for file in files %}
                 <tr>
-                    <td>{{ file['filename'] }}</td>
+                    <td>{{ file['file'].filename }}</td>
                     <td>{{ file['rider_name'] }}</td>
                     <td>{{ file['upload_date'] }}</td>
                     <td>
-                        <a href="{{ url_for('riders_and_horsewomen.view_file', id=file['rider_id'], filename=file['filename']) }}">Ver</a>
-                        <a href="{{ url_for('riders_and_horsewomen.download_file', id=file['rider_id'], filename=file['filename']) }}">Descargar</a>
+                        {% if file["file"].is_link %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_link', link_id=file['file'].id) }}">Ver Enlace</a>
+                        {% else %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_file', file_id=file['file'].id) }}">Ver</a>
+                        {% endif %}
+                        <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_file', file_id=file['file'].id) }}" onclick="return confirmDelete()">Eliminar</a>
+                        <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', id=file['rider_id'], file_id=file['file'].id) }}">Descargar</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -67,7 +72,7 @@
             <!-- Botones de Paginación -->
             <div class="pagination">
                 {% if page > 1 %}
-                    <a href="{{ url_for('riders_and_horsewomen.list_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
                         <button>Previo</button>
                     </a>
                 {% else %}
@@ -75,7 +80,7 @@
                 {% endif %}
     
                 {% if page < max_pages %}
-                    <a href="{{ url_for('riders_and_horsewomen.list_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
                         <button>Siguiente</button>
                     </a>
                 {% else %}

@@ -129,7 +129,7 @@
 
     <div class="container mx-auto">
         <div class="mt-1 md:mt-4 md:col-span-2">
-            <form action="{{ url_for('riders_and_horsewomen.new') }}" method="POST">
+            <form action="{{ url_for('riders_and_horsewomen.new') }}" method="POST" enctype="multipart/form-data">
                 <div class="shadow overflow-hidden sm:rounded-md bg-white">
                     <div class="mb-2 p-4  bg-white">
                         <h2 class="font-sans text-xl font-semibold text-gray-900">Registrar jinete/amazona</h2>
@@ -624,28 +624,6 @@
                                     {% endfor %}
                                 </select>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            
                         </div>
                     </div>
                     <div class="mb-2 p-4  bg-white">
@@ -684,7 +662,7 @@
                             </div>
                             <div id="arc-1-box-file" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_file_1" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
-                                <input type="file" id="select_file_1" name="select_file_1" enctype="multipart/form-data"required>
+                                <input type="file" id="select_file_1" name="select_file_1" enctype="multipart/form-data" norequired>
                             </div>
                             <div id="arc-1-box-link" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_link_1" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
@@ -692,6 +670,8 @@
                             </div>
                             <div id="space-1" class="hidden col-span-6 sm:col-span-3">
                                 <div>
+                                    <label for="file_name_1" class="block text-sm font-medium text-gray-700">Ingrese un titulo del documento:</label>
+                                    <input type="text" id="file_name_1" name="file_name_1" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                                 </div>
                             </div>
                             <script>
@@ -736,7 +716,7 @@
                             </div>
                             <div id="arc-2-box-file" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_file_2" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
-                                <input type="file" id="select_file_2" name="select_file_2" enctype="multipart/form-data"required>
+                                <input type="file" id="select_file_2" name="select_file_2" enctype="multipart/form-data" norequired>
                             </div>
                             <div id="arc-2-box-link" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_link_2" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
@@ -744,6 +724,8 @@
                             </div>
                             <div id="space-2" class="hidden col-span-6 sm:col-span-3">
                                 <div>
+                                    <label for="file_name_2" class="block text-sm font-medium text-gray-700">Ingrese un titulo del documento:</label>
+                                    <input type="text" id="file_name_2" name="file_name_2" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                                 </div>
                             </div>
                             <script>
@@ -788,7 +770,7 @@
                             </div>
                             <div id="arc-3-box-file" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_file_3" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
-                                <input type="file" id="select_file_3" name="select_file_3" enctype="multipart/form-data"required>
+                                <input type="file" id="select_file_3" name="select_file_3" enctype="multipart/form-data"norequired>
                             </div>
                             <div id="arc-3-box-link" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_link_3" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
@@ -796,6 +778,8 @@
                             </div>
                             <div id="space-3" class="hidden col-span-6 sm:col-span-3">
                                 <div>
+                                    <label for="file_name_3" class="block text-sm font-medium text-gray-700">Ingrese un titulo del documento:</label>
+                                    <input type="text" id="file_name_3" name="file_name_3" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                                 </div>
                             </div>
                             <script>
@@ -840,7 +824,7 @@
                             </div>
                             <div id="arc-4-box-file" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_file_4" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
-                                <input type="file" id="select_file_4" name="select_file_4" enctype="multipart/form-data"required>
+                                <input type="file" id="select_file_4" name="select_file_4" enctype="multipart/form-data"norequired>
                             </div>
                             <div id="arc-4-box-link" class="hidden col-span-6 sm:col-span-3">
                                 <label for="select_link_4" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
@@ -848,6 +832,8 @@
                             </div>
                             <div id="space-4" class="hidden col-span-6 sm:col-span-3">
                                 <div>
+                                    <label for="file_name_4" class="block text-sm font-medium text-gray-700">Ingrese un titulo del documento:</label>
+                                    <input type="text" id="file_name_4" name="file_name_4" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                                 </div>
                             </div>
                             <script>
