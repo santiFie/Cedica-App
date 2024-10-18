@@ -48,9 +48,6 @@ def new():
     # se checkean todos los campos
     if request.method == "POST":
         if form.validate():
-            missing_fields = rh.check_missing_fields(request.form)
-            if missing_fields:
-                print("Campos no completados:", missing_fields)
             rider = rh.find_rider(request.form["dni"])
             if not rider:
                 rh.create_rider_horsewoman(request.form)
@@ -58,9 +55,6 @@ def new():
             else:
                 flash("El dni ingresado ya existe", "info")
         else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"Error in {field}: {error}")
             flash("faltan datos para completar", "error")
 
         return redirect(url_for("riders_and_horsewomen.new"))
@@ -242,3 +236,16 @@ def list_files():
     all_files, max_pages = rh.list_riders_files(page=page, name=name, initial_date=initial_date, final_date=final_date, sort_by=sort_by)
         
     return render_template("riders_and_horsewomen/list_files.html",files= all_files, page=page, max_pages=max_pages)
+
+@bp.route("/delete_rider/<rider_dni>", methods=["GET", "POST"])
+def delete_rider(rider_dni):
+    rider = rh.find_rider(rider_dni)
+
+    if not rider:
+        flash("El Jinete o Amazona seleccionado no exite", "error")
+        return redirect(url_for('riders_and_horsewomen.riders_and_horsewomen_list'))
+    
+    rh.delete_a_rider(rider)
+    
+    flash("Jinete o Amazona eliminado exitosamente.")
+    return redirect(url_for('riders_and_horsewomen.riders_and_horsewomen_list'))

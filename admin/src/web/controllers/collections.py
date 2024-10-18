@@ -4,6 +4,7 @@ from src.core.team_member import find_team_member_by_email
 from src.web.handlers.auth import login_required
 from src.core.riders_and_horsewomen import find_rider
 from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 from src.web.forms import CollectionForm
 from datetime import datetime
 
@@ -12,8 +13,9 @@ bp = Blueprint('collections',__name__,url_prefix="/collections")
 
 
 @bp.get('/')
+@check_permissions('collection_index')
 @login_required
-def index_collections():
+def collection_index():
 
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -30,6 +32,7 @@ def index_collections():
 
 
 @bp.get('/collection_register_form')
+@check_permissions('collection_register')
 @login_required
 def collection_register_form():
     form = CollectionForm()
@@ -37,8 +40,9 @@ def collection_register_form():
 
 
 @bp.route('/register_collection', methods=["GET", "POST"])
+@check_permissions('collection_register')
 @login_required
-def register_collection():
+def collection_register():
     
     form = CollectionForm(request.form)
         
@@ -74,8 +78,9 @@ def register_collection():
 
 
 @bp.get('/collection_detail/<int:collection_id>')
+@check_permissions('collection_show_detail')
 @login_required
-def show_detail_collection(collection_id):
+def collection_show_detail(collection_id):
      
     collection = find_collection(collection_id)
     
@@ -88,15 +93,17 @@ def show_detail_collection(collection_id):
 
 
 @bp.get('/edit_collection_form/<int:collection_id>')
+@check_permissions('collection_edit_form')
 @login_required
-def edit_collection_form(collection_id):
+def collection_edit_form(collection_id):
     collection = find_collection(collection_id)
     form = CollectionForm()
     return render_template("collections/edit_collection_form.html", form=form, collection=collection)
 
 @bp.route('/edit_collection/<int:collection_id>', methods=["GET", "POST"])
+@check_permissions('collection_edit')
 @login_required
-def edit_collection(collection_id):
+def collection_edit(collection_id):
 
     collection = find_collection(collection_id)
     form = CollectionForm(request.form)
@@ -141,8 +148,9 @@ def edit_collection(collection_id):
 
 
 @bp.post('/delete_collection/<int:collection_id>')
+@check_permissions('collection_delete')
 @login_required
-def delete_collection(collection_id):
+def collection_delete(collection_id):
 
     collection = find_collection(collection_id)
 
@@ -157,8 +165,9 @@ def delete_collection(collection_id):
 
 
 @bp.get('/index_debts')
+@check_permissions('collection_index_debts')
 @login_required
-def index_debts():
+def collection_index_debts():
     # obtengo parametros del filtro
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -173,8 +182,9 @@ def index_debts():
     return render_template("collections/show_debtors.html", debtors=debtors, max_pages=max_pages, current_page=page)
 
 @bp.get('/detail_debt/<string:debtor_dni>')
+@check_permissions('collection_show_detail_debt')
 @login_required
-def show_detail_debt(debtor_dni):
+def collection_show_detail_debt(debtor_dni):
     # muestro detalle de que meses debe ese rider
     debt_details, debtor = calculate_debt(debtor_dni)
 

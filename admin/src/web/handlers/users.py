@@ -1,6 +1,7 @@
 from src.core import users
 from functools import wraps
 from flask import abort
+from flask import session
 
 def check_permissions(permission):
     """
@@ -10,7 +11,7 @@ def check_permissions(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            if not users.has_permissions(permission):
+            if not users.has_permissions(session,permission):
                 return abort(403)
             
             return f(*args, **kwargs)

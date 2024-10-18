@@ -36,14 +36,16 @@
 </button>
 <div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
     <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4">
-        <form action="{{ url_for('users.users_list') }}" method="get">
+        <form action="{{ url_for('users.user_index') }}" method="get">
         <div class="mb-1 p-3">
           <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Usuarios del sistema</h5>
         </div>
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+            {% if check_permissions(session, 'user_new') %}
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <a role="button" href="{{ url_for('users.user_create') }}" class="">Crear usuario</a>
+                <a role="button" href="{{ url_for('users.user_new') }}" class="">Crear usuario</a>
             </div>
+            {% endif %}
             <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
@@ -63,10 +65,10 @@
                 <select name="role" id="role"
                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                     <option value="">-- Seleccionar --</option>
-                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Técnica</option>
+                    <option value="Tecnica" {% if request.args.get('role') == 'Tecnica' %}selected{% endif %}>Tecnica</option>
                     <option value="Ecuestre" {% if request.args.get('role') == 'Ecuestre' %}selected{% endif %}>Ecuestre</option>
                     <option value="Voluntariado" {% if request.args.get('role') == 'Voluntariado' %}selected{% endif %}>Voluntariado</option>
-                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administración</option>
+                    <option value="Administracion" {% if request.args.get('role') == 'Administracion' %}selected{% endif %}>Administracion</option>
                 </select>
             </div>
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -116,20 +118,38 @@
                     <div class="text-gray-400">{{ user.email }}</div>
                     </div>
                 </th>
+                {% if user.active %}
                 <td class="max-[735px]:hidden px-6 py-4">
                     <span
                     class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
                     >
-                    {% if user.active %}
-                    <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                    {% if check_permissions(session, 'switch_state_user') %}
+                    <a href="{{ url_for('users.switch_state_user', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
                     Activo
-                    </span>
+                    </span></a>
                     {% else %}
-                    <span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                    inactivo
-                    </span>
+                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                        Activo
+                    </span></a>
                     {% endif%}
                 </td>
+                {% else %}
+                <td class="max-[735px]:hidden px-6 py-4">
+                    <span
+                    class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                    >
+                    {% if check_permissions(session, 'switch_state_user') %}
+                    <a href="{{ url_for('users.switch_state_user', user_email=user.email) }}"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Inactivo
+                    </span></a>
+                    {% else %}
+                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Inactivo
+                    </span></a>
+                    {% endif%}
+                </td>
+                {% endif%}
+                
                 <td class="max-[600px]:hidden px-6 py-4">{{ user.role.name }}</td>
                 <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex gap-2">
@@ -141,6 +161,7 @@
                 </td>
                 <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex justify-end gap-4">
+                    {% if check_permissions(session, 'user_edit') %}
                     <a href="{{ url_for('users.user_edit', user_email=user.email) }}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +178,9 @@
                         />
                         </svg>
                     </a>
-                    <a href="{{ url_for('users.delete_user', user_email=user.email) }}" method="post">
+                    {% endif%}
+                    {% if check_permissions(session, 'user_delete') %}
+                    <a href="{{ url_for('users.user_delete', user_email=user.email) }}" method="post">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -173,6 +196,7 @@
                         />
                         </svg>
                     </a>
+                    {% endif%}
                     </div>
                 </td>
                 </tr>
@@ -183,7 +207,7 @@
         <!-- Botones de Paginación -->
         <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
             {% if page > 1 %}
-                <a href="{{ url_for('users.users_list', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
+                <a href="{{ url_for('users.user_index', page=page-1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Previo
                 </a>
@@ -194,7 +218,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('users.users_list', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
+                <a href="{{ url_for('users.user_index', page=page+1, email=request.args.get('email', ''), active=request.args.get('active', ''), role=request.args.get('role', ''), sort_by=request.args.get('sort_by', '')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Siguiente
                 </a>

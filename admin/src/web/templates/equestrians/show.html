@@ -69,35 +69,35 @@
         {% endif %}
     </div>
 
-    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.horse_sheet) }}">
+    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.horse_sheet) }}">
         <button type="button">Ver Ficha General del Caballo</button>
     </a>
 
-    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.evolution_report) }}">
+    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.evolution_report) }}">
         <button type="button">Ver Informe de Evolución</button>
     </a>
 
-    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.veterinary_record) }}">
+    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.veterinary_record) }}">
         <button type="button">Ver Registro Veterinario</button>
     </a>
 
-    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.training_plan) }}">
+    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.training_plan) }}">
         <button type="button">Ver Plan de Entrenamiento</button>
     </a>
 
-    <a href="{{ url_for('equestrian.view_file', id=equestrian.id, filename=equestrian.images) }}">
+    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.images) }}">
         <button type="button">Ver Imágenes</button>
     </a>
 
-    <a href="{{ url_for('equestrian.edit', id=equestrian.id) }}">
+    <a href="{{ url_for('equestrian.equestrian_edit', id=equestrian.id) }}">
         <button type="button">Modificar</button>
     </a>
 
-    <a href="{{ url_for('equestrian.delete', id=equestrian.id) }}" method="post">
+    <a href="{{ url_for('equestrian.equestrian_delete', id=equestrian.id) }}" method="post">
         <button>Eliminar</button>
     </a>
 
-    <a href="{{ url_for('equestrian.list') }}">
+    <a href="{{ url_for('equestrian.equestrian_index') }}">
         <button type="button">Volver</button>
     </a>
 

@@ -112,6 +112,17 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function(){
+        var currentBoxFile = 0;
+        $("#more-file-box").click(function(event){
+            event.preventDefault();
+            currentBoxFile = currentBoxFile + 1;
+            $("#arc-" + currentBoxFile).toggle();
+            $("#format-" + currentBoxFile).toggle();
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -635,6 +646,231 @@
 
 
                             
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4  bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">DOCUMENTACION ADICIONAL</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <button id="more-file-box" type="button"
+                                    class="bg-gray-600 hover:bg-gray-700 text-white  text-right font-semibold py-2 px-4  sm:px-6 ml-1 rounded h-10">
+                                    +
+                                </button>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <div>
+                                </div>
+                            </div>
+                            <div id="arc-1" class="hidden col-span-6 sm:col-span-3">
+                                <label for="type_select_file_1" class="block text-sm font-medium text-gray-700">Tipo de Documentacion:</label>
+                                <select id="type_select_file_1" name="type_select_file_1" placeholder="Selecciona un tipo de documentacion" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un tipo de documentacion</option>
+                                    {% for file in file_type %}
+                                        <option value="{{ file }}">{{ file }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="format-1" class="hidden col-span-6 sm:col-span-3">
+                                <label for="format_select_file_1" class="block text-sm font-medium text-gray-700">Selecciona un formato:</label>
+                                <select id="format_select_file_1" name="format_select_file_1" placeholder="Selecciona un formato" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un formato</option>
+                                    <option value="link">Enlace</option>
+                                    <option value="file">Archivo</option>
+                                </select>
+                            </div>
+                            <div id="arc-1-box-file" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_file_1" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
+                                <input type="file" id="select_file_1" name="select_file_1" enctype="multipart/form-data"required>
+                            </div>
+                            <div id="arc-1-box-link" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_link_1" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
+                                <input type="text" id="select_link_1" name="select_link_1" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div id="space-1" class="hidden col-span-6 sm:col-span-3">
+                                <div>
+                                </div>
+                            </div>
+                            <script>
+                                const formatSelect = document.getElementById("format_select_file_1");
+                                const fileBox = document.getElementById("arc-1-box-file");
+                                const linkBox = document.getElementById("arc-1-box-link");
+                                const spaceBox = document.getElementById("space-1");
+
+                                formatSelect.addEventListener("change", () => {
+                                    if (formatSelect.value === "file") {
+                                        fileBox.classList.remove("hidden");
+                                        linkBox.classList.add("hidden");
+                                        spaceBox.classList.remove("hidden");
+                                    } else if (formatSelect.value === "link") {
+                                        fileBox.classList.add("hidden");
+                                        linkBox.classList.remove("hidden");
+                                        spaceBox.classList.remove("hidden");
+                                    } else {
+                                        fileBox.classList.add("hidden");
+                                        linkBox.classList.add("hidden");
+                                    }
+                                });
+                            </script>
+                            <div id="arc-2" class="hidden col-span-6 sm:col-span-3">
+                                <label for="type_select_file_2" class="block text-sm font-medium text-gray-700">Tipo de Documentacion:</label>
+                                <select id="type_select_file_2" name="type_select_file_2" placeholder="Selecciona un tipo de documentacion" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un tipo de documentacion</option>
+                                    {% for file in file_type %}
+                                        <option value="{{ file }}">{{ file }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="format-2" class="hidden col-span-6 sm:col-span-3">
+                                <label for="format_select_file_2" class="block text-sm font-medium text-gray-700">Selecciona un formato:</label>
+                                <select id="format_select_file_2" name="format_select_file_2" placeholder="Selecciona un formato" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un formato</option>
+                                    <option value="link">Enlace</option>
+                                    <option value="file">Archivo</option>
+                                </select>
+                            </div>
+                            <div id="arc-2-box-file" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_file_2" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
+                                <input type="file" id="select_file_2" name="select_file_2" enctype="multipart/form-data"required>
+                            </div>
+                            <div id="arc-2-box-link" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_link_2" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
+                                <input type="text" id="select_link_2" name="select_link_2" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div id="space-2" class="hidden col-span-6 sm:col-span-3">
+                                <div>
+                                </div>
+                            </div>
+                            <script>
+                                const formatSelect2 = document.getElementById("format_select_file_2");
+                                const fileBox2 = document.getElementById("arc-2-box-file");
+                                const linkBox2 = document.getElementById("arc-2-box-link");
+                                const spaceBox2 = document.getElementById("space-2");
+
+                                formatSelect2.addEventListener("change", () => {
+                                    if (formatSelect2.value === "file") {
+                                        fileBox2.classList.remove("hidden");
+                                        linkBox2.classList.add("hidden");
+                                        spaceBox2.classList.remove("hidden");
+                                    } else if (formatSelect2.value === "link") {
+                                        fileBox2.classList.add("hidden");
+                                        linkBox2.classList.remove("hidden");
+                                        spaceBox2.classList.remove("hidden");
+                                    } else {
+                                        fileBox2.classList.add("hidden");
+                                        linkBox2.classList.add("hidden");
+                                    }
+                                });
+                            </script>
+                            <div id="arc-3" class="hidden col-span-6 sm:col-span-3">
+                                <label for="type_select_file_3" class="block text-sm font-medium text-gray-700">Tipo de Documentacion:</label>
+                                <select id="type_select_file_3" name="type_select_file_3" placeholder="Selecciona un tipo de documentacion" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un tipo de documentacion</option>
+                                    {% for file in file_type %}
+                                        <option value="{{ file }}">{{ file }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="format-3" class="hidden col-span-6 sm:col-span-3">
+                                <label for="format_select_file_3" class="block text-sm font-medium text-gray-700">Selecciona un formato:</label>
+                                <select id="format_select_file_3" name="format_select_file_3" placeholder="Selecciona un formato" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un formato</option>
+                                    <option value="link">Enlace</option>
+                                    <option value="file">Archivo</option>
+                                </select>
+                            </div>
+                            <div id="arc-3-box-file" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_file_3" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
+                                <input type="file" id="select_file_3" name="select_file_3" enctype="multipart/form-data"required>
+                            </div>
+                            <div id="arc-3-box-link" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_link_3" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
+                                <input type="text" id="select_link_3" name="select_link_3" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div id="space-3" class="hidden col-span-6 sm:col-span-3">
+                                <div>
+                                </div>
+                            </div>
+                            <script>
+                                const formatSelect3 = document.getElementById("format_select_file_3");
+                                const fileBox3 = document.getElementById("arc-3-box-file");
+                                const linkBox3 = document.getElementById("arc-3-box-link");
+                                const spaceBox3 = document.getElementById("space-3");
+
+                                formatSelect3.addEventListener("change", () => {
+                                    if (formatSelect3.value === "file") {
+                                        fileBox3.classList.remove("hidden");
+                                        linkBox3.classList.add("hidden");
+                                        spaceBox3.classList.remove("hidden");
+                                    } else if (formatSelect3.value === "link") {
+                                        fileBox3.classList.add("hidden");
+                                        linkBox3.classList.remove("hidden");
+                                        spaceBox3.classList.remove("hidden");
+                                    } else {
+                                        fileBox3.classList.add("hidden");
+                                        linkBox3.classList.add("hidden");
+                                    }
+                                });
+                            </script>
+                            <div id="arc-4" class="hidden col-span-6 sm:col-span-3">
+                                <label for="type_select_file_4" class="block text-sm font-medium text-gray-700">Tipo de Documentacion:</label>
+                                <select id="type_select_file_4" name="type_select_file_4" placeholder="Selecciona un tipo de documentacion" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un tipo de documentacion</option>
+                                    {% for file in file_type %}
+                                        <option value="{{ file }}">{{ file }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="format-4" class="hidden col-span-6 sm:col-span-3">
+                                <label for="format_select_file_4" class="block text-sm font-medium text-gray-700">Selecciona un formato:</label>
+                                <select id="format_select_file_4" name="format_select_file_4" placeholder="Selecciona un formato" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un formato</option>
+                                    <option value="link">Enlace</option>
+                                    <option value="file">Archivo</option>
+                                </select>
+                            </div>
+                            <div id="arc-4-box-file" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_file_4" class="block text-sm font-medium text-gray-700">Selecciona un archivo:</label>
+                                <input type="file" id="select_file_4" name="select_file_4" enctype="multipart/form-data"required>
+                            </div>
+                            <div id="arc-4-box-link" class="hidden col-span-6 sm:col-span-3">
+                                <label for="select_link_4" class="block text-sm font-medium text-gray-700">Ingrese un enlace:</label>
+                                <input type="text" id="select_link_4" name="select_link_4" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                            <div id="space-4" class="hidden col-span-6 sm:col-span-3">
+                                <div>
+                                </div>
+                            </div>
+                            <script>
+                                const formatSelect4 = document.getElementById("format_select_file_4");
+                                const fileBox4 = document.getElementById("arc-4-box-file");
+                                const linkBox4 = document.getElementById("arc-4-box-link");
+                                const spaceBox4 = document.getElementById("spaceBox4");
+
+                                formatSelect4.addEventListener("change", () => {
+                                    if (formatSelect4.value === "file") {
+                                        fileBox4.classList.remove("hidden");
+                                        linkBox4.classList.add("hidden");
+                                        spaceBox4.classList.remove("hidden");
+                                    } else if (formatSelect4.value === "link") {
+                                        fileBox4.classList.add("hidden");
+                                        linkBox4.classList.remove("hidden");
+                                        spaceBox4.classList.remove("hidden");
+                                    } else {
+                                        fileBox4.classList.add("hidden");
+                                        linkBox4.classList.add("hidden");
+                                    }
+                                });
+                            </script>
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">

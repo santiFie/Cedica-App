@@ -8,10 +8,11 @@
 
 {% block content %}
     <h1>Pagos</h1>
-    <a href="{{ url_for('payments.payment_register_form') }}"> <button> Registrar Pago </button></a>
+    {% if check_permissions(session, 'payment_register_form') %}
+        <a href="{{ url_for('payments.payment_register_form') }}"> <button> Registrar Pago </button></a>
+    {% endif %}
 
-
-    <form method="GET" action="{{ url_for('payments.index_payments') }}">
+    <form method="GET" action="{{ url_for('payments.payment_index') }}">
         <div>
             <label for="start_date">Fecha de pago (Desde):</label>
             <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
@@ -63,22 +64,27 @@
                     <td> {{ payment.payment_type }} </td>
                     <td> {{ payment.description }} </td>
                     <td>
-                        <a href="{{ url_for('payments.show_detail_payment', payment_id=payment.id) }}">
-                            <button>Ver Detalles</button>
-                        </a>
+                        {% if check_permissions(session, 'payment_show_detail') %}
+                            <a href="{{ url_for('payments.payment_show_detail', payment_id=payment.id) }}">
+                                <button>Ver Detalles</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('payments.edit_payment_form', payment_id=payment.id) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session, 'payment_edit_form') %}
+                            <a href="{{ url_for('payments.payment_edit_form', payment_id=payment.id) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
-                        <form action="{{ url_for('payments.delete_payment', payment_id=payment.id) }}" method="post" onsubmit="return confirmDelete();">
-                            <button type="submit">Eliminar</button>
-                        </form>
+                        {% if check_permissions(session, 'payment_delete') %}
+                            <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
+                            <form action="{{ url_for('payments.payment_delete', payment_id=payment.id) }}" method="post" onsubmit="return confirmDelete();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
@@ -87,13 +93,13 @@
         <!-- FALTA PROBAR ESTOS BOTONES -->
         <div>
             {% if current_page > 1 %}
-                <a href="{{ url_for('payments.index_payments', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
+                <a href="{{ url_for('payments.payment_index', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
                     <button>Anterior</button>
                 </a>
             {% endif %}
         
             {% if current_page < max_pages %}
-                <a href="{{ url_for('payments.index_payments', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
+                <a href="{{ url_for('payments.payment_index', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}">
                     <button>Siguiente</button>
                 </a>
             {% endif %}

@@ -21,7 +21,7 @@
         </div>
     {% endif %}
 
-    <form method="POST" action="{{ url_for('collections.edit_collection', collection_id=collection.id) }}">
+    <form method="POST" action="{{ url_for('collections.collection_edit', collection_id=collection.id) }}">
         <div>
             <label for="rider_dni">J&A (DNI):</label>
             <input type="text" id="rider_dni" name="rider_dni" value="{{ collection.rider.dni }}" required>
@@ -60,7 +60,7 @@
         <button type="submit">Actualizar Cobro</button>
     </form>
 
-    <a href="{{ url_for('collections.index_collections') }}">
+    <a href="{{ url_for('collections.collection_index') }}">
         <button type="button">Volver a listado de cobros</button>
     </a>
 {% endblock %}

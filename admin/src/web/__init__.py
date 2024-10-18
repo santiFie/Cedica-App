@@ -10,6 +10,7 @@ from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
 from src.core.models.equestrian import Equestrian
 from src.core.models.users import User, Role, RolePermission, Permission
+from src.core.users import has_permissions
 from src.core.config import config
 
 session = Session()
@@ -34,6 +35,8 @@ def create_app(env="development", static_folder="../../static"):
 
     # Error handlers
     errors.register_errors(app)
+
+    app.jinja_env.globals.update(check_permissions=has_permissions)
 
     @app.cli.command(name="reset-db")
     def reset_db():

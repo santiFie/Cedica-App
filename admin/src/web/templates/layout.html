@@ -26,8 +26,8 @@
     </head>
     <body  class="bg-sky-100">
 
+        {% block navbar %}
         <div class="overflow-visible w-full min-w-full mx-auto">
-            {% block navbar %}
             <div class="flex justify-between items-center bg-gray-100 p-1 shadow-md">
 
                 <!-- Logo -->
@@ -37,23 +37,24 @@
                         <a href="#"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="min-[800px]:hidden pr-1 h-10"></a>
                         <div class="logo-dropdown-content absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
                             <a href="{{ url_for('home') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Home</a>
-                            <a href="{{ url_for('payments.index_payments') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
+                            <a href="{{ url_for('payments.payment_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
+                            <a href="{{ url_for('collections.collection_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
                             <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">J&A</a>
-                            <a href="{{ url_for('equestrian.list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
-                            <a href="{{ url_for('team_members.team_members_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
-                            <a href="{{ url_for('users.users_list') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Usuarios</a>
+                            <a href="{{ url_for('equestrian.equestrian_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
+                            <a href="{{ url_for('team_members.team_member_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
+                            <a href="{{ url_for('users.user_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Usuarios</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Menú de navegación -->
                 <div class="menu flex space-x-2">
-                    <a href="{{ url_for('payments.index_payments') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
-                    <a href="{{ url_for('collections.index_collections') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
+                    <a href="{{ url_for('payments.payment_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
+                    <a href="{{ url_for('collections.collection_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
                     <a href="#" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
-                    <a href="{{ url_for('equestrian.list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
-                    <a href="{{ url_for('team_members.team_members_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
-                    <a href="{{ url_for('users.users_list') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
+                    <a href="{{ url_for('equestrian.equestrian_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
+                    <a href="{{ url_for('team_members.team_member_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
+                    <a href="{{ url_for('users.user_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
                 </div>
 
                 <!-- Perfil de usuario -->
@@ -62,7 +63,7 @@
                         <path d="M20.8 21a8.38 8.38 0 0 0-7.8-4.5h-2c-3.6 0-6.7 2-7.8 4.5"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                    <div class="dropdown-content absolute z-10 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
                         <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Perfil</a>
                         <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar sesión</a>
                     </div>
@@ -78,11 +79,12 @@
                 this.querySelector('.logo-dropdown-content').classList.toggle('hidden');
                 });
             </script>
-            {% endblock %}
         </div>
+        <div class="relative">
+        {% endblock %}
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="absolute top-4 w-full flex justify-center">
+        <div class="absolute z-10 top-4 w-full flex justify-center">
             <ul>
                 {% for category, message in messages %}
                     <li>
@@ -99,6 +101,7 @@
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         </div>
         {% endif %}
         {% endwith %}
