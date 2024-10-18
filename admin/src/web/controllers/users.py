@@ -2,12 +2,15 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from src.core import users, auth
 from src.core.models.users import Role
 from src.web.forms import registerForm, userEditForm
-
+from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 bp = Blueprint('users', __name__, url_prefix="/users")
 
 
 @bp.get("/")
-def users_list():  # preguntar como tienen que ser los nombres list_users o users_list
+@check_permissions("user_index")
+@login_required
+def user_index():  # preguntar como tienen que ser los nombres list_users o users_list
 
     # obtengo nro de pagina o por defecto tomo el 1
     page = request.args.get('page', 1, type=int)
@@ -37,11 +40,19 @@ def users_list():  # preguntar como tienen que ser los nombres list_users o user
 
 
 @bp.post("/update")
+@check_permissions("user_update")
+@login_required
 def user_update():
     """
     Updates a user
     """
     user_mail = request.args.get('user_email')
+    user = users.edit(
+        email=user_mail,
+        nickname=request.form["nickname"],
+        system_admin=request.form.get("system_admin", False),
+        role_id=request.form["role_id"]
+    )
 
     form = userEditForm(request.form)
     if form.validate():
@@ -66,6 +77,8 @@ def user_update():
 
 
 @bp.get("/edit")
+@check_permissions("user_edit")
+@login_required
 def user_edit():
     """
     Edits a user
@@ -77,7 +90,9 @@ def user_edit():
 
 
 @bp.get("/delete_user")
-def delete_user():
+@check_permissions("user_delete")
+@login_required
+def user_delete():
     user_email = request.args.get("user_email")
     users.user_delete(user_email)
     flash("User deleted successfully")
@@ -85,7 +100,7 @@ def delete_user():
 
 
 @bp.route("/register", methods=["GET", "POST"])
-def user_create():
+def user_new():
 
     if request.method == "POST":
 
@@ -108,14 +123,14 @@ def user_create():
     return render_template("users/register.html", roles=roles)
 
 
-@bp.post("/user_switch_state")
+@bp.get("/user_switch_state")
 def user_switch_state():
-
-    user_email = request.args.get('user_email')
-
+    
+    user_email =request.args.get('user_email')
+    
     if not users.switch_state(user_email):
-        flash("No se puede desactivar a un administrador", "info")
+        flash("No se puede cambiar el estado a un administrador", "info")
     else:
-        flash("Usuario bloqueado satisfactoriamente")
+        flash("Se cambio el estado satisfactoriamente")
 
     return redirect(url_for("users.users_list"))

@@ -8,10 +8,14 @@
 
 {% block content %}
     <h1>Cobros</h1>
-    <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
-    <a href="{{ url_for('collections.index_debts') }}"> <button type="button">Ver Deudas</button> </a>
+    {% if check_permissions(session,'collection_register_form') %}
+        <a href="{{ url_for('collections.collection_register_form') }}"> <button> Registrar Cobro </button></a>
+    {% endif %}
+    {% if check_permissions(session,'collection_index_debts') %}
+        <a href="{{ url_for('collections.collection_index_debts') }}"> <button type="button">Ver Deudas</button> </a>
+    {% endif %}
 
-    <form method="GET" action="{{ url_for('collections.index_collections') }}">
+    <form method="GET" action="{{ url_for('collections.collection_index') }}">
         <div>
             <label for="start_date">Fecha de pago (Desde):</label>
             <input type="date" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
@@ -74,20 +78,26 @@
                     <td> {{ collection.team_member_id }} </td>
                     <td> {{ collection.observations }} </td>
                     <td>
-                        <a href="{{ url_for('collections.show_detail_collection', collection_id=collection.id) }}">
-                            <button>Ver Detalles</button>
-                        </a>
+                        {% if check_permissions(session,'collection_show_detail') %}
+                            <a href="{{ url_for('collections.collection_show_detail', collection_id=collection.id) }}">
+                                <button>Ver Detalles</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ url_for('collections.edit_collection_form', collection_id=collection.id) }}">
-                            <button type="button">Modificar</button>
-                        </a>
+                        {% if check_permissions(session,'collection_edit_form') %}
+                            <a href="{{ url_for('collections.collection_edit_form', collection_id=collection.id) }}">
+                                <button type="button">Modificar</button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
+                        {% if check_permissions(session,'collection_edit_form') %}
                         <!--Formulario para confirmar eliminacion, si se confirma se envia y se efectua la eliminacion-->
-                        <form action="{{ url_for('collections.delete_collection', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
-                            <button type="submit">Eliminar</button>
-                        </form>
+                            <form action="{{ url_for('collections.collection_delete', collection_id=collection.id) }}" method="post" onsubmit="return confirmDelete();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
                     </td>
 
                 </tr>
@@ -97,13 +107,13 @@
 
         <div>
             {% if current_page > 1 %}
-                <a href="{{ url_for('collections.index_collections', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
+                <a href="{{ url_for('collections.collection_index', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
                     <button>Anterior</button>
                 </a>
             {% endif %}
         
             {% if current_page < max_pages %}
-                <a href="{{ url_for('collections.index_collections', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
+                <a href="{{ url_for('collections.collection_index', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_method=request.args.get('payment_method'), name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by')) }}">
                     <button>Siguiente</button>
                 </a>
             {% endif %}

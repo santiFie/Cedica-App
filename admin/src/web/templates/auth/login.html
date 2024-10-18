@@ -3,8 +3,8 @@
 {% block title %}Iniciar Sesión{% endblock %}
 
 {% block head %}
-    {{ super() }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ super() }}
 {% endblock %}
 
 
@@ -32,10 +32,6 @@
                 <!-- Login Button -->
                 <button type="submit" class="bg-gray-500 hover:bg-gray-800 text-white font-semibold rounded-md py-2 px-4 w-full">Login</button>
                 </form>
-                <!-- Sign up  Link -->
-                <div class="mt-6 text-center">
-                    <p>¿No tienes una cuenta? <a href="{{ url_for('users.user_create') }}" class="text-green-500 hover:underline"> Regístrate</a></p>
-                </div>
             </div>
         </div>
     </section>

@@ -8,13 +8,16 @@ from src.core import minio
 from src.web.forms import TeamMemberForm, teamMemberEditForm
 import mimetypes
 from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
+
 
 bp = Blueprint('team_members', __name__, url_prefix="/team_members")
 
 
 @bp.get("/")
+@check_permissions("team_member_index")
 @login_required
-def team_members_list():
+def team_member_index():
 
     page = request.args.get('page', 1, type=int)
 
@@ -35,8 +38,9 @@ def team_members_list():
 
 
 @bp.get("/new")
+@check_permissions("team_member_create")
 @login_required
-def new():
+def team_member_new():
 
     professions = ProfessionEnum.enums
     conditions = ConditionEnum.enums
@@ -48,8 +52,9 @@ def new():
 
 
 @bp.post("/create")
+@check_permissions("team_member_create")
 @login_required
-def create():
+def team_member_create():
     form = TeamMemberForm(request.form)
     if form.validate():
         team_member = tm.check_team_member_by_email(request.form["email"])
@@ -67,8 +72,9 @@ def create():
 
 
 @bp.get("show_team_member")
+@check_permissions("team_member_show")
 @login_required
-def show_team_member():
+def team_member_show():
     team_member_email = request.args.get(
         'team_member_email')  # Deberia tomarlo por el id?
 
@@ -80,8 +86,9 @@ def show_team_member():
 
 
 @bp.get("/edit")
+@check_permissions("team_member_edit")
 @login_required
-def edit_team_member():
+def team_member_edit():
 
     professions = ProfessionEnum.enums
     conditions = ConditionEnum.enums
@@ -97,8 +104,9 @@ def edit_team_member():
 
 
 @bp.post("/update")
+@check_permissions("team_member_update")
 @login_required
-def update_team_member():
+def team_member_update():
 
 
     form = teamMemberEditForm(request.form)
@@ -118,8 +126,9 @@ def update_team_member():
 
 
 @bp.post("/switch")
+@check_permissions("team_member_switch_state")
 @login_required
-def switch_state_team_member():
+def team_member_switch_state():
 
     team_member_email = request.args.get('team_member_email')
     team_member = tm.check_team_member_by_email(team_member_email)
@@ -131,7 +140,7 @@ def switch_state_team_member():
             us.switch_state(team_member_email)
         flash("Se cambio el estado del miembro del equipo")
 
-    return redirect(url_for('team_members.team_members_list'))
+    return redirect(url_for('team_members.team_member_index'))
 
 
 @bp.get("/view_file/<int:id>/<string:filename>")

@@ -46,9 +46,6 @@ def new():
     # se checkean todos los campos
     if request.method == "POST":
         if form.validate():
-            missing_fields = rh.check_missing_fields(request.form)
-            if missing_fields:
-                print("Campos no completados:", missing_fields)
             rider = rh.find_rider(request.form["dni"])
             if not rider:
                 rh.create_rider_horsewoman(request.form)
@@ -56,9 +53,6 @@ def new():
             else:
                 flash("El dni ingresado ya existe", "info")
         else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"Error in {field}: {error}")
             flash("faltan datos para completar", "error")
 
         return redirect(url_for("riders_and_horsewomen.new"))
@@ -141,3 +135,17 @@ def riders_and_horsewomen_update(id):
 @login_required
 def new_institution():
     return render_template("riders_and_horsewomen/new_institution.html")
+
+
+@bp.route("/delete_rider/<rider_dni>", methods=["GET", "POST"])
+def delete_rider(rider_dni):
+    rider = rh.find_rider(rider_dni)
+
+    if not rider:
+        flash("El Jinete o Amazona seleccionado no exite", "error")
+        return redirect(url_for('riders_and_horsewomen.riders_and_horsewomen_list'))
+    
+    rh.delete_a_rider(rider)
+    
+    flash("Jinete o Amazona eliminado exitosamente.")
+    return redirect(url_for('riders_and_horsewomen.riders_and_horsewomen_list'))

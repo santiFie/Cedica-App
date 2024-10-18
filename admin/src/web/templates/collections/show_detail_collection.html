@@ -39,7 +39,9 @@
             </tr>
         </tr>
     </table>
-
-    <a href="{{ url_for('collections.index_collections') }}"><button type="button">Volver a la lista de cobros</button></a>
+    
+    {% if check_permissions(session, 'collection_index')%}
+        <a href="{{ url_for('collections.collection_index') }}"><button type="button">Volver a la lista de cobros</button></a>
+    {% endif %}
 
 {% endblock %}
