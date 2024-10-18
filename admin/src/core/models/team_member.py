@@ -1,6 +1,8 @@
 from src.core import database, minio
 from enum import Enum
 from sqlalchemy.dialects.postgresql import ENUM
+from datetime import datetime
+
 
 ProfessionEnum = ENUM(
     'PSICOLOGO',
@@ -57,6 +59,7 @@ class TeamMember(database.db.Model):
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(120), nullable=False)
     active = database.db.Column(database.db.Boolean, nullable=False, default=True)
+    inserted_at = database.db.Column(database.db.DateTime, default=datetime.now())
     health_insurance_id = database.db.Column(database.db.Integer, database.db.ForeignKey('health_insurances.id'), nullable=False)
     associated_number = database.db.Column(database.db.String(120), nullable=False)
 

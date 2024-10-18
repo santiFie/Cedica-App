@@ -45,6 +45,7 @@ def create(form, files):
     if not utils.validate_dates(initial_date, end_date):
         return flash("Las fechas ingresadas no son válidas")
 
+    time = datetime.now()
     team_member = TeamMember(
         name=form["name"],
         last_name=form["last_name"],
@@ -57,6 +58,7 @@ def create(form, files):
         end_date=end_date,
         emergency_contact=form["emergency_contact"],
         emergency_phone=form["emergency_phone"],
+        inserted_at=time,
         health_insurance_id=form["health_insurance_id"],
         associated_number=form["associated_number"],
         condition=form["condition"].upper(),
@@ -106,6 +108,10 @@ def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, 
         query = query.order_by(TeamMember.last_name.asc())
     elif sort_by == 'last_name_desc':
         query = query.order_by(TeamMember.last_name.desc())
+    elif sort_by == 'inserted_at_asc':
+        query = query.order_by(TeamMember.inserted_at.asc())
+    elif sort_by == 'inserted_at_desc':
+        query = query.order_by(TeamMember.inserted_at.desc())
         
     all_team_members = query.count()
 
