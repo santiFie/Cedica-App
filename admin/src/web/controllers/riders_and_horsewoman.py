@@ -23,7 +23,17 @@ bp = Blueprint("riders_and_horsewomen", __name__, url_prefix="/riders_and_horsew
 @bp.get("/")
 @login_required
 def riders_and_horsewomen_list():
-    return
+    # obtengo parametros de busqueda del formulario
+    name = request.args.get('name') 
+    last_name = request.args.get('last_name')
+    dni = request.args.get('dni')
+    order_by = request.args.get('order_by', 'asc')
+    professional = request.args.get('profession') 
+    page = request.args.get('page', 1, type=int)
+
+    all_riders, max_pages = rh.find_all_riders(name, last_name, dni, order_by, professional, page)
+
+    return render_template('riders_and_horsewomen/index_riders.html', riders = all_riders, max_pages = max_pages, current_page = page)
 
 
 @bp.route("/new", methods=["GET", "POST"])
