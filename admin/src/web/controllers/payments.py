@@ -35,28 +35,33 @@ def payment_register_form():
 @check_permissions('payment_register')
 @login_required
 def payment_register():
-
+    
     form = PaymentForm(request.form)
+    
+    if request.method == "POST":
+        if form.validate():
+            # Crear el nuevo pago con los datos validados del formulario
+            beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else None
 
-    if request.method == "POST" and form.validate():
-        # Crear el nuevo pago con los datos validados del formulario
-        beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else None
+            # Si se ingreso un beneficiario y no se encontro en la bd
+            if form.beneficiary_id.data and not beneficiary:
+                flash("El beneficiario no existe.", "error")
+                return render_template('payments/payment_register.html', form=form)
 
-        # Si se ingreso un beneficiario y no se encontro en la bd
-        if form.beneficiary_id.data and not beneficiary:
-            flash("El beneficiario no existe.", "error")
-            return render_template('payments/payment_register.html', form=form)
+            new_payment = create_payment(
+                amount=form.amount.data,
+                payment_date=form.payment_date.data,
+                payment_type=form.payment_type.data,
+                description=form.description.data,
+                beneficiary_id=beneficiary.email if beneficiary else ''
+            )
 
-        new_payment = create_payment(
-            amount=form.amount.data,
-            payment_date=form.payment_date.data,
-            payment_type=form.payment_type.data,
-            description=form.description.data,
-            beneficiary_id=beneficiary.email if beneficiary else ''
-        )
-
-        flash("Pago registrado exitosamente")
-        return redirect(url_for('payments.payment_register'))
+            flash("Pago registrado exitosamente")
+            return redirect(url_for('payments.payment_register'))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error in {field}: {error}")
 
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
     return render_template("payments/payment_register.html", form=form)

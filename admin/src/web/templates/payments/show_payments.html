@@ -61,9 +61,9 @@
                 <select id="payment_type" name="payment_type"
                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                     <option value="">Todos</option>
-                    <option value="HONORARIOS" {% if request.args.get('payment_type') == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
-                    <option value="PROVEEDOR" {% if request.args.get('payment_type') == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
-                    <option value="GASTOS VARIOS" {% if request.args.get('payment_type') == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
+                    <option value="Honorarios" {% if request.args.get('payment_type') == 'Honorarios' %}selected{% endif %}>Honorarios</option>
+                    <option value="Proveedor" {% if request.args.get('payment_type') == 'Proveedor' %}selected{% endif %}>Proveedor</option>
+                    <option value="Gastos varios" {% if request.args.get('payment_type') == 'Gastos varios' %}selected{% endif %}>Gastos Varios</option>
                 </select>
             </div>
             <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
