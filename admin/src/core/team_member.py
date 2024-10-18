@@ -184,7 +184,7 @@ def list_emails_from_trainers_and_handlers(**kwargs):
 
     query = TeamMember.query.filter(
     or_(
-        TeamMember.job_position == 'Profresor de entrenaiento',
+        TeamMember.job_position == 'Profesor de entrenamiento',
         TeamMember.job_position == 'Manejador'
         )
     )
