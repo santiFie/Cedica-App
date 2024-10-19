@@ -61,7 +61,7 @@ def payment_register():
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    flash(f"Error in {field}: {error}")
+                    flash(f"Error: {error}", 'info')
 
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
     return render_template("payments/payment_register.html", form=form)
@@ -96,39 +96,43 @@ def payment_edit_form(payment_id):
 @check_permissions('payment_edit')
 @login_required
 def payment_edit(payment_id):
-
     # agarro el payment para el edit payment form
     payment = find_payment(payment_id)
     form = PaymentForm(request.form) 
-
     # validate_on_submit chequea el tipo de solicitud, en este caso que sea post  
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         
-        # si el beneficiario no es Externo entonces lo busco en la bd
-        if form.beneficiary_id.data != 'Externo':
-            # Crear el nuevo pago con los datos validados del formulario
-            beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else 'Externo'
-
-            # Si se ingreso un beneficiario y no se encontro en la bd
-            if form.beneficiary_id.data and not beneficiary:
-                flash("El beneficiario no existe.", "error")
-                return render_template('payments/edit_payment_form.html', form=form, payment=payment)
-
-        # Si el formulario es válido, actualizamos los datos
-        payment = edit_a_payment(
-            payment_id=payment_id,
-            beneficiary_id=form.beneficiary_id.data,
-            amount=form.amount.data,
-            payment_date=form.payment_date.data,
-            payment_type=form.payment_type.data,
-            description=form.description.data,
-        )
+        if form.validate():
         
-        if payment:
-            flash("Datos del pago actualizado")
-            return redirect(url_for('payments.index_payments'))
+            # si el beneficiario no es Externo entonces lo busco en la bd
+            if form.beneficiary_id.data != 'Externo':
+                # Crear el nuevo pago con los datos validados del formulario
+                beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else 'Externo'
+
+                # Si se ingreso un beneficiario y no se encontro en la bd
+                if form.beneficiary_id.data and not beneficiary:
+                    flash("El beneficiario no existe.", "error")
+                    return render_template('payments/edit_payment_form.html', form=form, payment=payment)
+
+            # Si el formulario es válido, actualizamos los datos
+            payment = edit_a_payment(
+                payment_id=payment_id,
+                beneficiary_id=form.beneficiary_id.data,
+                amount=form.amount.data,
+                payment_date=form.payment_date.data,
+                payment_type=form.payment_type.data,
+                description=form.description.data,
+            )
+            
+            if payment:
+                flash("Datos del pago actualizado")
+                return redirect(url_for('payments.payment_index'))
+            else:
+                flash("El pago seleccionado no existe", "error")
         else:
-            flash("El pago seleccionado no existe", "error")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error: {error}", 'info')
     
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
     return render_template('payments/edit_payment_form.html', form=form, payment=payment)
@@ -136,7 +140,7 @@ def payment_edit(payment_id):
 
 
    
-@bp.post('/delete_payment/<int:payment_id>', endpoint='delete_payment')
+@bp.post('/delete_payment/<int:payment_id>')#, endpoint='delete_payment')
 @check_permissions('payment_delete')
 @login_required
 def payment_delete(payment_id):
@@ -146,10 +150,10 @@ def payment_delete(payment_id):
 
     if not payment:
         flash("El pago seleccionado no exite", "error")
-        return redirect(url_for('payments.index_payments'))
+        return redirect(url_for('payments.payment_index'))
     
     delete_a_payment(payment)
     
     flash("Pago eliminado exitosamente.")
-    return redirect(url_for('payments.index_payments')) 
+    return redirect(url_for('payments.payment_index')) 
     

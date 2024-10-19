@@ -72,13 +72,13 @@ def user_edit():
     return render_template("users/edit_user.html", user=user,roles=roles)
 
 
-@bp.get("/delete_user")
+@bp.post("/delete_user")
 @check_permissions("user_delete")
 @login_required
 def user_delete():
     user_email = request.args.get("user_email")
     users.user_delete(user_email)
-    flash("User deleted successfully")
+    flash("Usuario eliminado de manera correcta.")
     return redirect(url_for("users.user_index", flash=flash) )
 
 
