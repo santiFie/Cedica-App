@@ -45,27 +45,6 @@ def create(form, files):
     if not utils.validate_dates(initial_date, end_date):
         return flash("Las fechas ingresadas no son válidas")
 
-    time = datetime.now()
-    team_member = TeamMember(
-        name=form["name"],
-        last_name=form["last_name"],
-        dni=form["dni"],
-        address=form["address"],
-        email=form["email"],
-        locality=form["locality"],
-        phone=form["phone"],
-        initial_date=form["initial_date"],
-        end_date=end_date,
-        emergency_contact=form["emergency_contact"],
-        emergency_phone=form["emergency_phone"],
-        health_insurance_id=form["health_insurance_id"],
-        associated_number=form["health_insurance_number"],
-        inserted_at=time,
-        condition=form["condition"],
-        job_position=form["job_position"],
-        profession=form["profession"],
-    )
-
     try:
 
         time = datetime.now()
@@ -82,13 +61,13 @@ def create(form, files):
             emergency_contact=form["emergency_contact"],
             emergency_phone=form["emergency_phone"],
             health_insurance_id=form["health_insurance_id"],
-            associated_number=form["health_insurance_number"],
+            associated_number=form["associated_number"],
             inserted_at=time,
             condition=form["condition"],
             job_position=form["job_position"],
             profession=form["profession"],
         )
-        
+
         database.db.session.add(team_member)
         database.db.session.commit()
 
@@ -101,6 +80,7 @@ def create(form, files):
 
         return flash("Miembro de equipo creado exitosamente")
     except Exception as e:
+        raise e
         database.db.session.rollback()
         return flash("Error al crear miembro de equipo", "info")
 

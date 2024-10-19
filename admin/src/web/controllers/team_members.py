@@ -67,7 +67,9 @@ def team_member_create():
         else:
             flash("El miembro de equipo ya existe", "info")
     else:
-        flash("Faltan campos por completar", "info")
+        for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error in {field}: {error}")
 
     return redirect(url_for("team_members.team_member_new"))
 
@@ -123,7 +125,7 @@ def team_member_update():
         flash("Miembro del equipo actualizado")
     else:
         flash("Faltan campos por completar", "info")
-    return redirect(url_for('team_members.team_members_list'))
+    return redirect(url_for('team_members.team_member_index'))
 
 
 @bp.post("/switch")
