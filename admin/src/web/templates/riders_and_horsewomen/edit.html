@@ -67,7 +67,8 @@
         <div class="flex flex-col text-center w-full mb-1"></div>
 
         <div class="mt-0 sm:mt-0 md:col-span-2">
-            <form action="{{ url_for('riders_and_horsewomen.edit', id=rider.id) }}" method="POST" enctype="multipart/form-data">
+            <h2>{{  rider.name   }}</h2>
+            <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_update', id=rider.id) }}" method="POST" enctype="multipart/form-data">
                 <div class="shadow overflow-hidden sm:rounded-md bg-white">
                     <div class="px-2 py-8 bg-white sm:p-6">
                         <div class="grid grid-cols-1 gap-6">
@@ -76,6 +77,8 @@
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nombre:</label>
                                 <input type="text" id="name" name="name" value="{{ rider.name }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
+
+                            <p>ID del Jinete/Amazona: {{ rider.id }}</p>
 
                             <!-- Apellido -->
                             <div class="col-span-6 sm:col-span-3">

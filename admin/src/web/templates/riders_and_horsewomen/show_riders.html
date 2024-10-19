@@ -43,7 +43,7 @@
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
             {% if check_permissions(session, 'user_new') %}
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <a role="button" href="{{ url_for('riders_and_horsewomen.new') }}" class="">Crear Jinete/Amazona</a>
+                <a role="button" href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_new') }}" class="">Crear Jinete/Amazona</a>
             </div>
             {% endif %}
             <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -88,7 +88,7 @@
         </form>
     </div>
 
-    {% if list %}    
+    {% if riders %}    
         <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 mx-auto max-[825px]:ml-4 max-[480px]:ml-0.5 max-[480px]:w-[5%] max-[450px]:w-[2%] max-[420px]:w-0.5 min-[1200px]:w-3/4 max-[1000px]:w-full items-center">
             <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
             <thead class="bg-gray-50">
@@ -120,7 +120,7 @@
                 <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex justify-end gap-4">
                     {% if check_permissions(session, 'user_edit') %}
-                    <a href="{{ url_for('riders_and_horsewomen.edit', id=rider.id ) }}">
+                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_edit', id=rider.id ) }}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -137,8 +137,8 @@
                         </svg>
                     </a>
                     {% endif%}
-                    {% if check_permissions(session, 'user_delete') %}
-                    <form action="{{ url_for('users.user_delete', user_email=user.email) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                    {% if check_permissions(session, 'riders_and_horsewomen_delete_rider') %}
+                    <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_rider', rider_dni=rider.dni  ) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
                         <button type="submit">
                             <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@
         <!-- Botones de Paginación -->
         <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
             {% if page > 1 %}
-                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_list', page=page-1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index', page=page-1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Previo
                 </a>
@@ -178,7 +178,7 @@
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_list', page=page+1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index', page=page+1, name=request.args.get('first_name'), last_name=request.args.get('last_name'), order_by=request.args.get('order_by'), professional=request.args.get('professionenum')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Siguiente
                 </a>
