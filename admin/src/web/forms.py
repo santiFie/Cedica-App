@@ -411,10 +411,10 @@ class CollectionForm(Form):
     payment_date = DateField('Fecha de pago', validators=[DataRequired()])
     payment_method = SelectField('Método de pago', 
         choices=[
-            ('EFECTIVO', 'Efectivo'), 
-            ('TARJETA DE CREDITO', 'Tarjeta de Credito'),
-            ('TARJETA DE DEBITO', 'Tarjeta de Debito'),
-            ('TRANSFERENCIA', 'Transferencia')], 
+            ('Efectivo', 'Efectivo'), 
+            ('Tarjeta de Credito', 'Tarjeta de Credito'),
+            ('Tarjeta de Debito', 'Tarjeta de Debito'),
+            ('Transferencia', 'Transferencia')], 
         validators=[DataRequired()])
     
     observations = TextAreaField('Observaciones', validators=[Length(max=200)])

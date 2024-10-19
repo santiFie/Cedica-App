@@ -59,6 +59,29 @@ def collection_register():
         if form.rider_dni.data and not rider:
             flash("El jinete o amazona no existe.", "error")
             return render_template('collections/collection_register_form.html', form=form)
+        
+        # Convertir el formato "{month_name} de {year}" a un objeto datetime
+        month_name, year = calculate_debt(rider.dni)[0][0].split(" de ")
+
+        # Diccionario para mapear nombres de meses en español a números de mes
+        month_mapping = {
+            "Enero": 1, "Febrero": 2, "Marzo": 3, "Abril": 4,
+            "Mayo": 5, "Junio": 6, "Julio": 7, "Agosto": 8,
+            "Septiembre": 9, "Octubre": 10, "Noviembre": 11, "Diciembre": 12
+        }
+        
+        # Obtener el número del mes a partir del nombre en español
+        month_number = month_mapping.get(month_name)
+        
+        if month_number is None:
+            raise ValueError(f"Nombre de mes no válido: {month_name}")
+        
+        first_payment_date = datetime.strptime(f"{year}-{month_number:02d}-01", '%Y-%m-%d').date()
+
+
+        if form["payment_date"].data < first_payment_date:
+            flash("No posee deudas en esa fecha", "error")
+            return render_template('collections/collection_register_form.html', form=form)
 
         # Crear la nueva colección
         new_collection = create_collection(
@@ -70,7 +93,7 @@ def collection_register():
             rider_dni=rider.dni if rider else ''
         )
 
-        flash("Cobro registrado exitosamente", "success")
+        flash("Cobro registrado exitosamente")
         return redirect(url_for('collections.collection_register_form'))
 
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
@@ -123,7 +146,8 @@ def collection_edit(collection_id):
         if form.rider_dni.data and not rider:
             flash("El jinete o amazona no existe.", "error")
             return render_template('collections/edit_collection_form.html', form=form, collection=collection)
-
+        
+        
         # Actualizar la colección con los datos del formulario
         updated_collection = edit_a_collection(
             collection_id=collection_id,

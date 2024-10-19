@@ -71,8 +71,6 @@ def team_member_create():
 def team_member_show():
     team_member_email = request.args.get('team_member_email')   ##Deberia tomarlo por el id?
 
-    
-
     team_member = tm.check_team_member_by_email(team_member_email)
 
     health_insurance = hi.get_by_id(team_member.health_insurance_id)

@@ -84,7 +84,7 @@ def equestrian_index():
     return render_template("equestrians/list.html", list=all_users, page=page, max_pages=max_pages, all_proposals=all_proposals)
 
 # Routes for delete a equestrian
-@bp.post("/delete<int:id>")
+@bp.post("/delete/<int:id>")
 @check_permissions("equestrian_delete")
 @login_required
 def equestrian_delete(id):

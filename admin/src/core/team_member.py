@@ -42,7 +42,7 @@ def create(form, files):
     initial_date = utils.string_to_date(form["initial_date"])
 
     if not utils.validate_dates(initial_date, end_date):
-        return flash("Las fechas ingresadas no son válidas")
+        return flash("Las fechas ingresadas no son válidas", "error")
 
     team_member = TeamMember(
         name=form["name"],

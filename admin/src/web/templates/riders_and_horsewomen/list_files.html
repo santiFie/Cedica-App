@@ -60,7 +60,9 @@
                         {% else %}
                             <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_file', file_id=file['file'].id) }}">Ver</a>
                         {% endif %}
-                        <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_file', file_id=file['file'].id) }}" onclick="return confirmDelete()">Eliminar</a>
+                        <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_file', file_id=file['file'].id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
+                            <button type="submit">Eliminar</button>
+                        </form>
                         <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', id=file['rider_id'], file_id=file['file'].id) }}">Descargar</a>
                     </td>
                 </tr>
