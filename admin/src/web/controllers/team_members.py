@@ -57,9 +57,7 @@ def team_member_create():
     if team_member:
         flash("El miembro de equipo ya existe", "info")
         return redirect(url_for("team_members.team_member_new"))
-    
-    
-
+  
     file_keys = ['title', 'dni_copy', 'cv']
     files = {key: request.files[key] for key in file_keys if key in request.files}
 

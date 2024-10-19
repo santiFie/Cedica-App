@@ -23,3 +23,13 @@ def unauthorized_401(e):
     error = Error(401, "401 - No autorizado", "No autorizado", "No tienes permiso para acceder a este recurso", "Verifica tus credenciales e intenta nuevamente")
 
     return render_template("error.html", error=error), 401
+
+def unauthorized_403(e):
+    error = Error(403, "403 - Prohibido", "Acceso denegado", "No tienes permiso para acceder a este recurso.", "Contacta al administrador si crees que esto es un error.")
+
+    return render_template("error.html", error=error), 403
+
+def unauthorized_502(e):
+    error = Error(502, "502 - Error de puerta de enlace", "Error en el servidor", "El servidor no pudo procesar la solicitud.", "Intenta nuevamente más tarde.")
+
+    return render_template("error.html", error=error), 502
