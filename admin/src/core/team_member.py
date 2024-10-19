@@ -22,6 +22,7 @@ def check_team_member_by_email(email):
 
     team_member = TeamMember.query.filter_by(email=email).first()
 
+
     return team_member
 
 
@@ -261,3 +262,10 @@ def switch_state(team_member):
     database.db.session.commit()
     return team_member
 
+
+def check_dni_exist(dni):
+    from src.core.models.team_member import TeamMember
+    
+    team_member_dni = TeamMember.query.filter_by(dni = dni).first()
+
+    return team_member_dni

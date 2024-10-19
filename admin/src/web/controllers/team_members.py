@@ -57,15 +57,19 @@ def team_member_new():
 def team_member_create():
     form = TeamMemberForm(request.form)
     if form.validate():
-        team_member = tm.check_team_member_by_email(request.form["email"])
-        # Cuando el DNI se repite da error tambien. O lo ponemos unique en el modelo o lo chequeamos aca
-        if not team_member:
-            file_keys = ['title', 'dni_copy', 'cv']
-            files = {key: request.files[key]
-                     for key in file_keys if key in request.files}
-            tm.create(request.form, files)
-        else:
-            flash("El miembro de equipo ya existe", "info")
+
+        if tm.check_team_member_by_email(request.form["email"]):
+            flash("El email de este miembro de equipo ya existe", "info")
+            return redirect(url_for("team_members.team_member_new"))
+
+        if tm.check_dni_exist(request.form["dni"]):
+            flash("El dni de este miembro de equipo ya existe", "info")
+            return redirect(url_for("team_members.team_member_new"))
+
+        file_keys = ['title', 'dni_copy', 'cv']
+        files = {key: request.files[key]
+                    for key in file_keys if key in request.files}
+        tm.create(request.form, files)
     else:
         for field, errors in form.errors.items():
                 for error in errors:
@@ -79,7 +83,7 @@ def team_member_create():
 @login_required
 def team_member_show():
     team_member_email = request.args.get(
-        'team_member_email')  # Deberia tomarlo por el id?
+        'team_member_email')  
 
     team_member = tm.check_team_member_by_email(team_member_email)
 
