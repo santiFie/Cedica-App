@@ -263,11 +263,12 @@ def create_rider_horsewoman(form, files):
             filename = form.get(f"file_name_{i}")
             file_type = form.get(f"type_select_file_{i}")
             
-            if link != "":
-                new_link(link, filename, rider_id, file_type)
-            elif filename != "":
-                file = files[f"select_file_{i}"]
-                new_file(file, filename, file_type, rider_id)
+            if file_type != "":
+                if link != "":
+                    new_link(link, filename, rider_id, file_type)
+                elif filename != "":
+                    file = files[f"select_file_{i}"]
+                    new_file(file, filename, file_type, rider_id)
 
         database.db.session.commit()
 
