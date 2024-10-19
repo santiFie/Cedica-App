@@ -402,7 +402,6 @@ class PaymentForm(Form):
     # Beneficiario (opcional, pero si se ingresa, debe ser un email válido)
     beneficiary_id = StringField('beneficiary_id', validators=[
         Optional(),
-       # Email(message='Ingresa una dirección de correo válida.'), 
         Length(max=50, message='El email no puede superar los 50 caracteres.')
     ], default='')
 

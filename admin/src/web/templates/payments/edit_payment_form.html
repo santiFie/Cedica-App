@@ -19,7 +19,7 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="beneficiary_id" class="block text-sm font-medium text-gray-700">Beneficiario</label>
-                                <input type="email" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}"
+                                <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
