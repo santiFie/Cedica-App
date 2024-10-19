@@ -126,7 +126,7 @@ def payment_edit(payment_id):
         
         if payment:
             flash("Datos del pago actualizado")
-            return redirect(url_for('payments.index_payments'))
+            return redirect(url_for('payments.payment_index'))
         else:
             flash("El pago seleccionado no existe", "error")
     
@@ -136,7 +136,7 @@ def payment_edit(payment_id):
 
 
    
-@bp.post('/delete_payment/<int:payment_id>', endpoint='delete_payment')
+@bp.post('/delete_payment/<int:payment_id>')#, endpoint='delete_payment')
 @check_permissions('payment_delete')
 @login_required
 def payment_delete(payment_id):
@@ -146,10 +146,10 @@ def payment_delete(payment_id):
 
     if not payment:
         flash("El pago seleccionado no exite", "error")
-        return redirect(url_for('payments.index_payments'))
+        return redirect(url_for('payments.payment_index'))
     
     delete_a_payment(payment)
     
     flash("Pago eliminado exitosamente.")
-    return redirect(url_for('payments.index_payments')) 
+    return redirect(url_for('payments.payment_index')) 
     

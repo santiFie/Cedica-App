@@ -24,7 +24,7 @@
     <form method="POST" action="{{ url_for('payments.payment_edit', payment_id=payment.id) }}">
         <div>
             <label for="beneficiary_id">Beneficiario:</label>
-            <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}" required>
+            <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}" >
         </div>
         <div>
             <label for="amount">Monto:</label>
