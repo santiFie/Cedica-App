@@ -10,7 +10,7 @@ bp = Blueprint('users', __name__, url_prefix="/users")
 @bp.get("/")
 @check_permissions("user_index")
 @login_required
-def user_index():  # preguntar como tienen que ser los nombres list_users o users_list
+def user_index():
 
     # obtengo nro de pagina o por defecto tomo el 1
     page = request.args.get('page', 1, type=int)
@@ -68,13 +68,8 @@ def user_update():
         else:
             flash("Usuario actualizado")
     else:
-        user = auth.find_user_by_email(user_mail)
-        roles = Role.query.all()
-        flash("No se puede dejar campos sin completar al editar", "info")
-        return render_template("users/edit_user.html", user=user, roles=roles)
-
-    return redirect(url_for("users.users_list"))
-
+        flash("Usuario actualizado")
+    return redirect(url_for("users.user_index", flash=flash) )
 
 @bp.get("/edit")
 @check_permissions("user_edit")
@@ -89,14 +84,15 @@ def user_edit():
     return render_template("users/edit_user.html", user=user, roles=roles)
 
 
-@bp.get("/delete_user")
+@bp.post("/delete_user")
 @check_permissions("user_delete")
 @login_required
 def user_delete():
     user_email = request.args.get("user_email")
     users.user_delete(user_email)
-    flash("User deleted successfully")
-    return redirect(url_for("users.users_list", flash=flash))
+    flash("Usuario eliminado de manera correcta.")
+    return redirect(url_for("users.user_index", flash=flash) )
+
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -124,7 +120,7 @@ def user_new():
 
 
 @bp.get("/user_switch_state")
-def user_switch_state():
+def switch_state_user():
     
     user_email =request.args.get('user_email')
     
@@ -133,4 +129,5 @@ def user_switch_state():
     else:
         flash("Se cambio el estado satisfactoriamente")
 
-    return redirect(url_for("users.users_list"))
+        
+    return redirect(url_for("users.user_index") )

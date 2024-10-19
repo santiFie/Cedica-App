@@ -24,7 +24,7 @@
     <form method="POST" action="{{ url_for('payments.payment_edit', payment_id=payment.id) }}">
         <div>
             <label for="beneficiary_id">Beneficiario:</label>
-            <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}" required>
+            <input type="text" id="beneficiary_id" name="beneficiary_id" value="{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}" >
         </div>
         <div>
             <label for="amount">Monto:</label>
@@ -37,9 +37,9 @@
         <div>
             <label for="payment_type">Tipo de Pago:</label>
             <select id="payment_type" name="payment_type" required>
-                <option value="HONORARIOS" {% if form.payment_type.data == 'HONORARIOS' %}selected{% endif %}>Honorarios</option>
-                <option value="PROVEEDOR" {% if form.payment_type.data == 'PROVEEDOR' %}selected{% endif %}>Proveedor</option>
-                <option value="GASTOS VARIOS" {% if form.payment_type.data == 'GASTOS VARIOS' %}selected{% endif %}>Gastos Varios</option>
+                <option value="Honorarios" {% if form.payment_type.data == 'Honorarios' %}selected{% endif %}>Honorarios</option>
+                <option value="Proveedor" {% if form.payment_type.data == 'Proveedor' %}selected{% endif %}>Proveedor</option>
+                <option value="Gastos varios" {% if form.payment_type.data == 'Gastos varios' %}selected{% endif %}>Gastos Varios</option>
             </select>
         </div>
         <div>

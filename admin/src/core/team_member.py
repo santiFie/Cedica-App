@@ -46,8 +46,29 @@ def create(form, files):
         return flash("Las fechas ingresadas no son válidas")
 
     time = datetime.now()
+    team_member = TeamMember(
+        name=form["name"],
+        last_name=form["last_name"],
+        dni=form["dni"],
+        address=form["address"],
+        email=form["email"],
+        locality=form["locality"],
+        phone=form["phone"],
+        initial_date=form["initial_date"],
+        end_date=end_date,
+        emergency_contact=form["emergency_contact"],
+        emergency_phone=form["emergency_phone"],
+        health_insurance_id=form["health_insurance_id"],
+        associated_number=form["health_insurance_number"],
+        inserted_at=time,
+        condition=form["condition"],
+        job_position=form["job_position"],
+        profession=form["profession"],
+    )
 
     try:
+
+        time = datetime.now()
         team_member = TeamMember(
             name=form["name"],
             last_name=form["last_name"],
@@ -60,14 +81,14 @@ def create(form, files):
             end_date=end_date,
             emergency_contact=form["emergency_contact"],
             emergency_phone=form["emergency_phone"],
-            inserted_at=time,
             health_insurance_id=form["health_insurance_id"],
-            associated_number=form["associated_number"],
-            condition=form["condition"].upper(),
-            job_position=form["job_position"].upper(),
-            profession=form["profession"].upper(),
+            associated_number=form["health_insurance_number"],
+            inserted_at=time,
+            condition=form["condition"],
+            job_position=form["job_position"],
+            profession=form["profession"],
         )
-
+        
         database.db.session.add(team_member)
         database.db.session.commit()
 
@@ -194,8 +215,8 @@ def list_emails_from_trainers_and_handlers(**kwargs):
 
     query = TeamMember.query.filter(
     or_(
-        TeamMember.job_position == 'PROFESOR_DE_ENTRENAMIENTO',
-        TeamMember.job_position == 'MANEJADOR'
+        TeamMember.job_position == 'Profesor de entrenamiento',
+        TeamMember.job_position == 'Manejador'
         )
     )
 
@@ -226,21 +247,21 @@ def get_all():
 def get_all_therapists():
     from src.core.models.team_member import TeamMember
 
-    therapists = TeamMember.query.filter_by(job_position='TERAPEUTA').all()
+    therapists = TeamMember.query.filter_by(job_position='Terapeuta').all()
 
     return therapists
 
 def get_all_riders():
     from src.core.models.team_member import TeamMember
 
-    riders = TeamMember.query.filter_by(job_position='MANEJADOR').all()
+    riders = TeamMember.query.filter_by(job_position='Manejador').all()
 
     return riders
 
 def get_all_track_assistants():
     from src.core.models.team_member import TeamMember
 
-    track_assistants = TeamMember.query.filter_by(job_position='ASISTENTE_DE_PISTA').all()
+    track_assistants = TeamMember.query.filter_by(job_position='Asistente de pista').all()
 
     return track_assistants
 

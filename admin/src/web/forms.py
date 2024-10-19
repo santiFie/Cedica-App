@@ -1,5 +1,5 @@
 from wtforms import Form, StringField, IntegerField, DateField, DecimalField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, Regexp, NumberRange, Email, ValidationError
+from wtforms.validators import DataRequired, Length, Regexp, NumberRange, Email, ValidationError, Optional
 from datetime import date
 
 
@@ -389,9 +389,9 @@ class PaymentForm(Form):
 
     # Tipo de pago (puedes usar SelectField si hay opciones específicas)
     payment_type = SelectField('payment_type', choices=[
-        ('HONORARIOS', 'Honorarios'), 
-        ('PROVEEDOR', 'Proveedor'), 
-        ('GASTOS VARIOS', 'Gastos Varios')
+        ('Honorarios', 'Honorarios'), 
+        ('Proveedor', 'Proveedor'), 
+        ('Gastos varios', 'Gastos Varios')
     ], validators=[DataRequired(message='El tipo de pago es obligatorio.')])
 
     # Descripción (opcional, pero con límite de caracteres)
@@ -401,8 +401,8 @@ class PaymentForm(Form):
 
     # Beneficiario (opcional, pero si se ingresa, debe ser un email válido)
     beneficiary_id = StringField('beneficiary_id', validators=[
-       # REVISAR POR QUE NO ANDA EMAIL
-        Email(message='Ingresa una dirección de correo válida.'), 
+        Optional(),
+       # Email(message='Ingresa una dirección de correo válida.'), 
         Length(max=50, message='El email no puede superar los 50 caracteres.')
     ], default='')
 

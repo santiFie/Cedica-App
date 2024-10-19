@@ -70,3 +70,12 @@ def riders_and_horsewomen_errors(riders_form):
         label = field_labels.get(field, field)
         for error in errors:
             flash(f"Error en {label}: {error}")
+
+
+def is_link(file_id):
+    """
+    Check if a file is a link
+    """
+    from src.core.models.riders_and_horsewomen import File
+
+    return File.query.get(file_id).is_link

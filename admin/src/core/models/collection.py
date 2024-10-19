@@ -4,13 +4,13 @@ from sqlalchemy.dialects.postgresql import ENUM
 
 
 
-PaymentMethod = ENUM (
-    'EFECTIVO',
-    'TARJETA DE CREDITO',
-    'TARJETA DE DEBITO',
-    'TRANSFERENCIA',
-    name = 'payment_method_enum',
-    create_type = False
+PaymentMethod = ENUM(
+    'Efectivo',
+    'Tarjeta de credito',
+    'Tarjeta de debito',
+    'Transferencia',
+    name='payment_method_enum',
+    create_type=False
 )
 
 

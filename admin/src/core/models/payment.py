@@ -3,12 +3,15 @@ from datetime import datetime
 from enum import Enum
 from sqlalchemy.dialects.postgresql import ENUM
 
+
+
 PaymentType = ENUM (
-    'HONORARIOS',
-    'PROVEEDOR',
-    'GASTOS VARIOS',
+    'Honorarios',
+    'Proveedor',
+    'Gastos varios',
     name = 'payment_type_enum',
     create_type = False
+
 )
 
 class Payment(database.db.Model):

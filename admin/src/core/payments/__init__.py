@@ -71,7 +71,6 @@ def create_payment(**kwargs):
         description=kwargs.get("description", ""),
         beneficiary_id=beneficiary_id
     )
-
     # Agregar el pago a la base de datos
     db.session.add(payment)
     db.session.commit()

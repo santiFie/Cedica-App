@@ -27,13 +27,13 @@ def equestrian_create():
     equestrian = eq.find_equestrian_by_name(request.form["name"])
     if equestrian:
         flash("El equestre ya existe", "info")
-        return redirect(url_for("equestrian.new"))
+        return redirect(url_for("equestrian.equestrian_new"))
 
     file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
     files = {key: request.files[key] for key in file_keys if key in request.files}
 
     eq.equestrian_create(request.form, files)
-    return redirect(url_for("equestrian.new"))
+    return redirect(url_for("equestrian.equestrian_new"))
 
 # Routes for update a equestrian
 @bp.get("/edit<int:id>")
@@ -63,7 +63,8 @@ def equestrian_update(id):
     files = {key: request.files[key] for key in file_keys if key in request.files}
 
     eq.equestrian_update(id, request.form, files)
-    return redirect(url_for("equestrian.list"))
+    return redirect(url_for("equestrian.equestrian_index"))
+
 
 # Routes for list all equestrians
 @bp.get("/list")
@@ -88,7 +89,7 @@ def equestrian_index():
 @login_required
 def equestrian_delete(id):
     eq.equestrian_delete(id)
-    return redirect(url_for("equestrian.list"))
+    return redirect(url_for("equestrian.equestrian_index"))
 
 # Routes for show a equestrian
 @bp.get("/show<int:id>")
@@ -96,7 +97,6 @@ def equestrian_delete(id):
 @login_required
 def equestrian_show(id):
     equestrian = eq.find_equestrian_by_id(id)
-    print(equestrian.horse_sheet)
     return render_template("equestrians/show.html", equestrian=equestrian)
 
 # Routes for list all equestrian files

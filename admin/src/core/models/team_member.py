@@ -5,41 +5,41 @@ from datetime import datetime
 
 
 ProfessionEnum = ENUM(
-    'PSICOLOGO',
-    'PSICOMOTRICISTA',
-    'MEDICO',
-    'FISIOTERAPEUTA',
-    'TERAPEUTA_OCUPACIONAL',
-    'PSICOLOGO_EDUCATIVO',
-    'MAESTRO',
-    'PROFESOR',
-    'FONOAUDIOLOGO',
-    'VETERINARIO',
-    'OTRO',
+    'Psicologo',
+    'Psicomotricista',
+    'Medico',
+    'Fisioterapeuta',
+    'Terapeuta ocupacional',
+    'Psicologoeducativo',
+    'Maestro',
+    'Profesor',
+    'Fonoaudiologo',
+    'Veterinario',
+    'Otro',
     name='professionenum',
     create_type=False
 )
         
 JobEnum = ENUM(
-    'ADMINISTRATIVO',
-    'TERAPEUTA',
-    'MANEJADOR',
-    'ASISTENTE_DE_PISTA',
-    'HERRERO',
-    'VETERINARIO',
-    'ENTRENADOR_DE_CABALLOS',
-    'DOMADOR_DE_CABALLOS',
-    'PROFESOR_DE_EQUITACION',
-    'PROFESOR_DE_ENTRENAMIENTO',
-    'ASISTENTE_DE_MANTENIMIENTO',
-    'OTRO',
+    'Administrativo',
+    'Terapeuta',
+    'Manejador',
+    'Asistente de pista',
+    'Herrero',
+    'Veterinario',
+    'Entrenador de caballos',
+    'Domador de caballos',
+    'Profesor de equitacion',
+    'Profesor de entrenamiento',
+    'Asistente de mantenimiento',
+    'Otro',
     name='jobenum',
     create_type=False
 )
 
 ConditionEnum = ENUM(
-    'VOLUNTARIO',
-    'PERSONAL_PAGADO',
+    'Voluntario',
+    'Personal pagado',
     name='conditionenum',
     create_type=False
 )
