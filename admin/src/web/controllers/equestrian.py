@@ -68,7 +68,7 @@ def equestrian_update(id):
 
 # Routes for list all equestrians
 @bp.get("/list")
-@check_permissions("equestrian_list")
+@check_permissions("equestrian_index")
 @login_required
 def equestrian_index():
     page = request.args.get('page', 1, type=int)

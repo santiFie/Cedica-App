@@ -81,7 +81,7 @@
         </form>
     </div>
 
-    {% if list %}    
+    {% if payments %}    
         <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 mx-auto max-[825px]:ml-4 max-[480px]:ml-0.5 max-[480px]:w-[5%] max-[450px]:w-[2%] max-[420px]:w-0.5 min-[1200px]:w-3/4 max-[1000px]:w-full items-center">
             <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
             <thead class="bg-gray-50">
@@ -171,7 +171,7 @@
         </div>
         <!-- Botones de Paginación -->
         <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
-            {% if page > 1 %}
+            {% if current_page > 1 %}
                 <a href="{{ url_for('payments.payment_index', page=current_page - 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Previo
@@ -182,7 +182,7 @@
                 </a>
             {% endif %}
 
-            {% if page < max_pages %}
+            {% if current_page < max_pages %}
                 <a href="{{ url_for('payments.payment_index', page=current_page + 1, start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), payment_type=request.args.get('payment_type'), order_by=request.args.get('order_by')) }}"
                 class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
                     Siguiente

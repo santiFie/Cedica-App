@@ -57,7 +57,7 @@ days_enum = ENUM(
     'Miércoles',
     'Jueves',
     'Viernes',
-    'Sabado',
+    'Sábado',
     'Domingo',
     name='days_of_week_enum',
     create_type=False
