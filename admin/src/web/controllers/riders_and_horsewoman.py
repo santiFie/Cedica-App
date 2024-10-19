@@ -379,6 +379,7 @@ def riders_and_horsewomen_download_file(file_id):
 
 # Routes for listing all riders' files
 @bp.get("/list_files")
+@check_permissions("riders_and_horsewomen_index_files")
 @login_required
 def riders_and_horsewomen_index_files():
     # Get the page number or default to 1
