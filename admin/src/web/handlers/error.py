@@ -33,3 +33,8 @@ def unauthorized_502(e):
     error = Error(502, "502 - Error de puerta de enlace", "Error en el servidor", "El servidor no pudo procesar la solicitud.", "Intenta nuevamente más tarde.")
 
     return render_template("error.html", error=error), 502
+
+def method_not_allowed_405(e):
+    error = Error(405, "405 - Método no permitido", "Método no permitido", "El método HTTP utilizado no está permitido para este recurso.", "Revisa el método permitido e intenta nuevamente.")
+
+    return render_template("error.html", error=error), 405

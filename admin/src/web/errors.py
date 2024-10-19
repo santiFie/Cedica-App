@@ -7,3 +7,4 @@ def register_errors(app):
     app.register_error_handler(401, error.unauthorized_401)
     app.register_error_handler(403, error.unauthorized_403)
     app.register_error_handler(502, error.unauthorized_502)
+    app.register_error_handler(405, error.method_not_allowed_405)
