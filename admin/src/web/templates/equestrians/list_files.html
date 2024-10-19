@@ -7,7 +7,7 @@
     </div>
 
     <h2>Buscar archivos</h2>
-    <form action="{{ url_for('equestrian.list_files') }}" method="get">
+    <form action="{{ url_for('equestrian.equestrian_index_files') }}" method="get">
         <label for="name">Nombre:</label>
         <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
 
@@ -55,8 +55,8 @@
                     <td>{{ file['equestrian_name'] }}</td>
                     <td>{{ file['upload_date'] }}</td>
                     <td>
-                        <a href="{{ url_for('equestrian.view_file', id=file['equestrian_id'], filename=file['filename']) }}">Ver</a>
-                        <a href="{{ url_for('equestrian.download_file', id=file['equestrian_id'], filename=file['filename']) }}">Descargar</a>
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=file['equestrian_id'], filename=file['filename']) }}">Ver</a>
+                        <a href="{{ url_for('equestrian.equestrian_download_file', id=file['equestrian_id'], filename=file['filename']) }}">Descargar</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -67,7 +67,7 @@
             <!-- Botones de Paginación -->
             <div class="pagination">
                 {% if page > 1 %}
-                    <a href="{{ url_for('equestrian.list_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <a href="{{ url_for('equestrian.equestrian_index_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
                         <button>Previo</button>
                     </a>
                 {% else %}
@@ -75,7 +75,7 @@
                 {% endif %}
     
                 {% if page < max_pages %}
-                    <a href="{{ url_for('equestrian.list_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
+                    <a href="{{ url_for('equestrian.equestrian_index_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
                         <button>Siguiente</button>
                     </a>
                 {% else %}

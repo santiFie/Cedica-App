@@ -673,7 +673,7 @@ def delete_file(rider_id, file_id):
     """
     Delete the file of a rider
     """
-    user_file = File.query.filter(File.id == file_id).first()
+    user_file = File.query.filter_by(id = file_id).first()
     
     if user_file:
         minio.delete_file(PREFIX, user_file.filename, rider_id)
@@ -695,17 +695,20 @@ def get_link(link_id):
 
 def order_files(sort_by, file):
     if sort_by == 'name_asc':
-        file.sort(key=lambda x: x['filename'])
+        file.sort(key=lambda x: x['file'].filename)
     elif sort_by == 'name_desc':
-        file.sort(key=lambda x: x['filename'], reverse=True)
-    elif sort_by == 'downloaded_date_asc':
-        file.sort(key=lambda x: x['upload_date'] or datetime.min)
-    elif sort_by == 'downloaded_date_desc':
-        file.sort(key=lambda x: x['upload_date'] or datetime.min, reverse=True)
+        file.sort(key=lambda x: x['file'].filename, reverse=True)
+    elif sort_by == 'upload_date_asc':
+        file.sort(key=lambda x: x['file'].created_at or datetime.min)
+    elif sort_by == 'upload_date_desc':
+        file.sort(key=lambda x: x['file'].created_at or datetime.min, reverse=True)
     return file
 
 
 def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
+    """
+    List all the files of the riders that meet the conditions
+    """
     per_page = 25
 
     # Get all the riders
@@ -758,6 +761,7 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
 
     # Order the files
     files_in_conditions = order_files(sort_by, files_in_conditions)
+    print(files_in_conditions)
 
     # Calcular la paginación
     total = len(files_in_conditions)

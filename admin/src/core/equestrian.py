@@ -90,6 +90,7 @@ def equestrian_update(id, form, files):
     Updates an equestrian
     """
 
+
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     # Check if the equestrian exists
@@ -118,8 +119,8 @@ def equestrian_update(id, form, files):
         equestrian.proposals = proposals
     
     # Check if the name already exists for other equestrian
-    equestrian = find_equestrian_by_name(form["name"])
-    if equestrian.id != id:
+    exists = Equestrian.query.filter_by(name=form["name"]).first() is not None
+    if exists:
         return flash("El equestre ya existe")
 
     # Update the equestrian
@@ -216,6 +217,7 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
 
 
 def equestrian_delete(id):
+    print (id)
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:

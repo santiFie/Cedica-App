@@ -11,6 +11,7 @@ from flask import (
 )
 
 from src.core.models.riders_and_horsewomen import (
+    File,
     disability_certificate_enum,
     disability_type_enum,
     family_allowance_enum,
@@ -78,35 +79,35 @@ def riders_and_horsewomen_new():
 
     if not horses:
         flash(
-            "No hay caballos cargados en el sistema y son necesarios para registrar un jinete/amazona",
+            "No hay caballos cargados en el sistema y son necesarios para registrar/modificar un jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not riders:
         flash(
-            "No hay manejadores de caballos cargados en el sistema y son necesarios para registrar un jinete/amazona",
+            "No hay manejadores de caballos cargados en el sistema y son necesarios para registrar/modificar un jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not team_members:
         flash(
-            "No hay miembros de equipo cargados en el sistema y son necesarios para registrar un jinete/amazona",
+            "No hay miembros de equipo cargados en el sistema y son necesarios para registrar/modificar un jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not track_assistants:
         flash(
-            "No hay asistentes de pista cargados en el sistema y son necesarios para registrar un jinete/amazona",
+            "No hay asistentes de pista cargados en el sistema y son necesarios para registrar/modificar un jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not therapists:
         flash(
-            "No hay terapeutas cargados en el sistema y son necesarios para registrar un jinete/amazona",
+            "No hay terapeutas cargados en el sistema y son necesarios para registrar/modificar un jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
@@ -171,35 +172,35 @@ def riders_and_horsewomen_edit(id):
 
     if not horses:
         flash(
-            "No hay caballos cargados en el sistema y son necesarios para registrar a este jinete/amazona",
+            "No hay caballos cargados en el sistema y son necesarios para registrar/modificar a este jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not riders:
         flash(
-            "No hay manejadores de caballos cargados en el sistema y son necesarios para registrar a este jinete/amazona",
+            "No hay manejadores de caballos cargados en el sistema y son necesarios para registrar/modificar a este jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not team_members:
         flash(
-            "No hay miembros de equipo cargados en el sistema y son necesarios para registrar a este jinete/amazona",
+            "No hay miembros de equipo cargados en el sistema y son necesarios para registrar/modificar a este jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not track_assistants:
         flash(
-            "No hay asistentes de pista cargados en el sistema y son necesarios para registrar a este jinete/amazona",
+            "No hay asistentes de pista cargados en el sistema y son necesarios para registrar/modificar a este jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
     if not therapists:
         flash(
-            "No hay terapeutas cargados en el sistema y son necesarios para registrar a este jinete/amazona",
+            "No hay terapeutas cargados en el sistema y son necesarios para registrar/modificar a este jinete/amazona",
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
@@ -268,17 +269,18 @@ def riders_and_horsewomen_new_file():
     )
 
 
-@bp.post("/delete_file")
+@bp.post("/delete_file/<int:file_id>")
 @check_permissions("riders_and_horsewomen_delete_file")
 @login_required
-def riders_and_horsewomen_delete_file(rider_id):
+def riders_and_horsewomen_delete_file(file_id):
+    
+    rider_id = File.query.filter_by(id=file_id).first().rider_id
 
-    if request.args.get("file_id"):
-        file_id = request.args.get("file_id")
+    if file_id:
         rh.delete_file(rider_id, file_id)
 
     return redirect(
-        url_for("riders_and_horsewomen.riders_and_horsewomen_new", id=rider_id)
+        url_for("riders_and_horsewomen.riders_and_horsewomen_index_files", id=rider_id)
     )
 
 
@@ -393,11 +395,11 @@ def riders_and_horsewomen_index_files():
 
     # find_riders_files also returns the max number of pages
     all_files, max_pages = rh.list_riders_files(
-        page=page,
         name=name,
         initial_date=initial_date,
         final_date=final_date,
         sort_by=sort_by,
+        page=page,
     )
 
     # all_files should be a dictionary with filename, file_type, rider_id, created_at
