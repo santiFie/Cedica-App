@@ -402,7 +402,6 @@ class PaymentForm(Form):
     # Beneficiario (opcional, pero si se ingresa, debe ser un email válido)
     beneficiary_id = StringField('beneficiary_id', validators=[
         Optional(),
-       # Email(message='Ingresa una dirección de correo válida.'), 
         Length(max=50, message='El email no puede superar los 50 caracteres.')
     ], default='')
 
@@ -412,10 +411,10 @@ class CollectionForm(Form):
     payment_date = DateField('Fecha de pago', validators=[DataRequired()])
     payment_method = SelectField('Método de pago', 
         choices=[
-            ('EFECTIVO', 'Efectivo'), 
-            ('TARJETA DE CREDITO', 'Tarjeta de Credito'),
-            ('TARJETA DE DEBITO', 'Tarjeta de Debito'),
-            ('TRANSFERENCIA', 'Transferencia')], 
+            ('Efectivo', 'Efectivo'), 
+            ('Tarjeta de Credito', 'Tarjeta de Credito'),
+            ('Tarjeta de Debito', 'Tarjeta de Debito'),
+            ('Transferencia', 'Transferencia')], 
         validators=[DataRequired()])
     
     observations = TextAreaField('Observaciones', validators=[Length(max=200)])

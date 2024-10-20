@@ -49,24 +49,30 @@ def equestrian_create(form, files):
         headquarters=form["headquarters"]
     )
 
-    # Save the equestrian to the database
-    db.session.add(equestrian)
-    db.session.commit()
-
-    for key, file in files.items():
-        if file:
-            minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
-            setattr(equestrian, key, file.filename)
+    try: # Save the equestrian to the database
+        db.session.add(equestrian)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al crear el ecuestre", "info")
+    try:
+        for key, file in files.items():
+            if file:
+                minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
+                setattr(equestrian, key, file.filename)
 
     # Add the selected team members to the equestrianTeamMember table
     # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
-    for email in selected_emails:
-        team_member = tm.find_team_member_by_email(email)
-        if team_member:
-            equestrian.team_members.append(team_member)
-
+        for email in selected_emails:
+            team_member = tm.find_team_member_by_email(email)
+            if team_member:
+                equestrian.team_members.append(team_member)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al cargar los archivos", "indo")
     db.session.commit()
-    
+
     return flash("Equestre creado exitosamente")
 
 
@@ -89,6 +95,7 @@ def equestrian_update(id, form, files):
     """
     Updates an equestrian
     """
+
 
     equestrian = Equestrian.query.filter_by(id=id).first()
 
@@ -118,8 +125,8 @@ def equestrian_update(id, form, files):
         equestrian.proposals = proposals
     
     # Check if the name already exists for other equestrian
-    equestrian = find_equestrian_by_name(form["name"])
-    if equestrian.id != id:
+    exists = Equestrian.query.filter_by(name=form["name"]).first() is not None
+    if exists:
         return flash("El equestre ya existe")
 
     # Update the equestrian
@@ -216,6 +223,7 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
 
 
 def equestrian_delete(id):
+    print (id)
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:

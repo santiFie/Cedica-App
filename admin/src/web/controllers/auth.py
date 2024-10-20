@@ -8,6 +8,8 @@ bp = Blueprint('auth', __name__, url_prefix="/auth")
 
 @bp.get("/")
 def login():
+    from src.core.database import reset
+#    reset()
     return render_template("auth/login.html")
 
 

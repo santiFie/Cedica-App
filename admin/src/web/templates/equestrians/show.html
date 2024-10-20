@@ -93,13 +93,19 @@
         <button type="button">Modificar</button>
     </a>
 
-    <a href="{{ url_for('equestrian.equestrian_delete', id=equestrian.id) }}" method="post">
-        <button>Eliminar</button>
-    </a>
+    <form action="{{ url_for('equestrian.equestrian_delete', id=equestrian.id) }}" method="POST" style="display:inline;" onsubmit="confirmDelete()">
+        <button type="submit">Eliminar</button>
+    </form>
 
     <a href="{{ url_for('equestrian.equestrian_index') }}">
         <button type="button">Volver</button>
     </a>
+
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este caballo? Esta acción no se puede deshacer.');
+        }
+    </script>
 
 
 {% endblock %}

@@ -68,12 +68,12 @@ def team_member_create():
 
         file_keys = ['title', 'dni_copy', 'cv']
         files = {key: request.files[key]
-                    for key in file_keys if key in request.files}
+                 for key in file_keys if key in request.files}
         tm.create(request.form, files)
     else:
         for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"Error: {error}", 'info')
+            for error in errors:
+                flash(f"Error: {error}", 'info')
 
     return redirect(url_for("team_members.team_member_new"))
 
@@ -83,7 +83,7 @@ def team_member_create():
 @login_required
 def team_member_show():
     team_member_email = request.args.get(
-        'team_member_email')  
+        'team_member_email')
 
     team_member = tm.check_team_member_by_email(team_member_email)
 
@@ -115,7 +115,6 @@ def team_member_edit():
 @login_required
 def team_member_update():
 
-
     form = teamMemberEditForm(request.form)
     if form.validate():
 
@@ -123,8 +122,8 @@ def team_member_update():
 
         file_keys = ['title', 'dni_copy', 'cv']
         files = {key: request.files[key]
-                for key in file_keys if key in request.files}
-        
+                 for key in file_keys if key in request.files}
+
         tm.edit(team_member_email, request.form, files)
         flash("Miembro del equipo actualizado")
     else:

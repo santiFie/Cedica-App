@@ -5,7 +5,8 @@ from sqlalchemy import or_
 from src.core import utils, minio
 
 
-PREFIX="team_members"
+PREFIX = "team_members"
+
 
 def create_enums():
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
@@ -13,6 +14,7 @@ def create_enums():
     ProfessionEnum.create(database.db.engine, checkfirst=True)
     JobEnum.create(database.db.engine, checkfirst=True)
     ConditionEnum.create(database.db.engine, checkfirst=True)
+
 
 def check_team_member_by_email(email):
     """
@@ -22,9 +24,7 @@ def check_team_member_by_email(email):
 
     team_member = TeamMember.query.filter_by(email=email).first()
 
-
     return team_member
-
 
 
 def create(form, files):
@@ -34,58 +34,62 @@ def create(form, files):
     from src.core.models.team_member import TeamMember
 
     end_date = form["end_date"]
-    if end_date == '':
+    if end_date == "":
         end_date = None
     else:
         end_date = utils.string_to_date(end_date)
 
-
-
     initial_date = utils.string_to_date(form["initial_date"])
 
     if not utils.validate_dates(initial_date, end_date):
-        return flash("Las fechas ingresadas no son válidas")
+        return flash("Las fechas ingresadas no son válidas", "error")
 
+    time = datetime.now()
+    team_member = TeamMember(
+        name=form["name"],
+        last_name=form["last_name"],
+        dni=form["dni"],
+        address=form["address"],
+        email=form["email"],
+        locality=form["locality"],
+        phone=form["phone"],
+        initial_date=form["initial_date"],
+        end_date=end_date,
+        emergency_contact=form["emergency_contact"],
+        emergency_phone=form["emergency_phone"],
+        health_insurance_id=form["health_insurance_id"],
+        associated_number=form["associated_number"],
+        inserted_at=time,
+        condition=form["condition"],
+        job_position=form["job_position"],
+        profession=form["profession"],
+    )
     try:
-
-        time = datetime.now()
-        team_member = TeamMember(
-            name=form["name"],
-            last_name=form["last_name"],
-            dni=form["dni"],
-            address=form["address"],
-            email=form["email"],
-            locality=form["locality"],
-            phone=form["phone"],
-            initial_date=form["initial_date"],
-            end_date=end_date,
-            emergency_contact=form["emergency_contact"],
-            emergency_phone=form["emergency_phone"],
-            health_insurance_id=form["health_insurance_id"],
-            associated_number=form["associated_number"],
-            inserted_at=time,
-            condition=form["condition"],
-            job_position=form["job_position"],
-            profession=form["profession"],
-        )
-
         database.db.session.add(team_member)
-        database.db.session.commit()
-
+        database.db.session.flush()
+    except:
+        database.db.session.rollback()
+        return flash("Error al crear el miembro de equipo", "info")
+    try:
         for key, file in files.items():
             if file:
-                minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
+                minio.upload_file(prefix=PREFIX, file=file,
+                                  user_id=team_member.id)
                 setattr(team_member, key, file.filename)
 
-        database.db.session.commit()
+        database.db.session.flush()
 
-        return flash("Miembro de equipo creado exitosamente")
     except Exception as e:
-        raise e
         database.db.session.rollback()
         return flash("Error al crear miembro de equipo", "info")
 
-def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, dni=None, sort_by=None):
+    database.db.session.commit()
+    return flash("Miembro de equipo creado exitosamente")
+
+
+def find_team_members(
+    page=1, email=None, name=None, last_name=None, jobs=None, dni=None, sort_by=None
+):
     from src.core.models.team_member import TeamMember
 
     per_page = 25
@@ -95,62 +99,63 @@ def find_team_members(page=1, email=None, name=None, last_name=None, jobs=None, 
 
     # Filtros opcionales
     if email:
-        query = query.filter(TeamMember.email.ilike(f'%{email}%'))  # búsqueda insensible a mayúsculas
+        query = query.filter(
+            TeamMember.email.ilike(f"%{email}%")
+        )  # búsqueda insensible a mayúsculas
     if name:
-        query = query.filter(TeamMember.name.ilike(f'%{name}%'))
+        query = query.filter(TeamMember.name.ilike(f"%{name}%"))
     if last_name:
-        query = query.filter(TeamMember.last_name.ilike(f'%{last_name}%'))
+        query = query.filter(TeamMember.last_name.ilike(f"%{last_name}%"))
     if jobs:
         query = query.filter(TeamMember.job_position == jobs)
     if dni:
-        query = query.filter(TeamMember.dni.ilike(f'%{dni}%'))
+        query = query.filter(TeamMember.dni.ilike(f"%{dni}%"))
 
     # Ordenamiento
-    if sort_by == 'name_asc':
+    if sort_by == "name_asc":
         query = query.order_by(TeamMember.name.asc())
-    elif sort_by == 'name_desc':
+    elif sort_by == "name_desc":
         query = query.order_by(TeamMember.name.desc())
-    elif sort_by == 'last_name_asc':
+    elif sort_by == "last_name_asc":
         query = query.order_by(TeamMember.last_name.asc())
-    elif sort_by == 'last_name_desc':
+    elif sort_by == "last_name_desc":
         query = query.order_by(TeamMember.last_name.desc())
     elif sort_by == 'inserted_at_asc':
         query = query.order_by(TeamMember.inserted_at.asc())
     elif sort_by == 'inserted_at_desc':
         query = query.order_by(TeamMember.inserted_at.desc())
-        
+
     all_team_members = query.count()
 
     # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
     if all_team_members == 0:
         return [], 1
-    
-    max_pages = (all_team_members + per_page - 1) // per_page  # Redondeo hacia arriba
-        
+
+    max_pages = (all_team_members + per_page -
+                 1) // per_page  # Redondeo hacia arriba
+
     # Aseguramos que page sea al menos 1
     if page < 1:
         page = 1
-    
+
     # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
     if page > max_pages:
         page = max_pages
-        
+
     offset = (page - 1) * per_page
     team_members = query.offset(offset).limit(per_page).all()
 
-    return team_members, max_pages 
-
+    return team_members, max_pages
 
 
 def update_team_member_files(team_member, files):
 
     for key, file in files.items():
         if file:
-            minio.delete_file(PREFIX,getattr(team_member,key), team_member.id)
+            minio.delete_file(PREFIX, getattr(
+                team_member, key), team_member.id)
             minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
             setattr(team_member, key, file.filename)
-
-
 
 
 def edit(email, form, files):
@@ -158,17 +163,17 @@ def edit(email, form, files):
 
     team_member = TeamMember.query.filter_by(email=email).first()
 
-    end_date = form['end_date']
-    if(end_date == ''):
+    end_date = form["end_date"]
+    if end_date == "":
         end_date = None
-    
 
     if team_member:
-        team_member.name = form['name']
-        team_member.last_name = form['last_name']
-        team_member.address = form['address']
-        team_member.locality = form['locality']
-        team_member.phone = form['phone']
+
+        team_member.name = form["name"]
+        team_member.last_name = form["last_name"]
+        team_member.address = form["address"]
+        team_member.locality = form["locality"]
+        team_member.phone = form["phone"]
         team_member.end_date = end_date
         team_member.emergency_contact = form['emergency_contact']
         team_member.emergency_phone = form['emergency_phone']
@@ -177,15 +182,17 @@ def edit(email, form, files):
         team_member.condition = form['condition']
         team_member.job_position = form['job_position']
         team_member.profession = form['profession']
-    
-    update_team_member_files(team_member,files)
 
-    
+    update_team_member_files(team_member, files)
+
+    try:
+        database.db.session.flush()
+    except Exception as e:
+        database.db.session.rollback()
+        return flash("Error al editar el miembro de equipo")
 
     database.db.session.commit()
-
     return team_member
-
 
 
 def list_emails_from_trainers_and_handlers(**kwargs):
@@ -195,18 +202,17 @@ def list_emails_from_trainers_and_handlers(**kwargs):
     from src.core.models.team_member import TeamMember
 
     query = TeamMember.query.filter(
-    or_(
-        TeamMember.job_position == 'Profesor de entrenamiento',
-        TeamMember.job_position == 'Manejador'
+        or_(
+            TeamMember.job_position == "Profesor de entrenamiento",
+            TeamMember.job_position == "Manejador",
         )
     )
-
-    
 
     # Ejecutar la consulta y obtener solo los correos electrónicos
     emails = [member.email for member in query.all()]
 
     return emails
+
 
 def find_team_member_by_email(email):
     """
@@ -218,6 +224,7 @@ def find_team_member_by_email(email):
 
     return team_member
 
+
 def get_all():
     from src.core.models.team_member import TeamMember
 
@@ -225,26 +232,32 @@ def get_all():
 
     return team_members
 
+
 def get_all_therapists():
     from src.core.models.team_member import TeamMember
 
-    therapists = TeamMember.query.filter_by(job_position='Terapeuta').all()
+    therapists = TeamMember.query.filter_by(job_position="Terapeuta").all()
 
     return therapists
+
 
 def get_all_riders():
     from src.core.models.team_member import TeamMember
 
-    riders = TeamMember.query.filter_by(job_position='Manejador').all()
+    riders = TeamMember.query.filter_by(job_position="Manejador").all()
 
     return riders
+
 
 def get_all_track_assistants():
     from src.core.models.team_member import TeamMember
 
-    track_assistants = TeamMember.query.filter_by(job_position='Asistente de pista').all()
+    track_assistants = TeamMember.query.filter_by(
+        job_position="Asistente de pista"
+    ).all()
 
     return track_assistants
+
 
 def find_team_member_by_id(id):
     from src.core.models.team_member import TeamMember
@@ -253,9 +266,10 @@ def find_team_member_by_id(id):
 
     return team_member
 
+
 def switch_state(team_member):
 
-    if(team_member.active == False):
+    if team_member.active == False:
         team_member.active = True
     else:
         team_member.active = False
@@ -265,7 +279,7 @@ def switch_state(team_member):
 
 def check_dni_exist(dni):
     from src.core.models.team_member import TeamMember
-    
-    team_member_dni = TeamMember.query.filter_by(dni = dni).first()
+
+    team_member_dni = TeamMember.query.filter_by(dni=dni).first()
 
     return team_member_dni

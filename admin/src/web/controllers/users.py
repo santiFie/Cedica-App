@@ -69,7 +69,8 @@ def user_update():
             flash("Usuario actualizado")
     else:
         flash("Usuario actualizado")
-    return redirect(url_for("users.user_index", flash=flash) )
+    return redirect(url_for("users.user_index", flash=flash))
+
 
 @bp.get("/edit")
 @check_permissions("user_edit")
@@ -91,8 +92,7 @@ def user_delete():
     user_email = request.args.get("user_email")
     users.user_delete(user_email)
     flash("Usuario eliminado de manera correcta.")
-    return redirect(url_for("users.user_index", flash=flash) )
-
+    return redirect(url_for("users.user_index", flash=flash))
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -121,13 +121,27 @@ def user_new():
 
 @bp.get("/user_switch_state")
 def switch_state_user():
-    
-    user_email =request.args.get('user_email')
-    
+
+    user_email = request.args.get('user_email')
+
     if not users.switch_state(user_email):
         flash("No se puede cambiar el estado a un administrador", "info")
     else:
         flash("Se cambio el estado satisfactoriamente")
 
-        
-    return redirect(url_for("users.user_index") )
+    return redirect(url_for("users.user_index"))
+
+
+@bp.get("/user_profile")
+@login_required
+def user_profile():
+    # Tomas email
+    user_email = request.args.get('user_email')
+
+    if user_email is None:
+        # Si no hay es que sos vos
+        user_email = session.get('user')
+
+    user = auth.find_user_by_email(user_email)
+
+    return render_template("users/view_user.html", user=user)

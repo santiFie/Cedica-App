@@ -7,62 +7,64 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Registrar Cobro</h1>
 
-    {% if form.errors %}
-        <div class="errors">
-            <ul>
-                {% for field, errors in form.errors.items() %}
-                    {% for error in errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('collections.collection_register') }}" method="POST">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Registrar Cobro</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="rider_dni" class="block text-sm font-medium text-gray-700">J&A (DNI)</label>
+                                <input type="text" id="rider_dni" name="rider_dni" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="payment_date" class="block text-sm font-medium text-gray-700">Fecha de pago</label>
+                                <input type="date" id="payment_date" name="payment_date" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="payment_method" class="block text-sm font-medium text-gray-700">Metodo de pago</label>
+                                <select id="payment_method" name="payment_method" required
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta de Credito">Tarjeta de Credito</option>
+                                    <option value="Tarjeta de debito">Tarjeta de Debito</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="amount" class="block text-sm font-medium text-gray-700">Monto</label>
+                                <input type="number" id="amount" name="amount" step="0.01" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
+                                <textarea id="observations" name="observations" rows="4" cols="50" 
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"></textarea>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="team_member_id" class="block text-sm font-medium text-gray-700">Miembro del equipo (Email)</label>
+                                <input type="email" id="team_member_id" name="team_member_id" required
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+                        </div>
+                    </div>        
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="{{ url_for('collections.collection_index') }}">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-    {% endif %}
-
-
-    <form method="POST" action="{{ url_for('collections.collection_register') }}">
-        <div>
-            <label for="rider_dni">J&A (DNI):</label>
-            <input type="text" id="rider_dni" name="rider_dni" required>
-        </div>
-        
-        <div>
-            <label for="payment_date">Fecha de pago:</label>
-            <input type="date" id="payment_date" name="payment_date" required>
-        </div>
-    
-        <div>
-            <label for="payment_method">Metodo de pago:</label>
-            <select id="payment_method" name="payment_method" required>
-                <option value="EFECTIVO">Efectivo</option>
-                <option value="TARJETA DE CREDITO">Tarjeta de Credito</option>
-                <option value="TARJETA DE DEBITO">Tarjeta de Debito</option>
-                <option value="TRANSFERENCIA">Transferencia</option>
-            </select>
-        </div>
-    
-        <div>
-            <label for="amount">Monto:</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
-        </div>
-    
-        <div>
-            <label for="observations">Observaciones:</label>
-            <textarea id="observations" name="observations"></textarea>
-        </div>
-    
-        <div>
-            <label for="team_member_id">Miembro del equipo (Email):</label>
-            <input type="email" id="team_member_id" name="team_member_id" required>
-        </div>
-    
-        <button type="submit">Registrar Cobro</button>
-    </form>
-
-    <a href="{{ url_for('collections.collection_index') }}"> <button type="button" >Volver a listado de cobros </button> </a>
-
-
+    </div>
 {% endblock %}
-    
