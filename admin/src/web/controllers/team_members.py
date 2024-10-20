@@ -73,7 +73,7 @@ def team_member_create():
     else:
         for field, errors in form.errors.items():
                 for error in errors:
-                    flash(f"Error in {field}: {error}")
+                    flash(f"Error: {error}", 'info')
 
     return redirect(url_for("team_members.team_member_new"))
 
@@ -154,9 +154,6 @@ def team_member_switch_state():
 def view_file(id, filename):
 
     file_data, content_type = minio.get_file("team_members", id, filename)
-
-    print(file_data)
-    print(content_type)
 
     if not file_data:
         return "Archivo no encontrado", 404

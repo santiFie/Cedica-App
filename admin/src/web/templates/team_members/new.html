@@ -5,142 +5,155 @@
 
 
 {% block content %}
-    <div class="container">
-        <form action="{{ url_for('team_members.team_member_create') }}" method="POST" enctype="multipart/form-data">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('team_members.team_member_create') }}" method="POST" enctype="multipart/form-data">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Registrar miembro de Equipo</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="name"  class="block text-sm font-medium text-gray-700">Nombre:</label>
+                                <input type="text" id="name" name="name" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Apellido -->
-            <div class="form-group">
-                <label for="last_name">Apellido:</label>
-                <input type="text" id="last_name" name="last_name" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="last_name"  class="block text-sm font-medium text-gray-700">Apellido:</label>
+                                <input type="text" id="last_name" name="last_name" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- DNI -->
-            <div class="form-group">
-                <label for="dni">DNI:</label>
-                <input type="text" id="dni" name="dni" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="dni"  class="block text-sm font-medium text-gray-700">DNI:</label>
+                                <input type="text" id="dni" name="dni" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Dirección -->
-            <div class="form-group">
-                <label for="address">Dirección:</label>
-                <input type="text" id="address" name="address" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="address"  class="block text-sm font-medium text-gray-700">Direccion:</label>
+                                <input type="text" id="address" name="address" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="email"  class="block text-sm font-medium text-gray-700">Email:</label>
+                                <input type="email" id="email" name="email" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Localidad -->
-            <div class="form-group">
-                <label for="locality">Localidad:</label>
-                <input type="text" id="locality" name="locality" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="locality"  class="block text-sm font-medium text-gray-700">Localidad:</label>
+                                <input type="text" id="locality" name="locality" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Teléfono -->
-            <div class="form-group">
-                <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" name="phone" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="phone"  class="block text-sm font-medium text-gray-700">Telefono:</label>
+                                <input type="text" id="phone" name="phone" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Fecha de Inicio -->
-            <div class="form-group">
-                <label for="initial_date">Fecha de Inicio:</label>
-                <input type="date" id="initial_date" name="initial_date" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="initial_date" class="block text-sm font-medium text-gray-700">Fecha de Inicio:</label>
+                                <input type="date" id="initial_date" name="initial_date" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Fecha de Fin -->
-            <div class="form-group">
-                <label for="end_date">Fecha de Fin (opcional):</label>
-                <input type="date" id="end_date" name="end_date">
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="end_date" class="block text-sm font-medium text-gray-700">Fecha de Fin (opcional):</label>
+                                <input type="date" id="end_date" name="end_date" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
 
-            <!-- Contacto de Emergencia -->
-            <div class="form-group">
-                <label for="emergency_contact">Contacto de Emergencia:</label>
-                <input type="text" id="emergency_contact" name="emergency_contact" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="emergency_contact"  class="block text-sm font-medium text-gray-700">Contacto de emergencia:</label>
+                                <input type="text" id="emergency_contact" name="emergency_contact" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Teléfono de Emergencia -->
-            <div class="form-group">
-                <label for="emergency_phone">Teléfono de Emergencia:</label>
-                <input type="text" id="emergency_phone" name="emergency_phone" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="emergency_phone"  class="block text-sm font-medium text-gray-700">Telefono del contacto de emergencia:</label>
+                                <input type="text" id="emergency_phone" name="emergency_phone" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Seguro de Salud -->
-            <div class="form-group">
-                <label for="health_insurance_id">Seguro de Salud:</label>
-                <select id="health_insurance_id" name="health_insurance_id">
-                    {% for insurance in health_insurances %}
-                        <option value="{{ insurance.id }}">{{ insurance.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
 
-             <!-- Numero de afiliado obra social -->
-             <div class="form-group">
-                <label for="associated_number">Numero de afiliado obra social:</label>
-                <input type="text" id="associated_number" name="associated_number" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="health_insurance_id"  class="block text-sm font-medium text-gray-700">Seguro de Salud:</label>
+                                <select id="health_insurance_id" name="health_insurance_id"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for insurance in health_insurances %}
+                                        <option value="{{ insurance.id }}">{{ insurance.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-            <!-- Condición -->
-            <div class="form-group">
-                <label for="condition">Condición:</label>
-                <select id="condition" name="condition">
-                    {% for condition in conditions %}
-                        <option value="{{ condition }}">{{ condition }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="associated_number"  class="block text-sm font-medium text-gray-700">Numero de afiliado obra social:</label>
+                                <input type="text" id="associated_number" name="associated_number" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Posición de Trabajo -->
-            <div class="form-group">
-                <label for="job_position">Posición de Trabajo:</label>
-                <select id="job_position" name="job_position">
-                    {% for job in job_positions %}
-                        <option value="{{ job }}">{{ job }}</option>
-                    {% endfor %}
-                </select>
-            </div>
 
-            <!-- Profesión -->
-            <div class="form-group">
-                <label for="profession">Profesión:</label>
-                <select id="profession" name="profession">
-                    {% for profession in professions %}
-                        <option value="{{ profession }}">{{ profession }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="condition" class="block text-sm font-medium text-gray-700" >Condición:</label>
+                                <select id="condition" name="condition"  class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for condition in conditions %}
+                                        <option value="{{ condition }}">{{ condition }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-            <!-- Archivos -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="job_position" class="block text-sm font-medium text-gray-700" >Posición de Trabajo:</label>
+                                <select id="job_position" name="job_position" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for job in job_positions %}
+                                        <option value="{{ job }}">{{ job }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-            <div>
-                <label for="title">Titulo:</label>
-                <input type="file" id="files" name="title" enctype="multipart/form-data">
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="profession" class="block text-sm font-medium text-gray-700">Profesión:</label>
+                                <select id="profession" name="profession" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for profession in professions %}
+                                        <option value="{{ profession }}">{{ profession }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-            <div>
-                <label for="dni_copy">Copia DNI:</label>
-                <input type="file" id="files" name="dni_copy" enctype="multipart/form-data">
-            </div>
 
-            <div>
-                <label for="cv">CV :</label>
-                <input type="file" id="files" name="cv" enctype="multipart/form-data">
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="title" class="block text-sm font-medium text-gray-700">Titulo:</label>
+                                <input type="file" id="files" name="title" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" enctype="multipart/form-data">
+                            </div>
 
-            <!-- Submit Button -->
-            <div class="form-group">
-                <button type="submit">Enviar</button>
-            </div>
-        </form>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="dni_copy" class="block text-sm font-medium text-gray-700">Copia DNI:</label>
+                                <input type="file" id="files" name="dni_copy" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" enctype="multipart/form-data">
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="cv" class="block text-sm font-medium text-gray-700">CV :</label>
+                                <input type="file" id="files" name="cv" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" enctype="multipart/form-data">
+                            </div>
+                        </div>
+                    </div>        
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="{{ url_for('team_members.team_member_index') }}">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
 
