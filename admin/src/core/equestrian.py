@@ -49,24 +49,30 @@ def equestrian_create(form, files):
         headquarters=form["headquarters"]
     )
 
-    # Save the equestrian to the database
-    db.session.add(equestrian)
-    db.session.commit()
-
-    for key, file in files.items():
-        if file:
-            minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
-            setattr(equestrian, key, file.filename)
+    try: # Save the equestrian to the database
+        db.session.add(equestrian)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al crear el ecuestre", "info")
+    try:
+        for key, file in files.items():
+            if file:
+                minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
+                setattr(equestrian, key, file.filename)
 
     # Add the selected team members to the equestrianTeamMember table
     # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
-    for email in selected_emails:
-        team_member = tm.find_team_member_by_email(email)
-        if team_member:
-            equestrian.team_members.append(team_member)
-
+        for email in selected_emails:
+            team_member = tm.find_team_member_by_email(email)
+            if team_member:
+                equestrian.team_members.append(team_member)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al cargar los archivos", "indo")
     db.session.commit()
-    
+
     return flash("Equestre creado exitosamente")
 
 

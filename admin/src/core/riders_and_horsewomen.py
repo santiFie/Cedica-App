@@ -274,6 +274,7 @@ def create_rider_horsewoman(form, files):
 
     except Exception as e:
         database.db.session.rollback()
+        raise(e)
         flash("Error al crear el jinete/Amazona", "error")
 
 

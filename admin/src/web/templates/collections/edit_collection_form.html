@@ -33,10 +33,10 @@
                                 <label for="payment_method" class="block text-sm font-medium text-gray-700">Metodo de Pago:</label>
                                 <select id="payment_method" name="payment_method" required
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="EFECTIVO" {% if form.payment_method.data == 'EFECTIVO' %}selected{% endif %}>Efectivo</option>
-                                    <option value="TARJETA DE CREDITO" {% if form.payment_method.data == 'TARJETA DE CREDITO' %}selected{% endif %}>Tarjeta de Credito</option>
-                                    <option value="TARJETA DE DEBITO" {% if form.payment_method.data == 'TARJETA DE DEBITO' %}selected{% endif %}>Tarjeta de Debito</option>
-                                    <option value="TRANSFERENCIA" {% if form.payment_method.data == 'TRANSFERENCIA' %}selected{% endif %}>Transferencia</option>
+                                    <option value="Efectivo" {% if form.payment_method.data == 'Efectivo' %}selected{% endif %}>Efectivo</option>
+                                    <option value="Tarjeta de credito" {% if form.payment_method.data == 'Tarjeta de credito' %}selected{% endif %}>Tarjeta de credito</option>
+                                    <option value="Tarjeta de debito" {% if form.payment_method.data == 'Tarjeta de debito' %}selected{% endif %}>Tarjeta de debito</option>
+                                    <option value="Transferencia" {% if form.payment_method.data == 'Transferencia' %}selected{% endif %}>Transferencia</option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">

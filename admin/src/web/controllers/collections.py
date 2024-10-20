@@ -167,9 +167,9 @@ def collection_edit(collection_id):
             if not updated_collection:
                 flash("El cobro seleccionado no existe", "error")
             else:
-                flash("Datos del cobro actualizados", "success")
+                flash("Datos del cobro actualizados")
 
-            return redirect(url_for('collections.index_collections'))
+            return redirect(url_for('collections.collection_index'))
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -189,12 +189,12 @@ def collection_delete(collection_id):
 
     if not collection:
         flash("El cobro seleccionado no exite", "error")
-        return redirect(url_for('collections.index_collections'))
+        return redirect(url_for('collections.collection_index'))
     
     delete_a_collection(collection)
     
     flash("Cobro eliminado exitosamente.")
-    return redirect(url_for('collections.index_collections')) 
+    return redirect(url_for('collections.collection_index')) 
 
 
 @bp.get('/index_debts')
