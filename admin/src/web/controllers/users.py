@@ -127,6 +127,6 @@ def user_profile():
         #Si no hay es que sos vos
         user_email = session.get('user')
 
-    user = users.get_user_by_email(user_email)
+    user = auth.find_user_by_email(user_email)
 
     return render_template("users/view_user.html", user=user)
