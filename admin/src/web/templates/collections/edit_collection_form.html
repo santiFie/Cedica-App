@@ -6,61 +6,69 @@
     {{ super() }}
 {% endblock %}
 
+
 {% block content %}
-    <h1>Editar Información del Cobro</h1>
 
-    {% if form.errors %}
-        <div class="errors">
-            <ul>
-                {% for field, errors in form.errors.items() %}
-                    {% for error in errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('collections.collection_edit', collection_id=collection.id) }}" method="POST">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Editar Información del Cobro</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="rider_dni" class="block text-sm font-medium text-gray-700">J&A (DNI)</label>
+                                <input type="text" id="rider_dni" name="rider_dni" value="{{ collection.rider.dni }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="payment_date" class="block text-sm font-medium text-gray-700">Fecha de pago</label>
+                                <input type="date" id="payment_date" name="payment_date" 
+                                    value="{{ form.payment_date.data.strftime('%Y-%m-%d') if form.payment_date.data else collection.payment_date.strftime('%Y-%m-%d') }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="payment_method" class="block text-sm font-medium text-gray-700">Metodo de Pago:</label>
+                                <select id="payment_method" name="payment_method" required
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="EFECTIVO" {% if form.payment_method.data == 'EFECTIVO' %}selected{% endif %}>Efectivo</option>
+                                    <option value="TARJETA DE CREDITO" {% if form.payment_method.data == 'TARJETA DE CREDITO' %}selected{% endif %}>Tarjeta de Credito</option>
+                                    <option value="TARJETA DE DEBITO" {% if form.payment_method.data == 'TARJETA DE DEBITO' %}selected{% endif %}>Tarjeta de Debito</option>
+                                    <option value="TRANSFERENCIA" {% if form.payment_method.data == 'TRANSFERENCIA' %}selected{% endif %}>Transferencia</option>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="amount" class="block text-sm font-medium text-gray-700">Monto</label>
+                                <input type="number" id="amount" name="amount" step="0.01" value="{{ collection.amount }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
+                                <textarea id="observations" name="observations" rows="4" cols="50" 
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                                {{ form.observations.data if form.observations.data else '' }}</textarea>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="team_member_id" class="block text-sm font-medium text-gray-700">Miembro del equipo (Email)</label>
+                                <input type="email" id="team_member_id" name="team_member_id" required
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"
+                                value="{{ collection.teammember.email if collection.teammember else '' }}">
+                            </div>
+                        </div>
+                    </div>        
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="{{ url_for('collections.collection_index') }}">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-    {% endif %}
-
-    <form method="POST" action="{{ url_for('collections.collection_edit', collection_id=collection.id) }}">
-        <div>
-            <label for="rider_dni">J&A (DNI):</label>
-            <input type="text" id="rider_dni" name="rider_dni" value="{{ collection.rider.dni }}" required>
-        </div>
-
-        <div>
-            <label for="payment_date">Fecha de Pago:</label>
-            <input type="date" id="payment_date" name="payment_date" value="{{ form.payment_date.data.strftime('%Y-%m-%d') if form.payment_date.data else collection.payment_date.strftime('%Y-%m-%d') }}" required>
-        </div>
-
-        <div>
-            <label for="payment_method">Metodo de Pago:</label>
-            <select id="payment_method" name="payment_method" required>
-                <option value="EFECTIVO" {% if form.payment_method.data == 'EFECTIVO' %}selected{% endif %}>Efectivo</option>
-                <option value="TARJETA DE CREDITO" {% if form.payment_method.data == 'TARJETA DE CREDITO' %}selected{% endif %}>Tarjeta de Credito</option>
-                <option value="TARJETA DE DEBITO" {% if form.payment_method.data == 'TARJETA DE DEBITO' %}selected{% endif %}>Tarjeta de Debito</option>
-                <option value="TRANSFERENCIA" {% if form.payment_method.data == 'TRANSFERENCIA' %}selected{% endif %}>Transferencia</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="amount">Monto:</label>
-            <input type="number" id="amount" name="amount" step="0.01" value="{{ collection.amount }}" required>
-        </div>
-
-        <div>
-            <label for="observations">Observaciones:</label>
-            <textarea id="observations" name="observations">{{ form.observations.data if form.observations.data else '' }}</textarea>
-        </div>
-
-        <div>
-            <label for="team_member_id">Miembro del equipo (Email):</label>
-            <input type="email" id="team_member_id" name="team_member_id" value="{{ collection.teammember.email if collection.teammember else '' }}" required>
-        </div>
-
-        <button type="submit">Actualizar Cobro</button>
-    </form>
-
-    <a href="{{ url_for('collections.collection_index') }}">
-        <button type="button">Volver a listado de cobros</button>
-    </a>
+    </div>
 {% endblock %}
