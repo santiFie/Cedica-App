@@ -116,3 +116,17 @@ def switch_state_user():
 
         
     return redirect(url_for("users.user_index") )
+
+@bp.get("/user_profile")
+@login_required
+def user_profile():
+    #Tomas email 
+    user_email = request.args.get('user_email')
+
+    if user_email is None:
+        #Si no hay es que sos vos
+        user_email = session.get('user')
+
+    user = users.get_user_by_email(user_email)
+
+    return render_template("users/view_user.html", user=user)
