@@ -120,7 +120,7 @@ def user_new():
 
 
 @bp.get("/user_switch_state")
-def switch_state_user():
+def user_switch_state():
 
     user_email = request.args.get('user_email')
 
