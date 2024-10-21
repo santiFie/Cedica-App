@@ -12,6 +12,9 @@ bp = Blueprint('payments',__name__,url_prefix="/payments")
 @check_permissions('payment_index')
 @login_required
 def payment_index():
+    """
+    Displays the list of payments with optional search filters and pagination 
+    """
 
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -28,6 +31,9 @@ def payment_index():
 @check_permissions('payment_register_form')
 @login_required
 def payment_register_form():
+    """
+    Renders the payment register form page
+    """
     form = PaymentForm()
     return render_template("payments/payment_register.html", form=form)
 
@@ -35,6 +41,9 @@ def payment_register_form():
 @check_permissions('payment_register')
 @login_required
 def payment_register():
+    """
+    Register a new payment with the information of the form
+    """
     
     form = PaymentForm(request.form)
     
@@ -71,6 +80,9 @@ def payment_register():
 @check_permissions('payment_show_detail')
 @login_required
 def payment_show_detail(payment_id):
+    """
+    Renders the payment detail page
+    """
 
     #recupero payment que quiero ver 
     payment = find_payment(payment_id)
@@ -86,6 +98,9 @@ def payment_show_detail(payment_id):
 @check_permissions('payment_edit_form') 
 @login_required
 def payment_edit_form(payment_id):
+    """
+    Renders the payment edit form page
+    """
     payment = find_payment(payment_id)
     form = PaymentForm(obj=payment)
 
@@ -96,6 +111,9 @@ def payment_edit_form(payment_id):
 @check_permissions('payment_edit')
 @login_required
 def payment_edit(payment_id):
+    """
+    Updates the payment given by parameter with the information of the form
+    """
     # agarro el payment para el edit payment form
     payment = find_payment(payment_id)
     form = PaymentForm(request.form) 
@@ -144,6 +162,9 @@ def payment_edit(payment_id):
 @check_permissions('payment_delete')
 @login_required
 def payment_delete(payment_id):
+    """
+    Deletes the payment with the id given by parameter
+    """
 
     #obtengo pago a eliminar
     payment = find_payment(payment_id)

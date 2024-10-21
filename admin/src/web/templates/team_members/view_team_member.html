@@ -26,7 +26,7 @@
     
     {% if team_member.title %}
     <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}">
-        <button type="button">Ver Archivo</button>
+        <button type="button">Ver Titulo</button>
     </a>
     {% else %}
         <p>No hay archivo cargado</p>
@@ -34,7 +34,7 @@
 
     {% if team_member.dni_copy %}
     <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}">
-        <button type="button">Ver Archivo</button>
+        <button type="button">Ver Copia del DNI</button>
     </a>
     {% else %}
     <p>No hay archivo cargado</p>
@@ -43,7 +43,7 @@
 
     {% if team_member.cv %}
     <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}">
-        <button type="button">Ver Archivo</button>
+        <button type="button">Ver CV</button>
     </a>
     {% else %}
     <p>No hay archivo cargado</p>

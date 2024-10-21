@@ -18,6 +18,9 @@ from src.web.forms import (
 PREFIX="Jinetes y Amazonas"
 
 def create_enums():
+    """
+    Creates the enums values for riders and horsewomen
+    """
     from src.core.models.riders_and_horsewomen import (
         disability_certificate_enum,
         disability_type_enum,
@@ -44,6 +47,9 @@ def create_enums():
 
 
 def find_rider(dni):
+    """
+    Search for the rider or horsewomen with the given parameter
+    """
 
     rider = RiderAndHorsewoman.query.filter_by(dni=dni).first()
 
@@ -274,10 +280,14 @@ def create_rider_horsewoman(form, files):
 
     except Exception as e:
         database.db.session.rollback()
+        raise(e)
         flash("Error al crear el jinete/Amazona", "error")
 
 
 def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', professional=None , page=1):
+    """
+    Search for all riders and horsewomen with the given parameters
+    """
 
     per_page = 25
 
@@ -552,33 +562,35 @@ def update_work_in_institution(form, id):
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
 
-#!!!!!!!!
 def delete_a_rider(rider):
+    """
+    Deletes the rider or horsewoman given by parameter and all their related entities from the database
+    """
 
-   # Eliminar tutores asociados
+    # Delete associated tutors
     for tutor in rider.tutors:
         database.db.session.delete(tutor)
 
-    # Eliminar relaciones con team_members a través de caring_professionals
+    # Delete relationships with team_members through caring_professionals
     caring_professionals = CaringProfessional.query.filter_by(
         rider_horsewoman_id=rider.id
-    ).all()  # Obtener todas las relaciones
+    ).all()  # Get all relationships
     for caring_professional in caring_professionals:
         database.db.session.delete(caring_professional)
 
-    # Eliminar relaciones con work_in_institution
+    # Delete relationships with work_in_institution
     work_in_institutions = WorkInInstitution.query.filter_by(
         rider_horsewoman_id=rider.id
-    ).all()  # Obtener todas las relaciones
+    ).all()  # Get all relationships
     for work_in_institution in work_in_institutions:
         database.db.session.delete(work_in_institution)
 
-    # Eliminar las colecciones relacionadas con el rider
+    # Delete collections related to the rider
     collections = rider.collections
     for collection in collections:
         database.db.session.delete(collection)
 
-    # Finalmente eliminar el rider
+    # Finally, delete the rider
     database.db.session.delete(rider)
     database.db.session.commit()
 
@@ -694,6 +706,9 @@ def get_link(link_id):
     return None
 
 def order_files(sort_by, file):
+    """
+    Orders the files with the given parameters
+    """
     if sort_by == 'name_asc':
         file.sort(key=lambda x: x['file'].filename)
     elif sort_by == 'name_desc':
@@ -777,6 +792,9 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
     return files, max_pages 
 
 def get_file_by_name_and_rider_id(filename, rider_id):
+    """
+    Search for the file with the given parameters
+    """
 
     user_file = File.query.filter_by(filename = filename, rider_id = rider_id).first()
 

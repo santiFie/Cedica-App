@@ -3,7 +3,7 @@ from os import fstat
 from io import BytesIO
 from urllib.parse import urlparse
 from src.web.storage import BUCKET_NAME
-from flask import current_app
+from flask import current_app, flash
 from datetime import datetime, timedelta
 
 def delete_file(prefix, filename, user_id):
@@ -16,7 +16,7 @@ def delete_file(prefix, filename, user_id):
     try:
         client.remove_object(BUCKET_NAME, object_name)
     except Exception as e:
-        current_app.logger.error(f"Error deleting file from MinIO: {str(e)}")
+        flash(f"Error al eliminar el archivo: {str(e)}", "error")
 
 
 def upload_file(prefix, file, user_id, filename=None):
@@ -40,9 +40,6 @@ def get_file(prefix, user_id, filename):
     object_name = f"{prefix}/{user_id}-{filename}"
     try:
         response = client.get_object(BUCKET_NAME, object_name)
-        stat = client.stat_object(BUCKET_NAME, object_name)
-        # Metadata is in `stat.metadata`
-        uploaded_date = datetime.fromisoformat(stat.metadata["X-Amz-Meta-Uploaded-Date"])
         return BytesIO(response.read()), response.headers['content-type']
     except Exception as e:
         raise Exception(f"Error getting file from MinIO: {str(e)}")
@@ -66,9 +63,6 @@ def upload_link(prefix, link, filename, user_id):
     """
     client = current_app.storage.client
 
-    # Encode the entire link in base64
-    #encoded_link = base64.urlsafe_b64encode(link.encode()).decode()
-    
     # Convert the link to bytes
     link_bytes = link.encode('utf-8')
     
@@ -106,19 +100,19 @@ def get_link(prefix, filename, user_id):
     object_name = f"{prefix}/{user_id}-{filename}.txt"
     
     try:
-        # Obtener el objeto de Minio
+        # Get the object from Minio
         response = client.get_object(BUCKET_NAME, object_name)
         
         link = response.read().decode('utf-8')
         
-        # Obtener los metadatos
+        # Get the metadata of the object
         stat = client.stat_object(BUCKET_NAME, object_name)
         metadata = stat.metadata
         
         return link.strip(),metadata.get('X-Amz-Meta-Content-Type')
     
     except Exception as e:
-        current_app.logger.error(f"Error al obtener el enlace: {str(e)}")
+        flash(f"Error al obtener el enlace: {str(e)}")
         return None
 
 

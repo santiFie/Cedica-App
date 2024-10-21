@@ -49,28 +49,37 @@ def equestrian_create(form, files):
         headquarters=form["headquarters"]
     )
 
-    # Save the equestrian to the database
-    db.session.add(equestrian)
-    db.session.commit()
-
-    for key, file in files.items():
-        if file:
-            minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
-            setattr(equestrian, key, file.filename)
+    try: # Save the equestrian to the database
+        db.session.add(equestrian)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al crear el ecuestre", "info")
+    try:
+        for key, file in files.items():
+            if file:
+                minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
+                setattr(equestrian, key, file.filename)
 
     # Add the selected team members to the equestrianTeamMember table
     # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
-    for email in selected_emails:
-        team_member = tm.find_team_member_by_email(email)
-        if team_member:
-            equestrian.team_members.append(team_member)
-
+        for email in selected_emails:
+            team_member = tm.find_team_member_by_email(email)
+            if team_member:
+                equestrian.team_members.append(team_member)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al cargar los archivos", "indo")
     db.session.commit()
-    
+
     return flash("Equestre creado exitosamente")
 
 
 def update_equestrians_files(equestrian_id, files_dict):
+    """
+    Updates the files of the equestrian given by parameter
+    """
     equestrian = find_equestrian_by_id(equestrian_id)
 
     if not equestrian:
@@ -135,11 +144,6 @@ def equestrian_update(id, form, files):
     
     update_equestrians_files(equestrian.id, files)
 
-    # # Save the equestrian to the database
-    # for file in files:
-    #     utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
-
-
     # Delete all the team members of the equestrian
     equestrian.team_members.clear() 
     
@@ -161,6 +165,9 @@ def find_equestrian_by_name(name):
     return Equestrian.query.filter_by(name=name).first()
 
 def find_equestrian_by_id(id):
+    """
+    Search for the equestrian with the given parameter
+    """
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:
@@ -169,18 +176,21 @@ def find_equestrian_by_id(id):
     return equestrian
 
 def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_of_entry= None, sort_by=None):
+    """
+    Search for all the equestrians with the given parameters
+    """
     per_page = 25
 
-    # consulta general, obtengo todos los usuarios
+    # General query, get all equestrians
     query = Equestrian.query
 
-    # Filtros opcionales
+    # Optional filters
     if name:
         query = query.filter(Equestrian.name.ilike(f'%{name}%'))
     if proposal:
         query = query.filter(Equestrian.proposals.contains([proposal]))
 
-    # Ordenamiento
+    # Sorting
     if sort_by == 'name_asc':
         query = query.order_by(Equestrian.name.asc())
     elif sort_by == 'name_desc':
@@ -196,17 +206,17 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
         
     total_files = query.count()
 
-    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    # If there are no equestrians, ensure page is 1 and there is no pagination
     if total_files == 0:
         return [], 1
     
-    max_pages = (total_files + per_page - 1) // per_page  # Redondeo hacia arriba
+    max_pages = (total_files + per_page - 1) // per_page  # Round up
         
-    # Aseguramos que page sea al menos 1
+    # Ensure page is at least 1
     if page < 1:
         page = 1
     
-    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+    # Ensure the requested page is not greater than the maximum number of pages
     if page > max_pages:
         page = max_pages
         
@@ -217,21 +227,34 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
 
 
 def equestrian_delete(id):
-    print (id)
+    """
+    Deletes the equestrian with the id given by parameter
+    """
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:
         return flash("El equestre no existe")
     
-    db.session.delete(equestrian)
+    try:
+        db.session.delete(equestrian)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al eliminar el ecuestre", "info")
+    
     db.session.commit()
-
     return flash("Equestre eliminado exitosamente")
 
 def get_all_equestrians():
+    """
+    Search for all the equestrians
+    """
     return Equestrian.query.all()
 
 def order_files(sort_by, file):
+    """
+    Orders the files with the given parameters
+    """
     if sort_by == 'name_asc':
         file.sort(key=lambda x: x['filename'])
     elif sort_by == 'name_desc':
@@ -243,6 +266,9 @@ def order_files(sort_by, file):
     return file
 
 def check_dates(initial_date, final_date):
+    """
+    Checks the dates given by parameter
+    """
     # Parse the dates outside the loop
     if initial_date:
         initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
@@ -258,6 +284,9 @@ def check_dates(initial_date, final_date):
     return True
 
 def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
+    """
+    Search for all the files of the equestrians with the given parameters
+    """
     per_page = 25
 
     # Get all the ecuestrians

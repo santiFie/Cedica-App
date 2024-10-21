@@ -16,6 +16,9 @@ bp = Blueprint('collections',__name__,url_prefix="/collections")
 @check_permissions('collection_index')
 @login_required
 def collection_index():
+    """
+    Displays the list of collections with optional search filters and pagination
+    """
 
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -35,6 +38,9 @@ def collection_index():
 @check_permissions('collection_register')
 @login_required
 def collection_register_form():
+    """
+    Renders the collection register form page
+    """
     form = CollectionForm()
     return render_template("collections/collection_register_form.html", form=form)
 
@@ -43,59 +49,66 @@ def collection_register_form():
 @check_permissions('collection_register')
 @login_required
 def collection_register():
+    """
+    Register a new collection with the information of the form
+    """
     
     form = CollectionForm(request.form)
         
-    if request.method == "POST" and form.validate():
-        team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
-        rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
+    if request.method == "POST": 
+        if form.validate():
+            team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
+            rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
 
-        # Verificar si el miembro del equipo existe
-        if form.team_member_id.data and not team_member:
-            flash("El miembro de equipo no existe.", "error")
-            return render_template('collections/collection_register_form.html', form=form)
+            # Verificar si el miembro del equipo existe
+            if form.team_member_id.data and not team_member:
+                flash("El miembro de equipo no existe.", "error")
+                return render_template('collections/collection_register_form.html', form=form)
 
-        # Verificar si el jinete existe
-        if form.rider_dni.data and not rider:
-            flash("El jinete o amazona no existe.", "error")
-            return render_template('collections/collection_register_form.html', form=form)
-        
-        # Convertir el formato "{month_name} de {year}" a un objeto datetime
-        month_name, year = calculate_debt(rider.dni)[0][0].split(" de ")
+            # Verificar si el jinete existe
+            if form.rider_dni.data and not rider:
+                flash("El jinete o amazona no existe.", "error")
+                return render_template('collections/collection_register_form.html', form=form)
+            
+            # Convertir el formato "{month_name} de {year}" a un objeto datetime
+            month_name, year = calculate_debt(rider.dni)[0][0].split(" de ")
 
-        # Diccionario para mapear nombres de meses en español a números de mes
-        month_mapping = {
-            "Enero": 1, "Febrero": 2, "Marzo": 3, "Abril": 4,
-            "Mayo": 5, "Junio": 6, "Julio": 7, "Agosto": 8,
-            "Septiembre": 9, "Octubre": 10, "Noviembre": 11, "Diciembre": 12
-        }
-        
-        # Obtener el número del mes a partir del nombre en español
-        month_number = month_mapping.get(month_name)
-        
-        if month_number is None:
-            raise ValueError(f"Nombre de mes no válido: {month_name}")
-        
-        first_payment_date = datetime.strptime(f"{year}-{month_number:02d}-01", '%Y-%m-%d').date()
+            # Diccionario para mapear nombres de meses en español a números de mes
+            month_mapping = {
+                "Enero": 1, "Febrero": 2, "Marzo": 3, "Abril": 4,
+                "Mayo": 5, "Junio": 6, "Julio": 7, "Agosto": 8,
+                "Septiembre": 9, "Octubre": 10, "Noviembre": 11, "Diciembre": 12
+            }
+            
+            # Obtener el número del mes a partir del nombre en español
+            month_number = month_mapping.get(month_name)
+            
+            if month_number is None:
+                raise ValueError(f"Nombre de mes no válido: {month_name}")
+            
+            first_payment_date = datetime.strptime(f"{year}-{month_number:02d}-01", '%Y-%m-%d').date()
 
 
-        if form["payment_date"].data < first_payment_date:
-            flash("No posee deudas en esa fecha", "error")
-            return render_template('collections/collection_register_form.html', form=form)
+            if form["payment_date"].data < first_payment_date:
+                flash("No posee deudas en esa fecha", "error")
+                return render_template('collections/collection_register_form.html', form=form)
 
-        # Crear la nueva colección
-        new_collection = create_collection(
-            amount=form.amount.data,
-            payment_date=form.payment_date.data,
-            payment_method=form.payment_method.data,
-            observations=form.observations.data,
-            team_member_id=team_member.email if team_member else '',
-            rider_dni=rider.dni if rider else ''
-        )
+            # Crear la nueva colección
+            new_collection = create_collection(
+                amount=form.amount.data,
+                payment_date=form.payment_date.data,
+                payment_method=form.payment_method.data,
+                observations=form.observations.data,
+                team_member_id=team_member.email if team_member else '',
+                rider_dni=rider.dni if rider else ''
+            )
 
-        flash("Cobro registrado exitosamente")
-        return redirect(url_for('collections.collection_register_form'))
-
+            flash("Cobro registrado exitosamente")
+            return redirect(url_for('collections.collection_register_form'))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error: {error}", 'info')
     # Si el formulario tiene errores o es GET, renderizar la página con el formulario
     return render_template('collections/collection_register_form.html', form=form)
 
@@ -104,6 +117,9 @@ def collection_register():
 @check_permissions('collection_show_detail')
 @login_required
 def collection_show_detail(collection_id):
+    """
+    Renders the collection detail page
+    """
      
     collection = find_collection(collection_id)
     
@@ -119,6 +135,9 @@ def collection_show_detail(collection_id):
 @check_permissions('collection_edit_form')
 @login_required
 def collection_edit_form(collection_id):
+    """
+    Renders the collection edit form page
+    """
     collection = find_collection(collection_id)
     form = CollectionForm()
     return render_template("collections/edit_collection_form.html", form=form, collection=collection)
@@ -127,44 +146,52 @@ def collection_edit_form(collection_id):
 @check_permissions('collection_edit')
 @login_required
 def collection_edit(collection_id):
+    """
+    Updates the collection given by parameter with the information of the form
+    """
 
     collection = find_collection(collection_id)
     form = CollectionForm(request.form)
 
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
+        if form.validate():
 
-    # Buscar el miembro del equipo y el jinete con los datos validados
-        team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
-        rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
+            # Buscar el miembro del equipo y el jinete con los datos validados
+            team_member = find_team_member_by_email(form.team_member_id.data) if form.team_member_id.data else None
+            rider = find_rider(form.rider_dni.data) if form.rider_dni.data else None
 
-        # Verificar si el miembro del equipo existe
-        if form.team_member_id.data and not team_member:
-            flash("El miembro de equipo no existe.", "error")
-            return render_template('collections/edit_collection_form.html', form=form, collection=collection)
+            # Verificar si el miembro del equipo existe
+            if form.team_member_id.data and not team_member:
+                flash("El miembro de equipo no existe.", "error")
+                return render_template('collections/edit_collection_form.html', form=form, collection=collection)
 
-        # Verificar si el jinete existe
-        if form.rider_dni.data and not rider:
-            flash("El jinete o amazona no existe.", "error")
-            return render_template('collections/edit_collection_form.html', form=form, collection=collection)
-        
-        
-        # Actualizar la colección con los datos del formulario
-        updated_collection = edit_a_collection(
-            collection_id=collection_id,
-            rider_dni=form.rider_dni.data,
-            team_member_id=team_member.email if team_member else '',
-            amount=form.amount.data,
-            payment_date=form.payment_date.data,
-            payment_method=form.payment_method.data,
-            observations=form.observations.data,
-        )
+            # Verificar si el jinete existe
+            if form.rider_dni.data and not rider:
+                flash("El jinete o amazona no existe.", "error")
+                return render_template('collections/edit_collection_form.html', form=form, collection=collection)
+            
+            
+            # Actualizar la colección con los datos del formulario
+            updated_collection = edit_a_collection(
+                collection_id=collection_id,
+                rider_dni=form.rider_dni.data,
+                team_member_id=team_member.email if team_member else '',
+                amount=form.amount.data,
+                payment_date=form.payment_date.data,
+                payment_method=form.payment_method.data,
+                observations=form.observations.data,
+            )
 
-        if not updated_collection:
-            flash("El cobro seleccionado no existe", "error")
+            if not updated_collection:
+                flash("El cobro seleccionado no existe", "error")
+            else:
+                flash("Datos del cobro actualizados")
+
+            return redirect(url_for('collections.collection_index'))
         else:
-            flash("Datos del cobro actualizados", "success")
-
-        return redirect(url_for('collections.index_collections'))
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error: {error}", 'info')
 
     # Si el formulario tiene errores o es un GET, renderiza el formulario con los errores
     return render_template('collections/edit_collection_form.html', form=form, collection=collection)
@@ -175,23 +202,29 @@ def collection_edit(collection_id):
 @check_permissions('collection_delete')
 @login_required
 def collection_delete(collection_id):
+    """
+    Deletes the collection with the id given by parameter
+    """
 
     collection = find_collection(collection_id)
 
     if not collection:
         flash("El cobro seleccionado no exite", "error")
-        return redirect(url_for('collections.index_collections'))
+        return redirect(url_for('collections.collection_index'))
     
     delete_a_collection(collection)
     
     flash("Cobro eliminado exitosamente.")
-    return redirect(url_for('collections.index_collections')) 
+    return redirect(url_for('collections.collection_index')) 
 
 
 @bp.get('/index_debts')
 @check_permissions('collection_index_debts')
 @login_required
 def collection_index_debts():
+    """
+    Displays the list of debtors with optional search filters and pagination 
+    """
     # obtengo parametros del filtro
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -209,6 +242,9 @@ def collection_index_debts():
 @check_permissions('collection_show_detail_debt')
 @login_required
 def collection_show_detail_debt(debtor_dni):
+    """
+    Renders the debtor detail page
+    """
     # muestro detalle de que meses debe ese rider
     debt_details, debtor = calculate_debt(debtor_dni)
 

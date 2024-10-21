@@ -121,7 +121,7 @@ class RiderAndHorsewoman(database.db.Model):
     phone = database.db.Column(database.db.String(13), nullable=False)
     emergency_contact = database.db.Column(database.db.String(120), nullable=False)
     emergency_phone = database.db.Column(database.db.String(13), nullable=False)
-    scholarship_percentage = database.db.Column(database.db.String(2), nullable=True)
+    scholarship_percentage = database.db.Column(database.db.String(3), nullable=True)
     observations = database.db.Column(database.db.String(120), nullable=True)
     disability_certificate = database.db.Column(disability_certificate_enum, nullable=True, default=None)
     others = database.db.Column(database.db.String(120), nullable=True)

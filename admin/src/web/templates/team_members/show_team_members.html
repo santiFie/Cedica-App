@@ -18,6 +18,12 @@
 
         <label for="dni">DNI</label>
         <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}">
+
+        <label for="name">Nombre</label>
+        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
+
+        <label for="last_name">Apellido</label>
+        <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}">
     
         <label for="job">Posición Laboral:</label>
         <select name="job" id="job">
@@ -43,6 +49,16 @@
         <label>
             <input type="radio" name="sort_by" value="last_name_desc" {% if request.args.get('sort_by') == 'last_name_desc' %}checked{% endif %}>
             Apellido Descendente
+        </label>
+
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
+            Fecha insercion Ascendente
+        </label>
+
+        <label>
+            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
+            Fecha insercion Descendente
         </label>
 
     

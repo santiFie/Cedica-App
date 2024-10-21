@@ -6,6 +6,9 @@ from src.core.models.users import RolePermission, Role
 
 
 def find_users(page=1, email=None, active=None, role_name=None, sort_by=None, exclude_user=None):
+    """
+    Search for all users with the given parameters
+    """
     per_page = 25
 
     # consulta general, obtengo todos los usuarios
@@ -115,6 +118,9 @@ def edit(**kwargs):
     return None
 
 def switch_state(user_email):
+    """
+    If the user given by parameter id admin, then can change the state of a user
+    """
 
     user = auth.find_user_by_email(user_email)
 

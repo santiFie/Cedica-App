@@ -20,6 +20,9 @@ def validate_dates(initial_date, end_date=None):
 
 
 def string_to_date(string_date):
+    """
+    Converts the given parameter to a date
+    """
     try:
         return datetime.strptime(string_date, '%Y-%m-%d')
     except ValueError:
@@ -30,6 +33,9 @@ def string_to_date(string_date):
 
 
 def date_to_string(date):
+    """
+    Converts the given parameter to a string
+    """
     return date.strftime('%Y-%m-%d')
 
 def riders_and_horsewomen_errors(riders_form):

@@ -38,6 +38,9 @@ bp = Blueprint("riders_and_horsewomen", __name__, url_prefix="/riders_and_horsew
 @check_permissions("riders_and_horsewomen_index")
 @login_required
 def riders_and_horsewomen_index():
+    """
+    Displays the list of riders and horsewomen with optional search filters and pagination 
+    """
     # obtengo parametros de busqueda del formulario
     team_members = tm.get_all()
     name = request.args.get("name")
@@ -63,6 +66,9 @@ def riders_and_horsewomen_index():
 @check_permissions("riders_and_horsewomen_new")
 @login_required
 def riders_and_horsewomen_new():
+    """
+    Register a new rider or horsewomen with the information of the form
+    """
     disability_certificate_options = disability_certificate_enum.enums
     disability_type_options = disability_type_enum.enums
     family_allowance_options = family_allowance_enum.enums
@@ -153,6 +159,10 @@ def riders_and_horsewomen_new():
 @check_permissions("riders_and_horsewomen_edit")
 @login_required
 def riders_and_horsewomen_edit(id):
+    """
+    Renders the riders and horsewomen edit form page
+    """
+
     rider = rh.get_rider_by_id(id)
     first_tutor, second_tutor = rh.get_tutors_by_rider_id(id)
     caring_professionals = rh.get_caring_professionals_by_rider_id(id)
@@ -234,11 +244,13 @@ def riders_and_horsewomen_edit(id):
 @check_permissions("riders_and_horsewomen_update")
 @login_required
 def riders_and_horsewomen_update(id):
+    """
+    Updates the rider or horsewomen given by parameter
+    """
 
     rh.update(id, request.form, request.files)
     flash("El jinete/Amazona se ha actualizado exitosamente")
 
-    # return render_template("riders_and_horsewomen/edit.html", id=id)
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
 
