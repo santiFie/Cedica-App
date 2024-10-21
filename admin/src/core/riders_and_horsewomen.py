@@ -155,7 +155,6 @@ def create_work_in_institution(form, rider_horsewoman_id):
             flash("Error al crear el trabajo en institución", "error")
             raise e
     else:
-        raise Exception()
         for field, errors in work_form.errors.items():
             for error in errors:
                 flash(f"Error in {field}: {error}")
@@ -247,14 +246,19 @@ def create_rider_horsewoman(form, files):
                 raise e
         else:
             utils.riders_and_horsewomen_errors(riders_form)
-            raise Exception()
             return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_new"))
 
-        # Caring professionals
+        # Use a set in order to avoid duplicates
+        professionals_set = set()
+        # Add the caring professionals to the set
         for i in range(1, 6):
             id_key = f"select_pro_{i}"
             if form.get(id_key):
-                create_caring_professional(rider_horsewoman.id, form[id_key])
+                professionals_set.add(form[id_key])
+        
+        # Create the caring professionals
+        for professional_id in professionals_set:
+            create_caring_professional(rider_horsewoman.id, professional_id)
 
         # Tutors
         create_tutors(form, rider_horsewoman.id)

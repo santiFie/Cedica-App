@@ -14,8 +14,8 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     MINIO_SERVER = "localhost:9000"
-    MINIO_ACCESS_KEY = "oB97LzejZiTZdyZoAshM"
-    MINIO_SECRET_KEY = "y2MBwIR1cHOaGuA5aWcHRz372i9x60nC4TK75MKM"
+    MINIO_ACCESS_KEY = "0yNExytlaQ2opQLb19vp"
+    MINIO_SECRET_KEY = "AaVEC9YEuvJ56Yag943XT6Vex7VaQXyhhH6Qh5G5"
     MINIO_SECURE = False
     DEBUG = True
     DB_USER = "grupo43"
