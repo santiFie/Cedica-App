@@ -36,10 +36,6 @@ def user_is_active(user):
     """
     return user.active
 
-def find_user_by_id(user_id):
-    user = User.query.filter_by(email = user_id).first()
-    return user
-
 def check_user(email, password):
     """
     Checks and returns the user if the given parameters are correct

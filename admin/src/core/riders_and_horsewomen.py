@@ -166,7 +166,6 @@ def create_rider_horsewoman(form, files):
     Create a new rider or horsewoman and dependencys
     """
     from src.core.models.riders_and_horsewomen import RiderAndHorsewoman
-    from src.core.team_member import check_team_member_by_email
 
     try: 
 

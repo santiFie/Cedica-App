@@ -19,17 +19,6 @@ def create_enums():
     ConditionEnum.create(database.db.engine, checkfirst=True)
 
 
-def check_team_member_by_email(email):
-    """
-    Check if a team member exists by its email
-    """
-    from src.core.models.team_member import TeamMember
-
-    team_member = TeamMember.query.filter_by(email=email).first()
-
-    return team_member
-
-
 def create(form, files):
     """
     Create a new team member

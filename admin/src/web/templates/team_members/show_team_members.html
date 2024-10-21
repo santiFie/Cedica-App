@@ -99,7 +99,7 @@
                     </td>
                     <td>
                         {% if check_permissions(session, 'team_member_switch_state')%}
-                            <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email) }}" method="POST">
+                            <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email, check_return=0) }}" method="POST">
                                 {% if team_member.active %}
                                     <button type="submit">Desactivar</button>
                                 {% else %}

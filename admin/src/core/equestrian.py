@@ -104,7 +104,7 @@ def equestrian_update(id, form, files):
 
     # Check if the equestrian exists
     if not equestrian:
-        return flash("El equestre no existe")
+        return flash("El equestre no existe", "info")
     
     # Convert the value of bought to a boolean for the database
     bought = True if form['bought'] == 'true' else False  
@@ -115,12 +115,12 @@ def equestrian_update(id, form, files):
 
     # Check if the dates are valid
     if not utils.validate_dates(date_of_birth, date_of_entry):
-        return flash("Las fechas ingresadas no son válidas")
+        return flash("Las fechas ingresadas no son válidas", "info")
     
     # Check if at least one team member is selected
     selected_emails = form.getlist("emails")
     if not selected_emails:
-        return flash("Debe seleccionar al menos un entrenador o cuidador")
+        return flash("Debe seleccionar al menos un entrenador o cuidador", "info")
     
     # Add the proposals in the institution to the equestrian
     proposals = form.getlist("proposals")
@@ -130,7 +130,7 @@ def equestrian_update(id, form, files):
     # Check if the name already exists for other equestrian
     exists = Equestrian.query.filter_by(name=form["name"]).first() is not None
     if exists:
-        return flash("El equestre ya existe")
+        return flash("El equestre ya existe", "info")
 
     # Update the equestrian
     equestrian.name = form["name"]
