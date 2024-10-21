@@ -148,5 +148,6 @@ def user_profile():
         user_email = session.get('user')
 
     user = auth.find_user_by_email(user_email)
+    team_member = tm.find_team_member_by_email(user_email)
 
-    return render_template("users/view_user.html", user=user)
+    return render_template("users/view_user.html", user=user, team_member=team_member)
