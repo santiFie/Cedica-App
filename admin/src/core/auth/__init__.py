@@ -10,7 +10,12 @@ def create_user(**kwargs):
     hash = bcrypt.generate_password_hash(kwargs["password"].encode("utf-8"))
     kwargs["password"] = hash.decode("utf-8")
     user = User(**kwargs)
-    db.session.add(user)
+    try:
+        db.session.add(user)
+    except:
+        db.session.rollback()
+        return None
+    
     db.session.commit()
     return user
 

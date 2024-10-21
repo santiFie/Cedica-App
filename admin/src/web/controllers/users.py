@@ -11,28 +11,27 @@ bp = Blueprint('users', __name__, url_prefix="/users")
 @check_permissions("user_index")
 @login_required
 def user_index():
-
-    # obtengo nro de pagina o por defecto tomo el 1
+    # Get page number or default to 1
     page = request.args.get('page', 1, type=int)
 
-    # obtengo el usuario iniciado en sesion
+    # Get the user logged in session
     current_user = session.get("user")
 
-    # obtengo los filtros del formulario
+    # Get filters from the form
     email = request.args.get('email', None)
     active = request.args.get('active', None)
     role = request.args.get('role', None)
     sort_by = request.args.get('sort_by', None)
 
-    # Convertir el filtro 'active' a un valor booleano
-    if active == 'SI':
+    # Convert the 'active' filter to a boolean value
+    if active == 'YES':
         active = True
     elif active == 'NO':
         active = False
     else:
-        active = None  # No aplicar filtro
+        active = None  # Do not apply filter
 
-    # find_users tambien me devuelve la cantidad maxima de paginas para que sea evaluado en el html
+    # find_users also returns the maximum number of pages to be evaluated in the HTML
     all_users, max_pages = users.find_users(
         page=page, email=email, active=active, role_name=role, sort_by=sort_by, exclude_user=current_user)
 
@@ -135,11 +134,9 @@ def user_switch_state():
 @bp.get("/user_profile")
 @login_required
 def user_profile():
-    # Tomas email
     user_email = request.args.get('user_email')
 
     if user_email is None:
-        # Si no hay es que sos vos
         user_email = session.get('user')
 
     user = auth.find_user_by_email(user_email)

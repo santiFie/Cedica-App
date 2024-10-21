@@ -251,7 +251,6 @@ def riders_and_horsewomen_update(id):
     rh.update(id, request.form, request.files)
     flash("El jinete/Amazona se ha actualizado exitosamente")
 
-    # return render_template("riders_and_horsewomen/edit.html", id=id)
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
 

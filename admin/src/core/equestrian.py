@@ -144,11 +144,6 @@ def equestrian_update(id, form, files):
     
     update_equestrians_files(equestrian.id, files)
 
-    # # Save the equestrian to the database
-    # for file in files:
-    #     utils.upload_file(prefix="ecuestres", file=file, user_id=equestrian.id)
-
-
     # Delete all the team members of the equestrian
     equestrian.team_members.clear() 
     
@@ -186,16 +181,16 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
     """
     per_page = 25
 
-    # consulta general, obtengo todos los usuarios
+    # General query, get all equestrians
     query = Equestrian.query
 
-    # Filtros opcionales
+    # Optional filters
     if name:
         query = query.filter(Equestrian.name.ilike(f'%{name}%'))
     if proposal:
         query = query.filter(Equestrian.proposals.contains([proposal]))
 
-    # Ordenamiento
+    # Sorting
     if sort_by == 'name_asc':
         query = query.order_by(Equestrian.name.asc())
     elif sort_by == 'name_desc':
@@ -211,17 +206,17 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
         
     total_files = query.count()
 
-    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    # If there are no equestrians, ensure page is 1 and there is no pagination
     if total_files == 0:
         return [], 1
     
-    max_pages = (total_files + per_page - 1) // per_page  # Redondeo hacia arriba
+    max_pages = (total_files + per_page - 1) // per_page  # Round up
         
-    # Aseguramos que page sea al menos 1
+    # Ensure page is at least 1
     if page < 1:
         page = 1
     
-    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+    # Ensure the requested page is not greater than the maximum number of pages
     if page > max_pages:
         page = max_pages
         
@@ -235,15 +230,19 @@ def equestrian_delete(id):
     """
     Deletes the equestrian with the id given by parameter
     """
-    print (id)
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:
         return flash("El equestre no existe")
     
-    db.session.delete(equestrian)
+    try:
+        db.session.delete(equestrian)
+        db.session.flush()
+    except:
+        db.session.rollback()
+        return flash("Error al eliminar el ecuestre", "info")
+    
     db.session.commit()
-
     return flash("Equestre eliminado exitosamente")
 
 def get_all_equestrians():

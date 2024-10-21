@@ -562,36 +562,35 @@ def update_work_in_institution(form, id):
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
 
-#!!!!!!!!
 def delete_a_rider(rider):
     """
-    Deletes the rider or horsewomen given by parameter and all their related entities from the database
+    Deletes the rider or horsewoman given by parameter and all their related entities from the database
     """
 
-   # Eliminar tutores asociados
+    # Delete associated tutors
     for tutor in rider.tutors:
         database.db.session.delete(tutor)
 
-    # Eliminar relaciones con team_members a través de caring_professionals
+    # Delete relationships with team_members through caring_professionals
     caring_professionals = CaringProfessional.query.filter_by(
         rider_horsewoman_id=rider.id
-    ).all()  # Obtener todas las relaciones
+    ).all()  # Get all relationships
     for caring_professional in caring_professionals:
         database.db.session.delete(caring_professional)
 
-    # Eliminar relaciones con work_in_institution
+    # Delete relationships with work_in_institution
     work_in_institutions = WorkInInstitution.query.filter_by(
         rider_horsewoman_id=rider.id
-    ).all()  # Obtener todas las relaciones
+    ).all()  # Get all relationships
     for work_in_institution in work_in_institutions:
         database.db.session.delete(work_in_institution)
 
-    # Eliminar las colecciones relacionadas con el rider
+    # Delete collections related to the rider
     collections = rider.collections
     for collection in collections:
         database.db.session.delete(collection)
 
-    # Finalmente eliminar el rider
+    # Finally, delete the rider
     database.db.session.delete(rider)
     database.db.session.commit()
 

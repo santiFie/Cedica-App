@@ -42,7 +42,6 @@ def reset():
     create_enums() # enum de payments
     create_enums_collection()
     db.create_all()
-    #db.session.commit()
     print("Database reset complete.")
 
 def reset_model(model):

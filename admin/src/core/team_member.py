@@ -100,14 +100,14 @@ def find_team_members(
 
     per_page = 25
 
-    # consulta general
+    # General query
     query = TeamMember.query
 
-    # Filtros opcionales
+    # Optional filters
     if email:
         query = query.filter(
             TeamMember.email.ilike(f"%{email}%")
-        )  # búsqueda insensible a mayúsculas
+        )  # case-insensitive search
     if name:
         query = query.filter(TeamMember.name.ilike(f"%{name}%"))
     if last_name:
@@ -117,7 +117,7 @@ def find_team_members(
     if dni:
         query = query.filter(TeamMember.dni.ilike(f"%{dni}%"))
 
-    # Ordenamiento
+    # Sorting
     if sort_by == "name_asc":
         query = query.order_by(TeamMember.name.asc())
     elif sort_by == "name_desc":
@@ -133,18 +133,18 @@ def find_team_members(
 
     all_team_members = query.count()
 
-    # Si no hay usuarios, aseguramos que page sea 1 y no haya paginación
+    # If there are no users, ensure page is 1 and there is no pagination
     if all_team_members == 0:
         return [], 1
 
     max_pages = (all_team_members + per_page -
-                 1) // per_page  # Redondeo hacia arriba
+                 1) // per_page  # Round up
 
-    # Aseguramos que page sea al menos 1
+    # Ensure page is at least 1
     if page < 1:
         page = 1
 
-    # Aseguramos que la página solicitada no sea mayor que el número máximo de páginas
+    # Ensure the requested page is not greater than the maximum number of pages
     if page > max_pages:
         page = max_pages
 
@@ -220,7 +220,7 @@ def list_emails_from_trainers_and_handlers(**kwargs):
         )
     )
 
-    # Ejecutar la consulta y obtener solo los correos electrónicos
+    # Execute the query and get only the emails
     emails = [member.email for member in query.all()]
 
     return emails
