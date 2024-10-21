@@ -77,6 +77,9 @@ def equestrian_create(form, files):
 
 
 def update_equestrians_files(equestrian_id, files_dict):
+    """
+    Updates the files of the equestrian given by parameter
+    """
     equestrian = find_equestrian_by_id(equestrian_id)
 
     if not equestrian:
@@ -167,6 +170,9 @@ def find_equestrian_by_name(name):
     return Equestrian.query.filter_by(name=name).first()
 
 def find_equestrian_by_id(id):
+    """
+    Search for the equestrian with the given parameter
+    """
     equestrian = Equestrian.query.filter_by(id=id).first()
 
     if not equestrian:
@@ -175,6 +181,9 @@ def find_equestrian_by_id(id):
     return equestrian
 
 def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_of_entry= None, sort_by=None):
+    """
+    Search for all the equestrians with the given parameters
+    """
     per_page = 25
 
     # consulta general, obtengo todos los usuarios
@@ -223,6 +232,9 @@ def list_equestrians(page=1, name=None, proposal=None, date_of_birth=None, date_
 
 
 def equestrian_delete(id):
+    """
+    Deletes the equestrian with the id given by parameter
+    """
     print (id)
     equestrian = Equestrian.query.filter_by(id=id).first()
 
@@ -235,9 +247,15 @@ def equestrian_delete(id):
     return flash("Equestre eliminado exitosamente")
 
 def get_all_equestrians():
+    """
+    Search for all the equestrians
+    """
     return Equestrian.query.all()
 
 def order_files(sort_by, file):
+    """
+    Orders the files with the given parameters
+    """
     if sort_by == 'name_asc':
         file.sort(key=lambda x: x['filename'])
     elif sort_by == 'name_desc':
@@ -249,6 +267,9 @@ def order_files(sort_by, file):
     return file
 
 def check_dates(initial_date, final_date):
+    """
+    Checks the dates given by parameter
+    """
     # Parse the dates outside the loop
     if initial_date:
         initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
@@ -264,6 +285,9 @@ def check_dates(initial_date, final_date):
     return True
 
 def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None, sort_by=None):
+    """
+    Search for all the files of the equestrians with the given parameters
+    """
     per_page = 25
 
     # Get all the ecuestrians

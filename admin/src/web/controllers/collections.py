@@ -16,6 +16,9 @@ bp = Blueprint('collections',__name__,url_prefix="/collections")
 @check_permissions('collection_index')
 @login_required
 def collection_index():
+    """
+    Displays the list of collections with optional search filters and pagination
+    """
 
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -35,6 +38,9 @@ def collection_index():
 @check_permissions('collection_register')
 @login_required
 def collection_register_form():
+    """
+    Renders the collection register form page
+    """
     form = CollectionForm()
     return render_template("collections/collection_register_form.html", form=form)
 
@@ -43,6 +49,9 @@ def collection_register_form():
 @check_permissions('collection_register')
 @login_required
 def collection_register():
+    """
+    Register a new collection with the information of the form
+    """
     
     form = CollectionForm(request.form)
         
@@ -108,6 +117,9 @@ def collection_register():
 @check_permissions('collection_show_detail')
 @login_required
 def collection_show_detail(collection_id):
+    """
+    Renders the collection detail page
+    """
      
     collection = find_collection(collection_id)
     
@@ -123,6 +135,9 @@ def collection_show_detail(collection_id):
 @check_permissions('collection_edit_form')
 @login_required
 def collection_edit_form(collection_id):
+    """
+    Renders the collection edit form page
+    """
     collection = find_collection(collection_id)
     form = CollectionForm()
     return render_template("collections/edit_collection_form.html", form=form, collection=collection)
@@ -131,6 +146,9 @@ def collection_edit_form(collection_id):
 @check_permissions('collection_edit')
 @login_required
 def collection_edit(collection_id):
+    """
+    Updates the collection given by parameter with the information of the form
+    """
 
     collection = find_collection(collection_id)
     form = CollectionForm(request.form)
@@ -184,6 +202,9 @@ def collection_edit(collection_id):
 @check_permissions('collection_delete')
 @login_required
 def collection_delete(collection_id):
+    """
+    Deletes the collection with the id given by parameter
+    """
 
     collection = find_collection(collection_id)
 
@@ -201,6 +222,9 @@ def collection_delete(collection_id):
 @check_permissions('collection_index_debts')
 @login_required
 def collection_index_debts():
+    """
+    Displays the list of debtors with optional search filters and pagination 
+    """
     # obtengo parametros del filtro
     # Obtener parámetros de búsqueda del formulario
     start_date = request.args.get('start_date')
@@ -218,6 +242,9 @@ def collection_index_debts():
 @check_permissions('collection_show_detail_debt')
 @login_required
 def collection_show_detail_debt(debtor_dni):
+    """
+    Renders the debtor detail page
+    """
     # muestro detalle de que meses debe ese rider
     debt_details, debtor = calculate_debt(debtor_dni)
 

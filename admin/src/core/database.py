@@ -28,6 +28,9 @@ def config(app):
     return app
 
 def reset():
+    """
+    Resets the database
+    """
     from src.core.payments import create_enums
     from src.core.collections import create_enums_collection
     from src.core import riders_and_horsewomen as rh

@@ -11,6 +11,9 @@ def get_all():
     return health_insurances
 
 def get_by_id(id):
+    """
+    Search for the health insurance with the id given by parameter
+    """
 
     from src.core.models.health_insurance import HealthInsurance
 

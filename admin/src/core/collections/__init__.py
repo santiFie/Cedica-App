@@ -10,6 +10,9 @@ from sqlalchemy import extract
 
 
 def find_collections(start_date=None, end_date=None, payment_method=None, name=None, last_name=None, order_by='asc', page=1):
+    """
+    Search for all collections with the given parameters
+    """
     
     per_page = 25
 
@@ -72,6 +75,9 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
 
 
 def create_collection(**kwargs):
+    """
+    Creates a collection with the given parameters
+    """
 
     payment_type_str = kwargs["payment_method"]  # Captura el string del metodo de pago
 
@@ -99,6 +105,9 @@ def create_collection(**kwargs):
     return collection
 
 def find_collection(id):
+    """
+    Search for a collection with the given parameter
+    """
 
     collection = Collection.query.get(id)
 
@@ -106,6 +115,9 @@ def find_collection(id):
 
 
 def edit_a_collection(**kwargs):
+    """
+    Updates a collection with the given parameters
+    """
 
     collection = find_collection(kwargs["collection_id"])
 
@@ -124,6 +136,9 @@ def edit_a_collection(**kwargs):
 
 
 def delete_a_collection(collection):
+    """
+    Deletes the collection given by parameter
+    """
 
     db.session.delete(collection)
     db.session.commit()
@@ -132,12 +147,18 @@ def delete_a_collection(collection):
 
 
 def create_enums_collection():
+    """
+    Creates the enums values for collections
+    """
    # from src.core.models.payment import PaymentType
 
     PaymentMethod.create(db.engine, checkfirst=True)
 
 
 def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=1):
+    """
+    Search for all debtors with the given parameters
+    """
 
     per_page = 25
 
@@ -184,6 +205,9 @@ def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=
 
 
 def check_debtor(rider):
+    """
+    Checks if the rider given by parameter is a debtor
+    """
     # Obtener la fecha actual
     current_date = datetime.now()
 
@@ -213,7 +237,10 @@ def check_debtor(rider):
     return False
 
 
-def calculate_debt(debtor_dni): 
+def calculate_debt(debtor_dni):
+    """
+    Calculate all debts of the given parameter
+    """ 
 
     # arreglo de meses en Español
     meses = [

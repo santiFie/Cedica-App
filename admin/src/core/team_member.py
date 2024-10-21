@@ -9,6 +9,9 @@ PREFIX = "team_members"
 
 
 def create_enums():
+    """
+    Creates the enums values for the team member
+    """
     from src.core.models.team_member import ProfessionEnum, JobEnum, ConditionEnum
 
     ProfessionEnum.create(database.db.engine, checkfirst=True)
@@ -90,6 +93,9 @@ def create(form, files):
 def find_team_members(
     page=1, email=None, name=None, last_name=None, jobs=None, dni=None, sort_by=None
 ):
+    """
+    Search for all team members with the given parameters
+    """
     from src.core.models.team_member import TeamMember
 
     per_page = 25
@@ -149,6 +155,9 @@ def find_team_members(
 
 
 def update_team_member_files(team_member, files):
+    """
+    Updates a team member files with the given parameters
+    """
 
     for key, file in files.items():
         if file:
@@ -159,6 +168,9 @@ def update_team_member_files(team_member, files):
 
 
 def edit(email, form, files):
+    """
+    Updates a team member with the given parameters
+    """
     from src.core.models.team_member import TeamMember
 
     team_member = TeamMember.query.filter_by(email=email).first()
@@ -226,6 +238,9 @@ def find_team_member_by_email(email):
 
 
 def get_all():
+    """
+    Search for all the team members
+    """
     from src.core.models.team_member import TeamMember
 
     team_members = TeamMember.query.all()
@@ -234,6 +249,9 @@ def get_all():
 
 
 def get_all_therapists():
+    """
+    Search for all team members who are therapists
+    """
     from src.core.models.team_member import TeamMember
 
     therapists = TeamMember.query.filter_by(job_position="Terapeuta").all()
@@ -242,6 +260,9 @@ def get_all_therapists():
 
 
 def get_all_riders():
+    """
+    Search for all team members who are horse handlers
+    """
     from src.core.models.team_member import TeamMember
 
     riders = TeamMember.query.filter_by(job_position="Manejador").all()
@@ -250,6 +271,9 @@ def get_all_riders():
 
 
 def get_all_track_assistants():
+    """
+    Search for all team members who are track assistants
+    """
     from src.core.models.team_member import TeamMember
 
     track_assistants = TeamMember.query.filter_by(
@@ -260,6 +284,9 @@ def get_all_track_assistants():
 
 
 def find_team_member_by_id(id):
+    """
+    Search for the team member with the given parameter
+    """
     from src.core.models.team_member import TeamMember
 
     team_member = TeamMember.query.filter_by(id=id).first()
@@ -268,6 +295,9 @@ def find_team_member_by_id(id):
 
 
 def switch_state(team_member):
+    """
+    Switch the state of the team member given by parameter
+    """
 
     if team_member.active == False:
         team_member.active = True
@@ -278,6 +308,9 @@ def switch_state(team_member):
 
 
 def check_dni_exist(dni):
+    """
+    Checks if a team member with the given parameter exists
+    """
     from src.core.models.team_member import TeamMember
 
     team_member_dni = TeamMember.query.filter_by(dni=dni).first()

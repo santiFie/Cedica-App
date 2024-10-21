@@ -8,6 +8,9 @@ bp = Blueprint('auth', __name__, url_prefix="/auth")
 
 @bp.get("/")
 def login():
+    """
+    Renders the login page
+    """
     from src.core.database import reset
 #    reset()
     return render_template("auth/login.html")
@@ -42,6 +45,9 @@ def verification():
 @bp.get("/logout")
 @login_required
 def logout():
+    """
+    Logs out the logged-in user and clears the session
+    """
     if (session.get('user')):
         del session['user']
         session.clear()

@@ -4,6 +4,9 @@ from src.core.models.users import User
 from datetime import datetime
 
 def find_payments(start_date=None, end_date=None, payment_type=None, order_by='asc', page=1):
+    """
+    Search for all payments with the given parameters
+    """
     # similar a find users
     # voy a mostrar 25 por pagina
     per_page = 25
@@ -53,7 +56,7 @@ def find_payments(start_date=None, end_date=None, payment_type=None, order_by='a
 
 def create_payment(**kwargs):
     """
-     Crea un nuevo Payment con los parámetros dados
+    Create a new payment with the given parameter
     """
     
     payment_type_str = kwargs["payment_type"]  # Captura el string del tipo de pago
@@ -79,12 +82,18 @@ def create_payment(**kwargs):
 
 
 def create_enums():
+    """
+    Creates the enums values for payments
+    """
    # from src.core.models.payment import PaymentType
 
     PaymentType.create(db.engine, checkfirst=True)
 
 
 def find_payment(id):
+    """
+    Search for the payment by the given parameter
+    """
 
     # recupero pago por id
     payment = Payment.query.get(id)
@@ -93,6 +102,9 @@ def find_payment(id):
 
 
 def delete_a_payment(payment):
+    """
+    Deletes the payment given by parameter
+    """
 
     db.session.delete(payment)
     db.session.commit()
@@ -100,6 +112,9 @@ def delete_a_payment(payment):
     return True
 
 def edit_a_payment(**kwargs):
+    """
+    Updates a payment with the given parameters
+    """
 
     # agarro el payment a editar
     payment = find_payment(kwargs["payment_id"])

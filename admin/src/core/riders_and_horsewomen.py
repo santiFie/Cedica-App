@@ -18,6 +18,9 @@ from src.web.forms import (
 PREFIX="Jinetes y Amazonas"
 
 def create_enums():
+    """
+    Creates the enums values for riders and horsewomen
+    """
     from src.core.models.riders_and_horsewomen import (
         disability_certificate_enum,
         disability_type_enum,
@@ -44,6 +47,9 @@ def create_enums():
 
 
 def find_rider(dni):
+    """
+    Search for the rider or horsewomen with the given parameter
+    """
 
     rider = RiderAndHorsewoman.query.filter_by(dni=dni).first()
 
@@ -279,6 +285,9 @@ def create_rider_horsewoman(form, files):
 
 
 def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', professional=None , page=1):
+    """
+    Search for all riders and horsewomen with the given parameters
+    """
 
     per_page = 25
 
@@ -555,6 +564,9 @@ def update_work_in_institution(form, id):
 
 #!!!!!!!!
 def delete_a_rider(rider):
+    """
+    Deletes the rider or horsewomen given by parameter and all their related entities from the database
+    """
 
    # Eliminar tutores asociados
     for tutor in rider.tutors:
@@ -695,6 +707,9 @@ def get_link(link_id):
     return None
 
 def order_files(sort_by, file):
+    """
+    Orders the files with the given parameters
+    """
     if sort_by == 'name_asc':
         file.sort(key=lambda x: x['file'].filename)
     elif sort_by == 'name_desc':
@@ -778,6 +793,9 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
     return files, max_pages 
 
 def get_file_by_name_and_rider_id(filename, rider_id):
+    """
+    Search for the file with the given parameters
+    """
 
     user_file = File.query.filter_by(filename = filename, rider_id = rider_id).first()
 

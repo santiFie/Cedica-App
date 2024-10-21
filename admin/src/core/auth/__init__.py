@@ -16,15 +16,24 @@ def create_user(**kwargs):
 
 
 def find_user_by_email(email):
+    """
+    Search a user with the given parameter
+    """
     user = User.query.filter_by(email = email).first()
 
     return user
 
 def find_user_by_id(id):
+    """
+    Search a user with the given parameter
+    """
     user = User.query.filter_by(id = id).first()
     return user
 
 def user_is_active(user):
+    """
+    Return the state of the user given by parameter
+    """
     return user.active
 
 def find_user_by_id(user_id):
@@ -32,6 +41,9 @@ def find_user_by_id(user_id):
     return user
 
 def check_user(email, password):
+    """
+    Checks and returns the user if the given parameters are correct
+    """
     user = find_user_by_email(email)
 
     if user and bcrypt.check_password_hash(user.password, password):
