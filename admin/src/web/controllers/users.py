@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 from src.core import users, auth
+from src.core import team_member as tm
 from src.core.models.users import Role
 from src.web.forms import registerForm, userEditForm
 from src.web.handlers.auth import login_required
@@ -121,13 +122,20 @@ def user_new():
 @bp.get("/user_switch_state")
 def user_switch_state():
 
+    check_return = request.args.get('check_return')
     user_email = request.args.get('user_email')
+    team_member = tm.find_team_member_by_email(user_email)
 
     if not users.switch_state(user_email):
         flash("No se puede cambiar el estado a un administrador", "info")
     else:
+        if team_member:
+            tm.switch_state(team_member)
         flash("Se cambio el estado satisfactoriamente")
 
+    print(check_return)
+    if check_return == 1:
+        return redirect(url_for('users.user_profile'))
     return redirect(url_for("users.user_index"))
 
 
