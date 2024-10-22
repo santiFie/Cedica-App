@@ -6,139 +6,255 @@
     {{ super() }}
 {% endblock %}
 
-
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#access").click(function(event){
+            event.preventDefault();
+            $("#side-bar").toggle();
+        });
+    });
+</script>
+{% endblock %}
 
 {% block content %}
-    <h1>Miembros del equipo CEDICA</h1>
 
-    <h2>Buscar Miembro del equipo</h2>
-    <form action="{{ url_for('team_members.team_member_index') }}" method="get">
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}">
+<button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
+    <svg
+        class="md:w-12 md:h-12 xs:w-10 xs:h-10 xxs:h-9 sm:w-11 sm:h-11 fill-current inline-block"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+</button>
+<div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
+    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[48rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+        <form action="{{ url_for('team_members.team_member_index') }}" method="get">
+        <div class="mb-1 p-3">
+          <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Miembros del equipo CEDICA</h5>
+        </div>
+        <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+            {% if check_permissions(session, 'team_member_create') %}
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <a role="button" href="{{ url_for('team_members.team_member_new') }}" class="">Crear miembro</a>
+            </div>
+            {% endif %}
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" placeholder="Email" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
+                <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}" placeholder="DNI" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
+                <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="active"
+                class="block text-sm font-medium text-gray-700">Posición Laboral:</label>
+                <select name="active" id="active"
+                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                    <option value="">-- Seleccionar --</option>
+                    {% for job in jobs %}
+                    <option value="{{ job }}" {% if request.args.get('job') == job %}selected{% endif %}>{{ job.replace('_', ' ').title() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <h6 class="block font-normal text-gray-700 text-base">Ordenar por:</h6>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="name_asc">Nombre Ascendente</label>
+                <input id="name_asc" type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="name_desc">Nombre Descendente</label>
+                <input id="name_desc" type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="last_name_asc">Apellido Ascendente</label>
+                <input id="last_name_asc" type="radio" name="sort_by" value="last_name_asc" {% if request.args.get('sort_by') == 'last_name_asc' %}checked{% endif %}>
+            </div> 
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="fech_desc">Apellido Descendente</label>
+                <input id="fech_desc" type="radio" name="sort_by" value="last_name_desc" {% if request.args.get('sort_by') == 'last_name_desc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="inserted_at_asc">Fecha insercion Ascendente</label>
+                <input id="inserted_at_asc" type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="inserted_at_desc">Fecha insercion Descendente</label>
+                <input id="inserted_at_desc" type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none ">
+                <button type="submit">Buscar</button>
+            </div>
+        </nav>
+        </form>
+    </div>
 
-        <label for="dni">DNI</label>
-        <input type="text" name="dni" id="dni" value="{{ request.args.get('dni', '') }}">
-
-        <label for="name">Nombre</label>
-        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
-
-        <label for="last_name">Apellido</label>
-        <input type="text" name="last_name" id="last_name" value="{{ request.args.get('last_name', '') }}">
-    
-        <label for="job">Posición Laboral:</label>
-        <select name="job" id="job">
-            <option value="">-- Seleccionar --</option>
-            {% for job in jobs %}
-            <option value="{{ job }}" {% if request.args.get('job') == job %}selected{% endif %}>{{ job.replace('_', ' ').title() }}</option>
-            {% endfor %}
-        </select>
-
-        <h3>Ordenar por:</h3>
-        <label>
-            <input type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
-            Nombre Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
-            Nombre Descendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="last_name_asc" {% if request.args.get('sort_by') == 'last_name_asc' %}checked{% endif %}>
-            Apellido Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="last_name_desc" {% if request.args.get('sort_by') == 'last_name_desc' %}checked{% endif %}>
-            Apellido Descendente
-        </label>
-
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_asc" {% if request.args.get('sort_by') == 'inserted_at_asc' %}checked{% endif %}>
-            Fecha insercion Ascendente
-        </label>
-
-        <label>
-            <input type="radio" name="sort_by" value="inserted_at_desc" {% if request.args.get('sort_by') == 'inserted_at_desc' %}checked{% endif %}>
-            Fecha insercion Descendente
-        </label>
-
-    
-        <button type="submit">Buscar</button>
-    </form>
-
-    {% if list %}
-        <table>
-            <thead>
+    {% if list %}    
+        <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 mx-auto max-[825px]:ml-4 max-[480px]:ml-0.5 max-[480px]:w-[5%] max-[450px]:w-[2%] max-[420px]:w-0.5 min-[1200px]:w-3/4 max-[1000px]:w-full items-center">
+            <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+            <thead class="bg-gray-50">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Informacion</th>
-                    <th>Modificacion</th>
-                    <th>Estado</th>
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Nombre/Email</th>
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Estado</th>
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Profesion</th>
+                {% if check_permissions(session, 'team_member_show') %}
+                <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
+                {% endif %}
+                <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                 {% for team_member in list %}
-                <tr>
-                    <td>{{ team_member.name }}</td>
-                    <td>{{ team_member.last_name }}</td>
-                    <td>{{ team_member.email }}</td>
-                    <td>
-                        {% if check_permissions(session, 'team_member_show')%}
-                            <a href="{{ url_for('team_members.team_member_show', team_member_email=team_member.email) }}"> 
-                                <button>Mostrar informacion</button>
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if check_permissions(session, 'team_member_edit')%}
-                            <a href="{{ url_for('team_members.team_member_edit', team_member_email=team_member.email) }}">
-                                <button type="button">Modificar</button>
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if check_permissions(session, 'team_member_switch_state')%}
-                            <form action="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email, check_return=0) }}" method="POST">
-                                {% if team_member.active %}
-                                    <button type="submit">Desactivar</button>
-                                {% else %}
-                                    <button type="submit">Activar</button>
-                                {% endif %}
-                            </form>
-                        {% endif %}
-                    </td>
+                <tr class="hover:bg-gray-50">
+                <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
+                    <div class="text-sm">
+                    <div class="font-medium text-gray-700">{{ team_member.last_name }}{{ team_member.name }}</div>
+                    <div class="text-gray-400">{{ team_member.email }}</div>
+                    </div>
+                </th>
+                {% if team_member.active %}
+                <td class="max-[735px]:hidden px-6 py-4">
+                    <span
+                    class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                    >
+                    {% if check_permissions(session, 'team_member_switch_state') %}
+                    <a href="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email, check_return=0) }}"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                    Activo
+                    </span></a>
+                    {% else %}
+                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                        Activo
+                    </span></a>
+                    {% endif %}
+                </td>
+                {% else %}
+                <td class="max-[735px]:hidden px-6 py-4">
+                    <span
+                    class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                    >
+                    {% if check_permissions(session, 'team_member_switch_state') %}
+                    <a href="{{ url_for('team_members.team_member_switch_state', team_member_email=team_member.email, check_return=0) }}"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Inactivo
+                    </span></a>
+                    {% else %}
+                    <a href="#"><span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Inactivo
+                    </span></a>
+                    {% endif%}
+                </td>
+                {% endif%}
+                
+                <td class="max-[600px]:hidden px-6 py-4">{{ team_member.profession }}</td>
+                {% if check_permissions(session, 'team_member_show') %}
+                <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
+                    <div class="flex gap-2">
+                    <a href="{{url_for('team_members.team_member_show', team_member=team_member.email) }}"
+                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                        ver más
+                    </a>
+                    </div>
+                </td>
+                {% endif%}
+                <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
+                    <div class="flex justify-end gap-4">
+                    {% if check_permissions(session, 'team_member_edit') %}
+                    <a href="{{ url_for('team_members.team_member_edit', team_member=team_member.email) }}">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="max-[480px]:h-4 h-6 w-6"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                        />
+                        </svg>
+                    </a>
+                    {% endif%}
+                    {% if check_permissions(session, 'user_delete') %}
+                    <form action="#" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                        <button type="submit">
+                            <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="max-[480px]:h-4 h-6 w-6"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                        />
+                        </svg>
+                        </button>
+                    </form>
+                    {% endif%}
+                    </div>
+                </td>
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
-
-
-        <div class="pagination">
+            </table>
+        </div>
+        <!-- Botones de Paginación -->
+        <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
             {% if page > 1 %}
-                <a href="{{ url_for('team_members.team_member_index', page=page-1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
-                    <button>Previo</button>
+                <a href="{{ url_for('team_members.team_member_index', page=page-1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Previo
                 </a>
             {% else %}
-                <button disabled>Previo</button>
+                <a href="#" class="hidden" disabled>
+                    Previo
+                </a>
             {% endif %}
 
             {% if page < max_pages %}
-                <a href="{{ url_for('team_members.team_member_index', page=page+1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}">
-                    <button>Siguiente</button>
+                <a href="{{ url_for('team_members.team_member_index', page=page+1, email=request.args.get('email', ''), job=request.args.get('job', ''), dni=request.args.get('dni', ''), name=request.args.get('name', ''), surname=request.args.get('surname', ''), sort_by=request.args.get('sort_by', '')) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Siguiente
                 </a>
             {% else %}
-                <button disabled>Siguiente</button>
+                <a href="#" class="hidden" disabled>
+                    Siguiente
+                </a>
             {% endif %}
         </div>
-
     {% else %}
-        <p>No hay miembros del equipo registrados</p>
-    
+        <div class="text-center pl-10 mt-10">
+            <p class="text-lg">No se encontraron miembros de equipo en el sistema.</p>
+        </div>
     {% endif %}
 
-
-    
-
+</div>
+<script>
+    function confirmDelete() {
+        return confirm('¿Estás seguro de que deseas eliminar este miembro? Esta acción no se puede deshacer.');
+    }
+</script>
 
 {% endblock %}

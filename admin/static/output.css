@@ -778,12 +778,20 @@ video {
   height: 43rem;
 }
 
-.h-\[46rem\] {
-  height: 46rem;
+.h-\[47rem\] {
+  height: 47rem;
+}
+
+.h-\[48rem\] {
+  height: 48rem;
 }
 
 .h-screen {
   height: 100vh;
+}
+
+.max-h-\[calc\(100vh-2rem\)\] {
+  max-height: calc(100vh - 2rem);
 }
 
 .w-1\.5 {
@@ -935,6 +943,10 @@ video {
 
 .overflow-visible {
   overflow: visible;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded {
