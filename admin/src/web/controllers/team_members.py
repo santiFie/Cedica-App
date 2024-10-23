@@ -29,7 +29,7 @@ bp = Blueprint("team_members", __name__, url_prefix="/team_members")
 def team_member_index():
 
     page = request.args.get("page", 1, type=int)
-    
+
     # Get filters from the form
     name = request.args.get("name", None)
     last_name = request.args.get("last_name", None)
@@ -86,7 +86,7 @@ def team_member_create():
     form = TeamMemberForm(request.form)
     if form.validate():
 
-        if tm.check_team_member_by_email(request.form["email"]):
+        if tm.find_team_member_by_email(request.form["email"]):
             flash("El email de este miembro de equipo ya existe", "info")
             return redirect(url_for("team_members.team_member_new"))
 
@@ -95,7 +95,8 @@ def team_member_create():
             return redirect(url_for("team_members.team_member_new"))
 
         file_keys = ["title", "dni_copy", "cv"]
-        files = {key: request.files[key] for key in file_keys if key in request.files}
+        files = {key: request.files[key]
+                 for key in file_keys if key in request.files}
         tm.create(request.form, files)
     else:
         for field, errors in form.errors.items():
@@ -111,15 +112,12 @@ def team_member_create():
 def team_member_show():
     team_member_email = request.args.get("team_member_email")
 
-    team_member = tm.check_team_member_by_email(team_member_email)
+    team_member = tm.find_team_member_by_email(team_member_email)
+    user = au.find_user_by_email(team_member_email)
 
-    health_insurance = hi.get_by_id(team_member.health_insurance_id)
-
-    return render_template(
-        "team_members/view_team_member.html",
-        team_member=team_member,
-        health_insurance=health_insurance,
-    )
+    if user:
+        return render_template("users/view_user.html", user=user, team_member=team_member)
+    return render_template("users/view_team_member.html", team_member=team_member)
 
 
 @bp.get("/edit")
@@ -136,7 +134,7 @@ def team_member_edit():
 
     team_member_email = request.args.get("team_member_email")
 
-    team_member = tm.check_team_member_by_email(team_member_email)
+    team_member = tm.find_team_member_by_email(team_member_email)
 
     health_insurances = hi.get_all()
 
@@ -163,7 +161,8 @@ def team_member_update():
         team_member_email = request.args.get("team_member_email")
 
         file_keys = ["title", "dni_copy", "cv"]
-        files = {key: request.files[key] for key in file_keys if key in request.files}
+        files = {key: request.files[key]
+                 for key in file_keys if key in request.files}
 
         tm.edit(team_member_email, request.form, files)
         flash("Miembro del equipo actualizado")
@@ -179,8 +178,9 @@ def team_member_switch_state():
     """
     Switch the state of a team member
     """
-    team_member_email = request.args.get("team_member_email")
-    team_member = tm.check_team_member_by_email(team_member_email)
+    check_return = request.args.get('check_return')
+    team_member_email = request.args.get('team_member_email')
+    team_member = tm.find_team_member_by_email(team_member_email)
 
     if team_member:
         tm.switch_state(team_member)
@@ -189,7 +189,9 @@ def team_member_switch_state():
             us.switch_state(team_member_email)
         flash("Se cambio el estado del miembro del equipo")
 
-    return redirect(url_for("team_members.team_member_index"))
+    if check_return == 1:
+        return redirect(url_for('team_members.team_member_show'))
+    return redirect(url_for('team_members.team_member_index'))
 
 
 @bp.get("/view_file/<int:id>/<string:filename>")

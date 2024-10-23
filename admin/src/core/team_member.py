@@ -19,17 +19,6 @@ def create_enums():
     ConditionEnum.create(database.db.engine, checkfirst=True)
 
 
-def check_team_member_by_email(email):
-    """
-    Check if a team member exists by its email
-    """
-    from src.core.models.team_member import TeamMember
-
-    team_member = TeamMember.query.filter_by(email=email).first()
-
-    return team_member
-
-
 def create(form, files):
     """
     Create a new team member
@@ -76,8 +65,7 @@ def create(form, files):
     try:
         for key, file in files.items():
             if file:
-                minio.upload_file(prefix=PREFIX, file=file,
-                                  user_id=team_member.id)
+                minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
                 setattr(team_member, key, file.filename)
 
         database.db.session.flush()
@@ -126,9 +114,9 @@ def find_team_members(
         query = query.order_by(TeamMember.last_name.asc())
     elif sort_by == "last_name_desc":
         query = query.order_by(TeamMember.last_name.desc())
-    elif sort_by == 'inserted_at_asc':
+    elif sort_by == "inserted_at_asc":
         query = query.order_by(TeamMember.inserted_at.asc())
-    elif sort_by == 'inserted_at_desc':
+    elif sort_by == "inserted_at_desc":
         query = query.order_by(TeamMember.inserted_at.desc())
 
     all_team_members = query.count()
@@ -137,8 +125,7 @@ def find_team_members(
     if all_team_members == 0:
         return [], 1
 
-    max_pages = (all_team_members + per_page -
-                 1) // per_page  # Round up
+    max_pages = (all_team_members + per_page - 1) // per_page  # Round up
 
     # Ensure page is at least 1
     if page < 1:
@@ -161,8 +148,7 @@ def update_team_member_files(team_member, files):
 
     for key, file in files.items():
         if file:
-            minio.delete_file(PREFIX, getattr(
-                team_member, key), team_member.id)
+            minio.delete_file(PREFIX, getattr(team_member, key), team_member.id)
             minio.upload_file(prefix=PREFIX, file=file, user_id=team_member.id)
             setattr(team_member, key, file.filename)
 
@@ -187,13 +173,13 @@ def edit(email, form, files):
         team_member.locality = form["locality"]
         team_member.phone = form["phone"]
         team_member.end_date = end_date
-        team_member.emergency_contact = form['emergency_contact']
-        team_member.emergency_phone = form['emergency_phone']
-        team_member.health_insurance_id = form['health_insurance']
-        team_member.associated_number = form['associated_number']
-        team_member.condition = form['condition']
-        team_member.job_position = form['job_position']
-        team_member.profession = form['profession']
+        team_member.emergency_contact = form["emergency_contact"]
+        team_member.emergency_phone = form["emergency_phone"]
+        team_member.health_insurance_id = form["health_insurance"]
+        team_member.associated_number = form["associated_number"]
+        team_member.condition = form["condition"]
+        team_member.job_position = form["job_position"]
+        team_member.profession = form["profession"]
 
     update_team_member_files(team_member, files)
 
@@ -217,7 +203,8 @@ def list_emails_from_trainers_and_handlers(**kwargs):
         or_(
             TeamMember.job_position == "Profesor de entrenamiento",
             TeamMember.job_position == "Manejador",
-        )
+        ),
+        TeamMember.active == True
     )
 
     # Execute the query and get only the emails
@@ -243,7 +230,7 @@ def get_all():
     """
     from src.core.models.team_member import TeamMember
 
-    team_members = TeamMember.query.all()
+    team_members = TeamMember.query.filter_by(active=True).all()
 
     return team_members
 
@@ -254,7 +241,7 @@ def get_all_therapists():
     """
     from src.core.models.team_member import TeamMember
 
-    therapists = TeamMember.query.filter_by(job_position="Terapeuta").all()
+    therapists = TeamMember.query.filter_by(job_position="Terapeuta", active=True).all()
 
     return therapists
 
@@ -265,7 +252,7 @@ def get_all_riders():
     """
     from src.core.models.team_member import TeamMember
 
-    riders = TeamMember.query.filter_by(job_position="Manejador").all()
+    riders = TeamMember.query.filter_by(job_position="Manejador", active=True).all()
 
     return riders
 
@@ -277,7 +264,8 @@ def get_all_track_assistants():
     from src.core.models.team_member import TeamMember
 
     track_assistants = TeamMember.query.filter_by(
-        job_position="Asistente de pista"
+        job_position="Asistente de pista", 
+        active=True
     ).all()
 
     return track_assistants

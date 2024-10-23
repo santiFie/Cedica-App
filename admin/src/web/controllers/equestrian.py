@@ -18,6 +18,11 @@ bp = Blueprint("equestrian", __name__, url_prefix="/equestrians")
 def equestrian_new():
     email_lists = tm.list_emails_from_trainers_and_handlers()
     proposals = proposal_enum.enums
+
+    if not email_lists:
+        flash("No hay entrenadores ni cuidadores registrados y son necesarios para crear un ecuestre", "info")
+        return redirect(url_for("equestrian.equestrian_index"))
+
     return render_template("equestrians/new.html", email_list=email_lists, proposals=proposals)
 
 @bp.post("/create")
@@ -46,6 +51,12 @@ def equestrian_edit(id):
 
     proposals = proposal_enum.enums
     email_lists = tm.list_emails_from_trainers_and_handlers()
+
+    if not email_lists:
+        flash("No hay entrenadores ni cuidadores registrados y son necesarios para editar este ecuestre", "info")
+        return redirect(url_for("equestrian.equestrian_index"))
+
+
     selected_emails = [team_member.email for team_member in equestrian.team_members]
 
     if equestrian.proposals:

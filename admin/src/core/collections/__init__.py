@@ -9,11 +9,19 @@ from sqlalchemy.orm import aliased
 from sqlalchemy import extract
 
 
-def find_collections(start_date=None, end_date=None, payment_method=None, name=None, last_name=None, order_by='asc', page=1):
+def find_collections(
+    start_date=None,
+    end_date=None,
+    payment_method=None,
+    name=None,
+    last_name=None,
+    order_by="asc",
+    page=1,
+):
     """
     Search for all collections with the given parameters
     """
-    
+
     per_page = 25
 
     # General query
@@ -21,9 +29,13 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
 
     # Filter by date range
     if start_date:
-        query = query.filter(Collection.payment_date >= datetime.strptime(start_date, '%Y-%m-%d'))
+        query = query.filter(
+            Collection.payment_date >= datetime.strptime(start_date, "%Y-%m-%d")
+        )
     if end_date:
-        query = query.filter(Collection.payment_date <= datetime.strptime(end_date, '%Y-%m-%d'))
+        query = query.filter(
+            Collection.payment_date <= datetime.strptime(end_date, "%Y-%m-%d")
+        )
 
     # Filter by payment method
     if payment_method:
@@ -36,14 +48,20 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
 
     # Filter by payment receiver's name (team member)
     if name:
-        query = query.join(team_member_alias_name, team_member_alias_name.email == Collection.team_member_id).filter(team_member_alias_name.name.ilike(f'%{name}%'))
-    
+        query = query.join(
+            team_member_alias_name,
+            team_member_alias_name.email == Collection.team_member_id,
+        ).filter(team_member_alias_name.name.ilike(f"%{name}%"))
+
     # Filter by payment receiver's last name (team member)
     if last_name:
-        query = query.join(team_member_alias_last_name, team_member_alias_last_name.email == Collection.team_member_id).filter(team_member_alias_last_name.last_name.ilike(f'%{last_name}%'))
+        query = query.join(
+            team_member_alias_last_name,
+            team_member_alias_last_name.email == Collection.team_member_id,
+        ).filter(team_member_alias_last_name.last_name.ilike(f"%{last_name}%"))
 
     # Order by payment date
-    if order_by == 'asc':
+    if order_by == "asc":
         query = query.order_by(Collection.payment_date.asc())
     else:
         query = query.order_by(Collection.payment_date.desc())
@@ -54,21 +72,22 @@ def find_collections(start_date=None, end_date=None, payment_method=None, name=N
     if total_collections == 0:
         return [], 0
 
-    max_pages = (total_collections + per_page - 1) // per_page  # Round up to calculate the number of pages
+    max_pages = (
+        total_collections + per_page - 1
+    ) // per_page  # Round up to calculate the number of pages
 
     # Ensure the requested page is not less than 1
     if page < 1:
         page = 1
-        
+
     # Ensure the requested page is not greater than the maximum number of pages
     if page > max_pages:
         page = max_pages
-        
-        
+
     offset = (page - 1) * per_page
     collections = query.offset(offset).limit(per_page).all()
 
-    return collections, max_pages 
+    return collections, max_pages
 
 
 def create_collection(**kwargs):
@@ -93,6 +112,7 @@ def create_collection(**kwargs):
         db.session.flush()
     except:
         db.session.rollback()
+        return None
     db.session.commit()
 
     # calcular si el rider es deudor, si no lo es le cambio debtor = False
@@ -104,6 +124,7 @@ def create_collection(**kwargs):
         db.session.commit()
 
     return collection
+
 
 def find_collection(id):
     """
@@ -124,12 +145,16 @@ def edit_a_collection(**kwargs):
 
     if collection:
 
-        collection.rider_dni = kwargs.get('rider_dni', collection.rider_dni)
-        collection.team_member_id = kwargs.get('team_member_id', collection.team_member_id)
-        collection.amount = kwargs.get('amount', collection.amount)
-        collection.payment_date = kwargs.get('payment_date')
-        collection.payment_method = kwargs.get('payment_method', collection.payment_method)
-        collection.observations = kwargs.get('observations', collection.observations)
+        collection.rider_dni = kwargs.get("rider_dni", collection.rider_dni)
+        collection.team_member_id = kwargs.get(
+            "team_member_id", collection.team_member_id
+        )
+        collection.amount = kwargs.get("amount", collection.amount)
+        collection.payment_date = kwargs.get("payment_date")
+        collection.payment_method = kwargs.get(
+            "payment_method", collection.payment_method
+        )
+        collection.observations = kwargs.get("observations", collection.observations)
 
         db.session.commit()
         return collection
@@ -151,12 +176,12 @@ def create_enums_collection():
     """
     Creates the enums values for collections
     """
-   # from src.core.models.payment import PaymentType
+    # from src.core.models.payment import PaymentType
 
     PaymentMethod.create(db.engine, checkfirst=True)
 
 
-def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=1):
+def find_debtors(start_date=None, end_date=None, dni=None, order_by="asc", page=1):
     """
     Search for all debtors with the given parameters
     """
@@ -164,19 +189,23 @@ def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=
 
     # Get all riders who are debtors
     query = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.debtor == True)
-    
+
     # Filter by date range (optional)
     if start_date:
-        query = query.filter(RiderAndHorsewoman.inserted_at >= datetime.strptime(start_date, '%Y-%m-%d'))
+        query = query.filter(
+            RiderAndHorsewoman.inserted_at >= datetime.strptime(start_date, "%Y-%m-%d")
+        )
     if end_date:
-        query = query.filter(RiderAndHorsewoman.inserted_at <= datetime.strptime(end_date, '%Y-%m-%d'))
+        query = query.filter(
+            RiderAndHorsewoman.inserted_at <= datetime.strptime(end_date, "%Y-%m-%d")
+        )
 
     # Filter by DNI (optional)
     if dni:
-        query = query.filter(RiderAndHorsewoman.dni.ilike(f'%{dni}%'))
+        query = query.filter(RiderAndHorsewoman.dni.ilike(f"%{dni}%"))
 
     # Order by payment date
-    if order_by == 'asc':
+    if order_by == "asc":
         query = query.order_by(RiderAndHorsewoman.inserted_at.asc())
     else:
         query = query.order_by(RiderAndHorsewoman.inserted_at.desc())
@@ -188,12 +217,14 @@ def find_debtors(start_date=None, end_date=None, dni=None, order_by='asc', page=
     if total_debtors == 0:
         return [], 0
 
-    max_pages = (total_debtors + per_page - 1) // per_page  # Round up to calculate the number of pages
+    max_pages = (
+        total_debtors + per_page - 1
+    ) // per_page  # Round up to calculate the number of pages
 
     # Ensure the requested page is within the valid range
     if page < 1:
         page = 1
-    
+
     if page > max_pages:
         page = max_pages
 
@@ -216,19 +247,34 @@ def check_debtor(rider):
         return False
 
     # Calculate the difference in months from the insertion date to the current month
-    months_diff = (current_date.year - rider.inserted_at.year) * 12 + current_date.month - rider.inserted_at.month
+    months_diff = (
+        (current_date.year - rider.inserted_at.year) * 12
+        + current_date.month
+        - rider.inserted_at.month
+    )
 
     # Check if there is a missing payment for each elapsed month
     for month_offset in range(months_diff):
         # Get the first day of the elapsed month
-        first_day_of_month = rider.inserted_at.replace(year=current_date.year, month=current_date.month, day=1)
-           
+        first_day_of_month = rider.inserted_at.replace(
+            year=current_date.year, month=current_date.month, day=1
+        )
+
         # Get the first and last day of the month in full date format
         start_of_month = first_day_of_month
-        end_of_month = (first_day_of_month + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+        end_of_month = (first_day_of_month + timedelta(days=32)).replace(
+            day=1
+        ) - timedelta(days=1)
 
         # Check if there is a payment for that month
-        existing_payment = Collection.query.filter_by(rider_dni=rider.dni).filter(Collection.payment_date >= start_of_month, Collection.payment_date <= end_of_month).first()
+        existing_payment = (
+            Collection.query.filter_by(rider_dni=rider.dni)
+            .filter(
+                Collection.payment_date >= start_of_month,
+                Collection.payment_date <= end_of_month,
+            )
+            .first()
+        )
 
         # If there is no payment for that month, the rider has debt
         if not existing_payment:
@@ -240,12 +286,22 @@ def check_debtor(rider):
 def calculate_debt(debtor_dni):
     """
     Calculate all debts of the given parameter
-    """ 
+    """
 
     # Array of months in Spanish
     meses = [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
     ]
 
     # Get the rider's insertion date
@@ -271,15 +327,19 @@ def calculate_debt(debtor_dni):
 
         for month in range(start, end + 1):
             # Check if there is a payment for that month and year
-            payment = (db.session.query(Collection)
-                       .filter_by(rider_dni=rider.dni)
-                       .filter(extract('month', Collection.payment_date) == month)
-                       .filter(extract('year', Collection.payment_date) == year)
-                       .first())
+            payment = (
+                db.session.query(Collection)
+                .filter_by(rider_dni=rider.dni)
+                .filter(extract("month", Collection.payment_date) == month)
+                .filter(extract("year", Collection.payment_date) == year)
+                .first()
+            )
 
             if not payment:
                 # Get the name of the month
-                month_name = meses[month - 1]  # Subtract 1 because the array starts at 0
+                month_name = meses[
+                    month - 1
+                ]  # Subtract 1 because the array starts at 0
                 missing_payments.append(f"{month_name} de {year}")
 
     return missing_payments, rider
