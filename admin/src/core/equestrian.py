@@ -231,11 +231,15 @@ def equestrian_delete(id):
     Deletes the equestrian with the id given by parameter
     """
     equestrian = Equestrian.query.filter_by(id=id).first()
+    
 
     if not equestrian:
         return flash("El equestre no existe")
     
     try:
+        files = equestrian.get_files()
+        for file in files:
+            minio.delete_file(PREFIX,file,equestrian.id)
         db.session.delete(equestrian)
         db.session.flush()
     except:
