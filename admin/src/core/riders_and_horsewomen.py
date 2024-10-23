@@ -826,3 +826,13 @@ def get_filename(file_id):
     if user_file:
         return user_file.filename
     return None
+
+def delete_link(link_id):
+    """
+    Delete link of a rider by link ID
+    """
+    link_file = File.query.filter_by(id=link_id).first()
+    filename = f"{link_file.filename}.txt"
+    minio.delete_file(PREFIX, filename, link_file.rider_id)
+    File.query.filter(File.id == link_id).delete()
+    database.db.session.commit()

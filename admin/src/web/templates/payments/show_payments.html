@@ -35,7 +35,7 @@
       </svg>
 </button>
 <div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
-    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[36rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4">
+    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-2 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[18rem] h-[36rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
         <form action="{{ url_for('payments.payment_index') }}" method="get">
         <div class="mb-1 p-3">
           <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Listado Pagos</h5>
@@ -82,92 +82,96 @@
     </div>
 
     {% if payments %}    
-        <div class="overflow-visible rounded-lg border-none border-gray-200 mt-5 mx-auto max-[825px]:ml-4 max-[480px]:ml-0.5 max-[480px]:w-[5%] max-[450px]:w-[2%] max-[420px]:w-0.5 min-[1200px]:w-3/4 max-[1000px]:w-full items-center">
-            <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
-            <thead class="bg-gray-50">
-                <tr>
-                <th scope="col" class="max-[735px]:hidden max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Beneficiario</th>
-                <th scope="col" class="hidden max-[735px]:flex max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Beneficiario/Fecha de Pago</th>
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Tipo de Pago/Fecha de Pago</th>
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Monto</th>
-                {% if check_permissions(session, 'payment_show_detail') %}
-                <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
-                {% endif %}
-                <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                {% for payment in payments %}
-                <tr class="hover:bg-gray-50">
-                <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
-                    <div class="text-sm">
-                    <div class="font-medium text-gray-700">{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}</div>
-                    <div class="hidden max-[735px]:flex text-gray-400">{{ payment.payment_date }}</div>
-                    </div>
-                </th>
-                <td class="max-[735px]:hidden px-6 py-4 max-[560px]:px-2 font-normal text-gray-900">
-                    <div class="text-sm">
-                        <div class="font-medium text-gray-700">{{ payment.payment_type }}</div>
-                        <div class=" text-gray-400">{{ payment.payment_date }}</div>
-                    </div>
-                </td>
-                <td class="max-[600px]:hidden px-6 py-4">{{ payment.amount }}</td>
-                {% if check_permissions(session, 'payment_show_detail') %}
-                <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
-                    <div class="flex gap-2">
-                    <a href="{{ url_for('payments.payment_show_detail', payment_id=payment.id) }}"
-                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                        ver más
-                    </a>
-                    </div>
-                </td>
-                {% endif %}
-                <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
-                    <div class="flex justify-end gap-4">
-                    {% if check_permissions(session, 'payment_edit_form') %}
-                    <a href="{{ url_for('payments.payment_edit_form', payment_id=payment.id) }}">
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="max-[480px]:h-4 h-6 w-6"
-                        >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                        />
-                        </svg>
-                    </a>
-                    {% endif%}
-                    {% if check_permissions(session, 'payment_delete') %}
-                    <form action="{{ url_for('payments.payment_delete', payment_id=payment.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
-                        <button type="submit">
-                            <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="max-[480px]:h-4 h-6 w-6"
-                        >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                        />
-                        </svg>
-                        </button>
-                    </form>
-                    {% endif%}
-                    </div>
-                </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+        <div class="w-full p-4">
+            <div class="w-full overflow-x-auto rounded-lg">
+                <div class="min-w-full mx-auto lg:w-3/4 max-[1000px]:w-full max-[825px]:ml-4 max-[480px]:ml-0.5">
+                    <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+                    <thead class="bg-gray-50">
+                        <tr>
+                        <th scope="col" class="max-[735px]:hidden max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Beneficiario</th>
+                        <th scope="col" class="hidden max-[735px]:flex max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Beneficiario/Fecha de Pago</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Tipo de Pago/Fecha de Pago</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Monto</th>
+                        {% if check_permissions(session, 'payment_show_detail') %}
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
+                        {% endif %}
+                        <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        {% for payment in payments %}
+                        <tr class="hover:bg-gray-50">
+                        <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
+                            <div class="text-sm">
+                            <div class="font-medium text-gray-700">{{ payment.beneficiary.email if payment.beneficiary else 'Externo' }}</div>
+                            <div class="hidden max-[735px]:flex text-gray-400">{{ payment.payment_date }}</div>
+                            </div>
+                        </th>
+                        <td class="max-[735px]:hidden px-6 py-4 max-[560px]:px-2 font-normal text-gray-900">
+                            <div class="text-sm">
+                                <div class="font-medium text-gray-700">{{ payment.payment_type }}</div>
+                                <div class=" text-gray-400">{{ payment.payment_date }}</div>
+                            </div>
+                        </td>
+                        <td class="max-[600px]:hidden px-6 py-4">{{ payment.amount }}</td>
+                        {% if check_permissions(session, 'payment_show_detail') %}
+                        <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex gap-2">
+                            <a href="{{ url_for('payments.payment_show_detail', payment_id=payment.id) }}"
+                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                                ver más
+                            </a>
+                            </div>
+                        </td>
+                        {% endif %}
+                        <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex justify-end gap-4">
+                            {% if check_permissions(session, 'payment_edit_form') %}
+                            <a href="{{ url_for('payments.payment_edit_form', payment_id=payment.id) }}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="max-[480px]:h-4 h-6 w-6"
+                                >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                                />
+                                </svg>
+                            </a>
+                            {% endif%}
+                            {% if check_permissions(session, 'payment_delete') %}
+                            <form action="{{ url_for('payments.payment_delete', payment_id=payment.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                <button type="submit">
+                                    <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="max-[480px]:h-4 h-6 w-6"
+                                >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                />
+                                </svg>
+                                </button>
+                            </form>
+                            {% endif%}
+                            </div>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <!-- Botones de Paginación -->
         <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
