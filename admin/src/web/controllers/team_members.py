@@ -134,6 +134,7 @@ def team_member_edit():
 
     team_member_email = request.args.get("team_member_email")
 
+
     team_member = tm.find_team_member_by_email(team_member_email)
 
     health_insurances = hi.get_all()
@@ -171,7 +172,7 @@ def team_member_update():
     return redirect(url_for("team_members.team_member_index"))
 
 
-@bp.post("/switch")
+@bp.get("/switch")
 @check_permissions("team_member_switch_state")
 @login_required
 def team_member_switch_state():
