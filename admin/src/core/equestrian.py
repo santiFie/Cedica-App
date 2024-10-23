@@ -237,12 +237,18 @@ def equestrian_delete(id):
         return flash("El equestre no existe")
     
     try:
+        # Delete all the files of the equestrian
         files = equestrian.get_files()
         for file in files:
             minio.delete_file(PREFIX,file,equestrian.id)
+
+        # Delete the relationship between the equestrian and the team members
+        equestrian.team_members.clear()
+        
+        # Delete the equestrian
         db.session.delete(equestrian)
         db.session.flush()
-    except:
+    except Exception as e:
         db.session.rollback()
         return flash("Error al eliminar el ecuestre", "info")
     
