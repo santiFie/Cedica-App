@@ -117,7 +117,7 @@ def team_member_show():
 
     if user:
         return render_template("users/view_user.html", user=user, team_member=team_member)
-    return render_template("users/view_team_member.html", team_member=team_member)
+    return render_template("team_members/view_team_member.html", team_member=team_member)
 
 
 @bp.get("/edit")
