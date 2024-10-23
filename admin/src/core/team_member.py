@@ -289,8 +289,10 @@ def switch_state(team_member):
 
     if team_member.active == False:
         team_member.active = True
+        team_member.end_date = None
     else:
         team_member.active = False
+        team_member.end_date = datetime.now()
     database.db.session.commit()
     return team_member
 
