@@ -24,7 +24,7 @@
                         <div class="logo-dropdown-content absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
                             <a href="{{ url_for('home') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Home</a>
                             <a href="{{ url_for('payments.payment_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
-                            <a href="{{ url_for('collections.collection_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
+                            <a href="{{ url_for('collections.collection_index') }}"  class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cobros</a>
                             <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">J&A</a>
                             <a href="{{ url_for('equestrian.equestrian_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
                             <a href="{{ url_for('team_members.team_member_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
@@ -37,7 +37,7 @@
                 <div class="menu flex space-x-2">
                     <a href="{{ url_for('payments.payment_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
                     <a href="{{ url_for('collections.collection_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
-                    <a href="#" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
+                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
                     <a href="{{ url_for('equestrian.equestrian_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
                     <a href="{{ url_for('team_members.team_member_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
                     <a href="{{ url_for('users.user_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>

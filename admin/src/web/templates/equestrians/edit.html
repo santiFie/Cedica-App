@@ -4,135 +4,148 @@
 
 {% block content %}
 
-    <h1>Editar Equestre</h1>
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('equestrian.equestrian_update', id=equestrian.id) }}" method="POST" enctype="multipart/form-data">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Editar Información del Ecuestre</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            
 
-    <div class="container">
-        <form action="{{ url_for('equestrian.equestrian_update', id=equestrian.id) }}" method="POST" enctype="multipart/form-data">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" value="{{ equestrian.name }}" required readonly>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="name" class="block text-sm font-medium text-gray-700">Nombre:</label>
+                                <input type="text" id="name" name="name" value="{{ equestrian.name }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"required readonly>
+                            </div>
 
-            <!-- Fecha de Nacimiento -->
-            <div class="form-group">
-                <label for="date_of_birth">Fecha de Nacimiento:</label>
-                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ equestrian.date_of_birth }}" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento:</label>
+                                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ equestrian.date_of_birth }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Sexo -->
-            <div class="form-group">
-                <label for="sex">Sexo:</label>
-                <select id="sex" name="sex" required>
-                    <option value="M" {% if equestrian.sex == 'M' %}selected{% endif %}>Macho</option>
-                    <option value="F" {% if equestrian.sex == 'F' %}selected{% endif %}>Hembra</option>
-                </select>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="sex" class="block text-sm font-medium text-gray-700">Sexo:</label>
+                                <select id="sex" name="sex" 
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm" required>
+                                    <option value="M" {% if equestrian.sex == 'M' %}selected{% endif %}>Macho</option>
+                                    <option value="F" {% if equestrian.sex == 'F' %}selected{% endif %}>Hembra</option>
+                                </select>
+                            </div>
 
-            <!-- Raza -->
-            <div class="form-group">
-                <label for="race">Raza:</label>
-                <input type="text" id="race" name="race" value="{{ equestrian.race }}" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="race" class="block text-sm font-medium text-gray-700">Raza:</label>
+                                <input type="text" id="race" name="race" value="{{ equestrian.race }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Pelaje -->
-            <div class="form-group">
-                <label for="coat">Pelaje:</label>
-                <input type="text" id="coat" name="coat" value="{{ equestrian.coat }}" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="coat" class="block text-sm font-medium text-gray-700">Pelaje:</label>
+                                <input type="text" id="coat" name="coat" value="{{ equestrian.coat }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Comprado -->
-            <div class="form-group">
-                <label for="bought">Comprado:</label>
-                <select id="bought" name="bought" required>
-                    <option value="true" {% if equestrian.bought == 'true' %}selected{% endif %}>Sí</option>
-                    <option value="false" {% if equestrian.bought == 'false' %}selected{% endif %}>No</option>
-                </select>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="bought" class="block text-sm font-medium text-gray-700">Comprado:</label>
+                                <select id="bought" name="bought" 
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm" required>
+                                    <option value="true" {% if equestrian.bought == 'true' %}selected{% endif %}>Sí</option>
+                                    <option value="false" {% if equestrian.bought == 'false' %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
 
-            <!-- Fecha de Entrada -->
-            <div class="form-group">
-                <label for="date_of_entry">Fecha de Entrada:</label>
-                <input type="date" id="date_of_entry" name="date_of_entry" value="{{ equestrian.date_of_entry }}" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="date_of_entry" class="block text-sm font-medium text-gray-700">Fecha de Entrada:</label>
+                                <input type="date" id="date_of_entry" name="date_of_entry" value="{{ equestrian.date_of_entry }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Sede -->
-            <div class="form-group">
-                <label for="headquarters">Sede:</label>
-                <input type="text" id="headquarters" name="headquarters" value="{{ equestrian.headquarters }}" required>
-            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="headquarters" class="block text-sm font-medium text-gray-700">Sede:</label>
+                                <input type="text" id="headquarters" name="headquarters" value="{{ equestrian.headquarters }}" 
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                            </div>
 
-            <!-- Entrenadores/Conductores -->
-            <div class="form-group">
-                <label>Seleccionar Entrenadores/Conductores:</label>
-                <div id="email_checkbox_list">
-                    {% for email in email_list %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="emails" value="{{ email }}" 
-                                {% if email in selected_emails %}checked{% endif %}> 
-                                {{ email }}
-                            </label>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Seleccionar Entrenadores/Conductores:</label>
+                                <div id="email_checkbox_list">
+                                    {% for email in email_list %}
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="emails" value="{{ email }}" 
+                                                {% if email in selected_emails %}checked{% endif %}> 
+                                                {{ email }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700"> Propuestas: </label>
+                                <div id="proposal_checkbox_list">
+                                    {% for proposal in proposals %}
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="proposals" value="{{ proposal }}"
+                                                {% if proposal in selected_proposals %} checked {% endif %}>
+                                                {{ proposal.replace("_", " ").title() }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="files" class="block text-sm font-medium text-gray-700">Ficha General del Caballo:</label>
+                                <input type="file" id="files" name="horse_sheet" enctype="multipart/form-data"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="training_plan" class="block text-sm font-medium text-gray-700">Planificación de Entrenamiento:</label>
+                                <input type="file" id="files" name="training_plan" enctype="multipart/form-data"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="evolution_report" class="block text-sm font-medium text-gray-700">Informe de Evolución:</label>
+                                <input type="file" id="files" name="evolution_report" enctype="multipart/form-data"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="images" class="block text-sm font-medium text-gray-700">Carga de Imágenes:</label>
+                                <input type="file" id="files" name="images" enctype="multipart/form-data"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="veterinary_record" class="block text-sm font-medium text-gray-700">Registro Veterinario:</label>
+                                <input type="file" id="files" name="veterinary_record" enctype="multipart/form-data"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+                            </div>
                         </div>
-                    {% endfor %}
+                    </div> 
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="{{ url_for('equestrian.equestrian_index') }}">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div> 
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label> Propuestas: </label>
-                <div id="proposal_checkbox_list">
-                    {% for proposal in proposals %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="proposals" value="{{ proposal }}"
-                                {% if proposal in selected_proposals %} checked {% endif %}>
-                                {{ proposal.replace("_", " ").title() }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Archivos -->
-            <!-- Ficha del caballo -->
-            <div>
-                <label for="files">Ficha General del Caballo:</label>
-                <input type="file" id="files" name="horse_sheet" enctype="multipart/form-data">
-            </div>
-
-            <!-- Planificación de entrenamiento -->
-            <div>
-                <label for="training_plan">Planificación de Entrenamiento:</label>
-                <input type="file" id="files" name="training_plan" enctype="multipart/form-data">
-            </div>
-
-            <!-- Informe de evolución -->
-            <div>
-                <label for="evolution_report">Informe de Evolución:</label>
-                <input type="file" id="files" name="evolution_report" enctype="multipart/form-data">
-            </div>
-
-            <!-- Carga de Imágenes -->
-            <div>
-                <label for="images">Carga de Imágenes:</label>
-                <input type="file" id="files" name="images" enctype="multipart/form-data">
-            </div>
-
-            <!-- Registro veterinario -->
-            <div>
-                <label for="veterinary_record">Registro Veterinario:</label>
-                <input type="file" id="files" name="veterinary_record" enctype="multipart/form-data">
-            </div>
-
-            <!-- Submit Button -->
-            <div class="form-group">
-                <button type="submit">Enviar</button>
-            </div>
-        </form>
-
-        <a href="{{ url_for('equestrian.equestrian_index') }}">
-            <button type="button">Volver</button>
-        </a>
+            </form>
+        </div>
     </div>
+                           
+
+
+
 
 {% endblock %}
