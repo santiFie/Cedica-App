@@ -112,7 +112,7 @@
                             <div class="text-gray-400"></div>
                             </div>
                         </th>
-                        <td class="max-[600px]:hidden px-6 py-4">{{ file['rider_name'] }}</td>
+                        <td class="max-[735px]:hidden px-6 py-4">{{ file['rider_name'] }}</td>
                         <td class="max-[600px]:hidden px-6 py-4">{{ file['upload_date'] }}</td>
                         {% if check_permissions(session, 'riders_and_horsewomen_view_file') %}
                         <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
@@ -197,6 +197,7 @@
                                     </svg>
                                     </button>
                                 </form>
+                            {% endif %}
                             {% endif %}
                             </div>
                         </td>
