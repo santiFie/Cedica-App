@@ -710,10 +710,6 @@ video {
   margin-top: 0.75rem;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
-}
-
 .block {
   display: block;
 }
@@ -818,12 +814,8 @@ video {
   width: 1.5rem;
 }
 
-.w-\[16rem\] {
-  width: 16rem;
-}
-
-.w-\[19rem\] {
-  width: 19rem;
+.w-\[18rem\] {
+  width: 18rem;
 }
 
 .w-\[700px\] {
@@ -1512,10 +1504,6 @@ video {
     height: 1rem;
   }
 
-  .max-\[480px\]\:w-\[5\%\] {
-    width: 5%;
-  }
-
   .max-\[480px\]\:space-x-0\.5 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0;
     margin-right: calc(0.125rem * var(--tw-space-x-reverse));
@@ -1530,18 +1518,6 @@ video {
   .max-\[480px\]\:px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-  }
-}
-
-@media (max-width: 450px) {
-  .max-\[450px\]\:w-\[2\%\] {
-    width: 2%;
-  }
-}
-
-@media (max-width: 420px) {
-  .max-\[420px\]\:w-0\.5 {
-    width: 0.125rem;
   }
 }
 
@@ -1741,19 +1717,9 @@ video {
   }
 }
 
-@media (min-width: 1200px) {
-  .min-\[1200px\]\:w-3\/4 {
-    width: 75%;
-  }
-}
-
 @media (min-width: 1280px) {
   .xl\:relative {
     position: relative;
-  }
-
-  .xl\:ml-10 {
-    margin-left: 2.5rem;
   }
 
   .xl\:ml-2 {
