@@ -312,17 +312,16 @@ def riders_and_horsewomen_new_link():
     )
 
 
-@bp.post("/delete_link")
+@bp.post("/delete_link/<int:file_id>")
 @check_permissions("riders_and_horsewomen_delete_link")
 @login_required
-def riders_and_horsewomen_delete_link(rider_id):
+def riders_and_horsewomen_delete_link(file_id):
 
-    if request.args.get("link_id"):
-        link_id = request.args.get("link_id")
-        rh.delete_link(link_id)
+    if file_id:
+        rh.delete_link(file_id)
 
     return redirect(
-        url_for("riders_and_horsewomen.riders_and_horsewomen_new", id=rider_id)
+        url_for("riders_and_horsewomen.riders_and_horsewomen_index_files")
     )
 
 

@@ -35,15 +35,20 @@
       </svg>
 </button>
 <div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
-    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4">
+    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
         <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" method="get">
         <div class="mb-1 p-3">
           <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Jines/Amazonas del sistema</h5>
         </div>
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-            {% if check_permissions(session, 'user_new') %}
+            {% if check_permissions(session, 'riders_and_horsewomen_new') %}
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
                 <a role="button" href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_new') }}" class="">Crear Jinete/Amazona</a>
+            </div>
+            {% endif %}
+            {% if check_permissions(session,"riders_and_horsewomen_index_files") %}
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <a role="button" href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files') }}" class="">Listado de archivos</a>
             </div>
             {% endif %}
             <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -119,7 +124,7 @@
                 </td>
                 <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
                     <div class="flex justify-end gap-4">
-                    {% if check_permissions(session, 'user_edit') %}
+                    {% if check_permissions(session,'riders_and_horsewomen_edit') %}
                     <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_edit', id=rider.id ) }}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +195,7 @@
         </div>
     {% else %}
         <div class="text-center pl-10 mt-10">
-            <p class="text-lg">No se encontraron usuarios en el sistema.</p>
+            <p class="text-lg">No se encontraron jinetes/amazonas en el sistema.</p>
         </div>
     {% endif %}
 

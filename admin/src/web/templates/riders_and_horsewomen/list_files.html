@@ -1,104 +1,247 @@
 {% extends "layout.html" %}
 
+{% block title %}Listado archivos de Jinetes/Amazonas{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#access").click(function(event){
+            event.preventDefault();
+            $("#side-bar").toggle();
+        });
+    });
+</script>
+{% endblock %}
+
 {% block content %}
-
-    <div>
-        <h1>Archivos de Jinetes y Amazonas</h1>  
-    </div>
-
-    <h2>Buscar archivos</h2>
-    <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files') }}" method="get">
-        <label for="name">Nombre:</label>
-        <input type="text" name="name" id="name" value="{{ request.args.get('name', '') }}">
-
-        <label for="initial_date">Entre:</label>
-        <input type="date" name="initial_date" id="initial_date" value="{{ request.args.get('initial_date','') }}">
-        
-        <label for="final_date">y:</label>
-        <input type="date" name="final_date" id="final_date" value="{{ request.args.get('final_date','') }}">
-
-        <h3>Ordenar por:</h3>
-        <label>
-            <input type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
-            Nombre Ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
-            Nombre Descendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="upload_date_asc" {% if request.args.get('sort_by') == 'upload_date_asc' %}checked{% endif %}>
-            Fecha de subida ascendente
-        </label>
-        <label>
-            <input type="radio" name="sort_by" value="upload_date_desc" {% if request.args.get('sort_by') == 'upload_date_desc' %}checked{% endif %}>
-            Fecha de subida descendente
-        </label>
-    
-        <button type="submit">Buscar</button>
-    </form>
-
-    {% if files %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Jinete/Amazona</th>
-                    <th>Fecha de subida</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for file in files %}
-                <tr>
-                    <td>{{ file['file'].filename }}</td>
-                    <td>{{ file['rider_name'] }}</td>
-                    <td>{{ file['upload_date'] }}</td>
-                    <td>
-                        {% if file["file"].is_link %}
-                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_link', link_id=file['file'].id) }}">Ver Enlace</a>
-                        {% else %}
-                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_file', file_id=file['file'].id) }}">Ver</a>
-                        {% endif %}
-                        <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_file', file_id=file['file'].id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
-                            <button type="submit">Eliminar</button>
-                        </form>
-                        <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', id=file['rider_id'], file_id=file['file'].id) }}">Descargar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    
-
-            <!-- Botones de Paginación -->
-            <div class="pagination">
-                {% if page > 1 %}
-                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
-                        <button>Previo</button>
-                    </a>
-                {% else %}
-                    <button disabled>Previo</button>
-                {% endif %}
-    
-                {% if page < max_pages %}
-                    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}">
-                        <button>Siguiente</button>
-                    </a>
-                {% else %}
-                    <button disabled>Siguiente</button>
-                {% endif %}
+<button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
+    <svg
+        class="md:w-12 md:h-12 xs:w-10 xs:h-10 xxs:h-9 sm:w-11 sm:h-11 fill-current inline-block"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+</button>
+<div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
+    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-10 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[16rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+        <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files') }}" method="get">
+        <div class="mb-1 p-3">
+          <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Listado de archivos Jinete/Amazona</h5>
+        </div>
+        <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+            {% if check_permissions(session, 'riders_and_horsewomen_new') %}
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <a role="button" href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_new') }}" class="">Crear Jinete/Amazona</a>
             </div>
-        {% else %}
-            <p>No se encontraron archivos en el sistema. </p>
-        {% endif %}
-    
-    
-        
-        <script>
-            function confirmDelete() {
-                return confirm('¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer.');
-            }
-        </script>
+            {% endif %}
+            {% if check_permissions(session,"riders_and_horsewomen_index") %}
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <a role="button" href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" class="">Jinetes/Amazonas</a>
+            </div>
+            {% endif %}
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="email" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input type="text" name="email" id="email" value="{{ request.args.get('email', '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="initial_date" class="block text-sm font-medium text-gray-700">Fecha desde</label>
+                <input type="date" name="initial_date" id="initial_date" value="{{ request.args.get('initial_date','') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="final_date" class="block text-sm font-medium text-gray-700">Fecha hasta</label>
+                <input type="date" name="final_date" id="final_date" value="{{ request.args.get('final_date','') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <h6 class="block font-normal text-gray-700 text-base">Ordenar por:</h6>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="name_asc">Nombre Ascendente</label>
+                <input id="name_asc" type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="name_desc">Nombre Descendente</label>
+                <input type="radio" id="name_desc" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="upload_date_asc">Fecha de subida ascendente</label>
+                <input id="upload_date_asc" type="radio" name="sort_by" value="upload_date_asc" {% if request.args.get('sort_by') == 'upload_date_asc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
+                <label for="upload_date_desc">Fecha de subida descendente</label>
+                <input id="upload_date_desc" name="sort_by" value="upload_date_desc" {% if request.args.get('sort_by') == 'upload_date_desc' %}checked{% endif %}>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none ">
+                <button type="submit">Buscar</button>
+            </div>
+        </nav>
+        </form>
+    </div>
+    {% if files %}
+        <div class="w-full p-4">
+            <div class="w-full overflow-x-auto rounded-lg">
+                <div class="min-w-full mx-auto lg:w-3/4 max-[1000px]:w-full max-[825px]:ml-4 max-[480px]:ml-0.5">
+                    <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+                    <thead class="bg-gray-50">
+                        <tr>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Nombre</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Jinete/Amazona</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Fecha de subida</th>
+                        {% if check_permissions(session, 'riders_and_horsewomen_view_file') %}
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Informacion</th>
+                        {% endif%}
+                        <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        {% for file in files %}
+                        <tr class="hover:bg-gray-50">
+                        <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
+                            <div class="text-sm">
+                            <div class="font-medium text-gray-700">{{ file['file'].filename }}</div>
+                            <div class="text-gray-400"></div>
+                            </div>
+                        </th>
+                        <td class="max-[600px]:hidden px-6 py-4">{{ file['rider_name'] }}</td>
+                        <td class="max-[600px]:hidden px-6 py-4">{{ file['upload_date'] }}</td>
+                        {% if check_permissions(session, 'riders_and_horsewomen_view_file') %}
+                        <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex gap-2">
+                            {% if file["file"].is_link %}
+                                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_link', link_id=file['file'].id) }}"
+                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">Ver</a>
+                            {% else %}
+                                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_file', file_id=file['file'].id) }}"
+                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">Ver</a>
+                            {% endif %}
+                            </div>
+                        </td>
+                        {% endif%}
+                        <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex justify-end gap-4">
+                            {% if check_permissions(session, 'riders_and_horsewomen_download_file') %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', id=file['rider_id'], file_id=file['file'].id) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="max-[480px]:h-4 h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </a>
+                            {% endif%}
+                            {% if check_permissions(session, 'riders_and_horsewomen_edit') %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_edit', id= file['rider_id'] ) }}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="max-[480px]:h-4 h-6 w-6"
+                                >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                                />
+                                </svg>
+                            </a>
+                            {% endif%}
+                            {% if check_permissions(session, 'riders_and_horsewomen_delete_link') %}
+                            {% if file["file"].is_link %}
+                                <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_link', file_id=file['file'].id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                    <button type="submit">
+                                        <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="max-[480px]:h-4 h-6 w-6"
+                                    >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                    />
+                                    </svg>
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form action="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_delete_file', file_id=file['file'].id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                    <button type="submit">
+                                        <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="max-[480px]:h-4 h-6 w-6"
+                                    >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                    />
+                                    </svg>
+                                    </button>
+                                </form>
+                            {% endif %}
+                            </div>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>    
+        <!-- Botones de Paginación -->
+        <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
+            {% if page > 1 %}
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page-1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Previo
+                </a>
+            {% else %}
+                <a href="#" class="hidden" disabled>
+                    Previo
+                </a>
+            {% endif %}
+
+            {% if page < max_pages %}
+                <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index_files', page=page+1, initial_date=request.args.get('initial_date', ''), final_date=request.args.get('final_date', ''), name=request.args.get('name', ''), sort_by=request.args.get('sort_by', '')) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Siguiente
+                </a>
+            {% else %}
+                <a href="#" class="hidden" disabled>
+                    Siguiente
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="text-center pl-10 mt-10">
+            <p class="text-lg">No se encontraron archivos de jinetes/amazonas en el sistema.</p>
+        </div>
+    {% endif %}
+
+</div>
+<script>
+    function confirmDelete() {
+        return confirm('¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer.');
+    }
+</script>
 
 {% endblock %}

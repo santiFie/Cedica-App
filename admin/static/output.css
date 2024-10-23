@@ -822,6 +822,10 @@ video {
   width: 16rem;
 }
 
+.w-\[19rem\] {
+  width: 19rem;
+}
+
 .w-\[700px\] {
   width: 700px;
 }
@@ -943,6 +947,10 @@ video {
 
 .overflow-visible {
   overflow: visible;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
 }
 
 .overflow-y-auto {
@@ -1720,6 +1728,10 @@ video {
     width: 50%;
   }
 
+  .lg\:w-3\/4 {
+    width: 75%;
+  }
+
   .lg\:p-10 {
     padding: 2.5rem;
   }
@@ -1742,6 +1754,10 @@ video {
 
   .xl\:ml-10 {
     margin-left: 2.5rem;
+  }
+
+  .xl\:ml-2 {
+    margin-left: 0.5rem;
   }
 
   .xl\:flex {
