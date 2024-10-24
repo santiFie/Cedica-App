@@ -412,6 +412,10 @@ class WorkInInstitutionForm(Form):
 def validate_date_not_in_future(form, field):
     if field.data > date.today():
         raise ValidationError("La fecha de pago no puede ser una fecha futura.")
+    
+def validate_beneficiary_if_honorarios(form, field):
+    if form.payment_type.data == "Honorarios" and not field.data:
+        raise ValidationError("El beneficiario es obligatorio para pagos de Honorarios.")
 
 
 class PaymentForm(Form):
@@ -461,6 +465,7 @@ class PaymentForm(Form):
         validators=[
             Optional(),
             Length(max=50, message="El email no puede superar los 50 caracteres."),
+            validate_beneficiary_if_honorarios,
         ],
         default="",
     )

@@ -779,7 +779,6 @@ def list_riders_files(page=1, name=None, initial_date=None, final_date=None, sor
 
     # Order the files
     files_in_conditions = order_files(sort_by, files_in_conditions)
-    print(files_in_conditions)
 
     # Calcular la paginación
     total = len(files_in_conditions)

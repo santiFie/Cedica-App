@@ -130,7 +130,11 @@
                         <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
                             <div class="flex justify-end gap-4">
                             {% if check_permissions(session, 'riders_and_horsewomen_download_file') %}
-                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', id=file['rider_id'], file_id=file['file'].id) }}">
+                            {% if file["file"].is_link %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_link', file_id=file['file'].id) }}">
+                            {% else %}
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_download_file', file_id=file['file'].id) }}">
+                            {% endif %}
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                         class="max-[480px]:h-4 h-6 w-6" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor"
