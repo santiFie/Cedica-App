@@ -1648,6 +1648,12 @@ video {
   }
 }
 
+@media (min-width: 735px) {
+  .min-\[735px\]\:hidden {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
   .md\:fixed {
     position: fixed;
