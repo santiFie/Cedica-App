@@ -12,7 +12,7 @@ def login():
     Renders the login page
     """
     from src.core.database import reset
-#    reset()
+    #reset()
     return render_template("auth/login.html")
 
 
