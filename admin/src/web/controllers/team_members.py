@@ -14,7 +14,7 @@ from src.core import health_insurance as hi
 from src.core import auth as au
 from src.core import users as us
 from src.core import minio
-from src.web.forms import TeamMemberForm, teamMemberEditForm
+from src.web.forms import TeamMemberForm, TeamMemberEditForm
 import mimetypes
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
@@ -156,7 +156,7 @@ def team_member_update():
     """
     Update a team member
     """
-    form = teamMemberEditForm(request.form)
+    form = TeamMemberEditForm(request.form)
     if form.validate():
 
         team_member_email = request.args.get("team_member_email")

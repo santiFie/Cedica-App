@@ -5,6 +5,7 @@ from src.core import equestrian as eq
 from flask import render_template, request, flash, url_for, redirect, send_file, abort
 from src.core import utils, minio
 import mimetypes
+from src.web.forms import EquestrianForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 
@@ -29,16 +30,23 @@ def equestrian_new():
 @check_permissions("equestrian_create")
 @login_required
 def equestrian_create():
-    equestrian = eq.find_equestrian_by_name(request.form["name"])
-    if equestrian:
-        flash("El equestre ya existe", "info")
-        return redirect(url_for("equestrian.equestrian_new"))
 
-    file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
-    files = {key: request.files[key] for key in file_keys if key in request.files}
+    equestrian_form = EquestrianForm(request.form)
+    if equestrian_form.validate():
+        equestrian = eq.find_equestrian_by_name(request.form["name"])
+        if equestrian:
+            flash("El equestre ya existe", "info")
+            return redirect(url_for("equestrian.equestrian_new"))
 
-    eq.equestrian_create(request.form, files)
+        file_keys = ['evolution_report', 'veterinary_record', 'training_plan', 'images', 'horse_sheet']
+        files = {key: request.files[key] for key in file_keys if key in request.files}
+        
+        eq.equestrian_create(request.form, files)
+    else:
+        flash("Hay campos inválidos", "error")
     return redirect(url_for("equestrian.equestrian_new"))
+
+    
 
 # Routes for update a equestrian
 @bp.get("/edit<int:id>")

@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from src.core import users, auth
 from src.core import team_member as tm
 from src.core.models.users import Role
-from src.web.forms import registerForm, userEditForm
+from src.web.forms import RegisterForm, UserEditForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 bp = Blueprint('users', __name__, url_prefix="/users")
@@ -54,7 +54,7 @@ def user_update():
         role_id=request.form["role_id"]
     )
 
-    form = userEditForm(request.form)
+    form = UserEditForm(request.form)
     if form.validate():
 
         user = users.edit(
@@ -100,7 +100,7 @@ def user_new():
 
     if request.method == "POST":
 
-        form = registerForm(request.form)
+        form = RegisterForm(request.form)
         if form.validate():
             user = auth.check_user(
                 request.form["email"], request.form["password"])

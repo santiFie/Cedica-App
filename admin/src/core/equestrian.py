@@ -18,7 +18,7 @@ def equestrian_create(form, files):
     # Convert the value of bought to a boolean for the database
     bought = True if form['bought'] == 'true' else False  
 
-    # Convert the string dates to date objects
+    # # Convert the string dates to date objects
     date_of_birth = utils.string_to_date(form['date_of_birth'])
     date_of_entry = utils.string_to_date( form['date_of_entry'])
 
@@ -35,6 +35,10 @@ def equestrian_create(form, files):
     equestrian = find_equestrian_by_name(form["name"])
     if equestrian:
         return flash("El equestre ya existe")
+
+    selected_emails = form.getlist("emails")
+    if not selected_emails:
+        return flash("Debe seleccionar al menos un entrenador o conductor")
 
     # Create the equestrian
     equestrian = Equestrian(
@@ -61,8 +65,9 @@ def equestrian_create(form, files):
                 minio.upload_file(prefix=PREFIX, file=file , user_id=equestrian.id)
                 setattr(equestrian, key, file.filename)
 
-    # Add the selected team members to the equestrianTeamMember table
-    # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
+        # Add the selected team members to the equestrianTeamMember table
+        # It's possible to do this becourse the relationship between Equestrian and TeamMember is many to many and both have 'secondary' attribute
+        
         for email in selected_emails:
             team_member = tm.find_team_member_by_email(email)
             if team_member:

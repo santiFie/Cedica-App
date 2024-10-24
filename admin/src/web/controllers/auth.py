@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.web.forms import authForm as af
+from src.web.forms import AuthForm as af
 from src.web.handlers.auth import login_required
 from src.core import auth
 

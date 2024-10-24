@@ -1,9 +1,26 @@
-from wtforms import Form, StringField, IntegerField, DateField, DecimalField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, Regexp, NumberRange, Email, ValidationError, Optional
+from wtforms import (
+    Form,
+    StringField,
+    IntegerField,
+    DateField,
+    DecimalField,
+    SelectField,
+    TextAreaField,
+)
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    Regexp,
+    NumberRange,
+    Email,
+    ValidationError,
+    Optional,
+)
 from datetime import date
 
 
 DATA_REQUIRED_MESSAGE = "El campo no puede estar vacio."
+
 
 class RiderHorsewomanForm(Form):
     name = StringField(
@@ -31,7 +48,13 @@ class RiderHorsewomanForm(Form):
             Length(min=1, message="El campo no puede estar vacio."),
         ],
     )
-    age = IntegerField("age", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE), NumberRange(min=0, max=99)])
+    age = IntegerField(
+        "age",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            NumberRange(min=0, max=99),
+        ],
+    )
     place_of_birth = StringField(
         "place_of_birth",
         validators=[
@@ -42,7 +65,10 @@ class RiderHorsewomanForm(Form):
     )
     date_of_birth = DateField(
         "date_of_birth",
-        validators=[DataRequired(message=DATA_REQUIRED_MESSAGE), lambda form, field: field.data <= date.today()],
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            lambda form, field: field.data <= date.today(),
+        ],
     )
     address = StringField(
         "address",
@@ -194,6 +220,7 @@ class RiderHorsewomanForm(Form):
         ],
     )
 
+
 class FirstTutorForm(Form):
     dni_first_tutor = StringField(
         "dni_first_tutor",
@@ -263,6 +290,7 @@ class FirstTutorForm(Form):
             Length(min=1, message="El campo no puede estar vacio."),
         ],
     )
+
 
 class SecondTutorForm(Form):
     dni_second_tutor = StringField(
@@ -334,6 +362,7 @@ class SecondTutorForm(Form):
         ],
     )
 
+
 class WorkInInstitutionForm(Form):
     proposal = StringField(
         "proposal",
@@ -359,83 +388,132 @@ class WorkInInstitutionForm(Form):
             Length(min=1, message="El campo no puede estar vacio."),
         ],
     )
-    therapist = IntegerField("therapist", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
-    rider = IntegerField("rider", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
-    horse = IntegerField("horse", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
-    track_assistant = IntegerField("track_assistant", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)])
+    therapist = IntegerField(
+        "therapist", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+    )
+    rider = IntegerField(
+        "rider", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+    )
+    horse = IntegerField(
+        "horse", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+    )
+    track_assistant = IntegerField(
+        "track_assistant", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+    )
     days = StringField(
         "days",
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
         ],
     )
+
+
 # Validador personalizado para fechas futuras
 def validate_date_not_in_future(form, field):
     if field.data > date.today():
         raise ValidationError("La fecha de pago no puede ser una fecha futura.")
 
+
 class PaymentForm(Form):
     # Monto del pago (debe ser un número positivo)
-    amount = DecimalField('amount', validators=[
-        DataRequired(message='El monto es obligatorio.'),
-        NumberRange(min=0, message='El monto debe ser un valor positivo.')
-    ])
+    amount = DecimalField(
+        "amount",
+        validators=[
+            DataRequired(message="El monto es obligatorio."),
+            NumberRange(min=0, message="El monto debe ser un valor positivo."),
+        ],
+    )
 
     # Fecha del pago (no puede ser futura)
-    payment_date = DateField('payment_date', validators=[
-        DataRequired(message='La fecha de pago es obligatoria.'),
-        validate_date_not_in_future
-    ])
+    payment_date = DateField(
+        "payment_date",
+        validators=[
+            DataRequired(message="La fecha de pago es obligatoria."),
+            validate_date_not_in_future,
+        ],
+    )
 
     # Tipo de pago (puedes usar SelectField si hay opciones específicas)
-    payment_type = SelectField('payment_type', choices=[
-        ('Honorarios', 'Honorarios'), 
-        ('Proveedor', 'Proveedor'), 
-        ('Gastos varios', 'Gastos Varios')
-    ], validators=[DataRequired(message='El tipo de pago es obligatorio.')])
+    payment_type = SelectField(
+        "payment_type",
+        choices=[
+            ("Honorarios", "Honorarios"),
+            ("Proveedor", "Proveedor"),
+            ("Gastos varios", "Gastos Varios"),
+        ],
+        validators=[DataRequired(message="El tipo de pago es obligatorio.")],
+    )
 
     # Descripción (opcional, pero con límite de caracteres)
-    description = TextAreaField('description', validators=[
-        Length(max=200, message='La descripción no puede tener más de 200 caracteres.')
-    ], default='')
+    description = TextAreaField(
+        "description",
+        validators=[
+            Length(
+                max=200, message="La descripción no puede tener más de 200 caracteres."
+            )
+        ],
+        default="",
+    )
 
     # Beneficiario (opcional, pero si se ingresa, debe ser un email válido)
-    beneficiary_id = StringField('beneficiary_id', validators=[
-        Optional(),
-        Length(max=50, message='El email no puede superar los 50 caracteres.')
-    ], default='')
+    beneficiary_id = StringField(
+        "beneficiary_id",
+        validators=[
+            Optional(),
+            Length(max=50, message="El email no puede superar los 50 caracteres."),
+        ],
+        default="",
+    )
 
 
 class CollectionForm(Form):
-    amount = DecimalField('Monto', validators=[DataRequired(), NumberRange(min=0, message="El monto debe ser positivo.")])
-    payment_date = DateField('Fecha de pago', validators=[DataRequired()])
-    payment_method = SelectField('Método de pago', 
+    amount = DecimalField(
+        "Monto",
+        validators=[
+            DataRequired(),
+            NumberRange(min=0, message="El monto debe ser positivo."),
+        ],
+    )
+    payment_date = DateField("Fecha de pago", validators=[DataRequired()])
+    payment_method = SelectField(
+        "Método de pago",
         choices=[
-            ('Efectivo', 'Efectivo'), 
-            ('Tarjeta de Credito', 'Tarjeta de Credito'),
-            ('Tarjeta de Debito', 'Tarjeta de Debito'),
-            ('Transferencia', 'Transferencia')], 
-        validators=[DataRequired()])
-    
-    observations = TextAreaField('Observaciones', validators=[Length(max=200)])
-    team_member_id = StringField('ID de miembro del equipo', validators=[DataRequired()])
-    rider_dni = StringField('DNI de jinete', validators=[DataRequired(),Regexp(r'^\d{8,9}$', message='El DNI debe tener entre 8 y 9 dígitos numéricos.')])
+            ("Efectivo", "Efectivo"),
+            ("Tarjeta de Credito", "Tarjeta de Credito"),
+            ("Tarjeta de Debito", "Tarjeta de Debito"),
+            ("Transferencia", "Transferencia"),
+        ],
+        validators=[DataRequired()],
+    )
+
+    observations = TextAreaField("Observaciones", validators=[Length(max=200)])
+    team_member_id = StringField(
+        "ID de miembro del equipo", validators=[DataRequired()]
+    )
+    rider_dni = StringField(
+        "DNI de jinete",
+        validators=[
+            DataRequired(),
+            Regexp(
+                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+            ),
+        ],
+    )
 
     def validate_payment_date(form, field):
         if field.data > date.today():
             raise ValidationError("La fecha de pago no puede ser una fecha futura.")
 
 
-
 class TeamMemberForm(Form):
     name = StringField(
-    "name",
-    validators=[
-        DataRequired(message=DATA_REQUIRED_MESSAGE),
-        Length(max=50, message="El campo supera el limite de caracteres"),
-        Length(min=1, message="El campo no puede estar vacio."),
-    ],
-    ) 
+        "name",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
 
     last_name = StringField(
         "last_name",
@@ -471,7 +549,7 @@ class TeamMemberForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Se debe ingresar un mail valido"),
             Length(max=50, message="El mail no puede tener mas de 50 caracteres"),
-            Length(min=1, message="El mail no puede ser vacio")
+            Length(min=1, message="El mail no puede ser vacio"),
         ],
     )
 
@@ -495,11 +573,13 @@ class TeamMemberForm(Form):
         ],
     )
 
-    initial_date= DateField(
+    initial_date = DateField(
         "initial_date",
-        validators=[DataRequired(message=DATA_REQUIRED_MESSAGE), lambda form, field: field.data <= date.today()],
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            lambda form, field: field.data <= date.today(),
+        ],
     )
-
 
     emergency_contact = StringField(
         "emergency_contact",
@@ -527,20 +607,20 @@ class TeamMemberForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
-        ]
+        ],
     )
 
 
-class teamMemberEditForm(Form):
+class TeamMemberEditForm(Form):
 
     name = StringField(
-    "name",
-    validators=[
-        DataRequired(message=DATA_REQUIRED_MESSAGE),
-        Length(max=50, message="El campo supera el limite de caracteres"),
-        Length(min=1, message="El campo no puede estar vacio."),
-    ],
-    ) 
+        "name",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=50, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
 
     last_name = StringField(
         "last_name",
@@ -606,13 +686,11 @@ class teamMemberEditForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
-        ]
+        ],
     )
 
 
-
-
-class authForm(Form):
+class AuthForm(Form):
 
     email = StringField(
         "email",
@@ -620,7 +698,7 @@ class authForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Se debe ingresar un mail valido"),
             Length(max=50, message="El mail no puede tener mas de 50 caracteres"),
-            Length(min=1, message="El mail no puede ser vacio")
+            Length(min=1, message="El mail no puede ser vacio"),
         ],
     )
 
@@ -630,10 +708,11 @@ class authForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
-        ]
+        ],
     )
 
-class registerForm(Form):
+
+class RegisterForm(Form):
 
     email = StringField(
         "email",
@@ -641,7 +720,7 @@ class registerForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Email(message="Se debe ingresar un mail valido"),
             Length(max=50, message="El mail no puede tener mas de 50 caracteres"),
-            Length(min=1, message="El mail no puede ser vacio")
+            Length(min=1, message="El mail no puede ser vacio"),
         ],
     )
 
@@ -660,12 +739,11 @@ class registerForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
-        ]
+        ],
     )
 
 
-
-class userEditForm(Form):
+class UserEditForm(Form):
 
     nickname = StringField(
         "nickname",
@@ -673,17 +751,53 @@ class userEditForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
-        ]
+        ],
     )
-    
 
 
+class EquestrianForm(Form):
 
+    name = StringField(
+        "name",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
 
+    sex = SelectField(
+        "sex",
+        choices=[
+            ("M", "Macho"),
+            ("F", "Hembra"),
+        ],
+        validators=[DataRequired()],
+    )
 
+    race = StringField(
+        "rce",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
 
+    coat = StringField(
+        "coat",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
 
-
-
-
-
+    headquarters = StringField(
+        "headquarters",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
