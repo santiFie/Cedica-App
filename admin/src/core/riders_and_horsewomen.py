@@ -593,6 +593,15 @@ def delete_a_rider(rider):
     for collection in collections:
         database.db.session.delete(collection)
 
+    # Delete files related to the rider
+    files = rider.get_files()
+    for file in files:
+        if file.is_link:
+            delete_link(file.id)
+        else:
+            delete_file(rider.id, file.id)
+                    
+
     # Finally, delete the rider
     database.db.session.delete(rider)
     database.db.session.commit()
@@ -699,7 +708,7 @@ def get_link(link_id):
     """
     Get the link of a rider
     """
-    user_file = File.query.filter(File.id == link_id).first()
+    user_file = File.query.filter_by(id = link_id).first()
 
 
     if user_file:
@@ -835,3 +844,23 @@ def delete_link(link_id):
     minio.delete_file(PREFIX, filename, link_file.rider_id)
     File.query.filter(File.id == link_id).delete()
     database.db.session.commit()
+
+def get_days_by_id(id):
+    """
+    Get the days of a rider by ID
+    """
+    work = WorkInInstitution.query.filter_by(rider_horsewoman_id = id).first()
+    if work:
+        return work.days
+    
+    return None
+
+def get_files_by_rider_id(rider_id):
+    """
+    Get all the files of a rider by rider ID
+    """
+    files = File.query.filter_by(rider_id = rider_id).all()
+
+    if files:
+        return files
+    return None

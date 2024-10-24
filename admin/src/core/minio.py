@@ -98,7 +98,7 @@ def get_link(prefix, filename, user_id):
 
     # Generate a unique name for the object
     object_name = f"{prefix}/{user_id}-{filename}.txt"
-    
+    print(object_name)
     try:
         # Get the object from Minio
         response = client.get_object(BUCKET_NAME, object_name)
@@ -108,10 +108,13 @@ def get_link(prefix, filename, user_id):
         # Get the metadata of the object
         stat = client.stat_object(BUCKET_NAME, object_name)
         metadata = stat.metadata
+
+        print(link.strip())
         
         return link.strip(),metadata.get('X-Amz-Meta-Content-Type')
     
     except Exception as e:
+        raise Exception(f"Error getting link from Minio: {str(e)}")
         flash(f"Error al obtener el enlace: {str(e)}")
         return None
 
