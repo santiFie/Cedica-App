@@ -484,8 +484,8 @@ class CollectionForm(Form):
         "Método de pago",
         choices=[
             ("Efectivo", "Efectivo"),
-            ("Tarjeta de Credito", "Tarjeta de Credito"),
-            ("Tarjeta de Debito", "Tarjeta de Debito"),
+            ("Tarjeta de credito", "Tarjeta de credito"),
+            ("Tarjeta de debito", "Tarjeta de debito"),
             ("Transferencia", "Transferencia"),
         ],
         validators=[DataRequired()],
