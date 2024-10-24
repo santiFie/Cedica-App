@@ -260,6 +260,20 @@ def riders_and_horsewomen_update(id):
 def riders_and_horsewomen_new_institution():
     return render_template("riders_and_horsewomen/new_institution.html")
 
+@bp.get("/view/<int:id>")
+@check_permissions("riders_and_horsewomen_view")
+@login_required
+def riders_and_horsewomen_view(id):
+    rider = rh.get_rider_by_id(id)
+    tutor1, tutor2 = rh.get_tutors_by_rider_id(id)
+    work_in_institutions = rh.get_work_in_institutions_by_rider_id(id)
+    days = rh.get_days_by_id(id)
+    if days:
+        days_str = "-".join(days)
+    else:
+        days_str = ""
+    return render_template("riders_and_horsewomen/view_rider.html", rider=rider, tutor1=tutor1, tutor2=tutor2, work=work_in_institutions, days=days_str)
+
 
 @bp.post("/add_files")
 @check_permissions("riders_and_horsewomen_new_file")
