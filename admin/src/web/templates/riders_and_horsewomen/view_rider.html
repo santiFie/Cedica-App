@@ -14,175 +14,380 @@
       <div class="relative flex flex-col items-center rounded-[20px] w-full">
             <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
                 <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
-                    Perfil de, {{ user.nickname }}
+                    Jinete/Amazona, {{ rider.last_name }} {{ rider.name }}
                 </h4>
                 <p class="mt-2 px-2 text-base text-gray-600">
                 </p>
             </div>
             <div class="grid grid-cols-2 gap-4 px-2 w-full">
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Email</p>
+                <p class="text-sm text-gray-600">Dni</p>
                 <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                    {{ user.email }}
+                    {{ rider.dni }}
                 </p>
                 </div>
-                {% if team_member %}
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                    <p class="text-sm text-gray-600">Apellido y nombre</p>
+                    <p class="text-sm text-gray-600">Edad</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ team_member.last_name }} {{ team_member.name }}
+                        {{ rider.age }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                    <p class="text-sm text-gray-600">DNI</p>
+                    <p class="text-sm text-gray-600">Fecha de nacimiento</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ team_member.dni }}
+                        {{ rider.date_of_birth }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                    <p class="text-sm text-gray-600">Localidad</p>
+                    <p class="text-sm text-gray-600">Lugar de nacimiento</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ team_member.locality }}
+                        {{ rider.place_of_birth }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Direccion</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ team_member.address }}
+                        {{ rider.address }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Telefono</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ team_member.phone }}
+                        {{ rider.phone }}
                     </p>
                 </div>
-                {% endif %}
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Rol</p>
-                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                    {{ user.role.name }}
-                </p>    
-                </div>
-
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Estado</p>
-                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                    {%if user.active %}
-                        Activo
-                    {% else %}
-                        Inactivo
-                    {% endif %}
-                </p>
+                    <p class="text-sm text-gray-600">Contacto de emergencia</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.emergency_contact }}
+                    </p>
                 </div>
-                {% if check_permissions(session, 'user_switch_state') %}
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                    <a href="{{ url_for('users.user_switch_state', user_email=user.email) }}" class="text-base font-medium text-navy-700 dark:text-white">Cambiar estado</a>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Telefono de contacto de emergencia</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.emergency_phone }}
+                    </p>
                 </div>
-                {% endif%}
-                {% if team_member %}
+                {% if rider.scholarship_percentage %}
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Condicion</p>
+                        <p class="text-sm text-gray-600">Beca</p>
                         <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.condition }}
+                            {{ rider.scholarship_percentage }}%
                         </p>
                     </div>
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Puesto de trabajo</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.job_position }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600"> Profesion</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.profession }}
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Fecha laboral incial</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.initial_date }}
-                        </p>
-                    </div>
-                    {% if team_member.end_date %}
+                    {% if rider.observations %}
                         <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                            <p class="text-sm text-gray-600">Fecha laboral final</p>
+                            <p class="text-sm text-gray-600">Observaciones de Beca</p>
                             <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                                {{ team_member.end_date }}
+                                {{ rider.observations }}%
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600">Observaciones de Beca</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                No posee observaciones.
                             </p>
                         </div>
                     {% endif %}
+                {% else %}
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Contacto de emergencia</p>
+                        <p class="text-sm text-gray-600">Beca</p>
                         <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.emergency_contact }}
+                            No posee beca.
                         </p>
-                    </div>
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Telefono contacto de emergencia</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.emergency_phone }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Obra social</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.health_insurance.name }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Numero de afiliado</p>
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            {{ team_member.associated_number }}
-                        </p>
-                    </div>
-                    {% if check_permissions(session, 'user_switch_state') %}
-                    <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <a href="{{ url_for('users.user_switch_state', user_email=user.email, check_return=1) }}" class="text-base font-medium text-navy-700 dark:text-white">Cambiar estado</a>
-                    </div>
-                    {% endif%}
-                    <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Titulo</p>
-                        {% if team_member.title %}
-                            <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
-                                Ver Titulo
-                            </a>
-                        {% else %}
-                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
-                        {% endif %}
-                    </div>
-                    <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">Copia del DNI</p>
-                        {% if team_member.dni_copy %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            Ver Copia del DNI
-                        </a>
-                        {% else %}
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
-                        {% endif %}
-                    </div>
-                    <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <p class="text-sm text-gray-600">CV</p>
-                        {% if team_member.cv %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
-                            Ver CV
-                        </a>
-                        {% else %}
-                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
-                        {% endif %}
                     </div>
                 {% endif %}
+                {% if rider.disability_type %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Tipo de discapacidad</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ rider.disability_type }}%
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Tipo de discapacidad</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            No posee discapacidad.
+                        </p>
+                    </div>
+                {% endif %}
+                {% if rider.disability_certificate %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Certificado de discapacidad</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ rider.disability_certificate }}%
+                        </p>
+                    </div>
+                    {% if rider.others %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600">Otro</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                {{ rider.others }}
+                            </p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Certificado de discapacidad</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            No posee certificado de discapacidad.
+                        </p>
+                    </div>
+                {% endif %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Asignacion familiar</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.family_allowance }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">pension</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.pension }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Nombre de institucion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.name_institution }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Direccion de la institucion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.address_institution }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Telefono de la institucion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.phone_institution }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Año actual en la institucion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.current_grade }}
+                    </p>
+                </div>
+                {% if  rider.observations_intitution %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Observaciones de la institucion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.observations_intitution }}
+                    </p>
+                </div>
+                {% endif %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Obra social</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.health_insurance_id.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Numero de afiliado</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ rider.membership_number }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Curatela</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ 'Sí' if rider.curatela else 'No' }}
+                    </p>
+                </div>
+                {% if  rider.pension_situation_observations %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Observaciones de situación previsional</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ rider.pension_situation_observations }}
+                        </p>
+                    </div>
+                {% endif %}
+                {% if  rider.team_members %}
+                    {% for tm in rider.team_members %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600">Profesional</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                {{ tm.last_name }} -  {{ tm.dni }}
+                            </p>
+                        </div>
+                    {% endfor %}   
+                {% endif %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Nombre del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.last_name }} {{ tutor1.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Dni del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.dni }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Parentesco del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.relationship }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Direccion del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.address }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Telefono del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.phone }}
+                    </p>
+                </div>   
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Correo del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.email }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">nivel educativo del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.education_level }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">ocupacion del primer tutor</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ tutor1.occupation }}
+                    </p>
+                </div>
+                {% if tutor2 %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Nombre del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.last_name }} {{ tutor2.name }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Dni del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.dni }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Parentesco del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.relationship }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Direccion del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.address }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Telefono del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.phone }}
+                        </p>
+                    </div>   
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">Correo del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.email }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">nivel educativo del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.education_level }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-sm text-gray-600">ocupacion del segundo tutor</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ tutor2.occupation }}
+                        </p>
+                    </div>
+                {% endif %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Propuesta de trabajo</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.proposal }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Condicion</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.condition }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Sede</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.seat }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Profesor/a o Terapeuta</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.therapist.last_name }} {{ work.therapist.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Conductor de ecuestre</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.rider_id.last_name }} {{ work.rider_id.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Ecuestre</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.horse.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Asistente de pista</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ work.track_assistant.last_name }} {{ work.track_assistant.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Dias que asiste</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ days }}
+                    </p>
+                </div>
+                {% for file in files %}
+                    {% if file.is_link %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600"> {{ file.file_type }} </p>
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_link', link_id=file.id) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                Ver {{file.file_name}}
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600"> {{ file.file_type }} </p>
+                            <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_view_file', file_id=file.id) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                Ver {{file.file_name}}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
 <div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3 mt-3">
     {% if check_permissions(session,'users.user_index') %}
-    <a href="{{ url_for('users.user_index') }}"
+    <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}"
     class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
-        Ir listado de usuarios
+        Ir listado de Jinetes/Amazonas
     </a>
     {% endif %}
     <a href="{{ url_for ('home') }}"
