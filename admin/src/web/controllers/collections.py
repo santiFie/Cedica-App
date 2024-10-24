@@ -45,7 +45,7 @@ def collection_index():
         "collections/show_collections.html",
         collections=all_collections,
         max_pages=max_pages,
-        current_page=page,
+        page=page,
     )
 
 
@@ -294,7 +294,7 @@ def collection_index_debts():
         "collections/show_debtors.html",
         debtors=debtors,
         max_pages=max_pages,
-        current_page=page,
+        page=page,
     )
 
 
