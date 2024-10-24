@@ -2,110 +2,179 @@
 
 {% block title %}Ver Equestre{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/css/main.ad49aa9b.css" />
+{% endblock %}
 
 {% block content %}
 
-    <h1>Equestre {{ equestrian.name }} </h1>
+<div class="min-h-screen w-full py-6 px-4 mb-3">
+    <div class="max-w-[95%] w-full md:w-[700px] mx-auto mt-16 mb-8">
+      <div class="relative flex flex-col items-center rounded-[20px] w-full">
+            <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
+                    Ecuestre {{ equestrian.name }}
+                </h4>
+                <p class="mt-2 px-2 text-base text-gray-600">
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 px-2 w-full">
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Nombre</p>
+                    <p class="break-all text-base max font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Fecha de Nacimiento</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.date_of_birth }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Sexo</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.sex }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Raza</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.race }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Pelaje</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.coat }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p class="text-sm text-gray-600">Comprado</p>
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                    {{ 'Sí' if equestrian.bought else 'No' }}
+                </p>
+                </div>
 
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <td>{{ equestrian.name }}</td>
-        </tr>
-        <tr>
-            <th>Fecha de Nacimiento</th>
-            <td>{{ equestrian.date_of_birth }}</td>
-        </tr>
-        <tr>
-            <th>Sexo</th>
-            <td>{{ equestrian.sex }}</td>
-        </tr>
-        <tr>
-            <th>Raza</th>
-            <td>{{ equestrian.race }}</td>
-        </tr>
-        <tr>
-            <th>Capa</th>
-            <td>{{ equestrian.coat }}</td>
-        </tr>
-        <tr>
-            <th>Comprado</th>
-            <td>{{ 'Sí' if equestrian.bought else 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Fecha de Entrada</th>
-            <td>{{ equestrian.date_of_entry }}</td>
-        </tr>
-        <tr>
-            <th>Sede</th>
-            <td>{{ equestrian.headquarters }}</td>
-        </tr>
-        <tr>
-            <th>Propuestas</th>
-            <td>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Fecha de Entrada</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.date_of_entry }}
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Pelaje</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ equestrian.headquarters }}
+                    </p>
+                </div>
+
+                
                 {% if equestrian.proposals %}
-                    <ul>
                         {% for proposal in equestrian.proposals %}
-                            <li>{{ proposal }}</li>
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600">Un proposito</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                {{ proposal }}
+                            </p>
+                        </div>
                         {% endfor %}
-                    </ul>
                 {% else %}
-                    No hay propuestas disponibles
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        No hay propuestas disponibles
+                    </p>
+                </div>
                 {% endif %}
-            </td>
-        </tr>
-    </table>
 
-    <div class="team-members">
-        <h2>Miembros del Equipo</h2>
-        {% if equestrian.team_members %}
-            <ul>
-                {% for member in equestrian.team_members %}
-                    <li>{{ member.name }} - {{ member.job_position.replace("_", " ").title() }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No hay miembros del equipo asociados con este ecuestre.</p>
-        {% endif %}
+                {% if equestrian.team_members %}
+                        {% for member in equestrian.team_members %}
+                        <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                            <p class="text-sm text-gray-600">Un miembro de Equipo</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                                {{ member.name }} - {{ member.job_position.replace("_", " ").title() }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                {% else %}
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        No hay miembros del equipo asociados para este ecuestre
+                    </p>
+                </div>
+                {% endif %}
+
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Ficha General</p>
+                    {% if equestrian.horse_sheet %}
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.horse_sheet) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            Ver Ficha General del Caballo
+                        </a>
+                    {% else %}
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                    {% endif %}
+                </div>
+
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Informe</p>
+                    {% if equestrian.evolution_report %}
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.evolution_report) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            Ver Informe de Evolución
+                        </a>
+                    {% else %}
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                    {% endif %}
+                </div>
+
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Registro</p>
+                    {% if equestrian.veterinary_record %}
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.veterinary_record) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            Ver Registro Veterinario
+                        </a>
+                    {% else %}
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                    {% endif %}
+                </div>
+
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Plan</p>
+                    {% if equestrian.training_plan %}
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.training_plan) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            Ver Plan de Entrenamiento
+                        </a>
+                    {% else %}
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                    {% endif %}
+                </div>
+
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Imagenes</p>
+                    {% if equestrian.images %}
+                        <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.images) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            Ver Imágenes
+                        </a>
+                    {% else %}
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.horse_sheet) }}">
-        <button type="button">Ver Ficha General del Caballo</button>
+<div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3">
+    <a href="{{ url_for('equestrian.equestrian_index') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Ir listado de ecuestres
     </a>
-
-    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.evolution_report) }}">
-        <button type="button">Ver Informe de Evolución</button>
+    <a href="{{ url_for('home') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Home
     </a>
-
-    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.veterinary_record) }}">
-        <button type="button">Ver Registro Veterinario</button>
-    </a>
-
-    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.training_plan) }}">
-        <button type="button">Ver Plan de Entrenamiento</button>
-    </a>
-
-    <a href="{{ url_for('equestrian.equestrian_view_file', id=equestrian.id, filename=equestrian.images) }}">
-        <button type="button">Ver Imágenes</button>
-    </a>
-
-    <a href="{{ url_for('equestrian.equestrian_edit', id=equestrian.id) }}">
-        <button type="button">Modificar</button>
-    </a>
-
-    <form action="{{ url_for('equestrian.equestrian_delete', id=equestrian.id) }}" method="POST" style="display:inline;" onsubmit="confirmDelete()">
-        <button type="submit">Eliminar</button>
-    </form>
-
-    <a href="{{ url_for('equestrian.equestrian_index') }}">
-        <button type="button">Volver</button>
-    </a>
-
-    <script>
-        function confirmDelete() {
-            return confirm('¿Estás seguro de que deseas eliminar este caballo? Esta acción no se puede deshacer.');
-        }
-    </script>
+</div>
 
 
 {% endblock %}

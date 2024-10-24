@@ -196,7 +196,9 @@ def team_member_switch_state():
 
 
 @bp.get("/view_file/<int:id>/<string:filename>")
-def view_file(id, filename):
+@check_permissions("team_member_switch_state")
+@login_required
+def team_member_view_file(id, filename):
 
     file_data, content_type = minio.get_file("team_members", id, filename)
 

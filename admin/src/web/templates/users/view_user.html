@@ -138,15 +138,10 @@
                             {{ team_member.associated_number }}
                         </p>
                     </div>
-                    {% if check_permissions(session, 'user_switch_state') %}
-                    <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                        <a href="{{ url_for('users.user_switch_state', user_email=user.email, check_return=1) }}" class="text-base font-medium text-navy-700 dark:text-white">Cambiar estado</a>
-                    </div>
-                    {% endif%}
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Titulo</p>
                         {% if team_member.title %}
-                            <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            <a href="{{ url_for('team_members.team_member_view_file', id=team_member.id, filename=team_member.title) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                                 Ver Titulo
                             </a>
                         {% else %}
@@ -156,7 +151,7 @@
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Copia del DNI</p>
                         {% if team_member.dni_copy %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        <a href="{{ url_for('team_members.team_member_view_file', id=team_member.id, filename=team_member.dni_copy) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                             Ver Copia del DNI
                         </a>
                         {% else %}
@@ -166,7 +161,7 @@
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">CV</p>
                         {% if team_member.cv %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        <a href="{{ url_for('team_members.team_member_view_file', id=team_member.id, filename=team_member.cv) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                             Ver CV
                         </a>
                         {% else %}
