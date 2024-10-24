@@ -1,9 +1,12 @@
 from os import environ
+from datetime import timedelta
 
 class Config(object):
     TESTING = False
     SECRET_KEY = "my_secret_key"
     SESSION_TYPE = "filesystem"
+    SESSION_PERMANENT = False
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=60)
 
 class ProductionConfig(Config):
     MINIO_SERVER = environ.get("MINIO_SERVER")
