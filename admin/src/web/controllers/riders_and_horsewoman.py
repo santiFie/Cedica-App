@@ -404,6 +404,8 @@ def riders_and_horsewomen_view_file(file_id):
 def riders_and_horsewomen_view_link(link_id):
 
     link, data = rh.get_link(link_id)
+    if not link:
+        return "Archivo no encontrado", 404
     return redirect(link)
 
 

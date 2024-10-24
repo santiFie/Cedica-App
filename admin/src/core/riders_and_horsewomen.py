@@ -593,6 +593,15 @@ def delete_a_rider(rider):
     for collection in collections:
         database.db.session.delete(collection)
 
+    # Delete files related to the rider
+    files = rider.get_files()
+    for file in files:
+        if file.is_link:
+            delete_link(file.id)
+        else:
+            delete_file(rider.id, file.id)
+                    
+
     # Finally, delete the rider
     database.db.session.delete(rider)
     database.db.session.commit()
@@ -699,7 +708,7 @@ def get_link(link_id):
     """
     Get the link of a rider
     """
-    user_file = File.query.filter(File.id == link_id).first()
+    user_file = File.query.filter_by(id = link_id).first()
 
 
     if user_file:
