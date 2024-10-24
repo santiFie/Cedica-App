@@ -702,6 +702,10 @@ video {
   margin-top: 2.5rem;
 }
 
+.mt-16 {
+  margin-top: 4rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -788,6 +792,10 @@ video {
 
 .max-h-\[calc\(100vh-2rem\)\] {
   max-height: calc(100vh - 2rem);
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-1\.5 {
@@ -947,6 +955,10 @@ video {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.break-all {
+  word-break: break-all;
 }
 
 .rounded {
@@ -1163,6 +1175,11 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .py-8 {
@@ -1670,6 +1687,10 @@ video {
 
   .md\:w-12 {
     width: 3rem;
+  }
+
+  .md\:w-\[700px\] {
+    width: 700px;
   }
 
   .md\:p-52 {

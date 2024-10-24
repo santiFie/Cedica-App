@@ -4,21 +4,71 @@
 
 {% block head %}
     {{ super() }}
+    <link rel="stylesheet" href="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/css/main.ad49aa9b.css" />
 {% endblock %}
 
 {% block content %}
-    <h1>Detalle de Deuda</h1>
-
-    <h2>Deudor: {{ debtor.name }} - {{ debtor.dni }}</h2>
-
-    <h3>Debe:</h3>
-    <ul>
-        {% for month in debt_details %}
-            <li> {{ month }} </li>
-        {% endfor %}
-    </ul>
-
+<div class="min-h-screen w-full py-6 px-4 mb-3">
+    <div class="max-w-[95%] w-full md:w-[700px] mx-auto mt-16 mb-8">
+      <div class="relative flex flex-col items-center rounded-[20px] w-full">
+            <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
+                    Detalle de Deuda
+                </h4>
+                <p class="mt-2 px-2 text-base text-gray-600">
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 px-2 w-full">
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p class="text-sm text-gray-600">DNI del Deudor</p>
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                    {{ debtor.dni }}
+                </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Apellido y nombre</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ debtor.last_name }} {{ debtor.name }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        Debe:
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                    </p>
+                </div>
+                {% if debt_details %}
+                    {% for month in debt_details %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            {{ month }}
+                        </p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                            No tiene deudas.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3 mt-3">
     {% if check_permissions(session,'collections.collection_index_debts') %}
-        <a href="{{ url_for('collections.collection_index_debts') }}"><button type="button">Volver a la lista de deudores</button></a>
+    <a href="{{ url_for('collections.collection_index_debts') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Ir listado de Deudas
+    </a>
     {% endif %}
+    <a href="{{ url_for ('home') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Home
+    </a>
+</div>
 {% endblock %}

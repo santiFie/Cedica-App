@@ -4,44 +4,78 @@
 
 {% block head %}
     {{ super() }}
+    <link rel="stylesheet" href="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/css/main.ad49aa9b.css" />
 {% endblock %}
 
+
 {% block content %}
-    <h1>Detalle de Cobro</h1>
-
-    <table>
-        <tr>
-            <th>ID del Cobro:</th>
-                <td>{{ collection.id }}</td>
-            </tr>
-            <tr>
-            <th>Monto:</th>
-                <td>${{ collection.amount }}</td>
-            </tr>
-            <tr>
-            <th>Fecha:</th>
-                <td>{{ collection.payment_date.strftime('%d/%m/%Y') }}</td> <!-- Formateo de la fecha -->
-            </tr>
-            <th>Metodo de Pago:</th>
-                <td>{{ collection.payment_method }}</td> <!-- Formateo de la fecha -->
-            </tr>
-            <tr>
-                <th>Observaciones:</th>
-                <td>{{ collection.observations }}</td>
-            </tr>
-            <tr>
-                <th>DNI de Jinete o Amazonas que realizo el pago:</th>
-                <td>{{ collection.rider_dni }}</td>
-            </tr>
-            <tr>
-                <th>Miembro del equipo al que se le pago:</th>
-                <td>{{ collection.team_member_id }}</td>
-            </tr>
-        </tr>
-    </table>
-    
+<div class="min-h-screen w-full py-6 px-4 mb-3">
+    <div class="max-w-[95%] w-full md:w-[700px] mx-auto mt-16 mb-8">
+      <div class="relative flex flex-col items-center rounded-[20px] w-full">
+            <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+                <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
+                    Detalle de Cobro
+                </h4>
+                <p class="mt-2 px-2 text-base text-gray-600">
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 px-2 w-full">
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p class="text-sm text-gray-600">ID del Cobro</p>
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                    {{ collection.id }}
+                </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Monto</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        ${{ collection.amount }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Fecha</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ collection.payment_date.strftime('%d/%m/%Y') }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Metodo de Pago</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ collection.payment_method }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Observaciones</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ collection.observations }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">DNI de Jinete o Amazonas que realizo el pago</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ collection.rider_dni }}
+                    </p>
+                </div>
+                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p class="text-sm text-gray-600">Miembro del equipo al que se le pago</p>
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
+                        {{ collection.team_member_id }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3 mt-3">
     {% if check_permissions(session, 'collection_index')%}
-        <a href="{{ url_for('collections.collection_index') }}"><button type="button">Volver a la lista de cobros</button></a>
+    <a href="{{ url_for('collections.collection_index') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Ir listado de Cobros
+    </a>
     {% endif %}
-
+    <a href="{{ url_for ('home') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Home
+    </a>
+</div>
 {% endblock %}

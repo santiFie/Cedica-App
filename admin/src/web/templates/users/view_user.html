@@ -9,64 +9,65 @@
 
 
 {% block content %}
-    <div class="flex flex-col justify-center items-center h-[100vh]">
-        <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
-            <div class="mt-2 mb-8 w-full">
+<div class="min-h-screen w-full py-6 px-4 mb-3">
+    <div class="max-w-[95%] w-full md:w-[700px] mx-auto mt-16 mb-8">
+      <div class="relative flex flex-col items-center rounded-[20px] w-full">
+            <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
                 <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
-                {{ user.nickname }}
+                    Perfil de, {{ user.nickname }}
                 </h4>
                 <p class="mt-2 px-2 text-base text-gray-600">
                 </p>
-            </div> 
+            </div>
             <div class="grid grid-cols-2 gap-4 px-2 w-full">
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Email</p>
-                <p class="text-base font-medium text-navy-700 dark:text-white">
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                     {{ user.email }}
                 </p>
                 </div>
                 {% if team_member %}
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Apellido y nombre</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-white">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                         {{ team_member.last_name }} {{ team_member.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">DNI</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-white">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                         {{ team_member.dni }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Localidad</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-white">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                         {{ team_member.locality }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Direccion</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-white">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                         {{ team_member.address }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Telefono</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-white">
+                    <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                         {{ team_member.phone }}
                     </p>
                 </div>
                 {% endif %}
                 <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Rol</p>
-                <p class="text-base font-medium text-navy-700 dark:text-white">
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                     {{ user.role.name }}
                 </p>    
                 </div>
 
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Estado</p>
-                <p class="text-base font-medium text-navy-700 dark:text-white">
+                <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                     {%if user.active %}
                         Activo
                     {% else %}
@@ -82,58 +83,58 @@
                 {% if team_member %}
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Condicion</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.condition }}
                         </p>
                     </div>
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Puesto de trabajo</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.job_position }}
                         </p>
                     </div>
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600"> Profesion</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.profession }}
                         </p>
                     </div>
 
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Fecha laboral incial</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.initial_date }}
                         </p>
                     </div>
                     {% if team_member.end_date %}
                         <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                             <p class="text-sm text-gray-600">Fecha laboral final</p>
-                            <p class="text-base font-medium text-navy-700 dark:text-white">
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                                 {{ team_member.end_date }}
                             </p>
                         </div>
                     {% endif %}
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Contacto de emergencia</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.emergency_contact }}
                         </p>
                     </div>
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Telefono contacto de emergencia</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.emergency_phone }}
                         </p>
                     </div>
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Obra social</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.health_insurance.name }}
                         </p>
                     </div>
                     <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Numero de afiliado</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">
                             {{ team_member.associated_number }}
                         </p>
                     </div>
@@ -145,45 +146,48 @@
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Titulo</p>
                         {% if team_member.title %}
-                            <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}" class="text-base font-medium text-navy-700 dark:text-white">
+                            <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.title) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                                 Ver Titulo
                             </a>
                         {% else %}
-                            <p class="text-base font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                            <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
                         {% endif %}
                     </div>
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">Copia del DNI</p>
                         {% if team_member.dni_copy %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}" class="text-base font-medium text-navy-700 dark:text-white">
+                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.dni_copy) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                             Ver Copia del DNI
                         </a>
                         {% else %}
-                        <p class="text-base font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
                         {% endif %}
                     </div>
                     <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                         <p class="text-sm text-gray-600">CV</p>
                         {% if team_member.cv %}
-                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}" class="text-base font-medium text-navy-700 dark:text-white">
+                        <a href="{{ url_for('team_members.view_file', id=team_member.id, filename=team_member.cv) }}" class="text-base break-all font-medium text-navy-700 dark:text-white">
                             Ver CV
                         </a>
                         {% else %}
-                        <p>No hay archivo cargado</p>
+                        <p class="text-base break-all font-medium text-navy-700 dark:text-white">No hay archivo cargado</p>
                         {% endif %}
                     </div>
                 {% endif %}
             </div>
         </div>
-        <div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3">
-            <a href=""
-            class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
-                Volver listado
-            </a>
-            <a href=""
-            class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
-                Home
-            </a>
-        </div>
     </div>
+</div>
+<div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3 mt-3">
+    {% if check_permissions(session,'users.user_index') %}
+    <a href="{{ url_for('users.user_index') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Ir listado de usuarios
+    </a>
+    {% endif %}
+    <a href="{{ url_for ('home') }}"
+    class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+        Home
+    </a>
+</div>
 {% endblock %}
