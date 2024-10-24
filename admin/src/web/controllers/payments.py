@@ -56,13 +56,18 @@ def payment_register():
             if form.beneficiary_id.data and not beneficiary:
                 flash("El beneficiario no existe.", "error")
                 return render_template('payments/payment_register.html', form=form)
+            
+            # Validar si el tipo de pago es "Honorarios" y no hay beneficiario
+            if form.payment_type.data == "Honorarios" and not beneficiary:
+                flash("El beneficiario es obligatorio para pagos de Honorarios.", "error")
+                return render_template('payments/payment_register.html', form=form)
 
             new_payment = create_payment(
                 amount=form.amount.data,
                 payment_date=form.payment_date.data,
                 payment_type=form.payment_type.data,
                 description=form.description.data,
-                beneficiary_id=beneficiary.email if beneficiary else ''
+                beneficiary_id=beneficiary.email if beneficiary else None
             )
 
             flash("Pago registrado exitosamente")
@@ -122,13 +127,16 @@ def payment_edit(payment_id):
         
         if form.validate():
         
-            # si el beneficiario no es Externo entonces lo busco en la bd
-            if form.beneficiary_id.data != 'Externo':
-                # Crear el nuevo pago con los datos validados del formulario
-                beneficiary = find_user_by_email(form.beneficiary_id.data) if form.beneficiary_id.data else 'Externo'
+            # Si el tipo de pago es "Honorarios", se requiere un beneficiario válido
+            if form.payment_type.data == "Honorarios":
+                # Verificar si el beneficiary_id es válido y no "Externo"
+                if form.beneficiary_id.data == 'Externo' or not form.beneficiary_id.data:
+                    flash("El beneficiario es obligatorio para pagos de Honorarios.", "error")
+                    return render_template('payments/edit_payment_form.html', form=form, payment=payment)
 
-                # Si se ingreso un beneficiario y no se encontro en la bd
-                if form.beneficiary_id.data and not beneficiary:
+                # Buscar el beneficiario en la base de datos
+                beneficiary = find_user_by_email(form.beneficiary_id.data)
+                if not beneficiary:
                     flash("El beneficiario no existe.", "error")
                     return render_template('payments/edit_payment_form.html', form=form, payment=payment)
 
