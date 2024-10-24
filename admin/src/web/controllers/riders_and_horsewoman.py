@@ -39,7 +39,7 @@ bp = Blueprint("riders_and_horsewomen", __name__, url_prefix="/riders_and_horsew
 @login_required
 def riders_and_horsewomen_index():
     """
-    Displays the list of riders and horsewomen with optional search filters and pagination 
+    Displays the list of riders and horsewomen with optional search filters and pagination
     """
     # obtengo parametros de busqueda del formulario
     team_members = tm.get_all()
@@ -260,6 +260,7 @@ def riders_and_horsewomen_update(id):
 def riders_and_horsewomen_new_institution():
     return render_template("riders_and_horsewomen/new_institution.html")
 
+
 @bp.get("/view/<int:id>")
 @check_permissions("riders_and_horsewomen_view")
 @login_required
@@ -272,7 +273,28 @@ def riders_and_horsewomen_view(id):
         days_str = "-".join(days)
     else:
         days_str = ""
-    return render_template("riders_and_horsewomen/view_rider.html", rider=rider, tutor1=tutor1, tutor2=tutor2, work=work_in_institutions, days=days_str)
+    # Get the files of the rider
+    rider_files = rider.get_files()
+    health_insurance = hi.get_by_id(rider.health_insurance_id)
+    therapist = tm.get_by_id(work_in_institutions.therapist)
+    track_assistant = tm.get_by_id(work_in_institutions.track_assistant)
+    driver = eq.find_equestrian_by_id(work_in_institutions.rider_id)
+    horse = eq.find_equestrian_by_id(work_in_institutions.horse)
+
+    return render_template(
+        "riders_and_horsewomen/view_rider.html",
+        therapist=therapist,
+        track_assistant=track_assistant,
+        driver=driver,
+        horse=horse,
+        rider=rider,
+        tutor1=tutor1,
+        tutor2=tutor2,
+        work=work_in_institutions,
+        days=days_str,
+        files=rider_files,
+        health_insurance=health_insurance,
+    )
 
 
 @bp.post("/add_files")
@@ -299,7 +321,7 @@ def riders_and_horsewomen_new_file():
 @check_permissions("riders_and_horsewomen_delete_file")
 @login_required
 def riders_and_horsewomen_delete_file(file_id):
-    
+
     rider_id = File.query.filter_by(id=file_id).first().rider_id
 
     if file_id:
@@ -334,9 +356,7 @@ def riders_and_horsewomen_delete_link(file_id):
     if file_id:
         rh.delete_link(file_id)
 
-    return redirect(
-        url_for("riders_and_horsewomen.riders_and_horsewomen_index_files")
-    )
+    return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index_files"))
 
 
 @bp.get("/view_file/<int:file_id>")
@@ -403,6 +423,7 @@ def riders_and_horsewomen_download_file(file_id):
         download_name=rh.get_filename(file_id),
     )
 
+
 @bp.get("/dowload_link/<int:file_id>")
 @check_permissions("riders_and_horsewomen_download_link")
 @login_required
@@ -418,6 +439,7 @@ def riders_and_horsewomen_download_link(file_id):
         as_attachment=True,
         download_name=rh.get_filename(file_id),
     )
+
 
 # Routes for listing all riders' files
 @bp.get("/list_files")

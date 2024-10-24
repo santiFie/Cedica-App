@@ -183,7 +183,7 @@
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Obra social</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ rider.health_insurance_id.name }}
+                        {{ health_insurance.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
@@ -335,25 +335,25 @@
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Profesor/a o Terapeuta</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ work.therapist.last_name }} {{ work.therapist.name }}
+                        {{ therapist.last_name }} {{ therapist.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Conductor de ecuestre</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ work.rider_id.last_name }} {{ work.rider_id.name }}
+                        {{ driver.last_name }} {{ driver.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Ecuestre</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ work.horse.name }}
+                        {{ horse.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Asistente de pista</p>
                     <p class="text-base break-all font-medium text-navy-700 dark:text-white">
-                        {{ work.track_assistant.last_name }} {{ work.track_assistant.name }}
+                        {{ track_assistant.last_name }} {{ track_assistant.name }}
                     </p>
                 </div>
                 <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
