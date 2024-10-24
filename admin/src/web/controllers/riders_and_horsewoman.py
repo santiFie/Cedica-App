@@ -389,6 +389,21 @@ def riders_and_horsewomen_download_file(file_id):
         download_name=rh.get_filename(file_id),
     )
 
+@bp.get("/dowload_link/<int:file_id>")
+@check_permissions("riders_and_horsewomen_download_link")
+@login_required
+def riders_and_horsewomen_download_link(file_id):
+    file_data, content_type = rh.get_link(file_id)
+
+    if not file_data:
+        return "Archivo no encontrado", 404
+
+    return send_file(
+        file_data,
+        mimetype=content_type,
+        as_attachment=True,
+        download_name=rh.get_filename(file_id),
+    )
 
 # Routes for listing all riders' files
 @bp.get("/list_files")
