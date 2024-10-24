@@ -23,24 +23,48 @@
                         <a href="#"><img src="{{ url_for('static', filename='images/logoCEDICA.png') }}" alt="Logo" class="min-[800px]:hidden pr-1 h-10"></a>
                         <div class="logo-dropdown-content absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
                             <a href="{{ url_for('home') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Home</a>
+                            {% if check_permissions(session,"payment_index") %}
                             <a href="{{ url_for('payments.payment_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pagos</a>
+                            {% endif %}
+                            {% if check_permissions(session,"collection_index") %}
                             <a href="{{ url_for('collections.collection_index') }}"  class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cobros</a>
+                            {% endif %}
+                            {% if check_permissions(session,"riders_and_horsewomen_index") %}
                             <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">J&A</a>
+                            {% endif %}
+                            {% if check_permissions(session,"equestrian_index") %}
                             <a href="{{ url_for('equestrian.equestrian_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Ecuestre</a>
+                            {% endif %}
+                            {% if check_permissions(session,"team_member_index") %}
                             <a href="{{ url_for('team_members.team_member_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Equipo</a>
+                            {% endif %}
+                            {% if check_permissions(session,"user_index") %}
                             <a href="{{ url_for('users.user_index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Usuarios</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
 
                 <!-- Menú de navegación -->
                 <div class="menu flex space-x-2">
+                    {% if check_permissions(session,"payment_index") %}
                     <a href="{{ url_for('payments.payment_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Pagos</a>
+                    {% endif %}
+                    {% if check_permissions(session,"collection_index") %}
                     <a href="{{ url_for('collections.collection_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Cobros</a>
+                    {% endif %}
+                    {% if check_permissions(session,"riders_and_horsewomen_index") %}
                     <a href="{{ url_for('riders_and_horsewomen.riders_and_horsewomen_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">J&A</a>
+                    {% endif %}
+                    {% if check_permissions(session,"equestrian_index") %}
                     <a href="{{ url_for('equestrian.equestrian_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Ecuestre</a>
+                    {% endif %}
+                    {% if check_permissions(session,"team_member_index") %}
                     <a href="{{ url_for('team_members.team_member_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Equipo</a>
+                    {% endif %}
+                    {% if check_permissions(session,"user_index") %}
                     <a href="{{ url_for('users.user_index') }}" class="max-[800px]:hidden bg-blue-300 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">Usuarios</a>
+                    {% endif %}
                 </div>
 
                 <!-- Perfil de usuario -->
