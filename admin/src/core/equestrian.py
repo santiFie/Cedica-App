@@ -24,21 +24,21 @@ def equestrian_create(form, files):
 
     # Check if the dates are valid
     if not utils.validate_dates(date_of_birth, date_of_entry):
-        return flash("Las fechas ingresadas no son válidas")
+        return flash("Las fechas ingresadas no son válidas", "info")
     
     # Check if at least one team member is selected
     selected_emails = form.getlist("emails")
     if not selected_emails:
-        return flash("Debe seleccionar al menos un entrenador o conductor")
+        return flash("Debe seleccionar al menos un entrenador o conductor", "info")
     
     # Check if the equestrian already exists
     equestrian = find_equestrian_by_name(form["name"])
     if equestrian:
-        return flash("El equestre ya existe")
+        return flash("El equestre ya existe", "info")
 
     selected_emails = form.getlist("emails")
     if not selected_emails:
-        return flash("Debe seleccionar al menos un entrenador o conductor")
+        return flash("Debe seleccionar al menos un entrenador o conductor", "info")
 
     # Create the equestrian
     equestrian = Equestrian(
@@ -75,7 +75,7 @@ def equestrian_create(form, files):
         db.session.flush()
     except:
         db.session.rollback()
-        return flash("Error al cargar los archivos", "indo")
+        return flash("Error al cargar los archivos", "info")
     db.session.commit()
 
     return flash("Equestre creado exitosamente")
@@ -88,7 +88,7 @@ def update_equestrians_files(equestrian_id, files_dict):
     equestrian = find_equestrian_by_id(equestrian_id)
 
     if not equestrian:
-        return flash("El equestre no existe")
+        return flash("El equestre no existe", "info")
     
 
 
@@ -132,13 +132,8 @@ def equestrian_update(id, form, files):
     if proposals:
         equestrian.proposals = proposals
     
-    # Check if the name already exists for other equestrian
-    exists = Equestrian.query.filter_by(name=form["name"]).first() is not None
-    if exists:
-        return flash("El equestre ya existe", "info")
 
     # Update the equestrian
-    equestrian.name = form["name"]
     equestrian.sex = form["sex"]
     equestrian.headquarters = form["headquarters"]
     equestrian.coat = form["coat"]
@@ -239,7 +234,7 @@ def equestrian_delete(id):
     
 
     if not equestrian:
-        return flash("El equestre no existe")
+        return flash("El equestre no existe", "info")
     
     try:
         # Delete all the files of the equestrian
@@ -313,7 +308,7 @@ def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None
     if initial_date:
         initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
         if initial_date > datetime.now():
-            flash("No se pueden listar archivos que no fueron subidos aún")
+            flash("No se pueden listar archivos que no fueron subidos aún", "info")
             return [], 1
     if final_date:
         final_date = datetime.strptime(final_date, '%Y-%m-%d')
@@ -321,7 +316,7 @@ def list_equestrians_files(page=1, name=None, initial_date=None, final_date=None
     if final_date and initial_date:
         # Check if the dates are valid
         if not utils.validate_dates(initial_date, final_date):
-            flash("Las fechas ingresadas no son válidas")
+            flash("Las fechas ingresadas no son válidas", "info")
             return [], 1
 
     # Iterate over all the equestrians

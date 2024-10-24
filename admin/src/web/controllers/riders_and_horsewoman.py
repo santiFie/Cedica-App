@@ -249,7 +249,6 @@ def riders_and_horsewomen_update(id):
     """
 
     rh.update(id, request.form, request.files)
-    flash("El jinete/Amazona se ha actualizado exitosamente")
 
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
@@ -276,8 +275,8 @@ def riders_and_horsewomen_view(id):
     # Get the files of the rider
     rider_files = rider.get_files()
     health_insurance = hi.get_by_id(rider.health_insurance_id)
-    therapist = tm.get_by_id(work_in_institutions.therapist)
-    track_assistant = tm.get_by_id(work_in_institutions.track_assistant)
+    therapist = tm.find_team_member_by_id(work_in_institutions.therapist)
+    track_assistant = tm.find_team_member_by_id(work_in_institutions.track_assistant)
     driver = eq.find_equestrian_by_id(work_in_institutions.rider_id)
     horse = eq.find_equestrian_by_id(work_in_institutions.horse)
 

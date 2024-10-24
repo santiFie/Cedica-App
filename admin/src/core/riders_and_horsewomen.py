@@ -235,7 +235,7 @@ def create_rider_horsewoman(form, files):
                     health_insurance_id=form["health_insurance"],
                     membership_number=form["membership_number"],
                     curatela=True if curatela == "on" else False,
-                    pension_situation_observations=form["observations_institution"],
+                    pension_situation_observations=form["pension_situation_observations"],
                 )
 
                 database.db.session.add(rider_horsewoman)
@@ -454,6 +454,7 @@ def update(id, form, files):
                 file = files[f"select_file_{i}"]
                 new_file(file, filename, file_type, rider_id)
 
+        flash("El jinete/Amazona se ha actualizado exitosamente")
     except Exception as e:
         database.db.session.rollback()
         flash("Error al actualizar el jinete/Amazona", "error")
