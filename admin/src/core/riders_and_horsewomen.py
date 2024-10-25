@@ -398,44 +398,40 @@ def update(id, form, files):
         else:
             lista.append(None)
 
-        riders_form = RiderHorsewomanForm(form)
-        if riders_form.validate():
+        try:
 
-            try:
+            rider.name = form["name"]
+            rider.last_name = form["last_name"]
+            rider.age = form["age"]
+            rider.date_of_birth = form["date_of_birth"]
+            rider.place_of_birth = form["place_of_birth"]
+            rider.address = form["address"]
+            rider.phone = form["phone"]
+            rider.emergency_contact = form["emergency_contact"]
+            rider.emergency_phone = form["emergency_phone"]
+            rider.scholarship_percentage = lista[0]
+            rider.observations = lista[1]
+            rider.disability_certificate = lista[3]
+            rider.others = lista[4]
+            rider.disability_type = lista[2]
+            rider.family_allowance = lista[5]
+            rider.pension = lista[6]
+            rider.name_institution = form["name_institution"]
+            rider.address_institution = form["address_institution"]
+            rider.phone_institution = form["phone_institution"]
+            rider.current_grade = form["current_grade"]
+            rider.observations_institution = form["observations_institution"]
+            rider.health_insurance_id = form["health_insurance"]
+            rider.membership_number = form["membership_number"]
+            rider.curatela = True if curatela == "on" else False
+            rider.pension_situation_observations = form["observations_institution"]
 
-                rider.name = form["name"]
-                rider.last_name = form["last_name"]
-                rider.age = form["age"]
-                rider.date_of_birth = form["date_of_birth"]
-                rider.place_of_birth = form["place_of_birth"]
-                rider.address = form["address"]
-                rider.phone = form["phone"]
-                rider.emergency_contact = form["emergency_contact"]
-                rider.emergency_phone = form["emergency_phone"]
-                rider.scholarship_percentage = lista[0]
-                rider.observations = lista[1]
-                rider.disability_certificate = lista[3]
-                rider.others = lista[4]
-                rider.disability_type = lista[2]
-                rider.family_allowance = lista[5]
-                rider.pension = lista[6]
-                rider.name_institution = form["name_institution"]
-                rider.address_institution = form["address_institution"]
-                rider.phone_institution = form["phone_institution"]
-                rider.current_grade = form["current_grade"]
-                rider.observations_institution = form["observations_institution"]
-                rider.health_insurance_id = form["health_insurance"]
-                rider.membership_number = form["membership_number"]
-                rider.curatela = True if curatela == "on" else False
-                rider.pension_situation_observations = form["observations_institution"]
+            database.db.session.commit()
 
-                database.db.session.commit()
-
-            except Exception as e:
-                database.db.session.rollback()
-                raise e
+        except Exception as e:
+            database.db.session.rollback()
         else:
-            utils.riders_and_horsewomen_errors(riders_form)
+            utils.riders_and_horsewomen_errors(form)
             return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
         update_caring_professionals(form, id)
@@ -457,6 +453,7 @@ def update(id, form, files):
         flash("El jinete/Amazona se ha actualizado exitosamente")
     except Exception as e:
         database.db.session.rollback()
+        raise e
         flash("Error al actualizar el jinete/Amazona", "error")
         
 

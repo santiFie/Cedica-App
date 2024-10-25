@@ -92,9 +92,16 @@ def collection_register():
                 return render_template(
                     "collections/collection_register_form.html", form=form
                 )
-
-            # Convert the format "{month_name} de {year}" to a datetime object
-            month_name, year = calculate_debt(rider.dni)[0][0].split(" de ")
+            
+            
+            try:
+                # Convert the format "{month_name} de {year}" to a datetime object
+                month_name, year = calculate_debt(rider.dni)[0][0].split(" de ")
+            except Exception as e:
+                flash("El jinete o amazona no tiene deudas", "error")
+                return render_template(
+                    "collections/collection_register_form.html", form=form
+                )  
 
             # Dictionary to map month names in Spanish to month numbers
             month_mapping = {
