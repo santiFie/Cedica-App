@@ -27,7 +27,7 @@ from src.core import riders_and_horsewomen as rh
 from src.core import team_member as tm
 from src.core import equestrian as eq
 from src.core import health_insurance as hi
-from src.web.forms import RiderHorsewomanForm as riderForm
+from src.web.forms import RiderHorsewomanForm as riderForm, RiderHorsewomanEditForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 
@@ -130,7 +130,9 @@ def riders_and_horsewomen_new():
             else:
                 flash("El dni ingresado ya existe", "info")
         else:
-            flash("faltan datos para completar", "error")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error: {error}", 'info')
 
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_new"))
 
@@ -164,7 +166,7 @@ def riders_and_horsewomen_edit(id):
     """
 
     rider = rh.get_rider_by_id(id)
-    first_tutor, second_tutor = rh.get_tutors_by_rider_id(id)
+    tutor1, tutor2 = rh.get_tutors_by_rider_id(id)
     caring_professionals = rh.get_caring_professionals_by_rider_id(id)
     work_in_institutions = rh.get_work_in_institutions_by_rider_id(id)
     disability_certificate_options = disability_certificate_enum.enums
@@ -179,6 +181,8 @@ def riders_and_horsewomen_edit(id):
     riders = tm.get_all_riders()
     horses = eq.get_all_equestrians()
     track_assistants = tm.get_all_track_assistants()
+    therapist = tm.find_team_member_by_id(work_in_institutions.therapist)
+    track_assistant = tm.find_team_member_by_id(work_in_institutions.track_assistant)
 
     if not horses:
         flash(
@@ -218,10 +222,10 @@ def riders_and_horsewomen_edit(id):
     return render_template(
         "riders_and_horsewomen/edit.html",
         rider=rider,
-        first_tutor=first_tutor,
-        second_tutor=second_tutor,
+        tutor1=tutor1,
+        tutor2=tutor2,
         caring_professionals=caring_professionals,
-        work_in_institutions=work_in_institutions,
+        work=work_in_institutions,
         days_options=days_options,
         disability_certificate_options=disability_certificate_options,
         disability_type_options=disability_type_options,
@@ -235,8 +239,10 @@ def riders_and_horsewomen_edit(id):
         proposal_options=proposal_enum.enums,
         riders=riders,
         horses=horses,
+        therapist=therapist,
         track_assistants=track_assistants,
         health_insurance_options=health_insurances,
+        track_assistant=track_assistant,
     )
 
 
@@ -248,7 +254,15 @@ def riders_and_horsewomen_update(id):
     Updates the rider or horsewomen given by parameter
     """
 
-    rh.update(id, request.form, request.files)
+    form = RiderHorsewomanEditForm(request.form)
+    if form.validate():
+        rh.update(id, request.form, request.files)
+    else:
+        for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Error: {error}", 'info')
+    
+
 
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
