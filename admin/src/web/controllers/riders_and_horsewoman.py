@@ -27,11 +27,12 @@ from src.core import riders_and_horsewomen as rh
 from src.core import team_member as tm
 from src.core import equestrian as eq
 from src.core import health_insurance as hi
-from src.web.forms import RiderHorsewomanForm as riderForm, RiderHorsewomanEditForm
+from src.web.forms import FirstTutorForm, RiderHorsewomanForm as riderForm, RiderHorsewomanEditForm, SecondTutorForm, WorkInInstitutionForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 
-bp = Blueprint("riders_and_horsewomen", __name__, url_prefix="/riders_and_horsewomen")
+bp = Blueprint("riders_and_horsewomen", __name__,
+               url_prefix="/riders_and_horsewomen")
 
 
 @bp.get("/")
@@ -182,7 +183,10 @@ def riders_and_horsewomen_edit(id):
     horses = eq.get_all_equestrians()
     track_assistants = tm.get_all_track_assistants()
     therapist = tm.find_team_member_by_id(work_in_institutions.therapist)
-    track_assistant = tm.find_team_member_by_id(work_in_institutions.track_assistant)
+    track_assistant = tm.find_team_member_by_id(
+        work_in_institutions.track_assistant)
+    horse_handler = tm.find_team_member_by_id(work_in_institutions.rider_id)
+    horse = eq.find_equestrian_by_id(work_in_institutions.horse)
 
     if not horses:
         flash(
@@ -239,11 +243,56 @@ def riders_and_horsewomen_edit(id):
         proposal_options=proposal_enum.enums,
         riders=riders,
         horses=horses,
-        therapist=therapist,
+        rider_therapist=therapist,
         track_assistants=track_assistants,
         health_insurance_options=health_insurances,
-        track_assistant=track_assistant,
+        rider_track_assistant=track_assistant,
+        horse_handler=horse_handler,
+        work_horse = horse,
+        rider_condition = work_in_institutions.condition,
+        rider_seat = work_in_institutions.seat,
     )
+
+
+def validate_tutors(tutor1_form, tutor2_form):
+    validation_tutor1 = tutor1_form.validate()
+    validation_tutor2 = True
+    if tutor2_form:
+        validation_tutor2 = tutor2_form.validate()
+
+    return validation_tutor1 and validation_tutor2
+
+def show_tutors_errors(tutor1_form, tutor2_form):
+    for field, errors in tutor1_form.errors.items():
+        for error in errors:
+            flash(f"Error: {error}", 'info')
+    if tutor2_form:
+        for field, errors in tutor2_form.errors.items():
+            for error in errors:
+                flash(f"Error: {error}", 'info')
+
+def validate_forms(form, first_tutor_form, second_tutor_form, work_form, rider_id):
+
+
+
+    if not form.validate():
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error: {error}", 'info')
+        return False
+
+    if not validate_tutors(first_tutor_form, second_tutor_form):
+        show_tutors_errors(first_tutor_form, second_tutor_form)
+        return False
+        
+    if not work_form.validate():
+        for field, errors in work_form.errors.items():
+            for error in errors:
+                flash(f"Error: {error}", 'info')
+        return False
+    
+    return True
+        
 
 
 @bp.post("/update/<int:id>")
@@ -253,16 +302,20 @@ def riders_and_horsewomen_update(id):
     """
     Updates the rider or horsewomen given by parameter
     """
-
+    # Get forms
     form = RiderHorsewomanEditForm(request.form)
-    if form.validate():
-        rh.update(id, request.form, request.files)
-    else:
-        for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"Error: {error}", 'info')
-    
+    first_tutor_form = FirstTutorForm(request.form)
+    work_form = WorkInInstitutionForm(request.form)
 
+    second_tutor_form = None
+    if request.form.get('dni_second_tutor'):
+        second_tutor_form = SecondTutorForm(request.form)
+
+    # Validate forms
+    if validate_forms(form, first_tutor_form, second_tutor_form, work_form, id):
+        # Update rider
+        professionals = set(int(pro) for pro in request.form.getlist("caring_professionals"))
+        rh.update(id, request.form, professionals, request.files)
 
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
@@ -290,7 +343,8 @@ def riders_and_horsewomen_view(id):
     rider_files = rider.get_files()
     health_insurance = hi.get_by_id(rider.health_insurance_id)
     therapist = tm.find_team_member_by_id(work_in_institutions.therapist)
-    track_assistant = tm.find_team_member_by_id(work_in_institutions.track_assistant)
+    track_assistant = tm.find_team_member_by_id(
+        work_in_institutions.track_assistant)
     driver = eq.find_equestrian_by_id(work_in_institutions.rider_id)
     horse = eq.find_equestrian_by_id(work_in_institutions.horse)
 

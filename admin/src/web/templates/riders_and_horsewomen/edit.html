@@ -328,6 +328,70 @@
                         </div>
                     </div>
                     <div class="mb-2 p-4  bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">PROFESIONALES que lo ATIENDEN</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_1" class="block text-sm font-medium text-gray-700">Nombre del profesional</label>
+                                <select id="select_pro_1" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if caring_professionals[0]  %}
+                                        <option value="{{ caring_professionals[0].id }}" selected>{{ caring_professionals[0].last_name }}, {{ caring_professionals[0].name }}</option>
+                                    {% else %}
+                                        <option value="">Selecciona un profesional</option>
+                                    {% endif %}
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}">
+                                            {{ pro_member.last_name }}, {{ pro_member.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div id="pro-2" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_2" class="block text-sm font-medium text-gray-700">Nombre del profesional 2</label>
+                                <select id="select_pro_2" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}"  {% if pro_member.id == selected_pro_member_1_id %}selected{% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="pro-3" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_3" class="block text-sm font-medium text-gray-700">Nombre del profesional 3</label>
+                                <select id="select_pro_3" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="pro-4" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_4" class="block text-sm font-medium text-gray-700">Nombre del profesional 4</label>
+                                <select id="select_pro_4" name="select_pro_4" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="pro-5" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_5" class="block text-sm font-medium text-gray-700">Nombre del profesional 5</label>
+                                <select id="select_pro_5" name="select_pro_5" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    <option value="">Selecciona un profesional</option>
+                                    {% for pro_member in pro_member_options %}
+                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4  bg-white">
                         <h5 class="font-sans text-xl font-semibold text-gray-900">DATOS PERSONALES De FAMILIAR/es O TUTOR/es RESPONSABLE/s</h5>
                     </div>
                     <div class="px-2 py-8 bg-white sm:p-6">
@@ -467,9 +531,8 @@
                                 <label for="condition" class="block text-sm font-medium text-gray-700">Condición</label>
                                 <select id="condition" name="condition"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work.proposal }}">{{ work.proposal }}</option>
                                     {% for condition in condition_options %}
-                                        <option value="{{ condition }}">{{ condition }}</option>
+                                        <option value="{{ condition }}" {% if rider_condition == condition %} selected {% endif %}>{{ condition }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -477,9 +540,8 @@
                                 <label for="seat" class="block text-sm font-medium text-gray-700">SEDE</label>
                                 <select id="seat" name="seat"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work.proposal }}">{{ work.proposal }}</option>
                                     {% for seat in seat_options %}
-                                        <option value="{{ seat }}">{{ seat }}</option>
+                                        <option value="{{ seat }}" {% if seat == rider_seat %} selected {% endif %}>{{ seat }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -498,9 +560,17 @@
                                 <label for="therapist" class="block text-sm font-medium text-gray-700">Profesor/a o Terapeuta</label>
                                 <select id="therapist" name="therapist"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ therapist }}">{{ therapist.last_name }}, {{ therapist.name }}</option>
                                     {% for therapist in therapists %}
-                                        <option value="{{ therapist.id }}">{{ therapist.last_name }}, {{ therapist.name }}</option>
+                                        <option value="{{ therapist.id }}" {% if therapist.id == rider_therapist.id %} selected {% endif %}>{{ therapist.last_name }}, {{ therapist.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="rider" class="block text-sm font-medium text-gray-700">Conductor/a del Caballo</label>
+                                <select id="rider" name="rider"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for rider in riders %}
+                                        <option value="{{ rider.id }}"{% if rider.id == horse_handler.id %} selected {% endif %}>{{ rider.last_name }}, {{ rider.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -508,9 +578,8 @@
                                 <label for="horse" class="block text-sm font-medium text-gray-700">Caballo</label>
                                 <select id="horse" name="horse"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work_horse }}">{{ work_horse }}</option>
                                     {% for horse in horses %}
-                                        <option value="{{ horse.id }}">{{ horse.name }}</option>
+                                        <option value="{{ horse.id }}" {% if horse.id == work_horse.id %} selected {% endif %}>{{ horse.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -518,9 +587,8 @@
                                 <label for="track_assistant" class="block text-sm font-medium text-gray-700">Auxiliar de Pista</label>
                                 <select id="track_assistant" name="track_assistant"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ track_assistant }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% for track_assistant in track_assistants %}
-                                        <option value="{{ track_assistant.id }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
+                                        <option value="{{ track_assistant.id }}" {% if track_assistant.name == rider_track_assistant.name %} selected {% endif %}>{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

@@ -557,7 +557,7 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'proposal' no puede estar vacio."),
         ],
     )
     condition = StringField(
@@ -565,7 +565,7 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'condition' no puede estar vacio."),
         ],
     )
     seat = StringField(
@@ -573,25 +573,25 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'seat' no puede estar vacio."),
         ],
     )
     therapist = IntegerField(
-        "therapist", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "therapist", validators=[DataRequired(message="terapista")]
     )
     rider = IntegerField(
-        "rider", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "rider", validators=[DataRequired(message="rideame los huevos")]
     )
     horse = IntegerField(
-        "horse", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "horse", validators=[DataRequired(message="horseee")]
     )
     track_assistant = IntegerField(
-        "track_assistant", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "track_assistant", validators=[DataRequired(message="asistente track")]
     )
     days = StringField(
         "days",
         validators=[
-            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            DataRequired(message="dias"),
         ],
     )
 

@@ -349,7 +349,7 @@ def find_all_riders(name=None, last_name=None, dni=None, order_by='asc', profess
     return riders, max_pages
 
 
-def update(id, form, files):
+def update(id, form, selected_professionals, files):
     """
     Update a rider or horsewoman. Returns True if the rider was updated successfully, False otherwise.
     """
@@ -360,159 +360,167 @@ def update(id, form, files):
         return False
 
     try:
-        lista = []
-        scholarship_boolean = form.get("scholarship_boolean", False)
-        disability_certificate_boolean = form.get("disability_certificate_boolean", False)
-        family_allowance_boolean = form.get("family_allowance_boolean", False)
-        pension_boolean = form.get("pension_boolean", False)
-        curatela = form.get("curatela", False)
+        # Process boolean fields
+        lista = process_boolean_fields(form)
+        
+        # Update main data
+        update_rider_main_data(rider, form, lista)
 
-        if scholarship_boolean:
-            lista.append(form["scholarship_percentage"])
-            if form["observations_scholarship"]:
-                lista.append(form["observations_scholarship"])
-            else:
-                lista.append(None)
-        else:
-            lista.append(None)
-            lista.append(None)
-
-        if disability_certificate_boolean:
-            lista.append(form["disability_type"])
-            lista.append(form["disability_certificate"])
-            if form["disability_certificate"] == "OTRO":
-                lista.append(form["disability_certificate_otro"])
-            else:
-                lista.append(None)
-        else:
-            lista.append(None)
-            lista.append(None)
-            lista.append(None)
-
-        if family_allowance_boolean:
-            lista.append(form["family_allowance"])
-        else:
-            lista.append(None)
-        if pension_boolean:
-            lista.append(form["pension"])
-        else:
-            lista.append(None)
-
-        try:
-
-            rider.name = form["name"]
-            rider.last_name = form["last_name"]
-            rider.age = form["age"]
-            rider.date_of_birth = form["date_of_birth"]
-            rider.place_of_birth = form["place_of_birth"]
-            rider.address = form["address"]
-            rider.phone = form["phone"]
-            rider.emergency_contact = form["emergency_contact"]
-            rider.emergency_phone = form["emergency_phone"]
-            rider.scholarship_percentage = lista[0]
-            rider.observations = lista[1]
-            rider.disability_certificate = lista[3]
-            rider.others = lista[4]
-            rider.disability_type = lista[2]
-            rider.family_allowance = lista[5]
-            rider.pension = lista[6]
-            rider.name_institution = form["name_institution"]
-            rider.address_institution = form["address_institution"]
-            rider.phone_institution = form["phone_institution"]
-            rider.current_grade = form["current_grade"]
-            rider.observations_institution = form["observations_institution"]
-            rider.health_insurance_id = form["health_insurance"]
-            rider.membership_number = form["membership_number"]
-            rider.curatela = True if curatela == "on" else False
-            rider.pension_situation_observations = form["observations_institution"]
-
-            database.db.session.commit()
-
-        except Exception as e:
-            database.db.session.rollback()
-        else:
-            utils.riders_and_horsewomen_errors(form)
-            return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
-
-        update_caring_professionals(form, id)
+        # Update caring professionals, tutors and work in institution
+        update_caring_professionals(selected_professionals, id)
         update_tutors(form, id)
         update_work_in_institution(form, id)
-        rider_id = rider.id
 
-        for i in range(1, 4):  # Assuming there are 3 sets of file/link inputs
-            link = form.get(f"select_link_{i}")
-            filename = form.get(f"file_name_{i}")
-            file_type = form.get(f"type_select_file_{i}")
-            
-            if link != "":
-                new_link(link, filename, rider_id, file_type)
-            elif filename != "":
-                file = files[f"select_file_{i}"]
-                new_file(file, filename, file_type, rider_id)
+        # Process files and links
+        process_files_and_links(form, files, rider.id)
+
+        database.db.session.commit()
 
         flash("El jinete/Amazona se ha actualizado exitosamente")
     except Exception as e:
         database.db.session.rollback()
-        raise e
         flash("Error al actualizar el jinete/Amazona", "error")
         
 
     
+def process_boolean_fields(form):
+    """
+    Procesa los campos booleanos y retorna la lista de valores
+    """
+    lista = []
+    
+    # Obtener valores booleanos con valor por defecto False
+    scholarship_boolean = form.get("scholarship_boolean", False)
+    disability_certificate_boolean = form.get("disability_certificate_boolean", False)
+    family_allowance_boolean = form.get("family_allowance_boolean", False)
+    pension_boolean = form.get("pension_boolean", False)
+    
+    # Procesar beca
+    if scholarship_boolean:
+        lista.extend([
+            form.get("scholarship_percentage"),
+            form.get("observations_scholarship", None)
+        ])
+    else:
+        lista.extend([None, None])
+    
+    # Procesar certificado de discapacidad
+    if disability_certificate_boolean:
+        lista.extend([
+            form.get("disability_type"),
+            form.get("disability_certificate"),
+            form.get("disability_certificate_otro") if form.get("disability_certificate") == "OTRO" else None
+        ])
+    else:
+        lista.extend([None, None, None])
+    
+    # Procesar asignación familiar y pensión
+    lista.append(form.get("family_allowance") if family_allowance_boolean else None)
+    lista.append(form.get("pension") if pension_boolean else None)
+    
+    return lista
 
+def update_rider_main_data(rider, form, lista):
+    """
+    Actualiza los datos principales del rider
+    """
+    rider.name = form["name"]
+    rider.last_name = form["last_name"]
+    rider.age = form["age"]
+    rider.date_of_birth = form["date_of_birth"]
+    rider.place_of_birth = form["place_of_birth"]
+    rider.address = form["address"]
+    rider.phone = form["phone"]
+    rider.emergency_contact = form["emergency_contact"]
+    rider.emergency_phone = form["emergency_phone"]
+    rider.scholarship_percentage = lista[0]
+    rider.observations = lista[1]
+    rider.disability_certificate = lista[3]
+    rider.others = lista[4]
+    rider.disability_type = lista[2]
+    rider.family_allowance = lista[5]
+    rider.pension = lista[6]
+    rider.name_institution = form["name_institution"]
+    rider.address_institution = form["address_institution"]
+    rider.phone_institution = form["phone_institution"]
+    rider.current_grade = form["current_grade"]
+    rider.observations_institution = form["observations_institution"]
+    rider.health_insurance_id = form["health_insurance"]
+    rider.membership_number = form["membership_number"]
+    rider.curatela = form.get("curatela") == "on"
+    rider.pension_situation_observations = form["observations_institution"]
 
+def process_files_and_links(form, files, rider_id):
+    """
+    Procesa los archivos y enlaces
+    """
+    for i in range(1, 4):
+        link = form.get(f"select_link_{i}", "")
+        filename = form.get(f"file_name_{i}", "")
+        file_type = form.get(f"type_select_file_{i}")
+        
+        if link:
+            new_link(link, filename, rider_id, file_type)
+        elif filename:
+            file = files.get(f"select_file_{i}")
+            if file:
+                new_file(file, filename, file_type, rider_id)
 
-def update_caring_professionals(form, id):
+def update_caring_professionals(new_professionals, id):
     """
     Update caring professionals
     """
     caring_professionals = get_caring_professionals_by_rider_id(id)
 
-    for caring_professional in caring_professionals:
-        database.db.session.delete(caring_professional)
-        database.db.session.commit()
+    existing_professionals = {cp.id for cp in caring_professionals}
 
-    for i in range(1, 6):
-        id_key = f"select_pro_{i}"
-        if form.get(id_key):
-            create_caring_professional(id, form[id_key])
+    if new_professionals:
 
+        try:
+            # Delete caring professionals that are no longer selected
+            for cp in caring_professionals:
+                if cp.id not in new_professionals:
+                    carring = CaringProfessional.query.filter_by(team_member_id=cp.id).first()
+                    database.db.session.delete(carring)
+
+            # Add new caring professionals
+            for professional_id in new_professionals - existing_professionals:
+                create_caring_professional(id, professional_id)
+
+            database.db.session.flush()
+        except Exception as e:
+            database.db.session.rollback()
+            flash("Error al actualizar los profesionales a cargo", "error")
+            raise e
 
 def update_tutors(form, id):
     """
     Update tutors
     """
-    first_tutor_form = FirstTutorForm(form)
-    second_tutor_form = None
-    if form["dni_second_tutor"]:
-        second_tutor_form = SecondTutorForm(form)
 
     first_tutor = Tutor.query.filter(Tutor.rider_and_horsewoman_id == id).first()
-    second_tutor = Tutor.query.filter(Tutor.rider_and_horsewoman_id == id).all()[1]
-
-    validation_first_tutor = first_tutor_form.validate()
-    validation_second_tutor = False
-    if second_tutor_form:
-        validation_second_tutor = second_tutor_form.validate()
-
     
+    if form.get("dni_second_tutor"):
+        second_tutor = Tutor.query.filter(Tutor.rider_and_horsewoman_id == id).all()[1]
+    else:
+        second_tutor = None
 
-    if validation_first_tutor:
-        try: 
-            first_tutor.dni = form["dni_first_tutor"]
-            first_tutor.relationship = form["relationship_first_tutor"]
-            first_tutor.name = form["name_first_tutor"]
-            first_tutor.last_name = form["last_name_first_tutor"]
-            first_tutor.address = form["address_first_tutor"]
-            first_tutor.phone = form["phone_first_tutor"]
-            first_tutor.email = form["email_first_tutor"]
-            first_tutor.education_level = form["education_level_first_tutor"]
-            database.db.session.commit()
-        except Exception as e:
-            database.db.session.rollback()
-            flash("Error al actualizar el primer tutor", "error")
-            raise e
+    try: 
+        first_tutor.dni = form["dni_first_tutor"]
+        first_tutor.relationship = form["relationship_first_tutor"]
+        first_tutor.name = form["name_first_tutor"]
+        first_tutor.last_name = form["last_name_first_tutor"]
+        first_tutor.address = form["address_first_tutor"]
+        first_tutor.phone = form["phone_first_tutor"]
+        first_tutor.email = form["email_first_tutor"]
+        first_tutor.education_level = form["education_level_first_tutor"]
+        database.db.session.commit()
+    except Exception as e:
+        database.db.session.rollback()
+        flash("Error al actualizar el primer tutor", "error")
+        raise e
 
-    if validation_second_tutor:
+    if second_tutor:
         try:
             second_tutor.dni = form["dni_second_tutor"]
             second_tutor.relationship = form["relationship_second_tutor"]
@@ -535,32 +543,28 @@ def update_work_in_institution(form, id):
     """
     Update work in institution and the intermediate table
     """
-    work_form = WorkInInstitutionForm(form)
-    if work_form.validate():
-        work = get_work_in_institutions_by_rider_id(id)
+    
+    work = get_work_in_institutions_by_rider_id(id)
 
-        try: 
-            work.proposal = form["proposal"]
-            work.condition = form["condition"]
-            work.seat = form["seat"]
-            work.therapist = form["therapist"]
-            work.rider = form["rider"]
-            work.horse = form["horse"]
-            work.track_assistant = form["track_assistant"]
-            work.days = form.getlist("days")
+    try: 
+        work.proposal = form["proposal"]
+        work.condition = form["condition"]
+        work.seat = form["seat"]
+        work.therapist = form["therapist"]
+        work.rider = form["rider"]
+        work.horse = form["horse"]
+        work.track_assistant = form["track_assistant"]
+        work.days = form.getlist("days")
 
-            database.db.session.commit()
+        database.db.session.flush()
 
-        except Exception as e:
-            database.db.session.rollback()
-            flash("Error al actualizar el trabajo en institución", "error")
-            raise e
-    else:
-        for field, errors in work_form.errors.items():
-            for error in errors:
-                flash(f"Error in {field}: {error}")
+    except Exception as e:
+        database.db.session.rollback()
+        flash("Error al actualizar el trabajo en institución", "error")
+        raise e
 
-        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
+
+    return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
 
 
 def delete_a_rider(rider):
