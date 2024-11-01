@@ -271,7 +271,7 @@ def show_tutors_errors(tutor1_form, tutor2_form):
             for error in errors:
                 flash(f"Error: {error}", 'info')
 
-def validate_forms(form, first_tutor_form, second_tutor_form, work_form, rider_id):
+def validate_forms(form, first_tutor_form, second_tutor_form, work_form):
 
 
 
@@ -312,7 +312,7 @@ def riders_and_horsewomen_update(id):
         second_tutor_form = SecondTutorForm(request.form)
 
     # Validate forms
-    if validate_forms(form, first_tutor_form, second_tutor_form, work_form, id):
+    if validate_forms(form, first_tutor_form, second_tutor_form, work_form):
         # Update rider
         professionals = set(int(pro) for pro in request.form.getlist("caring_professionals"))
         rh.update(id, request.form, professionals, request.files)

@@ -227,18 +227,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div  id="family-allowance-box" class="hidden col-span-6 sm:col-span-3">
+                            <div  id="family-allowance-box" class="col-span-6 sm:col-span-3">
                                 <label for="family_allowance" class="block text-sm font-medium text-gray-700">Cual</label>
                                 <select id="family_allowance" name="family_allowance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.family_allowance_options }}" selected>{{ rider.family_allowance_options }}</option>
                                     {% for family_allowance in family_allowance_options %}
-                                        <option value="{{ family_allowance }}">{{ family_allowance }}</option>
+                                        <option value="{{ family_allowance }}" {% if rider.family_allowance_options == family_allowance %} selected {% endif %}>{{ family_allowance }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div id="family-allowance-box2" class="col-span-6 sm:col-span-3">
-
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <div class="flex items-center">
@@ -246,18 +244,17 @@
                                         <label for="pension_boolean" class="text-base font-medium text-gray-700">Pension</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" value="{{ 'True' if rider.pension else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" 
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.pension %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
-                            <div id="pension-box" class="hidden col-span-6 sm:col-span-3">
+                            <div id="pension-box" class="col-span-6 sm:col-span-3">
                                 <label for="pension" class="block text-sm font-medium text-gray-700">Cual</label>
                                 <select id="pension" name="pension"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.pension }}" selected>{{ rider.pension }}</option>
                                     {% for pension in pension_options %}
-                                        <option value="{{ pension }}">{{ pension }}</option>
+                                        <option value="{{ pension }}" {% if rider.pension == pension %} selected {% endif %}>{{ pension }} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -272,9 +269,8 @@
                                 <label for="health_insurance" class="block text-sm font-medium text-gray-700">Obra Social del Alumno</label>
                                 <select id="health_insurance" name="health_insurance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.health_insurance }}" selected>{{ rider.health_insurance }}</option>
                                     {% for health_insurance in health_insurance_options %}
-                                        <option value="{{ health_insurance.id }}">{{ health_insurance.name }}</option>
+                                        <option value="{{ health_insurance.id }}" {% if health_insurance.id == rider.health_insurance %}selected{% endif %}>{{ health_insurance.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -285,12 +281,12 @@
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="curatela" class="block text-sm font-medium text-gray-700">Posee curatela</label>
-                                <input id="curatela" name="curatela" type="checkbox" value="{{ 'True' if rider.curatela else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                <input id="curatela" name="curatela" type="checkbox" value="{{ rider.curatela }}"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"  {% if rider.curatela %}checked{% endif %}>
                             </div>
                             <div id="observations_institution_box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="pension_situation_observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
-                                <input type="text" name="pension_situation_observations" id="pension_situation_observations" value="{{ rider.pension_situation_observations }}"
+                                <input type="text" name="pension_situation_observations" id="pension_situation_observations"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
                         </div>

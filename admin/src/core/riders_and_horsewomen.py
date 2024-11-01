@@ -417,7 +417,7 @@ def process_boolean_fields(form):
     # Procesar asignación familiar y pensión
     lista.append(form.get("family_allowance") if family_allowance_boolean else None)
     lista.append(form.get("pension") if pension_boolean else None)
-    
+    print(form.get("curatela"))
     return lista
 
 def update_rider_main_data(rider, form, lista):
@@ -447,7 +447,7 @@ def update_rider_main_data(rider, form, lista):
     rider.observations_institution = form["observations_institution"]
     rider.health_insurance_id = form["health_insurance"]
     rider.membership_number = form["membership_number"]
-    rider.curatela = form.get("curatela") == "on"
+    rider.curatela = form.get("curatela")
     rider.pension_situation_observations = form["observations_institution"]
 
 def process_files_and_links(form, files, rider_id):

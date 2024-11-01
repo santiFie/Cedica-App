@@ -36,7 +36,7 @@ class RiderHorsewomanForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -146,7 +146,7 @@ class RiderHorsewomanForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -335,7 +335,7 @@ class RiderHorsewomanEditForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -415,7 +415,7 @@ class FirstTutorForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -486,7 +486,7 @@ class SecondTutorForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener entre 8 dígitos numéricos."
             ),
         ],
     )
@@ -688,7 +688,7 @@ class CollectionForm(Form):
         validators=[
             DataRequired(),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -722,7 +722,7 @@ class TeamMemberForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
