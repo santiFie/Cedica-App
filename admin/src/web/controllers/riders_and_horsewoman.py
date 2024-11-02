@@ -314,10 +314,10 @@ def riders_and_horsewomen_update(id):
     # Validate forms
     if validate_forms(form, first_tutor_form, second_tutor_form, work_form):
         # Update rider
-        professionals = set(int(pro) for pro in request.form.getlist("caring_professionals"))
+        professionals ={int(pro) for pro in request.form.getlist("select_pro") if pro != ""}
         rh.update(id, request.form, professionals, request.files)
 
-    return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_edit", id=id))
+    return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 
 
 @bp.route("/new_institution", methods=["GET", "POST"])

@@ -67,6 +67,8 @@ def create_caring_professional(id_rh, id_tm):
     database.db.session.add(caring)
     database.db.session.flush()
 
+    return caring
+
 
 def create_tutors(form, id):
     """
@@ -417,7 +419,6 @@ def process_boolean_fields(form):
     # Procesar asignación familiar y pensión
     lista.append(form.get("family_allowance") if family_allowance_boolean else None)
     lista.append(form.get("pension") if pension_boolean else None)
-    print(form.get("curatela"))
     return lista
 
 def update_rider_main_data(rider, form, lista):
@@ -447,7 +448,7 @@ def update_rider_main_data(rider, form, lista):
     rider.observations_institution = form["observations_institution"]
     rider.health_insurance_id = form["health_insurance"]
     rider.membership_number = form["membership_number"]
-    rider.curatela = form.get("curatela")
+    rider.curatela = form.get("curatela") == "on"
     rider.pension_situation_observations = form["observations_institution"]
 
 def process_files_and_links(form, files, rider_id):
@@ -475,7 +476,6 @@ def update_caring_professionals(new_professionals, id):
     existing_professionals = {cp.id for cp in caring_professionals}
 
     if new_professionals:
-
         try:
             # Delete caring professionals that are no longer selected
             for cp in caring_professionals:
