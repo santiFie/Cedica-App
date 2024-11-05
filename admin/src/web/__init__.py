@@ -5,6 +5,7 @@ from src.web.storage import storage
 from src.web import routes
 from src.web import errors
 from src.core import database
+from src.core.models.post import Post
 from src.core.models.riders_and_horsewomen import RiderAndHorsewoman, File, disability_certificate_enum, disability_type_enum, family_allowance_enum, pension_enum
 from src.core.models.health_insurance import HealthInsurance
 from src.core.models.team_member import TeamMember, ProfessionEnum, JobEnum, ConditionEnum
