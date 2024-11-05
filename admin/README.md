@@ -1,6 +1,6 @@
 ## Aplicación Web de CEDICA
 ### Contexto
-El Centro de Equitación para Personas con Discapacidad y Carenciadas (CEDICA) es una Asociación Civil sin Fines de Lucro fundada en 1994 en La Plata, Argentina. CEDICA busca igualar oportunidades y mejorar la calidad de vida de las personas con discapacidad a través de Terapias y Actividades Asistidas con Caballos (TACAs). El equipo está compuesto por profesionales ecuestres, terapistas, psicólogos, educadores y voluntarios.
+El Centro de Equitación para Personas con Discapacidad y Carenciadas (CEDICA) es una Asociación Civil sin Fines de Lucro fundada en 1994 en La Plata, Argentina. CEDICA busca igualar oportunidades y mejorar la calidad de vida de las personas con discapacidad a través de Terapias y Actividades Asistidas con Caballos (TACAs). El equipo está compuesto por profesionales ecuestres, terapistas, psicólogos, educadores y voluntarios.aaa
 
 ### Objetivo
 El objetivo de esta aplicación es digitalizar y gestionar la información de los diferentes procesos de trabajo de la institución. Los usuarios directos son los integrantes del equipo de CEDICA, quienes podrán acceder a los registros históricos de Jinetes y Amazonas (J&A), profesionales, caballos, y generar reportes estadísticos.
