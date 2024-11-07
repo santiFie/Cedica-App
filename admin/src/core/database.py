@@ -34,6 +34,7 @@ def reset():
     from src.core.payments import create_enums
     from src.core.collections import create_enums_collection
     from src.core import riders_and_horsewomen as rh
+    from src.core.post import create_enums as create_posts_enums
     db.drop_all()
     # Create all the rideders and horsewomen enums
     rh.create_enums()
@@ -41,6 +42,7 @@ def reset():
     tm.create_enums()
     create_enums() # enum de payments
     create_enums_collection()
+    create_posts_enums()
     db.create_all()
     print("Database reset complete.")
 
