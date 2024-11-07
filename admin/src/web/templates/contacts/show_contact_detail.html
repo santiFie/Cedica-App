@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Detalle de Deuda{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/css/main.ad49aa9b.css" />
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Detalle de Consulta </h1>
+
+    <p>Nombre Completo: {{contact.name}} {{contact.last_name}} </p>
+    <p>Email: {{contact.email}} </p>
+    <p>Consulta: {{contact.message}} </p>
+    <p>Estado: {{contact.state}} </p>
+
+
+    <a href="{{ url_for('contacts.index_contacts') }}" class="btn btn-primary">Volver a listado de Consultas</a>
+
+
+{% endblock %}
