@@ -34,6 +34,12 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = (
          f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
+    SQLAQCHEMY_TRACK_MODIFICATIONS = True
+    GOOGLE_CLIENT_ID = "130407405975-s0rpddvf3bhp77nhnpgp7cogaens4ufp.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET = "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"
+    GOOGLE_REDIRECT_URI = "https://localhost:5000/auth/google/callback"
+    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+
 
 class TestingConfig(Config):
     TESTING = True
