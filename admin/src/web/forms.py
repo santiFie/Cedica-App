@@ -998,8 +998,6 @@ class EquestrianForm(Form):
 
 class NewPostForm(Form):
 
-    
-    
     def title_exists(form, field):
         from src.core import post as post
         if post.title_exists(field.data):
@@ -1054,3 +1052,43 @@ class NewPostForm(Form):
         ],
     )
     
+class EditPostForm(Form):
+        
+    content = TextAreaField(
+        "Contenido",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=2000, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    summary = StringField(
+        "Copete",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    state = SelectField(
+        "Estado",
+        choices=[
+            ("Publicado", "Publicado"),
+            ("Borrador", "Borrador"),
+            ("Archivado", "Archivado"),
+        ],
+        validators=[DataRequired()],
+    )
+
+    def validate_posted_at(form, field):
+        if field.data < date.today():
+            raise ValidationError("La fecha de publicación no puede ser una fecha pasada.")
+        
+    posted_at = DateField(
+        "Fecha de publicación",
+        validators=[
+            DataRequired(),
+        ],
+    )
