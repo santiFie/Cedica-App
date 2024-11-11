@@ -8,11 +8,33 @@ def create_enums():
 def list_all_posts():
     return Post.query.all()
 
-def list_posts():
+def list_posts( page, per_page, author = None, published_from = None, published_to = None):
     """
-    Return all the posts that are published
+    Return posts that are published
     """
-    return Post.query.filter_by(state='Publicado').all()
+
+    query = Post.query.filter_by(state='Publicado')
+
+    if author:
+        query = query.filter(Post.author.ilike(f'%{author}%'))
+
+    if published_from:
+        query = query.filter(Post.posted_at >= published_from)
+
+    if published_to:
+        query = query.filter(Post.posted_at <= published_to)
+
+    total_post = query.count()
+
+    max_pages = (total_post + per_page - 1) // per_page
+
+    page = max(1, min(page, max_pages))
+
+    offset = (page - 1) * per_page
+    posts = query.offset(offset).limit(per_page).all()
+
+    return posts
+
 
 def title_exists(title):
     return Post.query.filter_by(title=title).first() is not None
