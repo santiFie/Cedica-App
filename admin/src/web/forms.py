@@ -16,7 +16,7 @@ from wtforms.validators import (
     ValidationError,
     Optional,
 )
-from datetime import date
+from datetime import date, datetime
 
 
 DATA_REQUIRED_MESSAGE = "El campo no puede estar vacio."
@@ -36,7 +36,7 @@ class RiderHorsewomanForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -146,7 +146,7 @@ class RiderHorsewomanForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -335,7 +335,7 @@ class RiderHorsewomanEditForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -415,7 +415,7 @@ class FirstTutorForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -486,7 +486,7 @@ class SecondTutorForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener entre 8 dígitos numéricos."
             ),
         ],
     )
@@ -557,7 +557,7 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'proposal' no puede estar vacio."),
         ],
     )
     condition = StringField(
@@ -565,7 +565,7 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'condition' no puede estar vacio."),
         ],
     )
     seat = StringField(
@@ -573,25 +573,25 @@ class WorkInInstitutionForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=50, message="El campo ingresado supera el limite de caracteres"),
-            Length(min=1, message="El campo no puede estar vacio."),
+            Length(min=1, message="El campo 'seat' no puede estar vacio."),
         ],
     )
     therapist = IntegerField(
-        "therapist", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "therapist", validators=[DataRequired(message="terapista")]
     )
     rider = IntegerField(
-        "rider", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "rider", validators=[DataRequired(message="rideame los huevos")]
     )
     horse = IntegerField(
-        "horse", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "horse", validators=[DataRequired(message="horseee")]
     )
     track_assistant = IntegerField(
-        "track_assistant", validators=[DataRequired(message=DATA_REQUIRED_MESSAGE)]
+        "track_assistant", validators=[DataRequired(message="asistente track")]
     )
     days = StringField(
         "days",
         validators=[
-            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            DataRequired(message="dias"),
         ],
     )
 
@@ -688,7 +688,7 @@ class CollectionForm(Form):
         validators=[
             DataRequired(),
             Regexp(
-                r"^\d{8,9}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -722,7 +722,7 @@ class TeamMemberForm(Form):
         validators=[
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Regexp(
-                r"^\d{8}$", message="El DNI debe tener entre 8 y 9 dígitos numéricos."
+                r"^\d{8}$", message="El DNI debe tener 8 dígitos numéricos."
             ),
         ],
     )
@@ -992,5 +992,103 @@ class EquestrianForm(Form):
             DataRequired(message=DATA_REQUIRED_MESSAGE),
             Length(max=120, message="El campo supera el limite de caracteres"),
             Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+
+class NewPostForm(Form):
+
+    def title_exists(form, field):
+        from src.core import post as post
+        if post.title_exists(field.data):
+            raise ValidationError("El título ingresado ya existe.")
+        
+    title = StringField(
+        "Título",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+            title_exists,
+        ],
+    )
+
+    content = TextAreaField(
+        "Contenido",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=2000, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    summary = StringField(
+        "Copete",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    state = SelectField(
+        "Estado",
+        choices=[
+            ("Publicado", "Publicado"),
+            ("Borrador", "Borrador"),
+            ("Archivado", "Archivado"),
+        ],
+        validators=[DataRequired()],
+    )
+
+    def validate_posted_at(form, field):
+        if field.data < date.today():
+            raise ValidationError("La fecha de publicación no puede ser una fecha pasada.")
+        
+    posted_at = DateField(
+        "Fecha de publicación",
+        validators=[
+            DataRequired(),
+        ],
+    )
+    
+class EditPostForm(Form):
+        
+    content = TextAreaField(
+        "Contenido",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=2000, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    summary = StringField(
+        "Copete",
+        validators=[
+            DataRequired(message=DATA_REQUIRED_MESSAGE),
+            Length(max=120, message="El campo supera el limite de caracteres"),
+            Length(min=1, message="El campo no puede estar vacio."),
+        ],
+    )
+
+    state = SelectField(
+        "Estado",
+        choices=[
+            ("Publicado", "Publicado"),
+            ("Borrador", "Borrador"),
+            ("Archivado", "Archivado"),
+        ],
+        validators=[DataRequired()],
+    )
+
+    def validate_posted_at(form, field):
+        if field.data < date.today():
+            raise ValidationError("La fecha de publicación no puede ser una fecha pasada.")
+        
+    posted_at = DateField(
+        "Fecha de publicación",
+        validators=[
+            DataRequired(),
         ],
     )

@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
-                                <input type="text" name="last_name" id="last_name" value="{{ rider.name }}"
+                                <input type="text" name="last_name" id="last_name" value="{{ rider.last_name }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -155,12 +155,12 @@
                                         <label for="scholarship_boolean" class="text-base font-medium text-gray-700">Becado</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox" value="{{ rider.scholarship_boolean }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox" value="{{ 'True' if rider.scholarship_percentage else 'False' }}"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.disability_certificate != '0' %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
-                            <div id="scholarship-box" class="hidden col-span-6 sm:col-span-3">
+                            <div id="scholarship-box" class="{% if not rider.scholarship_percentage %} hidden {% endif %} col-span-6 sm:col-span-3">
                                 <label for="scholarship_percentage" class="block text-sm font-medium text-gray-700">Porcentaje de Beca</label>
                                 <div class="flex items-center mt-1">
                                     <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="50" value="{{ rider.scholarship_percentage }}"
@@ -169,7 +169,7 @@
                                     <output id="percentage_display" class="ml-2">50</output><span>%</span>
                                 </div>
                             </div>
-                            <div id="observations-scholarship-box" class="hidden col-span-6 sm:col-span-3">
+                            <div id="observations-scholarship-box" class="{% if not rider.scholarship_percentage %} hidden {% endif %}col-span-6 sm:col-span-3">
                                 <label for="observations_scholarship" class="block text-sm font-medium text-gray-700">Observaciones de la beca</label>
                                 <input type="text" name="observations_scholarship" id="observations_scholarship" value="{{ rider.observations_scholarship }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
@@ -183,7 +183,7 @@
                                         <label for="disability_certificate_boolean" class="text-base font-medium text-gray-700">Certificado de Discapacidad</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox" value= "{{ 'True' if rider.disability_certificate else 'False' }}"
+                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox"{% if rider.disability_certificate != '' %}checked{% endif %}
                                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="{{ rider.disability_type }}" selected>{{ rider.disability_type }}</option>
                                     {% for disability_type in disability_type_options %}
-                                        <option value="{{ disability_type }}">{{ disability_type }}</option>
+                                        <option value="{{ disability_type }}"  {% if rider.disability_type == disability_type %} selected {% endif %}>{{ disability_type }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -203,9 +203,8 @@
                                 <select id="disability_certificate" name="disability_certificate"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm"
                                     onchange="handleSelectChange()">
-                                    <option value="{{ rider.disability_certificate_options }}" selected>{{ rider.disability_certificate_options }}</option>
                                     {% for disability_certificate in disability_certificate_options %}
-                                    <option value="{{ disability_certificate }}">{{ disability_certificate }}</option>
+                                        <option value="{{ disability_certificate }}"  {% if rider.disability_certificate == disability_certificate %} selected {% endif %}>{{ disability_certificate }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -222,23 +221,21 @@
                                         <label for="family_allowance_boolean" class="text-base font-medium text-gray-700">Asignación Familiar</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="family_allowance_boolean" name="family_allowance_boolean" type="checkbox" value="{{ 'True' if rider.family_allowance else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="family_allowance_boolean" name="family_allowance_boolean" type="checkbox"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.family_allowance %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
-                            <div  id="family-allowance-box" class="hidden col-span-6 sm:col-span-3">
+                            <div  id="family-allowance-box" class="col-span-6 sm:col-span-3">
                                 <label for="family_allowance" class="block text-sm font-medium text-gray-700">Cual</label>
                                 <select id="family_allowance" name="family_allowance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.family_allowance_options }}" selected>{{ rider.family_allowance_options }}</option>
                                     {% for family_allowance in family_allowance_options %}
-                                        <option value="{{ family_allowance }}">{{ family_allowance }}</option>
+                                        <option value="{{ family_allowance }}" {% if rider.family_allowance == family_allowance %} selected {% endif %}>{{ family_allowance }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div id="family-allowance-box2" class="col-span-6 sm:col-span-3">
-
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <div class="flex items-center">
@@ -246,18 +243,17 @@
                                         <label for="pension_boolean" class="text-base font-medium text-gray-700">Pension</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" value="{{ 'True' if rider.pension else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" 
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.pension %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
-                            <div id="pension-box" class="hidden col-span-6 sm:col-span-3">
+                            <div id="pension-box" class="col-span-6 sm:col-span-3">
                                 <label for="pension" class="block text-sm font-medium text-gray-700">Cual</label>
                                 <select id="pension" name="pension"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.pension }}" selected>{{ rider.pension }}</option>
                                     {% for pension in pension_options %}
-                                        <option value="{{ pension }}">{{ pension }}</option>
+                                        <option value="{{ pension }}" {% if rider.pension == pension %} selected {% endif %}>{{ pension }} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -272,9 +268,8 @@
                                 <label for="health_insurance" class="block text-sm font-medium text-gray-700">Obra Social del Alumno</label>
                                 <select id="health_insurance" name="health_insurance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ rider.health_insurance }}" selected>{{ rider.health_insurance }}</option>
                                     {% for health_insurance in health_insurance_options %}
-                                        <option value="{{ health_insurance.id }}">{{ health_insurance.name }}</option>
+                                        <option value="{{ health_insurance.id }}" {% if health_insurance.id == rider.health_insurance %}selected{% endif %}>{{ health_insurance.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -285,12 +280,12 @@
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="curatela" class="block text-sm font-medium text-gray-700">Posee curatela</label>
-                                <input id="curatela" name="curatela" type="checkbox" value="{{ 'True' if rider.curatela else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                <input id="curatela" name="curatela" type="checkbox"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"  {% if rider.curatela %}checked{% endif %}>
                             </div>
                             <div id="observations_institution_box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="pension_situation_observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
-                                <input type="text" name="pension_situation_observations" id="pension_situation_observations" value="{{ rider.pension_situation_observations }}"
+                                <input type="text" name="pension_situation_observations" id="pension_situation_observations"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
                         </div>
@@ -325,6 +320,114 @@
                                 <input type="text" name="observations_institution" id="observations_institution" value="{{ rider.observations_institution }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
+                        </div>
+                    </div>
+                    <div class="mb-2 p-4  bg-white">
+                        <h5 class="font-sans text-xl font-semibold text-gray-900">PROFESIONALES que lo ATIENDEN</h5>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_1" class="block text-sm font-medium text-gray-700">Nombre del profesional</label>
+                                <select id="select_pro_1" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if not caring_professionals[0]  %}
+                                        <option value="">Selecciona un profesional</option>
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}">
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}" {% if pro_member == caring_professionals[0] %} selected {% endif%}>
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            
+                            <div id="pro-2" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_2" class="block text-sm font-medium text-gray-700">Nombre del profesional 2</label>
+                                <select id="select_pro_2" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if not caring_professionals[1]  %}
+                                        <option value="">Selecciona un profesional</option>
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}">
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}" {% if pro_member == caring_professionals[1] %} selected {% endif %}>
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div id="pro-3" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_3" class="block text-sm font-medium text-gray-700">Nombre del profesional 3</label>
+                                <select id="select_pro_3" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if not caring_professionals[2]  %}
+                                        <option value="">Selecciona un profesional</option>
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}">
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}" {% if pro_member == caring_professionals[2] %} selected {% endif%}>
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div id="pro-4" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_4" class="block text-sm font-medium text-gray-700">Nombre del profesional 4</label>
+                                <select id="select_pro_4" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if not caring_professionals[3]  %}
+                                        <option value="">Selecciona un profesional</option>
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}">
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}" {% if pro_member == caring_professionals[3] %} selected {% endif%}>
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div id="pro-5" class="col-span-6 sm:col-span-3">
+                                <label for="select_pro_5" class="block text-sm font-medium text-gray-700">Nombre del profesional 5</label>
+                                <select id="select_pro_5" name="select_pro" placeholder="Selecciona un profesional" norequired
+                                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% if not caring_professionals[4]  %}
+                                        <option value="">Selecciona un profesional</option>
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}">
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for pro_member in pro_member_options %}
+                                            <option value="{{ pro_member.id }}" {% if pro_member == caring_professionals[4] %} selected {% endif%}>
+                                                {{ pro_member.last_name }}, {{ pro_member.name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-2 p-4  bg-white">
@@ -467,9 +570,8 @@
                                 <label for="condition" class="block text-sm font-medium text-gray-700">Condición</label>
                                 <select id="condition" name="condition"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work.proposal }}">{{ work.proposal }}</option>
                                     {% for condition in condition_options %}
-                                        <option value="{{ condition }}">{{ condition }}</option>
+                                        <option value="{{ condition }}" {% if rider_condition == condition %} selected {% endif %}>{{ condition }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -477,9 +579,8 @@
                                 <label for="seat" class="block text-sm font-medium text-gray-700">SEDE</label>
                                 <select id="seat" name="seat"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work.proposal }}">{{ work.proposal }}</option>
                                     {% for seat in seat_options %}
-                                        <option value="{{ seat }}">{{ seat }}</option>
+                                        <option value="{{ seat }}" {% if seat == rider_seat %} selected {% endif %}>{{ seat }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -498,9 +599,17 @@
                                 <label for="therapist" class="block text-sm font-medium text-gray-700">Profesor/a o Terapeuta</label>
                                 <select id="therapist" name="therapist"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ therapist }}">{{ therapist.last_name }}, {{ therapist.name }}</option>
                                     {% for therapist in therapists %}
-                                        <option value="{{ therapist.id }}">{{ therapist.last_name }}, {{ therapist.name }}</option>
+                                        <option value="{{ therapist.id }}" {% if therapist.id == rider_therapist.id %} selected {% endif %}>{{ therapist.last_name }}, {{ therapist.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="rider" class="block text-sm font-medium text-gray-700">Conductor/a del Caballo</label>
+                                <select id="rider" name="rider"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for rider in riders %}
+                                        <option value="{{ rider.id }}"{% if rider.id == horse_handler.id %} selected {% endif %}>{{ rider.last_name }}, {{ rider.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -508,9 +617,8 @@
                                 <label for="horse" class="block text-sm font-medium text-gray-700">Caballo</label>
                                 <select id="horse" name="horse"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ work_horse }}">{{ work_horse }}</option>
                                     {% for horse in horses %}
-                                        <option value="{{ horse.id }}">{{ horse.name }}</option>
+                                        <option value="{{ horse.id }}" {% if horse.id == work_horse.id %} selected {% endif %}>{{ horse.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -518,9 +626,8 @@
                                 <label for="track_assistant" class="block text-sm font-medium text-gray-700">Auxiliar de Pista</label>
                                 <select id="track_assistant" name="track_assistant"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
-                                    <option value="{{ track_assistant }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% for track_assistant in track_assistants %}
-                                        <option value="{{ track_assistant.id }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
+                                        <option value="{{ track_assistant.id }}" {% if track_assistant.name == rider_track_assistant.name %} selected {% endif %}>{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
