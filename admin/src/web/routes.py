@@ -6,6 +6,8 @@ from src.web.controllers.equestrian import bp as equestrian_bp
 from src.web.controllers.riders_and_horsewoman import bp as riders_horsewoman_bp
 from src.web.controllers.collections import bp as collections_bp
 from src.web.api.posts import bp as posts_api_bp
+from src.web.api.contacts import bp as contacts_api_bp
+from src.web.controllers.contacts import bp as contacts_bp
 from flask import render_template
 from src.web.handlers.auth import login_required
 
@@ -27,3 +29,5 @@ def register(app):
     app.register_blueprint(collections_bp)
     app.register_blueprint(riders_horsewoman_bp)
     app.register_blueprint(posts_api_bp)
+    app.register_blueprint(contacts_api_bp)
+    app.register_blueprint(contacts_bp)

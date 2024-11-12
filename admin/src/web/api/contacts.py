@@ -1,12 +1,11 @@
 from src.core import contact
 from src.web.schema.contact import contact_schema as contact_api
-from flask import Blueprint, request
-from json import jsonify
+from flask import Blueprint, request, jsonify
 
 bp = Blueprint('contacts_api', __name__, url_prefix='/api/contacts')
 
 
-@bp.post('/')
+@bp.get('/')
 def create_contact():
     attrs = request.json
     errors = contact_api.validate(data)

@@ -6,8 +6,8 @@ from src.core.contact import find_contacts, find_contact, delete_contact
 bp = Blueprint("contact", __name__, url_prefix="/contacts")
 
 @bp.get("/list_contacts")
-@cheack_permissions("contact_index")
-@login_required
+#@cheack_permissions("contact_index")
+#@login_required
 def index_contacts():
 
     # obtener parametros de busqueda del formulario
