@@ -37,7 +37,7 @@ def create_app(env="production", static_folder="../../static"):
 
     # Error handlers
     errors.register_errors(app)
-
+    database.reset()
     app.jinja_env.globals.update(check_permissions=has_permissions)
     app.jinja_env.globals.update(is_link=is_link)
 
