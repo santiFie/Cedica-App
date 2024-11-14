@@ -116,7 +116,7 @@ def user_new():
 
     roles = Role.query.all()
 
-    return render_template("users/register.html", roles=roles)
+    return render_template("users/register.html", roles=roles, form=request.form)
 
 
 @bp.get("/user_switch_state")
@@ -133,7 +133,6 @@ def user_switch_state():
             tm.switch_state(team_member)
         flash("Se cambio el estado satisfactoriamente")
 
-    print(check_return)
     if check_return == 1:
         return redirect(url_for('users.user_profile'))
     return redirect(url_for("users.user_index"))

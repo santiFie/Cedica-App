@@ -66,7 +66,7 @@ def riders_and_horsewomen_index():
 @bp.route("/new", methods=["GET", "POST"])
 @check_permissions("riders_and_horsewomen_new")
 @login_required
-def riders_and_horsewomen_new():
+def riders_and_horsewomen_new(form=None):
     """
     Register a new rider or horsewomen with the information of the form
     """
@@ -135,7 +135,7 @@ def riders_and_horsewomen_new():
                 for error in errors:
                     flash(f"Error: {error}", 'info')
 
-        return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_new"))
+        #return riders_and_horsewomen_new(request.form)
 
     return render_template(
         "riders_and_horsewomen/new.html",
@@ -155,13 +155,14 @@ def riders_and_horsewomen_new():
         track_assistants=track_assistants,
         health_insurance_options=health_insurances,
         file_type=file_type,
+        form=request.form,
     )
 
 
 @bp.get("/edit/<int:id>")
 @check_permissions("riders_and_horsewomen_edit")
 @login_required
-def riders_and_horsewomen_edit(id):
+def riders_and_horsewomen_edit(id, form=None):
     """
     Renders the riders and horsewomen edit form page
     """
@@ -222,7 +223,7 @@ def riders_and_horsewomen_edit(id):
             "error",
         )
         return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
-
+    
     return render_template(
         "riders_and_horsewomen/edit.html",
         rider=rider,
@@ -251,6 +252,7 @@ def riders_and_horsewomen_edit(id):
         work_horse = horse,
         rider_condition = work_in_institutions.condition,
         rider_seat = work_in_institutions.seat,
+        form=form,
     )
 
 
@@ -316,6 +318,8 @@ def riders_and_horsewomen_update(id):
         # Update rider
         professionals ={int(pro) for pro in request.form.getlist("select_pro") if pro != ""}
         rh.update(id, request.form, professionals, request.files)
+    else:
+        return riders_and_horsewomen_edit(id, form=request.form)
 
     return redirect(url_for("riders_and_horsewomen.riders_and_horsewomen_index"))
 

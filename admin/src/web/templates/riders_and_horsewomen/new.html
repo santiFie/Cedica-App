@@ -138,52 +138,52 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                                <input type="text" name="name" id="name"
+                                <input type="text" name="name" id="name" value="{{ form.name if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="dni" class="block text-sm font-medium text-gray-700">Dni</label>
-                                <input type="text" name="dni" id="dni"
+                                <input type="text" name="dni" id="dni" value="{{ form.dni if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
-                                <input type="text" name="last_name" id="last_name"
+                                <input type="text" name="last_name" id="last_name" value="{{ form.last_name if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="age" class="block text-sm font-medium text-gray-700">Edad</label>
-                                <input type="number" name="age" id="age"
+                                <input type="number" name="age" id="age" value="{{ form.age if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="place_of_birth" class="block text-sm font-medium text-gray-700">Lugar de nacimiento</label>
-                                <input type="text" name="place_of_birth" id="place_of_birth"
+                                <input type="text" name="place_of_birth" id="place_of_birth" value="{{ form.place_of_birth if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                                <input type="date" name="date_of_birth" id="date_of_birth"
+                                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ form.date_of_birth if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address" class="block text-sm font-medium text-gray-700">Direccion</label>
-                                <input type="text" name="address" id="address"
+                                <input type="text" name="address" id="address" value="{{ form.address if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone" class="block text-sm font-medium text-gray-700">Numero de telefono</label>
-                                <input type="text" name="phone" id="phone"
+                                <input type="text" name="phone" id="phone" value="{{ form.phone if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_contact" class="block text-sm font-medium text-gray-700">Contacto de emergencia</label>
-                                <input type="text" name="emergency_contact" id="emergency_contact"
+                                <input type="text" name="emergency_contact" id="emergency_contact" value="{{ form.emergency_contact if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_phone" class="block text-sm font-medium text-gray-700">Telefono de contacto de emergencia</label>
-                                <input type="text" name="emergency_phone" id="emergency_phone"
+                                <input type="text" name="emergency_phone" id="emergency_phone" value="{{ form.emergency_phone if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -192,23 +192,23 @@
                                         <label for="scholarship_boolean" class="text-base font-medium text-gray-700">Becado</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox" 
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if form.scholarship_boolean == 'on' %} checked {% endif %}>
                                     </div>
                                 </div>
                             </div>
                             <div id="scholarship-box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="scholarship_percentage" class="block text-sm font-medium text-gray-700">Porcentaje de Beca</label>
                                 <div class="flex items-center mt-1">
-                                    <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="50" 
-                                    class="block w-full"
+                                    <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="{{ form.scholarship_percentage if form else '50' }}" 
+                                    class="block w-full" 
                                     oninput="this.nextElementSibling.value = this.value">
-                                    <output id="percentage_display" class="ml-2">50</output><span>%</span>
+                                    <output id="percentage_display" class="ml-2">{{ form.scholarship_percentage if form else '50' }}</output><span>%</span>
                                 </div>
                             </div>
                             <div id="observations-scholarship-box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="observations_scholarship" class="block text-sm font-medium text-gray-700">Observaciones de la beca</label>
-                                <input type="text" name="observations_scholarship" id="observations_scholarship"
+                                <input type="text" name="observations_scholarship" id="observations_scholarship" value="{{ form.observations_scholarship if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -220,8 +220,8 @@
                                         <label for="disability_certificate_boolean" class="text-base font-medium text-gray-700">Certificado de Discapacidad</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.disability_certificate is not None %}checked{% endif %}>
+                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox" {% if form.disability_certificate_boolean == 'on' %} checked {% endif %}
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                                 <select id="disability_type" name="disability_type"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for disability_type in disability_type_options %}
-                                        <option value="{{ disability_type }}">{{ disability_type }}</option>
+                                        <option value="{{ disability_type }}" {% if form.disability_type == disability_type %} selected {%endif%} >{{ disability_type }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -240,13 +240,13 @@
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm"
                                     onchange="handleSelectChange()">
                                     {% for disability_certificate in disability_certificate_options %}
-                                    <option value="{{ disability_certificate }}">{{ disability_certificate }}</option>
+                                        <option value="{{ disability_certificate }}"  {% if form.disability_certificate == disability_certificate %} selected {% endif %}>{{ disability_certificate }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div id="disability-certificate-box2" class=" hidden col-span-6 sm:col-span-3">
                                 <label for="disability_certificate_otro" class="block text-sm font-medium text-gray-700">Otro</label>
-                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro"
+                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro" value="{{ form.disability_certificate_otro if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" readonly>
                             </div>
                             <div id="disability-certificate-box3" class="col-span-6 sm:col-span-3">
@@ -257,7 +257,7 @@
                                         <label for="family_allowance_boolean" class="text-base font-medium text-gray-700">Asignación Familiar</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="family_allowance_boolean" name="family_allowance_boolean" type="checkbox"
+                                        <input id="family_allowance_boolean" name="family_allowance_boolean" type="checkbox" {% if form.family_allowance_boolean == 'on' %} checked {% endif %}
                                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@
                                 <select id="family_allowance" name="family_allowance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for family_allowance in family_allowance_options %}
-                                        <option value="{{ family_allowance }}">{{ family_allowance }}</option>
+                                        <option value="{{ family_allowance }}"  {% if form.family_allowance == family_allowance %} selected {% endif %}>{{ family_allowance }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -280,7 +280,7 @@
                                         <label for="pension_boolean" class="text-base font-medium text-gray-700">Pension</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="pension_boolean" name="pension_boolean" type="checkbox"
+                                        <input id="pension_boolean" name="pension_boolean" type="checkbox" {% if form.pension_boolean == 'on' %} checked {% endif %}
                                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                 </div>
@@ -290,7 +290,7 @@
                                 <select id="pension" name="pension"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for pension in pension_options %}
-                                        <option value="{{ pension }}">{{ pension }}</option>
+                                        <option value="{{ pension }}"  {% if form.pension == pension %} selected {% endif %}>{{ pension }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -306,23 +306,23 @@
                                 <select id="health_insurance" name="health_insurance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for health_insurance in health_insurance_options %}
-                                        <option value="{{ health_insurance.id }}">{{ health_insurance.name }}</option>
+                                        <option value="{{ health_insurance.id }}"  {% if form.health_insurance == health_insurance.id %} selected {% endif %}>{{ health_insurance.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="membership_number" class="block text-sm font-medium text-gray-700">Nº afiliado</label>
-                                <input type="text" name="membership_number" id="membership_number"
+                                <input type="text" name="membership_number" id="membership_number" value="{{ form.membership_number if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="curatela" class="block text-sm font-medium text-gray-700">Posee curatela</label>
-                                <input id="curatela" name="curatela" type="checkbox"
+                                <input id="curatela" name="curatela" type="checkbox" {% if form.curatela == 'on' %} checked {% endif %}
                                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                             </div>
                             <div id="observations_institution_box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="pension_situation_observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
-                                <input type="text" name="pension_situation_observations" id="pension_situation_observations"
+                                <input type="text" name="pension_situation_observations" id="pension_situation_observations" value="{{ form.pension_situation_observations if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
                         </div>
@@ -334,27 +334,27 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name_institution" class="block text-sm font-medium text-gray-700">Nombre de la institucion</label>
-                                <input type="text" name="name_institution" id="name_institution"
+                                <input type="text" name="name_institution" id="name_institution" value="{{ form.name_institution if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address_institution" class="block text-sm font-medium text-gray-700">Direccion de la institucion</label>
-                                <input type="text" name="address_institution" id="address_institution"
+                                <input type="text" name="address_institution" id="address_institution" value="{{ form.address_institution if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone_institution" class="block text-sm font-medium text-gray-700">Telefono de la institucion</label>
-                                <input type="text" name="phone_institution" id="phone_institution"
+                                <input type="text" name="phone_institution" id="phone_institution" value="{{ form.phone_institution if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="current_grade" class="block text-sm font-medium text-gray-700">Grado / año actual</label>
-                                <input type="text" name="current_grade" id="current_grade"
+                                <input type="text" name="current_grade" id="current_grade" value="{{ form.current_grade if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="observations_institution" class="block text-sm font-medium text-gray-700">Observaciones de la institucion</label>
-                                <input type="text" name="observations_institution" id="observations_institution"
+                                <input type="text" name="observations_institution" id="observations_institution" value="{{ form.observations_institution if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
                         </div>
@@ -370,7 +370,7 @@
                                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="">Selecciona un profesional</option>
                                     {% for pro_member in pro_member_options %}
-                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                        <option value="{{ pro_member.id }}"  {% if form.select_pro_1 == pro_member.id %} selected {% endif %}></option>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -386,7 +386,7 @@
                                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="">Selecciona un profesional</option>
                                     {% for pro_member in pro_member_options %}
-                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                        <option value="{{ pro_member.id }}"  {% if form.select_pro_2 == pro_member.id %} selected {% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -396,7 +396,7 @@
                                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="">Selecciona un profesional</option>
                                     {% for pro_member in pro_member_options %}
-                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                        <option value="{{ pro_member.id }}"  {% if form.select_pro_3 == pro_member.id %} selected {% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -406,7 +406,7 @@
                                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="">Selecciona un profesional</option>
                                     {% for pro_member in pro_member_options %}
-                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                        <option value="{{ pro_member.id }}"  {% if form.select_pro_4 == pro_member.id %} selected {% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -416,7 +416,7 @@
                                 class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="">Selecciona un profesional</option>
                                     {% for pro_member in pro_member_options %}
-                                        <option value="{{ pro_member.id }}">{{ pro_member.last_name }}, {{ pro_member.name }}</option>
+                                        <option value="{{ pro_member.id }}"  {% if form.select_pro_5 == pro_member.id %} selected {% endif %}>{{ pro_member.last_name }}, {{ pro_member.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -429,51 +429,51 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name_first_tutor" class="block text-sm font-medium text-gray-700">Nombre</label>
-                                <input type="text" name="name_first_tutor" id="name_first_tutor"
+                                <input type="text" name="name_first_tutor" id="name_first_tutor" value="{{ form.name_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="dni_first_tutor" class="block text-sm font-medium text-gray-700">Dni</label>
-                                <input type="text" name="dni_first_tutor" id="dni_first_tutor"
+                                <input type="text" name="dni_first_tutor" id="dni_first_tutor" value="{{ form.dni_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name_first_tutor" class="block text-sm font-medium text-gray-700">Apellido</label>
-                                <input type="text" name="last_name_first_tutor" id="last_name_first_tutor"
+                                <input type="text" name="last_name_first_tutor" id="last_name_first_tutor" value="{{ form.last_name_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="relationship_first_tutor" class="block text-sm font-medium text-gray-700">Parentesco</label>
-                                <input type="text" name="relationship_first_tutor" id="relationship_first_tutor"
+                                <input type="text" name="relationship_first_tutor" id="relationship_first_tutor" value="{{ form.relationship_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address_first_tutor" class="block text-sm font-medium text-gray-700">Direccion</label>
-                                <input type="text" name="address_first_tutor" id="address_first_tutor"
+                                <input type="text" name="address_first_tutor" id="address_first_tutor" value="{{ form.address_first_tutor if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone_first_tutor" class="block text-sm font-medium text-gray-700">Numero de telefono</label>
-                                <input type="text" name="phone_first_tutor" id="phone_first_tutor"
+                                <input type="text" name="phone_first_tutor" id="phone_first_tutor" value="{{ form.phone_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="email_first_tutor" class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="text" name="email_first_tutor" id="email_first_tutor"
+                                <input type="text" name="email_first_tutor" id="email_first_tutor"  value="{{ form.email_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="education_level_first_tutor" class="block text-sm font-medium text-gray-700">Nivel de escolaridad alcanzado</label>
-                                <select id="education_level_first_tutor" name="education_level_first_tutor"
+                                <select id="education_level_first_tutor" name="education_level_first_tutor" 
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for education_level in education_level_options %}
-                                        <option value="{{ education_level }}">{{ education_level }}</option>
+                                        <option value="{{ education_level }}"  {% if form.education_level_first_tutor == education_level %} selected {% endif %}>{{ education_level }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="occupation_first_tutor" class="block text-sm font-medium text-gray-700">Ocupacion</label>
-                                <input type="text" name="occupation_first_tutor" id="occupation_first_tutor"
+                                <input type="text" name="occupation_first_tutor" id="occupation_first_tutor" value="{{ form.occupation_first_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="flex items-center">
@@ -481,7 +481,7 @@
                                     <label for="second_tutor_boolean" class="text-base font-medium text-gray-700">Segundo tutor</label>
                                 </div>
                                 <div class="flex items-center h-5 ml-2">
-                                    <input id="second_tutor_boolean" name="second_tutor_boolean" type="checkbox"
+                                    <input id="second_tutor_boolean" name="second_tutor_boolean" type="checkbox" value="{{ form.second_tutor_boolean if form else '' }}"
                                         class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" norequired>
                                 </div>
                             </div>
@@ -490,51 +490,51 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name_second_tutor" class="block text-sm font-medium text-gray-700">Nombre del segundo tutor</label>
-                                <input type="text" name="name_second_tutor" id="name_second_tutor"
+                                <input type="text" name="name_second_tutor" id="name_second_tutor" value="{{ form.name_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="dni_second_tutor" class="block text-sm font-medium text-gray-700">Dni del segundo tutor</label>
-                                <input type="text" name="dni_second_tutor" id="dni_second_tutor"
+                                <input type="text" name="dni_second_tutor" id="dni_second_tutor" value="{{ form.dni_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name_second_tutor" class="block text-sm font-medium text-gray-700">Apellido del segundo tutor</label>
-                                <input type="text" name="last_name_second_tutor" id="last_name_second_tutor"
+                                <input type="text" name="last_name_second_tutor" id="last_name_second_tutor" value="{{ form.last_name_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="relationship_second_tutor" class="block text-sm font-medium text-gray-700">Parentesco del segundo tutor</label>
-                                <input type="text" name="relationship_second_tutor" id="relationship_second_tutor"
+                                <input type="text" name="relationship_second_tutor" id="relationship_second_tutor" value="{{ form.relationship_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address_second_tutor" class="block text-sm font-medium text-gray-700">Direccion del segundo tutor</label>
-                                <input type="text" name="address_second_tutor" id="address_second_tutor"
+                                <input type="text" name="address_second_tutor" id="address_second_tutor" value="{{ form.address_second_tutor if form else '' }}"
                                 class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone_second_tutor" class="block text-sm font-medium text-gray-700">Numero de telefono del segundo tutor</label>
-                                <input type="text" name="phone_second_tutor" id="phone_second_tutor"
+                                <input type="text" name="phone_second_tutor" id="phone_second_tutor" value="{{ form.phone_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="email_second_tutor" class="block text-sm font-medium text-gray-700">Email del segundo tutor</label>
-                                <input type="text" name="email_second_tutor" id="email_second_tutor"
+                                <input type="text" name="email_second_tutor" id="email_second_tutor" value="{{ form.email_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="education_level_second_tutor" class="block text-sm font-medium text-gray-700">Nivel de escolaridad alcanzado del segundo tutor</label>
-                                <select id="education_level_second_tutor" name="education_level_second_tutor"
+                                <select id="education_level_second_tutor" name="education_level_second_tutor" 
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm" norequired>
                                     {% for education_level in education_level_options %}
-                                        <option value="{{ education_level }}">{{ education_level }}</option>
+                                        <option value="{{ education_level }}"  {% if form.education_level_second_tutor == education_level %} selected {% endif %}>{{ education_level }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="occupation_second_tutor" class="block text-sm font-medium text-gray-700">Ocupacion del segundo tutor</label>
-                                <input type="text" name="occupation_second_tutor" id="occupation_second_tutor"
+                                <input type="text" name="occupation_second_tutor" id="occupation_second_tutor" value="{{ form.occupation_second_tutor if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" norequired>
                             </div>
                         </div>
@@ -550,7 +550,7 @@
                                 <select id="proposal" name="proposal"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for proposal in proposal_options %}
-                                        <option value="{{ proposal }}">{{ proposal }}</option>
+                                        <option value="{{ proposal }}"  {% if form.proposal == proposal %} selected {% endif %}>{{ proposal }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -559,7 +559,7 @@
                                 <select id="condition" name="condition"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for condition in condition_options %}
-                                        <option value="{{ condition }}">{{ condition }}</option>
+                                        <option value="{{ condition }}"  {% if form.condition == condition %} selected {% endif %}>{{ condition }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -568,7 +568,7 @@
                                 <select id="seat" name="seat"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for seat in seat_options %}
-                                        <option value="{{ seat }}">{{ seat }}</option>
+                                        <option value="{{ seat }}"  {% if form.seat == seat %} selected {% endif %}>{{ seat }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -579,7 +579,7 @@
                                 <label for="days" class="block text-sm font-medium text-gray-700">Selecciona los días de la semana:</label>
                                 <ul>
                                     {% for day in  days_options %}
-                                        <li><input id="day-{{days}}" name="days" type="checkbox" value="{{ day }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ day }} </li>
+                                        <li><input id="day-{{days}}" name="days" type="checkbox" value="{{ day }}" {%if day in form.days %} checked {% endif %}class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"> {{ day }} </li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -588,7 +588,7 @@
                                 <select id="therapist" name="therapist"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for therapist in therapists %}
-                                        <option value="{{ therapist.id }}">{{ therapist.last_name }}, {{ therapist.name }}</option>
+                                        <option value="{{ therapist.id }}"  {% if form.therapist == therapist.id %} selected {% endif %}>{{ therapist.last_name }}, {{ therapist.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -597,7 +597,7 @@
                                 <select id="rider" name="rider"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for rider in riders %}
-                                        <option value="{{ rider.id }}">{{ rider.last_name }}, {{ rider.name }}</option>
+                                        <option value="{{ rider.id }}"  {% if form.rider == rider.id %} selected {% endif %}>{{ rider.last_name }}, {{ rider.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -606,7 +606,7 @@
                                 <select id="horse" name="horse"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for horse in horses %}
-                                        <option value="{{ horse.id }}">{{ horse.name }}</option>
+                                        <option value="{{ horse.id }}"  {% if form.horse == horse.id %} selected {% endif %}>{{ horse.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -615,7 +615,7 @@
                                 <select id="track_assistant" name="track_assistant"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for track_assistant in track_assistants %}
-                                        <option value="{{ track_assistant.id }}">{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
+                                        <option value="{{ track_assistant.id }}"  {% if form.track_assistant == track_assistant.id %} selected {% endif %}>{{ track_assistant.last_name }}, {{ track_assistant.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
