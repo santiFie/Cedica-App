@@ -1,9 +1,7 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+  import Home from '@/components/Home.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <Home msg="Bienvenido a la página de CEDICA" />
 </template>
