@@ -10,44 +10,53 @@ const pages = [
 
 </script>
 
-<template>  
-  <div id=app class="wrapper">
-    <header>
-      <nav>
-        <NavBar :pages="pages" />
-      </nav>
+<template>
+  <div class="app-container">
+    <header class="header">
+      <NavBar :pages="pages" />
     </header>
-    <body>
-      <h1> Bienvenido a la página de CEDICA </h1>
-    </body>
-    <RouterView />  
+    
+    <main class="main-content">
+      <RouterView />
+    </main>
   </div>
 </template>
 
+<style>
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #ffffff;
+}
+</style>
+
 <style scoped>
-header {
+
+.app-container {
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem; /* Ajuste de padding para hacer la navbar más pequeña */
-}
-body {
-  background-color: white;
 }
 
-.wrapper {
-  margin-top: 3rem; /* Ajuste de margen para evitar que el contenido se solape con la navbar */
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 0 auto;
-
+.main-content {
+  flex: 1;
+  margin-top: 120px; /* Ajusta esto según la altura de tu navbar */
+  width: 100%;
 }
 </style>
