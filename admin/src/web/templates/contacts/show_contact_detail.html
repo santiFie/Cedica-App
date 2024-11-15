@@ -17,7 +17,23 @@
     <p>Consulta: {{contact.message}} </p>
     <p>Estado: {{contact.state}} </p>
 
-    <a href="#" class="btn btn-primary">Responder</a> <!-- Agregar para responder la consulta -->
+    {% if contact.state not in ['Resuelto', 'Bloqueado'] %}
+        <form action="{{ url_for('contacts.answer_contact', contact_id=contact.id) }}" method="post">
+            <div class="form-group">
+                <label for="comment">Responder:</label>
+                <textarea id="comment" name="comment" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Respuesta</button>
+        </form>
+
+        <form action="{{ url_for('contacts.block_contact', contact_id=contact.id) }}" method="post" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-danger">Bloquear Consulta</button>
+        </form>
+    {% else %}
+        <p>No es posible responder a esta consulta porque está {{ contact.state.lower() }}.</p>
+    {% endif %}
+
+
     <a href="{{ url_for('contacts.index_contacts') }}" class="btn btn-primary">Volver a listado de Consultas</a>
 
 

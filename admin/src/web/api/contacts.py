@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify
 bp = Blueprint('contacts_api', __name__, url_prefix='/api/contacts')
 
 
-@bp.post('/')
+@bp.post('/register')
 def create_contact():
     try:
 

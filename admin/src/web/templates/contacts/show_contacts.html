@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Listado de Cobros{% endblock %}
+{% block title %}Listado de Consultas{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -18,8 +18,8 @@
             <select name="state" id="state" class="form-control">
                 <option value="">Todos</option>
                 <option value="Pendiente">Pendiente</option>
-                <option value="En proceso">En proceso</option>
                 <option value="Resuelto">Resuelto</option>
+                <option value="Bloqueado">Bloqueado</option>
             </select>
         </div>
 

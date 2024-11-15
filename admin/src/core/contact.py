@@ -58,7 +58,7 @@ def find_contacts(page=1, order='asc', state=None):
     return contacts, max_pages
 
 def find_contact(contact_id):
-    return Contact.query.get(contact_id)
+    return Contact.query.filter_by(id=contact_id).first()
 
 def delete_contact(contact):
     db.session.delete(contact)
@@ -66,3 +66,16 @@ def delete_contact(contact):
 
     return True
     
+
+def add_comment(contact, comment):
+    contact.comment = comment
+    contact.state = 'Resuelto'
+    db.session.commit()
+
+    return contact
+
+def block(contact):
+    contact.state = 'Bloqueado'
+    db.session.commit()
+
+    return contact
