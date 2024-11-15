@@ -1,23 +1,27 @@
 <script setup>
+
 import { RouterLink, RouterView } from 'vue-router'
-import Home from './components/Home.vue'
-import Posts from './components/Posts.vue'
+import NavBar from './components/NavBar.vue'
+const pages = [
+  { name: 'Home', link: '/' },
+  { name: 'Contacto', link: '/contact' },
+  { name: 'Actividades y Noticias', link: '/posts' },
+]
+
 </script>
 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logoCEDICA.png" width="350" height="250"/>
-
-    <nav class="wrapper">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/contact">Contacto</RouterLink>
-        <RouterLink to="/posts">Actividades y Noticias</RouterLink>
-    </nav>
-    
-  </header>
-
-  <RouterView  />
-  
+<template>  
+  <div id=app class="wrapper">
+    <header>
+      <nav>
+        <NavBar :pages="pages" />
+      </nav>
+    </header>
+    <body>
+      <h1> Bienvenido a la página de CEDICA </h1>
+    </body>
+    <RouterView />  
+  </div>
 </template>
 
 <style scoped>
@@ -33,56 +37,17 @@ header {
   align-items: center;
   padding: 0.5rem 1rem; /* Ajuste de padding para hacer la navbar más pequeña */
 }
-
-.logo {
-  width: 120px; /* Tamaño reducido del logo */
-  height: auto;
-  margin-right: 1rem;
+body {
+  background-color: white;
 }
 
-nav {
-  margin-top: auto;
-  display: flex;
-  gap: 0.5rem; /* Menor espacio entre los enlaces */
-  justify-content: center; /* Centra los botones horizontalmente */
-  width: 100%; /* Asegura que el nav ocupe todo el ancho disponible */
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  font-size: 1.3rem; /* Tamaño de fuente reducido */
-  padding: .40rem 0.50rem; /* Padding más pequeño en los enlaces */
-  margin-block: 0.5rem; /* Espacio entre los enlaces */
-  border-radius: 3px;
-  justify-content: center;
-  transition: background-color 0.3s, color 0.3s;
-
-}
-
-nav a.router-link-exact-active {
-  background-color: #3498db;
-  color: white;
-}
-
-nav a:hover {
-  background-color: #2980b9;
-  color: white;
-}
-
-/* Ajustes para el contenido debajo del header */
 .wrapper {
-  margin-top: 80px; /* Deja espacio para el header fijo más pequeño */
-}
+  margin-top: 3rem; /* Ajuste de margen para evitar que el contenido se solape con la navbar */
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
 
-@media (min-width: 1024px) {
-  header {
-    padding: 0.5rem 2rem;
-  }
-
-  nav {
-    gap: 1rem;
-  }
 }
 </style>

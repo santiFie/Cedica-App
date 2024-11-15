@@ -23,7 +23,6 @@
     </p>
     <button @click="goTo('aboutDetails')">Conocer más</button>
   </section>
-  
 </template>
 
 <script>
@@ -31,9 +30,8 @@ export default {
   data() {
     return {
       contact: {
-        name: "",
-        email: "",
-        message: "",
+        name: "Augusto Dominguez",
+        email: "augusto@gmail.com",
       },
     };
   },
