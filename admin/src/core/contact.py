@@ -17,6 +17,8 @@ def create_contact(**kwargs):
     db.session.add(new_contact)
     db.session.commit()
 
+    return new_contact
+
 
 def list_contacts():
     # Obtener todos los contactos de la base de datos

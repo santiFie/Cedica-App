@@ -54,7 +54,7 @@
                     <td>
                         <a href="{{ url_for('contacts.contact_show_detail', contact_id=contact.id)}}" class="btn btn-info btn-sm">Ver Detalle</a>
                         <a href="#" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar esta consulta?');">Eliminar</a>
+                        <a href="{{ url_for('contacts.contact_delete', contact_id=contact.id)}}" method="post" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar esta consulta?');">Eliminar</a>
                     </td>
                 </tr>
                 {% else %}
@@ -70,12 +70,12 @@
             <ul class="pagination">
                 {% if has_prev %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url_for('contacts_api.index_contacts', page=page-1, order=order, state=state) }}">Anterior</a>
+                    <a class="page-link" href="{{ url_for('contacts.index_contacts', page=page-1, order=order, state=state) }}">Anterior</a>
                 </li>
                 {% endif %}
                 {% if has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url_for('contacts_api.index_contacts', page=page+1, order=order, state=state) }}">Siguiente</a>
+                    <a class="page-link" href="{{ url_for('contacts.index_contacts', page=page+1, order=order, state=state) }}">Siguiente</a>
                 </li>
                 {% endif %}
             </ul>
