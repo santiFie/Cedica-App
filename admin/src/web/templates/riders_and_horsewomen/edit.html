@@ -101,52 +101,52 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                                <input type="text" name="name" id="name" value="{{ rider.name }}"
+                                <input type="text" name="name" id="name" value="{{ form.name if form else rider.name }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="dni" class="block text-sm font-medium text-gray-700">Dni</label>
-                                <input type="text" name="dni" id="dni"
-                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required value="{{ rider.dni }}" readonly>
+                                <input type="text" name="dni" id="dni" value="{{ form.dni if form else rider.dni }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required readonly>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
-                                <input type="text" name="last_name" id="last_name" value="{{ rider.last_name }}"
+                                <input type="text" name="last_name" id="last_name" value="{{ form.last_name if form else rider.last_name }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="age" class="block text-sm font-medium text-gray-700">Edad</label>
-                                <input type="number" name="age" id="age" value="{{ rider.age }}"
+                                <input type="number" name="age" id="age" value="{{ form.age if form else rider.age }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="place_of_birth" class="block text-sm font-medium text-gray-700">Lugar de nacimiento</label>
-                                <input type="text" name="place_of_birth" id="place_of_birth" value="{{ rider.place_of_birth }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                                <input type="text" name="place_of_birth" id="place_of_birth" value="{{ form.place_of_birth if form else rider.place_of_birth }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ rider.date_of_birth }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ form.date_of_birth if form else rider.date_of_birth }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address" class="block text-sm font-medium text-gray-700">Direccion</label>
-                                <input type="text" name="address" id="address" value="{{ rider.address }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                                <input type="text" name="address" id="address" value="{{ form.address if form else rider.address }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone" class="block text-sm font-medium text-gray-700">Numero de telefono</label>
-                                <input type="text" name="phone" id="phone" value="{{ rider.phone }}"
+                                <input type="text" name="phone" id="phone" value="{{ form.phone if form else rider.phone }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_contact" class="block text-sm font-medium text-gray-700">Contacto de emergencia</label>
-                                <input type="text" name="emergency_contact" id="emergency_contact" value="{{ rider.emergency_contact }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
+                                <input type="text" name="emergency_contact" id="emergency_contact" value="{{ form.emergency_contact if form else rider.emergency_contact }}"
+                                    class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_phone" class="block text-sm font-medium text-gray-700">Telefono de contacto de emergencia</label>
-                                <input type="text" name="emergency_phone" id="emergency_phone" value="{{ rider.emergency_phone }}"
+                                <input type="text" name="emergency_phone" id="emergency_phone" value="{{ form.emergency_phone if form else rider.emergency_phone }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -155,23 +155,23 @@
                                         <label for="scholarship_boolean" class="text-base font-medium text-gray-700">Becado</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox" value="{{ 'True' if rider.scholarship_percentage else 'False' }}"
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if rider.disability_certificate != '0' %}checked{% endif %}>
+                                        <input id="scholarship_boolean" name="scholarship_boolean" type="checkbox" 
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {% if form.scholarship_percentage == 'on' %}checked{% elif rider.scholarship_percentage != '0' %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
-                            <div id="scholarship-box" class="{% if not rider.scholarship_percentage %} hidden {% endif %} col-span-6 sm:col-span-3">
+                            <div id="scholarship-box" class="{% if not form.scholarship_percentage or rider.scholarship_percentage %} hidden {% endif %} col-span-6 sm:col-span-3">
                                 <label for="scholarship_percentage" class="block text-sm font-medium text-gray-700">Porcentaje de Beca</label>
                                 <div class="flex items-center mt-1">
-                                    <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="50" value="{{ rider.scholarship_percentage }}"
-                                    class="block w-full"
-                                    oninput="this.nextElementSibling.value = this.value">
-                                    <output id="percentage_display" class="ml-2">50</output><span>%</span>
+                                    <input type="range" id="scholarship_percentage" name="scholarship_percentage" min="1" max="100" value="{{ form.scholarship_percentage if form else rider.scholarship_percentage }}"
+                                        class="block w-full"
+                                        oninput="this.nextElementSibling.value = this.value">
+                                    <output id="percentage_display" class="ml-2">{{ form.scholarship_percentage if form else rider.scholarship_percentage }}</output><span>%</span>
                                 </div>
                             </div>
-                            <div id="observations-scholarship-box" class="{% if not rider.scholarship_percentage %} hidden {% endif %}col-span-6 sm:col-span-3">
+                            <div id="observations-scholarship-box" class="{% if not form.scholarship_percentage or rider.scholarship_percentage %} hidden {% endif %}col-span-6 sm:col-span-3">
                                 <label for="observations_scholarship" class="block text-sm font-medium text-gray-700">Observaciones de la beca</label>
-                                <input type="text" name="observations_scholarship" id="observations_scholarship" value="{{ rider.observations_scholarship }}"
+                                <input type="text" name="observations_scholarship" id="observations_scholarship" value="{{ form.observations_scholarship if form else rider.observations_scholarship }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -183,8 +183,9 @@
                                         <label for="disability_certificate_boolean" class="text-base font-medium text-gray-700">Certificado de Discapacidad</label>
                                     </div>
                                     <div class="flex items-center h-5 ml-2">
-                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox"{% if rider.disability_certificate != '' %}checked{% endif %}
-                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input id="disability_certificate_boolean" name="disability_certificate_boolean" type="checkbox"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" 
+                                            {% if form.disability_certificate_boolean == 'on' %}checked{% elif rider.disability_certificate != '0' %}checked{% endif %} >
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +195,7 @@
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     <option value="{{ rider.disability_type }}" selected>{{ rider.disability_type }}</option>
                                     {% for disability_type in disability_type_options %}
-                                        <option value="{{ disability_type }}"  {% if rider.disability_type == disability_type %} selected {% endif %}>{{ disability_type }}</option>
+                                        <option value="{{ disability_type }}"  {% if form.disability_type == disability_type %}selected{% elif rider.disability_type == disability_type %}selected{% endif %}>{{ disability_type }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -204,13 +205,13 @@
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm"
                                     onchange="handleSelectChange()">
                                     {% for disability_certificate in disability_certificate_options %}
-                                        <option value="{{ disability_certificate }}"  {% if rider.disability_certificate == disability_certificate %} selected {% endif %}>{{ disability_certificate }}</option>
+                                        <option value="{{ disability_certificate }}"  {% if form.disability_certificate == disability_certificate %}selected{% elif rider.disability_certificate == disability_certificate %}selected{% endif %} >{{ disability_certificate }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div id="disability-certificate-box2" class=" hidden col-span-6 sm:col-span-3">
                                 <label for="disability_certificate_otro" class="block text-sm font-medium text-gray-700">Otro</label>
-                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro" value="{{ rider.others }}"
+                                <input type="text" name="disability_certificate_otro" id="disability_certificate_otro" value="{{ form.disability_certificate_otro if form else rider.disability_certificate_otro }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" readonly>
                             </div>
                             <div id="disability-certificate-box3" class="col-span-6 sm:col-span-3">
@@ -231,7 +232,7 @@
                                 <select id="family_allowance" name="family_allowance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for family_allowance in family_allowance_options %}
-                                        <option value="{{ family_allowance }}" {% if rider.family_allowance == family_allowance %} selected {% endif %}>{{ family_allowance }}</option>
+                                        <option value="{{ family_allowance }}" {% if form.family_allowance == family_allowance %}selected{% elif rider.family_allowance == family_allowance %}selected{% endif %}>{{ family_allowance }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -253,7 +254,7 @@
                                 <select id="pension" name="pension"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for pension in pension_options %}
-                                        <option value="{{ pension }}" {% if rider.pension == pension %} selected {% endif %}>{{ pension }} </option>
+                                        <option value="{{ pension }}" {% if form.pension == pension %}selected{% elif rider.pension == pension %}selected{% endif %}>{{ pension }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -269,13 +270,13 @@
                                 <select id="health_insurance" name="health_insurance"
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for health_insurance in health_insurance_options %}
-                                        <option value="{{ health_insurance.id }}" {% if health_insurance.id == rider.health_insurance %}selected{% endif %}>{{ health_insurance.name }}</option>
+                                        <option value="{{ health_insurance.id }}" {% if form.health_insurance == health_insurance.id %}selected{% elif rider.health_insurance == health_insurance.id %}selected{% endif %}>{{ health_insurance.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="membership_number" class="block text-sm font-medium text-gray-700">Nº afiliado</label>
-                                <input type="text" name="membership_number" id="membership_number" value="{{ rider.membership_number }}"
+                                <input type="text" name="membership_number" id="membership_number" value="{{ form.membership_number if form else rider.membership_number }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
@@ -285,7 +286,7 @@
                             </div>
                             <div id="observations_institution_box" class="hidden col-span-6 sm:col-span-3">
                                 <label for="pension_situation_observations" class="block text-sm font-medium text-gray-700">Observaciones</label>
-                                <input type="text" name="pension_situation_observations" id="pension_situation_observations"
+                                <input type="text" name="pension_situation_observations" id="pension_situation_observations" value="{{ form.pension_situation_observations if form else rider.pension_situation_observations }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div> 
                         </div>
@@ -297,29 +298,29 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name_institution" class="block text-sm font-medium text-gray-700">Nombre de la institucion</label>
-                                <input type="text" name="name_institution" id="name_institution" value="{{ rider.name_institution }}"
+                                <input type="text" name="name_institution" id="name_institution" value="{{ form.name_institution if form else rider.name_institution }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address_institution" class="block text-sm font-medium text-gray-700">Direccion de la institucion</label>
-                                <input type="text" name="address_institution" id="address_institution" value="{{ rider.address_institution }}"
+                                <input type="text" name="address_institution" id="address_institution" value="{{ form.address_institution if form else rider.address_institution }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone_institution" class="block text-sm font-medium text-gray-700">Telefono de la institucion</label>
-                                <input type="text" name="phone_institution" id="phone_institution" value="{{ rider.phone_institution }}"
+                                <input type="text" name="phone_institution" id="phone_institution" value="{{ form.phone_institution if form else rider.phone_institution }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="current_grade" class="block text-sm font-medium text-gray-700">Grado / año actual</label>
-                                <input type="text" name="current_grade" id="current_grade" value="{{ rider.current_grade }}"
+                                <input type="text" name="current_grade" id="current_grade" value="{{ form.current_grade if form else rider.current_grade }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="observations_institution" class="block text-sm font-medium text-gray-700">Observaciones de la institucion</label>
-                                <input type="text" name="observations_institution" id="observations_institution" value="{{ rider.observations_institution }}"
+                                <input type="text" name="observations_institution" id="observations_institution" value="{{ form.observations_institution if form else rider.observations_institution }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <div class="mb-2 p-4  bg-white">

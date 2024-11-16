@@ -42,7 +42,7 @@
         <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
             {% if check_permissions(session,'collection_index') %}
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                <a role="button" href="{{ url_for('collections.collection_index') }}">Listado de Cobros</a>
+                <a role="button" href="{{ url_for('collections.collection_index') }}" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Listado de Cobros</a>
             </div>
             {% endif %}
             <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -67,7 +67,7 @@
                 </select>
             </div>
             <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none ">
-                <button type="submit">Buscar</button>
+                <button type="submit" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Buscar</button>
             </div>
         </nav>
         </form>

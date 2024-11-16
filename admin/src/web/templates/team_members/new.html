@@ -16,84 +16,84 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="name"  class="block text-sm font-medium text-gray-700">Nombre:</label>
-                                <input type="text" id="name" name="name" 
+                                <input type="text" id="name" name="name" value="{{ form.name if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="last_name"  class="block text-sm font-medium text-gray-700">Apellido:</label>
-                                <input type="text" id="last_name" name="last_name" 
+                                <input type="text" id="last_name" name="last_name" value="{{ form.last_name if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="dni"  class="block text-sm font-medium text-gray-700">DNI:</label>
-                                <input type="text" id="dni" name="dni" 
+                                <input type="text" id="dni" name="dni" value="{{ form.dni if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="address"  class="block text-sm font-medium text-gray-700">Direccion:</label>
-                                <input type="text" id="address" name="address" 
+                                <input type="text" id="address" name="address" value="{{ form.address if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="email"  class="block text-sm font-medium text-gray-700">Email:</label>
-                                <input type="email" id="email" name="email" 
+                                <input type="email" id="email" name="email" value="{{ form.email if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="locality"  class="block text-sm font-medium text-gray-700">Localidad:</label>
-                                <input type="text" id="locality" name="locality" 
+                                <input type="text" id="locality" name="locality" value="{{ form.locality if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="phone"  class="block text-sm font-medium text-gray-700">Telefono:</label>
-                                <input type="text" id="phone" name="phone" 
+                                <input type="text" id="phone" name="phone" value="{{ form.phone if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="initial_date" class="block text-sm font-medium text-gray-700">Fecha de Inicio:</label>
-                                <input type="date" id="initial_date" name="initial_date" 
+                                <input type="date" id="initial_date" name="initial_date" value="{{ form.initial_date if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="end_date" class="block text-sm font-medium text-gray-700">Fecha de Fin (opcional):</label>
-                                <input type="date" id="end_date" name="end_date" 
+                                <input type="date" id="end_date" name="end_date" value="{{ form.end_date if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_contact"  class="block text-sm font-medium text-gray-700">Contacto de emergencia:</label>
-                                <input type="text" id="emergency_contact" name="emergency_contact" 
+                                <input type="text" id="emergency_contact" name="emergency_contact" value="{{ form.emergency_contact if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="emergency_phone"  class="block text-sm font-medium text-gray-700">Telefono del contacto de emergencia:</label>
-                                <input type="text" id="emergency_phone" name="emergency_phone" 
+                                <input type="text" id="emergency_phone" name="emergency_phone" value="{{ form.emergency_phone if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="health_insurance_id"  class="block text-sm font-medium text-gray-700">Seguro de Salud:</label>
-                                <select id="health_insurance_id" name="health_insurance_id"
+                                <select id="health_insurance_id" name="health_insurance_id" 
                                     class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for insurance in health_insurances %}
-                                        <option value="{{ insurance.id }}">{{ insurance.name }}</option>
+                                        <option value="{{ insurance.id }}" {% if form.health_insurance_id|string == insurance.id|string %} selected {% endif %}>{{ insurance.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="associated_number"  class="block text-sm font-medium text-gray-700">Numero de afiliado obra social:</label>
-                                <input type="text" id="associated_number" name="associated_number" 
+                                <input type="text" id="associated_number" name="associated_number" value="{{ form.associated_number if form else '' }}"
                                     class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" required>
                             </div>
 
@@ -102,7 +102,7 @@
                                 <label for="condition" class="block text-sm font-medium text-gray-700" >Condición:</label>
                                 <select id="condition" name="condition"  class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for condition in conditions %}
-                                        <option value="{{ condition }}">{{ condition }}</option>
+                                        <option value="{{ condition }}" {% if form.condition|string == condition|string %} selected {% endif %}>{{ condition }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -111,7 +111,7 @@
                                 <label for="job_position" class="block text-sm font-medium text-gray-700" >Posición de Trabajo:</label>
                                 <select id="job_position" name="job_position" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for job in job_positions %}
-                                        <option value="{{ job }}">{{ job }}</option>
+                                        <option value="{{ job }}" {% if form.job_position == job %} selected {% endif %}>{{ job }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -120,7 +120,7 @@
                                 <label for="profession" class="block text-sm font-medium text-gray-700">Profesión:</label>
                                 <select id="profession" name="profession" class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
                                     {% for profession in professions %}
-                                        <option value="{{ profession }}">{{ profession }}</option>
+                                        <option value="{{ profession }}" {% if form.profession == profession %} selected {% endif %}>{{ profession }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -128,7 +128,7 @@
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="title" class="block text-sm font-medium text-gray-700">Titulo:</label>
-                                <input type="file" id="files" name="title" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" enctype="multipart/form-data">
+                                <input type="file" id="files" name="title"class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2" enctype="multipart/form-data">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">

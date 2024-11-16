@@ -41,13 +41,13 @@
             </div>
             <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
                 {% if check_permissions(session,'equestrian_new') %}
-                <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                    <a role="button" href="{{ url_for('equestrian.equestrian_new') }}" class="">Crear Ecuestre</a>
+                <div tabindex="0" class="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all outline-none">
+                    <a role="button" href="{{ url_for('equestrian.equestrian_new') }}" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Crear Ecuestre</a>
                 </div>
                 {% endif %}
                 {% if check_permissions(session,'equestrian_index_files') %}
-                <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                    <a role="button" href="{{ url_for('equestrian.equestrian_index_files') }}" class="">Archivos de ecuestres</a>
+                <div tabindex="0" class="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all outline-none">
+                    <a role="button" href="{{ url_for('equestrian.equestrian_index_files') }}" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Archivos de ecuestres</a>
                 </div>
                 {% endif %}
                 <div tabindex="0" class="items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
@@ -70,31 +70,31 @@
                     <h6 class="block font-normal text-gray-700 text-base">Ordenar por:</h6>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="name_asc">Nombre Ascendente</label>
+                    <label for="name_asc" class="pr-1">Nombre Ascendente</label>
                     <input id="name_asc" type="radio" name="sort_by" value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="name_desc">Nombre Descendente</label>
+                    <label for="name_desc" class="pr-1">Nombre Descendente</label>
                     <input id="name_desc" type="radio" name="sort_by" value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="naz_asc">Fecha de nacimiento Ascendente</label>
+                    <label for="naz_asc" class="pr-1">Fecha de nacimiento Ascendente</label>
                     <input id="naz_asc" type="radio" name="sort_by" value="date_of_birth_asc" {% if request.args.get('sort_by') == 'date_of_birth_asc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="naz_desc">Fecha de nacimiento Descendente</label>
+                    <label for="naz_desc" class="pr-1">Fecha de nacimiento Descendente</label>
                     <input id="naz_desc" type="radio" name="sort_by" value="date_of_birth_desc" {% if request.args.get('sort_by') == 'date_of_birth_desc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="ing_asc">Fecha de ingreso Ascendente</label>
+                    <label for="ing_asc" class="pr-1">Fecha de ingreso Ascendente</label>
                     <input id="ing_asc" type="radio" name="sort_by" value="date_of_entry_asc" {% if request.args.get('sort_by') == 'date_of_entry_asc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none text-sm font-medium text-gray-700">
-                    <label for="ing_desc">Fecha de ingreso Descendente</label>
+                    <label for="ing_desc" class="pr-1">Fecha de ingreso Descendente</label>
                     <input id="ing_desc" type="radio" name="sort_by" value="date_of_entry_desc" {% if request.args.get('sort_by') == 'date_of_entry_desc' %}checked{% endif %}>
                 </div>
                 <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
-                    <button type="submit" class="block font-normal text-gray-700 text-base">Buscar</button>
+                    <button type="submit" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Buscar</button>
                 </div>
             </nav>
             </form>
