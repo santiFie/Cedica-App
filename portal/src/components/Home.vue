@@ -10,7 +10,6 @@
         <h2>¿Quiénes somos?</h2>
         <p>CEDICA es una asociación civil sin fines de lucro fundada en 1994 en La Plata, Argentina. Nuestro objetivo es igualar oportunidades y mejorar la calidad de vida a través de las Terapias y Actividades asistidas con caballos (TACAs).</p>
         <p>Somos un equipo multidisciplinario comprometido con la inclusión, trabajando en cinco áreas clave: Técnica, Ecuestre, Voluntariado, Gestión y Capacitación.</p>
-        <button class="cta-button">Conocer más</button>
       </div>
     </section>
   </div>
@@ -25,7 +24,7 @@
 
 .hero-section {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
   gap: 2rem;
   align-items: start;
 }
@@ -35,6 +34,7 @@
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 2%;
 }
 
 h1, h2 {
@@ -47,6 +47,9 @@ p {
   margin-bottom: 1rem;
   line-height: 1.6;
   text-align: justify;
+  color: black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+  font-size: 1.4rem;
 }
 
 .cta-button {

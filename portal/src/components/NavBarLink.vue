@@ -20,9 +20,8 @@ defineProps({
 
 <style scoped>
 .nav-link {
-  color: #42b983;
-  font-weight: 500;
-  text-decoration: none;
-  margin-right: 1rem;
+  color: white;
+  font-weight: 550; /* Cambiado de 500 a 600 para hacer la letra más gruesa */
+  justify-content: center;
 }
 </style>
