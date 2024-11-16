@@ -14,6 +14,7 @@ from src.core.models.users import User, Role, RolePermission, Permission
 from src.core.users import has_permissions
 from src.core.utils import is_link
 from src.core.config import config
+from flask_cors import CORS
 
 session = Session()
 bcrypt = Bcrypt()
@@ -21,6 +22,10 @@ bcrypt = Bcrypt()
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
+
+    # configure CORS
+    CORS(app)
+
     # Init configuration
     app.config.from_object(config[env])
     # Init database

@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado de Consultas{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Listado de Consultas</h1>
+
+    <!-- Formulario de filtros -->
+    <form method="GET" action="{{ url_for('contacts.index_contacts') }}" class="mb-3">
+        <div class="form-group">
+            <label for="state">Filtrar por estado:</label>
+            <select name="state" id="state" class="form-control">
+                <option value="">Todos</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Resuelto">Resuelto</option>
+                <option value="Bloqueado">Bloqueado</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="order">Ordenar por fecha:</label>
+            <select name="order" id="order" class="form-control">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    <!-- Tabla de consultas -->
+    {% if contacts %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in contacts %}
+                <tr>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.last_name }}</td>
+                    <td>{{ contact.state }}</td>
+                    <td>
+                        <a href="{{ url_for('contacts.contact_show_detail', contact_id=contact.id)}}" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="#" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ url_for('contacts.contact_delete', contact_id=contact.id)}}" method="post" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar esta consulta?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No se encontraron consultas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Paginación (si es necesario) -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('contacts.index_contacts', page=page-1, order=order, state=state) }}">Anterior</a>
+                </li>
+                {% endif %}
+                {% if has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('contacts.index_contacts', page=page+1, order=order, state=state) }}">Siguiente</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>No se recibieron consultas.</p>
+    {% endif %}
+
+
+
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este pago? Esta acción no se puede deshacer.');
+        }
+    </script>
+
+
+{% endblock %}
