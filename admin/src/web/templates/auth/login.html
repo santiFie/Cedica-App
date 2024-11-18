@@ -18,9 +18,6 @@
         <div class="bg-sky-100 relative flex justify-center items-center h-screen">
             <div class= "lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2 relative z-10">
                 <h1 class="text-2xl font-semibold mb-4">Iniciar Sesión</h1>
-                <form action="{{ url_for('auth.login_google') }}">
-                    <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-semibold rounded-md py-2 px-4 w-full">Iniciar sesión con Google</button>
-                </form>
                 <form action="{{ url_for('auth.verification') }}" method="POST">
                 <!-- Username Input -->
                 <div class="mb-4">
@@ -35,6 +32,7 @@
                 <!-- Login Button -->
                 <button type="submit" class="bg-gray-500 hover:bg-gray-800 text-white font-semibold rounded-md py-2 px-4 w-full">Login</button>
                 </form>
+                <a href="{{ url_for('auth.login_google') }}" class="bg-red-500 hover:bg-red-800 text-white font-semibold rounded-md py-2 px-4 w-full">Iniciar sesión con Google</a>
             </div>
         </div>
     </section>
