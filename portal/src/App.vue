@@ -11,15 +11,13 @@ const pages = [
 </script>
 
 <template>
-  <div class="app-container">
-    <header class="header">
-      <NavBar :pages="pages" />
-    </header>
-    
-    <main class="main-content">
-      <RouterView />
-    </main>
-  </div>
+  <header class="header">
+    <NavBar :pages="pages" />
+  </header>
+  
+  <main class="main-content">
+    <RouterView />
+  </main>
 </template>
 
 <style>
@@ -33,7 +31,7 @@ const pages = [
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #ffffff;
+  background-color: #e0f7fa;
 }
 </style>
 
@@ -42,6 +40,7 @@ body {
 .app-container {
   min-height: 100vh;
   flex-direction: column;
+  width: 100%;
 }
 
 .header {

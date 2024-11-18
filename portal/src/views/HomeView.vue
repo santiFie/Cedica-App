@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  <Home msg="Bienvenido a la página de CEDICA" />
+  <Home/>
 </template>
