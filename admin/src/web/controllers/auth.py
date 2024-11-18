@@ -73,7 +73,7 @@ def verification_with_google():
 
     if user_info:
         session['user'] = user_info["email"]
-        session["google_token"] = token
+        session["google_token"] = token['access_token']
         flash('Inicio de sesión exitoso')
         return render_template('home.html')
     else:
@@ -90,7 +90,6 @@ def revoke_google_token(token):
         if response.status_code == 200:
             return True
         else:
-            print(response.json())
             return False
     
     except Exception as e:
@@ -103,7 +102,7 @@ def logout():
     Logs out the logged-in user and clears the session
     """
     if (session.get('google_token')):
-        revoke_success = revoke_google_token(session['google_access_token'])
+        revoke_google_token(session['google_token'])
     if (session.get('user')):
         del session['user']
         session.clear()
