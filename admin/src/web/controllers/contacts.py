@@ -9,7 +9,7 @@ bp = Blueprint("contacts", __name__, url_prefix="/contacts")
 @bp.get("/")
 #@check_permissions("contact_index")
 #@login_required
-def index_contacts():
+def contacts_index():
 
     # obtener parametros de busqueda del formulario
     page = request.args.get("page", 1, type=int)
@@ -34,7 +34,7 @@ def contact_show_detail(contact_id):
     return render_template("contacts/show_contact_detail.html", contact=contact)
 
 
-@bp.route("/delete_contact/<int:contact_id>", methods=["POST", "GET"])
+@bp.route("/contact_delete/<int:contact_id>", methods=["POST", "GET"])
 #@check_permissions("contact_delete")
 #@login_required
 def contact_delete(contact_id):
@@ -50,10 +50,10 @@ def contact_delete(contact_id):
     flash("Consulta eliminada correctamente")
     return redirect(url_for("contacts.index_contacts"))
 
-@bp.post("/answer_contact/<int:contact_id>")
+@bp.post("/contact_answer/<int:contact_id>")
 #@check_permissions("contact_answer")
 #@login_required
-def answer_contact(contact_id):
+def contact_answer(contact_id):
 
     contact = find_contact(contact_id)
 
@@ -76,10 +76,10 @@ def answer_contact(contact_id):
     return redirect(url_for("contacts.contact_show_detail", contact_id=commented_contact.id))
 
 
-@bp.post("/block_contact/<int:contact_id>")
+@bp.post("/contact_block/<int:contact_id>")
 #@check_permissions("contact_block")
 #@login_required
-def block_contact(contact_id):
+def contact_block(contact_id):
 
     contact = find_contact(contact_id)
 
