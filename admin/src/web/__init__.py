@@ -15,11 +15,8 @@ from src.core.models.users import User, Role, RolePermission, Permission
 from src.core.users import has_permissions
 from src.core.utils import is_link
 from src.core.config import config
-<<<<<<< HEAD
 from os import environ, urandom
-=======
 from flask_cors import CORS
->>>>>>> dev
 
 session = Session()
 bcrypt = Bcrypt()
@@ -29,15 +26,12 @@ def create_app(env="development", static_folder="../../static"):
 
     
     app = Flask(__name__, static_folder= static_folder)
-<<<<<<< HEAD
     # Init secret key for session
     app.secret_key = environ.get("SECRET_KEY") or urandom(24)
-=======
 
     # configure CORS
     CORS(app)
 
->>>>>>> dev
     # Init configuration
     app.config.from_object(config[env])
 
