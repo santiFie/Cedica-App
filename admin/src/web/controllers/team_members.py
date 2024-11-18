@@ -62,12 +62,10 @@ def team_member_index():
 @bp.get("/new")
 @check_permissions("team_member_create")
 @login_required
-def team_member_new():
-
+def team_member_new(form=None):
     professions = ProfessionEnum.enums
     conditions = ConditionEnum.enums
     jobs = JobEnum.enums
-
     health_insurances = hi.get_all()
 
     return render_template(
@@ -76,8 +74,9 @@ def team_member_new():
         conditions=conditions,
         job_positions=jobs,
         health_insurances=health_insurances,
+        form=form,
+        files=request.files
     )
-
 
 @bp.post("/create")
 @check_permissions("team_member_create")
@@ -88,11 +87,11 @@ def team_member_create():
 
         if tm.find_team_member_by_email(request.form["email"]):
             flash("El email de este miembro de equipo ya existe", "info")
-            return redirect(url_for("team_members.team_member_new"))
+            return redirect(url_for("team_members.team_member_new", form=request.form))
 
         if tm.check_dni_exist(request.form["dni"]):
             flash("El dni de este miembro de equipo ya existe", "info")
-            return redirect(url_for("team_members.team_member_new"))
+            return redirect(url_for("team_members.team_member_new", form=request.form))
 
         file_keys = ["title", "dni_copy", "cv"]
         files = {key: request.files[key]
@@ -103,8 +102,7 @@ def team_member_create():
             for error in errors:
                 flash(f"Error: {error}", "info")
 
-    return redirect(url_for("team_members.team_member_new"))
-
+    return team_member_new(form=request.form)
 
 @bp.get("show_team_member")
 @check_permissions("team_member_show")
@@ -123,7 +121,7 @@ def team_member_show():
 @bp.get("/edit")
 @check_permissions("team_member_edit")
 @login_required
-def team_member_edit():
+def team_member_edit(form=None):
     """
     Edit a team member
     """
@@ -146,6 +144,7 @@ def team_member_edit():
         professions=professions,
         conditions=conditions,
         jobs=jobs,
+        form=form,
     )
 
 
@@ -169,6 +168,7 @@ def team_member_update():
         flash("Miembro del equipo actualizado")
     else:
         flash("Faltan campos por completar", "info")
+        return team_member_edit(form=request.form)
     return redirect(url_for("team_members.team_member_index"))
 
 
