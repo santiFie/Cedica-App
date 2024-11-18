@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}Listado de Consultas{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#access").click(function(event){
+            event.preventDefault();
+            $("#side-bar").toggle();
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<button id="access" class="mt-2 ml-2 relative flex-col xl:hidden lg:hidden md:flex sm:flex xs:flex xxs:flex">
+    <svg
+        class="md:w-12 md:h-12 xs:w-10 xs:h-10 xxs:h-9 sm:w-11 sm:h-11 fill-current inline-block"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+</button>
+<div class="flex border-none px-7 max-[600px]:px-4 max-[825px]:px-1">
+    <div id="side-bar" class="xl:relative lg:relative md:fixed sm:fixed xs:fixed xxs:fixed xl:ml-2 lg:ml-2 sm:ml-14 md:ml-14 xs:ml-12 xxs:ml-12 xl:flex lg:flex md:hidden sm:hidden xs:hidden xxs:hidden flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-[18rem] h-[43rem] p-3 shadow-blue-gray-900/5 mt-3 max-[1024px]:mt-10 max-[1024px]:top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+        <form action="{{ url_for('contacts.contacts_index') }}" method="get">
+        <div class="mb-1 p-3">
+          <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Listado de Consultas</h5>
+        </div>
+        <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="state" class="block text-sm font-medium text-gray-700">Filtrar por estado:</label>
+                <select name="state" id="state" 
+                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                    <option value="">Todos</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Resuelto">Resuelto</option>
+                    <option value="Bloqueado">Bloqueado</option>
+                </select>
+            </div>
+    
+            <div role="listbox" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none">
+                <label for="order" class="block text-sm font-medium text-gray-700">Ordenar por fecha:</label>
+                <select name="order" id="order" 
+                class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                    <option value="asc">Ascendente</option>
+                    <option value="desc">Descendente</option>
+                </select>
+            </div>
+            <div tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none ">
+                <button type="submit" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Buscar</button>
+            </div>
+        </nav>
+        </form>
+    </div>
+    {% if contacts %}
+        <div class="w-full p-4">
+            <div class="w-full overflow-x-auto rounded-lg">
+                <div class="min-w-full mx-auto lg:w-3/4 max-[1000px]:w-full max-[825px]:ml-4 max-[480px]:ml-0.5">
+                    <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+                    <thead class="bg-gray-50">
+                        <tr>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Nombre/Apellido</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Estado</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[480px]:px-2 px-6 py-4 font-medium text-gray-900">Detalle</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 px-6 py-4 font-medium text-gray-900"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        {% for contact in contacts %}
+                        <tr class="hover:bg-gray-50">
+                        <th class="flex gap-3 px-6 py-4 max-[560px]:w-[5%]  max-[560px]:px-2 font-normal text-gray-900">
+                            <div class="text-sm">
+                            <div class="font-medium text-gray-700">{{ contact.name }}</div>
+                            <div class="text-gray-400">{{ contact.last_name }}</div>
+                            </div>
+                        </th>
+                        
+                        <td class="max-[600px]:hidden px-6 py-4">{{ contact.state }}</td>
+                        <td class="max-[480px]:px-2 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex gap-2">
+                            <a href="{{ url_for('contacts.contact_show_detail', contact_id=contact.id)}}"
+                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                                ver más
+                            </a>
+                            </div>
+                        </td>
+                        <td class="max-[480px]:px-3 px-6 py-4 max-[480px]:space-x-0.5">
+                            <div class="flex justify-end gap-4">
+                            {% if check_permissions(session, 'contacts_delete') %}
+                            <form action="{{ url_for('contacts.contact_delete', contact_id=contact.id)}}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                <button type="submit">
+                                    <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="max-[480px]:h-4 h-6 w-6"
+                                >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                />
+                                </svg>
+                                </button>
+                            </form>
+                            {% endif%}
+                            </div>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Botones de Paginación -->
+        <div class="space-x-1.5 fixed bottom-0 w-full flex justify-center items-center mb-3">
+            {% if has_prev %}
+                <a href="{{ url_for('contacts.contacts_index', page=page-1, order=order, state=state) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Previo
+                </a>
+            {% else %}
+                <a href="#" class="hidden" disabled>
+                    Previo
+                </a>
+            {% endif %}
+
+            {% if has_next %}
+                <a href="{{ url_for('contacts.contacts_index', page=page+1, order=order, state=state) }}"
+                class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                    Siguiente
+                </a>
+            {% else %}
+                <a href="#" class="hidden" disabled>
+                    Siguiente
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="text-center pl-10 mt-10">
+            <p class="text-lg">No se recibieron consultas con los parametros dados.</p>
+        </div>
+    {% endif %}
+
+</div>
+<script>
+    function confirmDelete() {
+        return confirm('¿Estás seguro de que deseas eliminar este consulta? Esta acción no se puede deshacer.');
+    }
+</script>
+
+{% endblock %}

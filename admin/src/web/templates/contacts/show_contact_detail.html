@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}Detalle de Deuda{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/css/main.ad49aa9b.css" />
+{% endblock %}
+
+{% block content %}
+    <div class="my-6">
+        <div class="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
+            <div>
+                <h1 class="text-3xl font-extrabold">Detalle de Consulta</h1>
+                <p class="text-sm text-gray-400 mt-3">{{contact.message}}</p>
+
+                <div class="mt-12">
+                    {% if contact.state not in ['Resuelto', 'Bloqueado'] %}
+                        <form action="{{ url_for('contacts.block_contact', contact_id=contact.id) }}" method="post">
+                            <button type="submit" class="text-white bg-[#4ea0cf] hover:bg-blue-300 font-semibold rounded-md text-sm px-4 py-2.5 w-auto disabled:">Bloquear Consulta</button>
+                        </form>
+                    {% else %}
+                        <p class="text-sm font-extrabold" >No es posible bloquear ni responder esta consulta porque está {{ contact.state.lower() }}.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="ml-auo space-y-4">
+                <label for="name">Nombre completo:</label>
+                <input type='text' name ="name" id="name" value="{{contact.name}} {{contact.last_name}}"
+                    class="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" readonly/>
+                <label for="email">Email:</label>
+                <input type='email' 
+                    name='email'
+                    id="email"
+                    value="{{contact.email}}"
+                    class="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" readonly/>
+                <label for="state">Estado:</label>
+                <input type='text' id="state" name='state' value="{{contact.state}} " class="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" readonly/>
+                {% if contact.state == 'Resuelto' %}
+                <label for="state">Respuesta:</label>
+                <textarea rows="6"
+                        name='message'
+                    class="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]" readonly> {{ contact.comment }} 
+                </textarea>
+                {% elif contact.state != 'Bloqueado' %}
+                    <form action="{{ url_for('contacts.contact_answer', contact_id=contact.id) }}" method="post" class="ml-auo space-y-4">
+                        <label for="state">Respuesta:</label>
+                        <textarea rows="6"
+                                name='message'
+                            class="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]">
+                        </textarea>
+                        <button type="submit"
+                        class="text-white bg-[#007bff] hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Enviar
+                    </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3 mt-3">
+        {% if check_permissions(session,'contacts.contacts_index') %}
+        <a href="{{ url_for('contacts.contacts_index') }}"
+        class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+            Ir listado de Consultas
+        </a>
+        {% endif %}
+        <a href="{{ url_for ('home') }}"
+        class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+            Home
+        </a>
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@ from flask import Flask
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 from src.web.storage import storage
+from src.web.oauth import configure_oauth
 from src.web import routes
 from src.web import errors
 from src.core import database
@@ -14,6 +15,8 @@ from src.core.models.users import User, Role, RolePermission, Permission
 from src.core.users import has_permissions
 from src.core.utils import is_link
 from src.core.config import config
+from os import environ, urandom
+from flask_cors import CORS
 
 session = Session()
 bcrypt = Bcrypt()
@@ -21,8 +24,15 @@ bcrypt = Bcrypt()
 
 def create_app(env="production", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
+    # Init secret key for session
+    app.secret_key = environ.get("SECRET_KEY") or urandom(24)
+
+    # configure CORS
+    CORS(app)
+
     # Init configuration
     app.config.from_object(config[env])
+
     # Init database
     database.init_app(app)
     # Init session
@@ -31,9 +41,10 @@ def create_app(env="production", static_folder="../../static"):
     bcrypt.init_app(app)
     # Init storage
     storage.init_app(app)
-
     # Register routes
     routes.register(app)
+    # Init OAuth
+    configure_oauth(app)
 
     # Error handlers
     errors.register_errors(app)
@@ -55,3 +66,4 @@ def create_app(env="production", static_folder="../../static"):
         database.seeds()
 
     return app
+
