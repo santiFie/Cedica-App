@@ -1,8 +1,7 @@
 <script setup>
+  import AllPosts from '@/components/AllPosts.vue'
 </script>
 
 <template>
-  <main>
-    <h1>Posts</h1>
-  </main>
+  <AllPosts />
 </template>
