@@ -16,7 +16,7 @@
 
                 <div class="mt-12">
                     {% if contact.state not in ['Resuelto', 'Bloqueado'] %}
-                        <form action="{{ url_for('contacts.block_contact', contact_id=contact.id) }}" method="post">
+                        <form action="{{ url_for('contacts.contact_block', contact_id=contact.id) }}" method="post">
                             <button type="submit" class="text-white bg-[#4ea0cf] hover:bg-blue-300 font-semibold rounded-md text-sm px-4 py-2.5 w-auto disabled:">Bloquear Consulta</button>
                         </form>
                     {% else %}
