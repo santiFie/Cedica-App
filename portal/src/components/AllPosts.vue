@@ -38,7 +38,7 @@
                 <li v-for="post in posts" :key="post.id" class="post-item">
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-summary">{{ post.summary }}</p>
-                    <p class="post-posted_at">{{ post.posted_at }}</p>
+                    <p class="post-posted_at">{{ new Date(post.posted_at).toLocaleDateString() }}</p>
 
                     <RouterLink :to="{ name: 'post', params: { id: post.id } }" class="post-button"> Ver más</RouterLink>
                 </li>
