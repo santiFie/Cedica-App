@@ -13,6 +13,14 @@ export const usePostsStore = defineStore('posts', {
     allPosts: []
   }),
 
+  getters: {
+    getPostById: (state) => (id) => {
+      return state.allPosts.find(post => post.id == id)
+    }
+  },
+  getAllPosts: (state) => {
+    return state.allPosts
+  },
 
   actions: {
     async fetchPosts() {
@@ -27,11 +35,24 @@ export const usePostsStore = defineStore('posts', {
         this.posts = this.allPosts.slice(start, end)
 
       } catch (error) {
-        this.error = error
+        this.error = "Error al cargar las actividades"
       } finally {
         this.loading = false
       }
     },
+
+    async get_single_post(id) {
+      try {
+        this.loading = true
+        const result = await axios.get(`http://127.0.0.1:5000/api/posts/${parseInt(id)}`);
+        const response = await result.json()
+      }
+      catch (error) {
+        this.error = "Error al cargar la actividad"
+        } finally {
+          this.loading = false
+        }
+      },
 
     async changePage() {
       this.loading = true
@@ -48,3 +69,4 @@ export const usePostsStore = defineStore('posts', {
 
   
 })
+

@@ -39,10 +39,8 @@
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-summary">{{ post.summary }}</p>
                     <p class="post-posted_at">{{ post.posted_at }}</p>
-                    <form action="/post" method="post" >
-                        <input type="hidden" name="id" :value="post.id">
-                        <button type="submit" class="post-button">Ver más</button>
-                    </form>
+
+                    <RouterLink :to="{ name: 'post', params: { id: post.id } }" class="post-button"> Ver más</RouterLink>
                 </li>
             </ul>
             
@@ -136,13 +134,13 @@
     .post-button {
         font-size: large;
         font-family: inherit;
+        color: black;
         margin: auto;
         margin-left: 40px;
         padding: 0.8%;
         background-color: lightblue;
         border: none;
         border-radius: 5px; /* Added to make the button rounded */
-        display: block;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
