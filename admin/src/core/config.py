@@ -7,6 +7,7 @@ class Config(object):
     SESSION_TYPE = "filesystem"
     SESSION_PERMANENT = False
     PERMANENT_SESSION_LIFETIME = timedelta(minutes=60)
+    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 
 class ProductionConfig(Config):
     MINIO_SERVER = environ.get("MINIO_SERVER")
@@ -19,6 +20,11 @@ class ProductionConfig(Config):
         "pool_recycle": 60,
         "pool_pre_ping": True,
     }
+    SQLAQCHEMY_TRACK_MODIFICATIONS = True
+    GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET")
+    GOOGLE_REDIRECT_URI = environ.get("GOOGLE_REDIRECT_URI")
+    
 
 class DevelopmentConfig(Config):
     MINIO_SERVER = "localhost:9000"
@@ -37,7 +43,7 @@ class DevelopmentConfig(Config):
     SQLAQCHEMY_TRACK_MODIFICATIONS = True
     GOOGLE_CLIENT_ID = "130407405975-s0rpddvf3bhp77nhnpgp7cogaens4ufp.apps.googleusercontent.com"
     GOOGLE_CLIENT_SECRET = "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"
-    GOOGLE_REDIRECT_URI = "https://localhost:5000/auth/google/callback"
+    GOOGLE_REDIRECT_URI = "https://127.0.0.1:5000/auth/google/callback"
     CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 
 
