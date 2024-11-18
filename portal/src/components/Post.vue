@@ -36,7 +36,7 @@ const post = computed(() => postsStore.getPostById(props.id))
         <h1 class="post-title">{{ post.title }}</h1>
         <h2 class="post-summary">{{ post.summary }}</h2>
         <h4 class="post-author"><span>Por</span> {{ post.author }}</h4>
-        <p class="post-posted_at">Publicado el {{ post.posted_at }}</p>
+        <p class="post-posted_at">Publicado el {{ new Date(post.posted_at).toLocaleDateString() }}</p>
       </div>
       <div class="divition">
         <p class="post-content">{{ post.content }}</p>
