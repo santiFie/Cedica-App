@@ -8,51 +8,36 @@ export const usePostsStore = defineStore('posts', {
     posts: [],
     loading: false,
     error: null,
-    total_pages: 0,
+    hasNextPage: false,
+    totalPages: 1,
     page: 1,
-    allPosts: []
   }),
 
   getters: {
     getPostById: (state) => (id) => {
-      return state.allPosts.find(post => post.id == id)
+      return state.posts.find(post => post.id == id)
     }
-  },
-  getAllPosts: (state) => {
-    return state.allPosts
   },
 
   actions: {
     async fetchPosts() {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/api/posts/')
-            
-        this.allPosts = response.data
-        this.total_pages = Math.ceil(this.allPosts.length / limit)
-        
-        const start = (this.page - 1) * limit
-        const end = start + limit
-        this.posts = this.allPosts.slice(start, end)
+        const params = {
+          page: this.page,
+          per_page: limit
+        };
+        console.log(import.meta.env.VITE_APP_API)
+        const response = await axios.get(`${import.meta.env.VITE_APP_API}/posts`, { params })
+        this.posts = response.data.data
+        this.hasNextPage = response.data.meta.has_next_page
+        this.totalPages = response.data.meta.total_pages
 
       } catch (error) {
-        this.error = "Error al cargar las actividades"
+        this.error = error
       } finally {
         this.loading = false
       }
     },
-
-    async get_single_post(id) {
-      try {
-        this.loading = true
-        const result = await axios.get(`http://127.0.0.1:5000/api/posts/${parseInt(id)}`);
-        const response = await result.json()
-      }
-      catch (error) {
-        this.error = "Error al cargar la actividad"
-        } finally {
-          this.loading = false
-        }
-      },
 
     async changePage() {
       this.loading = true
