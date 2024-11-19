@@ -4,7 +4,7 @@
     import { onMounted } from 'vue'
 
     const postsStore = usePostsStore()
-    const { posts, loading, error, total_pages, page } = storeToRefs(postsStore)
+    const { posts, loading, error, hasNextPage, totalPages, page } = storeToRefs(postsStore)
 
     const fetchPosts = async () => {
         await postsStore.fetchPosts()
@@ -39,7 +39,6 @@
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-summary">{{ post.summary }}</p>
                     <p class="post-posted_at">{{ new Date(post.posted_at).toLocaleDateString() }}</p>
-
                     <RouterLink :to="{ name: 'post', params: { id: post.id } }" class="post-button"> Ver más</RouterLink>
                 </li>
             </ul>
@@ -51,10 +50,10 @@
                     <button v-if="page > 1" @click="goBackPage()" class="page-button">Anterior</button>
                 </div>
                 <div>
-                    <p :style="{ fontSize: '1.3rem' }">Página {{ page }} de {{ total_pages }}</p>
+                    <p :style="{ fontSize: '1.3rem' }">Página {{ page }} de {{ totalPages }}</p>
                 </div>
                 <div>
-                    <button v-if="page < total_pages" @click="changePage()" class="page-button">Siguiente</button>
+                    <button v-if="hasNextPage" @click="changePage()" class="page-button">Siguiente</button>
                 </div>
             </div>
         </div>

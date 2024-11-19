@@ -16,8 +16,8 @@
 
                 <div class="mt-12">
                     {% if contact.state not in ['Resuelto', 'Bloqueado'] %}
-                        <form action="{{ url_for('contacts.block_contact', contact_id=contact.id) }}" method="post">
-                            <button type="submit" class="text-white bg-[#4ea0cf] hover:bg-blue-300 font-semibold rounded-md text-sm px-4 py-2.5 w-auto disabled:">Bloquear Consulta</button>
+                        <form action="{{ url_for('contacts.contact_block', contact_id=contact.id) }}" method="post">
+                            <button type="submit" class="text-white !bg-blue-400 hover:bg-blue-500 font-semibold rounded-md text-sm px-4 py-2.5 w-auto">Bloquear Consulta</button>
                         </form>
                     {% else %}
                         <p class="text-sm font-extrabold" >No es posible bloquear ni responder esta consulta porque está {{ contact.state.lower() }}.</p>
@@ -51,7 +51,7 @@
                             class="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]">
                         </textarea>
                         <button type="submit"
-                        class="text-white bg-[#007bff] hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Enviar
+                        class="text-white !bg-blue-400 hover:bg-blue-500 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Enviar
                     </button>
                     </form>
                 {% endif %}

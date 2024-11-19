@@ -43,12 +43,12 @@ def contact_delete(contact_id):
 
     if not contact:
         flash("La consulta no existe", "error")
-        return redirect(url_for("contacts.index_contacts"))
+        return redirect(url_for("contacts.contacts_index"))
 
     delete_contact(contact)
 
     flash("Consulta eliminada correctamente")
-    return redirect(url_for("contacts.index_contacts"))
+    return redirect(url_for("contacts.contacts_index"))
 
 @bp.post("/contact_answer/<int:contact_id>")
 #@check_permissions("contact_answer")
@@ -59,7 +59,7 @@ def contact_answer(contact_id):
 
     if not contact:
         flash("La consulta no existe", "error")
-        return redirect(url_for("contacts.index_contacts"))
+        return redirect(url_for("contacts.contacts_index"))
     
     # capturar el mensaje de respuesta
     comment = request.form.get("comment")
@@ -85,7 +85,7 @@ def contact_block(contact_id):
 
     if not contact:
         flash("La consulta no existe", "error")
-        return redirect(url_for("contacts.index_contacts"))
+        return redirect(url_for("contacts.contacts_index"))
     
     blocked_contact = block(contact)
 

@@ -44,9 +44,8 @@ def create_post():
     author = session['user']
     summary = form.summary.data
     state = form.state.data
-    posted_at = form.posted_at.data
 
-    post.create_post(title, content, author, summary, state, posted_at)
+    post.create_post(title, content, author, summary, state)
     flash('Publicación creada correctamente')
     return redirect(url_for('posts.new_post'))
 
