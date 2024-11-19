@@ -20,7 +20,7 @@ class ProductionConfig(Config):
         "pool_recycle": 60,
         "pool_pre_ping": True,
     }
-    SQLAQCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID")
     GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET")
     GOOGLE_REDIRECT_URI = environ.get("GOOGLE_REDIRECT_URI")
