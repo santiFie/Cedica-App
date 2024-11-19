@@ -46,11 +46,6 @@ def create_app(env="production", static_folder="../../static"):
     routes.register(app)
     # Init OAuth
     configure_oauth(app)
-
-    print(app.config.get("GOOGLE_CLIENT_ID"))
-    print(app.config.get("GOOGLE_CLIENT_SECRET"))
-    print(app.config.get("GOOGLE_REDIRECT_URI"))
-
     # Error handlers
     errors.register_errors(app)
     
