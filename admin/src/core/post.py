@@ -45,7 +45,11 @@ def get_post(post_id):
 
 def create_post(title, content, author, summary, state):
     try:
-        post = Post(title=title, content=content, author=author, summary=summary, state=state, posted_at=datetime.now())
+        if state is "Publicado":
+            posted_at = datetime.now()
+        else:
+            posted_at = None
+        post = Post(title=title, content=content, author=author, summary=summary, state=state, posted_at=posted_at)
         database.db.session.add(post)
         database.db.session.commit()
     except Exception as e:
@@ -53,14 +57,17 @@ def create_post(title, content, author, summary, state):
         raise e
     return post
 
-def update_post(post_id, title, content, summary, state, posted_at):
+def update_post(post_id, title, content, summary, state):
     try:
         post = get_post(post_id)
         post.title = title
         post.content = content
         post.summary = summary
+        if post.state != "Publicado" and state == "Publicado":
+            post.posted_at = datetime.now()
+        if post.state == "Publicado" and state != "Publicado":
+            post.posted_at = None
         post.state = state
-        post.posted_at = posted_at
         database.db.session.commit()
     except Exception as e:
         database.db.session.rollback()
@@ -87,7 +94,7 @@ def find_all_posts(title=None, state=None, order_by='asc', page=1):
 
     # Filtro por title
     if title:
-        query = query.filter(Post.title == title)
+        query = query.filter(Post.title.ilike(f"%{title}%"))
 
     # Filtro por state
     if state:

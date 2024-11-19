@@ -14,9 +14,9 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False, unique=True)
     content = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String(255), nullable=False)  # Mail from the user that made the post
+    author = db.Column(db.String(255), nullable=False)
     summary = db.Column(db.String(255), nullable=False)
-    state = db.Column(states_enum, nullable=False)  # Consider using an Enum for state
-    posted_at = db.Column(db.DateTime, nullable=False) # Preguntar si es igual a la fecha DE CREACción
+    state = db.Column(states_enum, nullable=False) 
+    posted_at = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(), onupdate=datetime.now())

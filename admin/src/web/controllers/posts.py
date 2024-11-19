@@ -70,15 +70,13 @@ def update_post(post_id):
     content = form.content.data
     summary = form.summary.data
     state = form.state.data
-    posted_at = form.posted_at.data
 
-    post.update_post(post_id, title, content, summary, state, posted_at)
+    post.update_post(post_id, title, content, summary, state)
     flash('Publicación actualizada correctamente')
     return redirect(url_for('posts.edit_post', post_id=post_id))
 
 @bp.get('/delete/<int:post_id>')
 def delete_post(post_id):
-    print(post_id)
     if post.delete_post(post_id):
         flash('Publicación eliminada correctamente')
     else:
