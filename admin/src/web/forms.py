@@ -1041,16 +1041,6 @@ class NewPostForm(Form):
         validators=[DataRequired()],
     )
 
-    def validate_posted_at(form, field):
-        if field.data < date.today():
-            raise ValidationError("La fecha de publicación no puede ser una fecha pasada.")
-        
-    posted_at = DateField(
-        "Fecha de publicación",
-        validators=[
-            DataRequired(),
-        ],
-    )
     
 class EditPostForm(Form):
         
@@ -1082,13 +1072,3 @@ class EditPostForm(Form):
         validators=[DataRequired()],
     )
 
-    def validate_posted_at(form, field):
-        if field.data < date.today():
-            raise ValidationError("La fecha de publicación no puede ser una fecha pasada.")
-        
-    posted_at = DateField(
-        "Fecha de publicación",
-        validators=[
-            DataRequired(),
-        ],
-    )

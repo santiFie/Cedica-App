@@ -74,6 +74,7 @@ def verification_with_google():
     if user_info:
         if auth.find_user_by_email(user_info["email"]) is None:
             flash('No tienes permisos para acceder', 'error')
+            revoke_google_token(token['access_token']) # To have the chance to choose another account
             return redirect(url_for('auth.login'))
         session['user'] = user_info["email"]
         session["google_token"] = token['access_token']
