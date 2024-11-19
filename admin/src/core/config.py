@@ -21,9 +21,9 @@ class ProductionConfig(Config):
         "pool_pre_ping": True,
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID")
-    GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET")
-    GOOGLE_REDIRECT_URI = environ.get("GOOGLE_REDIRECT_URI")
+    GOOGLE_CLIENT_ID = "130407405975-s0rpddvf3bhp77nhnpgp7cogaens4ufp.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET = "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"
+    GOOGLE_REDIRECT_URI = "https://admin-grupo43.proyecto2024.linti.unlp.edu.ar/auth/google/callback"
     
 
 class DevelopmentConfig(Config):
