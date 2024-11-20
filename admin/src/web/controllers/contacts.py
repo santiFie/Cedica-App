@@ -87,7 +87,11 @@ def contact_block(contact_id):
         flash("La consulta no existe", "error")
         return redirect(url_for("contacts.contacts_index"))
     
-    blocked_contact = block(contact)
+    if contact.state == "Bloqueado":
+        blocked_contact = block(contact, "Pendiente")
+        flash("Consulta desbloqueada correctamente")
+    else:
+        blocked_contact = block(contact, "Bloqueado")
+        flash("Consulta bloqueada correctamente")
 
-    flash("Consulta bloqueada correctamente")
     return redirect(url_for("contacts.contact_show_detail", contact_id=blocked_contact.id))
