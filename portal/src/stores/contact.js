@@ -7,7 +7,7 @@ export const useContactStore = defineStore('contactStore', {
     async submitContact(contactData) {
       try {
         // convertir contactData en un objeto JSON y enviar
-        const response = await axios.post('http://127.0.0.1:5000/api/contacts/register', contactData, {
+        const response = await axios.post(`${import.meta.env.VITE_APP_API}/contacts/register`, contactData, {
             headers: {
               'Content-Type': 'application/json',
             },
