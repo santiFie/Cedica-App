@@ -7,8 +7,8 @@ from src.core.contact import find_contacts, find_contact, delete_contact, block,
 bp = Blueprint("contacts", __name__, url_prefix="/contacts")
 
 @bp.get("/")
-#@check_permissions("contact_index")
-#@login_required
+@check_permissions("contact_index")
+@login_required
 def contacts_index():
 
     # obtener parametros de busqueda del formulario
@@ -21,8 +21,8 @@ def contacts_index():
     return render_template("contacts/show_contacts.html", contacts=contacts, max_pages=max_pages, current_page=page)
 
 @bp.get("/contact_detail/<int:contact_id>")
-#@check_permissions("contact_detail")
-#@login_required
+@check_permissions("contact_detail")
+@login_required
 def contact_show_detail(contact_id):
 
     contact = find_contact(contact_id)
@@ -35,8 +35,8 @@ def contact_show_detail(contact_id):
 
 
 @bp.route("/contact_delete/<int:contact_id>", methods=["POST", "GET"])
-#@check_permissions("contact_delete")
-#@login_required
+@check_permissions("contact_delete")
+@login_required
 def contact_delete(contact_id):
 
     contact = find_contact(contact_id)
@@ -51,8 +51,8 @@ def contact_delete(contact_id):
     return redirect(url_for("contacts.contacts_index"))
 
 @bp.post("/contact_answer/<int:contact_id>")
-#@check_permissions("contact_answer")
-#@login_required
+@check_permissions("contact_answer")
+@login_required
 def contact_answer(contact_id):
 
     contact = find_contact(contact_id)
@@ -77,8 +77,8 @@ def contact_answer(contact_id):
 
 
 @bp.post("/contact_block/<int:contact_id>")
-#@check_permissions("contact_block")
-#@login_required
+@check_permissions("contact_block")
+@login_required
 def contact_block(contact_id):
 
     contact = find_contact(contact_id)
