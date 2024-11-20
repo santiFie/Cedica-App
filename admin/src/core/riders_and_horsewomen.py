@@ -866,3 +866,16 @@ def get_files_by_rider_id(rider_id):
     if files:
         return files
     return None
+
+
+def get_scolarship():
+
+    riders = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.scholarship_percentage.isnot(None)).count()
+    
+    return riders
+
+def get_no_scolarship():
+
+    riders = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.scholarship_percentage.is_(None)).count()
+    
+    return riders

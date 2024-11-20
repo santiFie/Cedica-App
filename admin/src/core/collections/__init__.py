@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import locale
 from sqlalchemy.orm import aliased
 from sqlalchemy import extract
+from sqlalchemy import func
 
 
 def find_collections(
@@ -343,3 +344,22 @@ def calculate_debt(debtor_dni):
                 missing_payments.append(f"{month_name} de {year}")
 
     return missing_payments, rider
+
+def get_collection_per_year(year):
+
+    
+    # collections = Collection.query.filter(extract("year", Collection.payment_date) == year)
+
+    collections = (
+    db.session.query(
+        extract("month", Collection.payment_date).label("mes"),
+        func.sum(Collection.amount).label("total_monto")
+    )
+    .filter(extract("year", Collection.payment_date) == year)
+    .group_by(extract("month", Collection.payment_date))
+    .order_by(extract("month", Collection.payment_date))
+    .all()
+    )
+    
+    return collections
+
