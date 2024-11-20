@@ -11,11 +11,15 @@ from flask import (
 from src.web.forms import NewPostForm, EditPostForm
 from src.core import post
 from src.core.models.post import states_enum
+from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 @bp.get('/')
-def index_posts():
+@check_permissions("post_index")
+@login_required
+def post_index():
     title = request.args.get('title')
     state = request.args.get('state')
     order_by = request.args.get('order_by')
@@ -25,12 +29,16 @@ def index_posts():
     return render_template('posts/index_posts.html', posts=posts, page=page, max_pages=max_pages, states=states_enum.enums)
 
 @bp.get('/new')
-def new_post():
+@check_permissions("post_new")
+@login_required
+def post_new():
     states = states_enum.enums
     return render_template('posts/new_post.html', states=states)
 
 @bp.post('/create')
-def create_post():
+@check_permissions("post_create")
+@login_required
+def post_create():
     form = NewPostForm(request.form)
     if not form.validate():
         flash('Formulario inválido', 'error')
@@ -50,13 +58,17 @@ def create_post():
     return redirect(url_for('posts.new_post'))
 
 @bp.get('/edit/<int:post_id>')
-def edit_post(post_id):
+@check_permissions("post_edit")
+@login_required
+def post_edit(post_id):
     post_to_edit = post.get_post(post_id)
     states = states_enum.enums
     return render_template('posts/edit_post.html', post=post_to_edit, states=states)
 
 @bp.post('/update/<int:post_id>')
-def update_post(post_id):
+@check_permissions("post_update")
+@login_required
+def post_update(post_id):
     form = EditPostForm(request.form)
     if not form.validate():
         flash('Formulario inválido', 'error')
@@ -76,7 +88,9 @@ def update_post(post_id):
     return redirect(url_for('posts.edit_post', post_id=post_id))
 
 @bp.get('/delete/<int:post_id>')
-def delete_post(post_id):
+@check_permissions("post_delete")
+@login_required
+def post_delete(post_id):
     if post.delete_post(post_id):
         flash('Publicación eliminada correctamente')
     else:
