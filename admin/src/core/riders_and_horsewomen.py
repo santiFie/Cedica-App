@@ -8,6 +8,7 @@ from src.core.models.team_member import TeamMember
 from src.core.models.riders_and_horsewomen import File, RiderAndHorsewoman
 from src.core.models.riders_and_horsewomen import CaringProfessional, Tutor, WorkInInstitution
 from sqlalchemy.orm import aliased
+from sqlalchemy import func
 from src.web.forms import (
     SecondTutorForm,
     FirstTutorForm,
@@ -879,3 +880,15 @@ def get_no_scolarship():
     riders = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.scholarship_percentage.is_(None)).count()
     
     return riders
+
+def get_disability_types():
+
+    disabilitys = (
+        database.db.session.query(
+            RiderAndHorsewoman.disability_type,
+            func.count(RiderAndHorsewoman.disability_type).label('count')
+        )
+        .group_by(RiderAndHorsewoman.disability_type)
+        )
+    
+    return disabilitys

@@ -348,18 +348,20 @@ def calculate_debt(debtor_dni):
 def get_collection_per_year(year):
 
     
-    # collections = Collection.query.filter(extract("year", Collection.payment_date) == year)
-
     collections = (
-    db.session.query(
-        extract("month", Collection.payment_date).label("mes"),
-        func.sum(Collection.amount).label("total_monto")
+        db.session.query(
+            extract("month", Collection.payment_date).label("mes"),
+            func.sum(Collection.amount).label("total_monto")
+        )
+        .filter(extract("year", Collection.payment_date) == year)
+        .group_by(extract("month", Collection.payment_date))
+        .order_by(extract("month", Collection.payment_date))
+        .all()
     )
-    .filter(extract("year", Collection.payment_date) == year)
-    .group_by(extract("month", Collection.payment_date))
-    .order_by(extract("month", Collection.payment_date))
-    .all()
-    )
+
+    month_to_amount = {int(mes): total_monto for mes, total_monto in collections}
+
+    month_collections = [month_to_amount.get(month, 0) for month in range(1, 13)]
     
-    return collections
+    return month_collections
 

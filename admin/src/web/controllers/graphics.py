@@ -3,6 +3,7 @@ import pandas as pd
 from flask import Blueprint, render_template, request
 from src.core.riders_and_horsewomen import get_scolarship, get_no_scolarship
 from src.core.collections import get_collection_per_year
+from src.core.riders_and_horsewomen import get_disability_types
 from datetime import datetime
 
 
@@ -56,18 +57,62 @@ def graphic_collection_per_year():
 
     years = list(range(2010, datetime.now().year + 1))
 
-    if not collections:
+    if not collections or all(x == 0 for x in collections):
         fig = "No hay registro de cobros en el año seleccionado"
 
         return render_template("graphics/graphics.html", fig = fig, years = years)
     
-    data = pd.DataFrame(collections, columns=['Mes', 'Ingresos'])
+    months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    
+    data = pd.DataFrame({
+    'Mes': months,
+    'Ingresos': collections
+    })
 
-    fig = px.bar(data, x='Mes', y='Ingresos', title=f'Ingresos por Mes en {year}', labels={'Mes': 'Mes', 'Ingresos': 'Ingresos ($)'})
+    fig = px.bar(
+        data_frame = data,
+        x='Mes', 
+        y='Ingresos', 
+        title=f'Ingresos por Mes en {year}',
+        labels={'Mes': 'Mes', 'Ingresos': 'Ingresos ($)'}
+        
+    )
     
     fig = fig.to_html(full_html=False)
 
     return render_template("graphics/graphics.html", fig = fig, years = years)
+
+@bp.get("/disability_type")
+def graphic_disability_type():
+    
+    years = list(range(2010, datetime.now().year + 1))
+
+    disabilitys = get_disability_types()
+
+    data = {
+        "disability_type" : [d[0] for d in disabilitys],
+        "values" : [d[1] for d in disabilitys]
+    }
+
+    fig = px.pie(
+        data_frame = data,
+        names = "disability_type",
+        values = "values",
+        title ="Grafico de los tipos de discapacidad",
+        color_discrete_sequence=px.colors.sequential.RdBu 
+    )
+
+    fig.update_traces(
+        textinfo = "percent+label",
+        pull =[0,0.1,0,0]
+    )
+
+    fig = fig.to_html(full_html=False)
+
+    years = list(range(2010, datetime.now().year + 1))
+    return render_template("graphics/graphics.html", fig = fig, years = years)
+
+
     
 
     
