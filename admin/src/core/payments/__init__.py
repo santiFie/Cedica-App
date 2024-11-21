@@ -142,3 +142,10 @@ def edit_a_payment(**kwargs):
         db.session.commit()
         return payment
     return None
+
+
+def get_payments_on_date(date):
+    
+    payments = Payment.query.filter(Payment.payment_date == date).all()
+
+    return payments

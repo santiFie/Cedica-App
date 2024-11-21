@@ -45,7 +45,7 @@ def get_post(post_id):
 
 def create_post(title, content, author, summary, state):
     try:
-        if state is "Publicado":
+        if state == "Publicado":
             posted_at = datetime.now()
         else:
             posted_at = None

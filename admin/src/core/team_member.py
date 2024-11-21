@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import flash
 from sqlalchemy import or_
 from src.core import utils, minio
+from sqlalchemy import func
 
 
 PREFIX = "team_members"
@@ -306,3 +307,16 @@ def check_dni_exist(dni):
     team_member_dni = TeamMember.query.filter_by(dni=dni).first()
 
     return team_member_dni
+
+def get_ranking_jobs():
+    from src.core.models.team_member import TeamMember
+    jobs = (
+        database.db.session.query(
+            TeamMember.job_position,
+            func.count(TeamMember.job_position).label('cant')
+        )
+        .group_by(TeamMember.job_position)
+        .order_by(func.count(TeamMember.job_position).desc())  
+    )
+
+    return jobs

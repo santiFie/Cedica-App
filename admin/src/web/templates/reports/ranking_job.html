@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Ranking puestos de trabajo{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+
+{% block content %}
+
+    {% if table %}    
+        <div class="w-full p-4">
+            <div class="w-full overflow-x-auto rounded-lg">
+                <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-white">
+                    Ranking puestos de Trabajo
+                </h4>
+                <div class="min-w-full mx-auto lg:w-3/4 max-[1000px]:w-full max-[825px]:ml-4 max-[480px]:ml-0.5">
+                    <table class="w-full table-auto border-collapse bg-white text-left text-sm text-gray-500">
+                    <thead class="bg-gray-50">
+                        <tr>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[560px]:px-2 px-6 py-4 font-medium text-gray-900">Ranking</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[735px]:hidden px-6 py-4 font-medium text-gray-900">Puesto de trabajo</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        {% for item in table %}
+                        <tr class="hover:bg-gray-50">
+                        <td class="max-[600px]:hidden px-6 py-4">{{ item.rank }}</td>
+                        <td class="max-[600px]:hidden px-6 py-4">{{ item.job_position }}</td>
+                        <td class="max-[600px]:hidden px-6 py-4">{{ item.cant }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center pl-10 mt-10">
+            <p class="text-lg">No se encontraron miembros de equipo en el sistema para armar un ranking</p>
+        </div>
+    {% endif %}
+        <div class="space-x-1.5 fixed bottom-0 right-0 w-full flex justify-center items-center mb-3">
+            <a href="{{ url_for('graphics.graphic_index') }}"
+            class="bg-blue-500 text-white py-2 px-4 mx-2 rounded">
+                Ir al listado de Graficos y Reportes
+            </a>
+        </div>
+
+
+
+{% endblock %}
