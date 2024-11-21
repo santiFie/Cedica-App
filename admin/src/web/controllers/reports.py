@@ -31,7 +31,7 @@ def report_debtors():
 
 @bp.get("/report_payments_date")
 def report_payment_date():
-    
+
     date = request.args.get("date")
 
     table = get_payments_on_date(date)
