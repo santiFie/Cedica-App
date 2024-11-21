@@ -10,7 +10,7 @@ from datetime import datetime
 bp = Blueprint("graphics", __name__, url_prefix="/graphics")
 
 @bp.get("/")
-def graphic_create():
+def graphic_index():
 
 
     years = list(range(2010, datetime.now().year + 1))

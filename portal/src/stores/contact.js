@@ -5,11 +5,9 @@ import js from '@eslint/js'
 export const useContactStore = defineStore('contactStore', {
   actions: {
     async submitContact(contactData) {
-        console.log('ADENTRO DE LA FUNCION SUBMIT CONTACT EN STORE')
-        console.log('CONTACT DATA:', contactData)
       try {
         // convertir contactData en un objeto JSON y enviar
-        const response = await axios.post('http://127.0.0.1:5000/api/contacts/register', contactData, {
+        const response = await axios.post(`${import.meta.env.VITE_APP_API}/contacts/register`, contactData, {
             headers: {
               'Content-Type': 'application/json',
             },

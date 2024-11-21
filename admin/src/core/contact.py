@@ -74,8 +74,8 @@ def add_comment(contact, comment):
 
     return contact
 
-def block(contact):
-    contact.state = 'Bloqueado'
+def block(contact, block):
+    contact.state = block
     db.session.commit()
 
     return contact

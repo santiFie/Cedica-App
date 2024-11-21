@@ -6,40 +6,60 @@
     {{ super() }}
 {% endblock %}
 
-{% block scripts %}
-
-{% endblock %}
 
 {% block content %}
-    <h1>Nueva Publicación</h1>
-    <form action="{{ url_for('posts.update_post', post_id=post.id) }}" method="post">
-        <div class="form-group">
-            <label for="title">Título</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}"  readonly>
+
+    <div class="container mx-auto">
+        <div class="mt-1 md:mt-4 md:col-span-2">
+            <form action="{{ url_for('posts.post_update', post_id=post.id) }}" method="POST">
+                <div class="shadow overflow-hidden sm:rounded-md bg-white">
+                    <div class="mb-2 p-4  bg-white">
+                        <h2 class="font-sans text-xl font-semibold text-gray-900">Editar Publicación</h2>
+                    </div>
+                    <div class="px-2 py-8 bg-white sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="title" class="block text-sm font-medium text-gray-700">Título</label>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}"
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"  readonly>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="summary" class="block text-sm font-medium text-gray-700">Copete</label>
+                                <textarea id="summary" name="summary" rows="3" maxlength="200"  
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"
+                                required>{{ post.summary }}</textarea>
+                                <small class="text-sm  text-gray-800">Anticipación de la noticia. No más de 200 caracteres.</small>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="content" class="block text-sm font-medium text-gray-700">Contenido</label>
+                                <textarea id="content" name="content" rows="3" maxlength="500"  
+                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-none border px-4 py-2"
+                                required>{{ post.content }}</textarea>
+                                <small class="text-sm  text-gray-800">No más de 500 caracteres.</small>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="state" class="block text-sm font-medium text-gray-700">Estado</label>
+                                <select id="state" name="state"
+                                    class="mt-1 focus:ring-gray-600 focus:border-gray-600 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm outline-none sm:text-sm">
+                                    {% for state in states %}
+                                        <option value="{{ state }}" {% if post.state == state %}selected{% endif %}>{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>        
+                    <div class="px-4 py-3 bg-white text-right sm:px-6">
+                        <a href="{{ url_for('posts.post_index') }}">
+                            <button  type="button"  class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 mr-1 rounded h-10">Volver</button>
+                        </a>
+                        <button type="submit"
+                            class="bg-blue-900 hover:bg-blue-950 text-white font-semibold py-2 px-4 ml-1 rounded h-10">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group mt-3">
-            <label for="summary">Copete</label>
-            <textarea class="form-control" id="summary" name="summary" rows="3" maxlength="200" required>{{ post.summary }}</textarea>
-            <small class="form-text text-muted">Breve resumen y anticipación de la noticia. No más de 200 caracteres.</small>
-        </div>
-        <div class="form-group mt-3">
-            <label for="content">Contenido</label>
-            <textarea class="form-control" id="content" name="content" rows="5" maxlength="500" required>{{ post.content }}</textarea>
-            <small class="form-text text-muted">No más de 500 caracteres.</small>
-        </div>
-        <div class="form-group mt-3">
-            <label for="posted_at">Fecha de Publicación</label>
-            <input type="date" class="form-control" id="posted_at" name="posted_at" value="{{ post.posted_at.strftime('%Y-%m-%d') }}" required>
-        </div>
-        <div class="form-group mt-3">
-            <label for="state">Estado</label>
-            <select type="select" class="form-control" id="state" name="state" required>
-                {% for state in states %}
-                    <option value="{{ state }}" {% if post.state == state %}selected{% endif %}>{{ state }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Editar</button>
-    </form>
+    </div>
 {% endblock %}
 

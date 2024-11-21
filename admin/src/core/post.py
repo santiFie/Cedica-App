@@ -1,5 +1,6 @@
 from src.core.models.post import Post
 from src.core import database
+from datetime import datetime
 
 def create_enums():
     from src.core.models.post import states_enum
@@ -8,7 +9,7 @@ def create_enums():
 def list_all_posts():
     return Post.query.all()
 
-def list_posts( page, per_page, author = None, published_from = None, published_to = None):
+def list_posts( page, per_page, author = None, published_from = None, published_to= datetime.now()):
     """
     Return posts that are published
     """
@@ -31,9 +32,9 @@ def list_posts( page, per_page, author = None, published_from = None, published_
     page = max(1, min(page, max_pages))
 
     offset = (page - 1) * per_page
-    posts = query.offset(offset).limit(per_page).all()
+    posts = query.order_by(Post.posted_at.desc()).offset(offset).limit(per_page).all()
 
-    return posts
+    return posts, total_post
 
 
 def title_exists(title):
@@ -42,8 +43,12 @@ def title_exists(title):
 def get_post(post_id):
     return Post.query.get(post_id)
 
-def create_post(title, content, author, summary, state, posted_at):
+def create_post(title, content, author, summary, state):
     try:
+        if state == "Publicado":
+            posted_at = datetime.now()
+        else:
+            posted_at = None
         post = Post(title=title, content=content, author=author, summary=summary, state=state, posted_at=posted_at)
         database.db.session.add(post)
         database.db.session.commit()
@@ -52,14 +57,17 @@ def create_post(title, content, author, summary, state, posted_at):
         raise e
     return post
 
-def update_post(post_id, title, content, summary, state, posted_at):
+def update_post(post_id, title, content, summary, state):
     try:
         post = get_post(post_id)
         post.title = title
         post.content = content
         post.summary = summary
+        if post.state != "Publicado" and state == "Publicado":
+            post.posted_at = datetime.now()
+        if post.state == "Publicado" and state != "Publicado":
+            post.posted_at = None
         post.state = state
-        post.posted_at = posted_at
         database.db.session.commit()
     except Exception as e:
         database.db.session.rollback()
@@ -86,7 +94,7 @@ def find_all_posts(title=None, state=None, order_by='asc', page=1):
 
     # Filtro por title
     if title:
-        query = query.filter(Post.title == title)
+        query = query.filter(Post.title.ilike(f"%{title}%"))
 
     # Filtro por state
     if state:

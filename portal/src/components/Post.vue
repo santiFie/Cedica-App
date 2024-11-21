@@ -11,14 +11,15 @@ const props = defineProps({
 })
 
 const postsStore = usePostsStore()
-const { loading } = storeToRefs(postsStore)
+const { loading, error } = storeToRefs(postsStore)
 
 // Asegurarse de que los datos están cargados
 onMounted(async () => {
-  if (!postsStore.allPosts.length) {
+  if (!postsStore.posts.length) {
     await postsStore.fetchPosts()
   }
 })
+
 
 const post = computed(() => postsStore.getPostById(props.id))
 </script>
@@ -28,6 +29,9 @@ const post = computed(() => postsStore.getPostById(props.id))
     <div v-if="loading">
       <h2>Cargando...</h2>
     </div>
+    <div v-else-if="error">
+      <h2>{{ error }}</h2>
+    </div>
     <div v-if="post == undefined">
       <h2>El post solicitado no existe</h2>
     </div>
@@ -36,7 +40,7 @@ const post = computed(() => postsStore.getPostById(props.id))
         <h1 class="post-title">{{ post.title }}</h1>
         <h2 class="post-summary">{{ post.summary }}</h2>
         <h4 class="post-author"><span>Por</span> {{ post.author }}</h4>
-        <p class="post-posted_at">Publicado el {{ post.posted_at }}</p>
+        <p class="post-posted_at">Publicado el {{ new Date(post.posted_at).toLocaleDateString() }}</p>
       </div>
       <div class="divition">
         <p class="post-content">{{ post.content }}</p>
@@ -99,6 +103,11 @@ const post = computed(() => postsStore.getPostById(props.id))
     background-color: #ffffff; /* Fondo blanco para destacar sobre el fondo general */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombras sutiles para dar profundidad */
     border: 1px solid #e0e0e0; /* Línea sutil que define la separación */
+  }
+
+  h2 {
+    color: black;
+    font-size: 2rem;
   }
 
   
