@@ -892,3 +892,9 @@ def get_disability_types():
         )
     
     return disabilitys
+
+def get_debtors():
+
+    debtors = RiderAndHorsewoman.query.filter(RiderAndHorsewoman.debtor.is_(True)).all()
+
+    return debtors

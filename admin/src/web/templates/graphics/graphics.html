@@ -67,6 +67,17 @@
                     <a role="button" href="{{ url_for('reports.report_jobs_ranking') }}" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Ranking de trabajos</a>
                 </div>
 
+                <div tabindex="0" class="flex items-center w-full p-2 rounded-lg text-start leading-tight transition-all outline-none">
+                    <a role="button" href="{{ url_for('reports.report_debtors') }}" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Registro de Deudores</a>
+                </div>
+
+                <div tabindex="0" class="flex items-center w-full p-2 rounded-lg text-start leading-tight transition-all outline-none">
+                    <form action="{{ url_for('reports.report_payment_date', date = date) }}" method="get">
+                        <input type="date" name="date" id="date" required>
+                        <button type="submit" class="bg-blue-300 hover:bg-blue-400 text-gray-700 font-semibold py-2 px-4 rounded">Consultar gastos</button>
+                    </form>
+                </div>
+
 
 
 

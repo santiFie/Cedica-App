@@ -90,14 +90,14 @@ def graphic_disability_type():
     disabilitys = get_disability_types()
 
     data = {
-        "disability_type" : [d[0] for d in disabilitys],
-        "values" : [d[1] for d in disabilitys]
+        "tipo de discapacidad" : [d[0] for d in disabilitys],
+        "valor" : [d[1] for d in disabilitys]
     }
 
     fig = px.pie(
         data_frame = data,
-        names = "disability_type",
-        values = "values",
+        names = "tipo de discapacidad",
+        values = "valor",
         title ="Grafico de los tipos de discapacidad",
         color_discrete_sequence=px.colors.sequential.RdBu 
     )
@@ -111,6 +111,8 @@ def graphic_disability_type():
 
     years = list(range(2010, datetime.now().year + 1))
     return render_template("graphics/graphics.html", fig = fig, years = years)
+
+
 
 
     
