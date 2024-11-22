@@ -2,9 +2,10 @@ from src.core import post
 from src.web.schema.post import posts_schema as posts_api
 from flask import Blueprint, request, jsonify, Response
 
-bp = Blueprint('posts_api', __name__, url_prefix='/api/posts')
+bp = Blueprint("posts_api", __name__, url_prefix="/api/posts")
 
-@bp.get('/')
+
+@bp.get("/")
 def index_posts():
     """
     Handles the GET request to retrieve a paginated list of posts.
@@ -28,14 +29,14 @@ def index_posts():
             "has_next_page": bool  # Whether there is a next page
     """
 
-    page = request.args.get('page',  default= 1, type=int)
-    per_page = request.args.get('per_page', default= 25, type=int)
+    page = request.args.get("page", default=1, type=int)
+    per_page = request.args.get("per_page", default=25, type=int)
 
-    # Get posts from the database 
-    posts, total_posts = post.list_posts(page, per_page)  
+    # Get posts from the database
+    posts, total_posts = post.list_posts(page, per_page)
 
     # Calculate metadata
-    total_pages = (total_posts + per_page - 1) // per_page  
+    total_pages = (total_posts + per_page - 1) // per_page
     has_next_page = page < total_pages
 
     response_data = posts
@@ -48,9 +49,8 @@ def index_posts():
             "per_page": per_page,
             "total_pages": total_pages,
             "total_items": total_posts,
-            "has_next_page": has_next_page
-        }
+            "has_next_page": has_next_page,
+        },
     }
 
     return jsonify(data)
-
