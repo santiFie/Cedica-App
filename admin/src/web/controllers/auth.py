@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
-from src.web.forms import AuthForm as af
+from src.web.forms.AuthForm import AuthForm as af
 from src.web.handlers.auth import login_required
 from src.core import auth
 import requests
@@ -7,16 +7,6 @@ from src.web.oauth import oauth
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
-# google = oauth.remote_app(
-#     'google',
-#     consumer_key=environ.get('GOOGLE_CLIENT_ID'),
-#     consumer_secret= environ.get('GOOGLE_CLIENT_SECRET'),
-#     request_token_params={'scope': 'email profile'},
-#     base_url='https://accounts.google.com/',
-#     request_token_url=None,
-#     access_token_url='https://oauth2.googleapis.com/token',
-#     authorize_url='https://accounts.google.com/o/oauth2/auth'
-# )
 
 @bp.get("/login")
 def login_google():

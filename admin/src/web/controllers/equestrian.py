@@ -5,7 +5,7 @@ from src.core import equestrian as eq
 from flask import render_template, request, flash, url_for, redirect, send_file, abort
 from src.core import utils, minio
 import mimetypes
-from src.web.forms import EquestrianForm
+from src.web.forms.EquestrianForm import EquestrianForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 

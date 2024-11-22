@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from src.core import users, auth
 from src.core import team_member as tm
 from src.core.models.users import Role
-from src.web.forms import RegisterForm, UserEditForm
+from src.web.forms.UserForm import RegisterForm, UserEditForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 bp = Blueprint('users', __name__, url_prefix="/users")

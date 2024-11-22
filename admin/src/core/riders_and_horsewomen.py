@@ -9,7 +9,7 @@ from src.core.models.riders_and_horsewomen import File, RiderAndHorsewoman
 from src.core.models.riders_and_horsewomen import CaringProfessional, Tutor, WorkInInstitution
 from sqlalchemy.orm import aliased
 from sqlalchemy import func
-from src.web.forms import (
+from src.web.forms.RiderAndHorsewomanForm import (
     SecondTutorForm,
     FirstTutorForm,
     RiderHorsewomanForm,

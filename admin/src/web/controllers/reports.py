@@ -4,8 +4,7 @@ from flask import Blueprint, render_template, request, flash
 from src.core.team_member import get_ranking_jobs
 from src.core.riders_and_horsewomen import get_debtors
 from src.core.payments import get_payments_on_date
-from src.web.forms import validate_date_not_in_future
-from datetime import datetime
+
 
 bp = Blueprint("reports", __name__, url_prefix="/reports")
 

@@ -8,7 +8,7 @@ from flask import (
     session,
     url_for,
 )
-from src.web.forms import NewPostForm, EditPostForm
+from src.web.forms.PostForm import NewPostForm, EditPostForm
 from src.core import post
 from src.core.models.post import states_enum
 from src.web.handlers.auth import login_required
