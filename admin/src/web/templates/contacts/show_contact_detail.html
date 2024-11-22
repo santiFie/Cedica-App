@@ -44,14 +44,14 @@
                 {% if contact.state == 'Resuelto' %}
                 <label for="state">Respuesta:</label>
                 <textarea rows="6"
-                        name='message'
+                        name='comment' id="comment"
                     class="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]" readonly> {{ contact.comment }} 
                 </textarea>
                 {% elif contact.state != 'Bloqueado' %}
                     <form action="{{ url_for('contacts.contact_answer', contact_id=contact.id) }}" method="post" class="ml-auo space-y-4">
                         <label for="state">Respuesta:</label>
                         <textarea rows="6"
-                                name='message'
+                                name='comment' id="comment"
                             class="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#007bff]">
                         </textarea>
                         <button type="submit"
