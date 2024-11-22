@@ -36,9 +36,7 @@
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.dni }}</td>
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.address }}</td>
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.phone }}</td>
-                        {% for month in item.debt %}
-                            <td class="max-[600px]:hidden px-6 py-4">{{ month }}</td>
-                        {% endfor %}
+                            <td class="max-[600px]:hidden px-6 py-4">{{ item.debt }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
