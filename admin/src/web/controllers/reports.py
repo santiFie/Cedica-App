@@ -38,7 +38,7 @@ def report_debtors():
             "dni": debtor.dni,
             "address": debtor.address,
             "phone": debtor.phone,
-            "debt": calculate_debt(debtor.dni)[0]
+            "debt": len(calculate_debt(debtor.dni)[0])
         }
         for debtor in debtors
     ]
