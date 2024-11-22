@@ -17,6 +17,68 @@ La aplicación permite:
 ### Utilización
 Para poder utilizar la aplicación debe ingresar al siguiente [link](https://admin-grupo43.proyecto2024.linti.unlp.edu.ar/)
 
+En caso de querer ejecutar la aplicación localmente debe seguir estos pasos:
+
+#### 1. Instalación de dependencias iniciales
+
+Asegúrate de tener instalados los siguientes programas:
+
+Python (>=3.12) [Python](https://www.python.org/downloads/)
+Node.js
+
+#### 2. Clonar el repositorio
+\`\`\`bash
+git clone https://gitlab.catedras.linti.unlp.edu.ar/proyecto2024/proyectos/grupo43/code.git
+cd proyecto
+\`\`\`
+
+#### 3. Configurar el entorno virtual con Poetry
+Si no tienes Poetry instalado, instálalo con aquí esta la [Guía de instalación](https://github.com/python-poetry/install.python-poetry.org)
+
+Luego, instala las dependencias del proyecto ejecutando:
+\`\`\`bash
+poetry install
+\`\`\`
+Opcional: Si prefieres trabajar dentro de un entorno virtual manejado por Poetry, actívalo con:
+\`\`\`bash
+poetry shell
+\`\`\`
+
+#### 4. Configuración de las variables de entonro
+Como no se incluyen variables de entorno, puedes definirlas manualmente. Asegurate de que coincidan con la configuración del archivo docker-compose.yml
+
+#### 5. Inicialización del contenedor docker.
+Levanta los servicios de Docker necesarios para la aplicación:
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+#### 6. Inicialización de la base de datos
+Para configurar la base de datos, ejecuta el siguiente comando desde el directorio del proyecto:
+\`\`\`bash
+flask reset-db
+\`\`\`
+
+#### 7. Compilar los estilos con TailwindCSS
+Configura nodeenv para crear un entorno aislado de Node.js:
+\`\`\`bash
+nodeenv env_node
+source env_node/bin/activate
+\`\`\`
+
+Luego, ejecuta:
+
+\`\`\`bash
+npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
+\`\`\`
+Esto compilará los estilos de TailwindCSS y los mantendrá actualizados en tiempo real
+
+#### 8. Ejecutar la aplicación
+Para iniciar el servidor local de Flask, usa:
+\`\`\`bash
+flask run
+\`\`\`
+El servidor estará disponible en http://127.0.0.1:5000.
 
 ### Dependencias
 
