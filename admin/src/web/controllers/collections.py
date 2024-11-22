@@ -13,7 +13,7 @@ from src.web.handlers.auth import login_required
 from src.core.riders_and_horsewomen import find_rider
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
-from src.web.forms import CollectionForm
+from src.web.forms.CollectionForm import CollectionForm
 from datetime import datetime
 
 

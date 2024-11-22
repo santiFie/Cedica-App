@@ -14,7 +14,7 @@ from src.core import health_insurance as hi
 from src.core import auth as au
 from src.core import users as us
 from src.core import minio
-from src.web.forms import TeamMemberForm, TeamMemberEditForm
+from src.web.forms.TeamMemberForm import TeamMemberForm, TeamMemberEditForm
 import mimetypes
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions

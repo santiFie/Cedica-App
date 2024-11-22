@@ -27,7 +27,7 @@ from src.core import riders_and_horsewomen as rh
 from src.core import team_member as tm
 from src.core import equestrian as eq
 from src.core import health_insurance as hi
-from src.web.forms import FirstTutorForm, RiderHorsewomanForm as riderForm, RiderHorsewomanEditForm, SecondTutorForm, WorkInInstitutionForm
+from src.web.forms.RiderAndHorsewomanForm import FirstTutorForm, RiderHorsewomanForm as riderForm, RiderHorsewomanEditForm, SecondTutorForm, WorkInInstitutionForm
 from src.web.handlers.auth import login_required
 from src.web.handlers.users import check_permissions
 

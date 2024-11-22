@@ -1,7 +1,6 @@
 from wtforms import (
     Form,
     StringField,
-    IntegerField,
     DateField,
     DecimalField,
     SelectField,
@@ -12,11 +11,9 @@ from wtforms.validators import (
     Length,
     Regexp,
     NumberRange,
-    Email,
     ValidationError,
-    Optional,
 )
-from datetime import date, datetime
+from datetime import date
 
 DATA_REQUIRED_MESSAGE = "El campo no puede estar vacio."
 
