@@ -888,6 +888,7 @@ def get_disability_types():
             RiderAndHorsewoman.disability_type,
             func.count(RiderAndHorsewoman.disability_type).label('count')
         )
+        .filter(RiderAndHorsewoman.disability_type.isnot(None))
         .group_by(RiderAndHorsewoman.disability_type)
         )
     

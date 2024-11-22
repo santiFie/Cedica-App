@@ -5,10 +5,15 @@ from src.core.riders_and_horsewomen import get_scolarship, get_no_scolarship
 from src.core.collections import get_collection_per_year
 from src.core.riders_and_horsewomen import get_disability_types
 from datetime import datetime
+from src.web.handlers.auth import login_required
+from src.web.handlers.users import check_permissions
 
 
 bp = Blueprint("graphics", __name__, url_prefix="/graphics")
 
+
+@login_required
+@check_permissions("graphic_index")
 @bp.get("/")
 def graphic_index():
 
@@ -17,7 +22,8 @@ def graphic_index():
 
     return render_template("graphics/graphics.html", years = years)
 
-
+@login_required
+@check_permissions("graphic_scolarship_percentage")
 @bp.get("/scolarship_percentage")
 def graphic_scolarship_percentage():
 
@@ -48,6 +54,9 @@ def graphic_scolarship_percentage():
     years = list(range(2010, datetime.now().year + 1))
     return render_template("graphics/graphics.html", fig = fig, years = years)
 
+
+@login_required
+@check_permissions("graphic_collection_per_year")
 @bp.get("/collection_per_year")
 def graphic_collection_per_year():
 
@@ -82,6 +91,9 @@ def graphic_collection_per_year():
 
     return render_template("graphics/graphics.html", fig = fig, years = years)
 
+
+@login_required
+@check_permissions("graphic_disability_type")
 @bp.get("/disability_type")
 def graphic_disability_type():
     
