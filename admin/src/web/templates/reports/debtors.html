@@ -25,6 +25,7 @@
                         <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">DNI</th>
                         <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Direccion</th>
                         <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Telefono</th>
+                        <th scope="col" class="max-[480px]:space-x-0.5 max-[600px]:hidden px-6 py-4 font-medium text-gray-900">Meses que debe</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -35,6 +36,9 @@
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.dni }}</td>
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.address }}</td>
                         <td class="max-[600px]:hidden px-6 py-4">{{ item.phone }}</td>
+                        {% for month in item.debt %}
+                            <td class="max-[600px]:hidden px-6 py-4">{{ month }}</td>
+                        {% endfor %}
                         </tr>
                         {% endfor %}
                     </tbody>
