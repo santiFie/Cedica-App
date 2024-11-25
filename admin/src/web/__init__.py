@@ -17,14 +17,13 @@ from src.core.utils import is_link
 from src.core.config import config
 from os import environ, urandom
 from flask_cors import CORS
+import os
 
 session = Session()
 bcrypt = Bcrypt()
 
 
-def create_app(env="development", static_folder="../../static"):
-
-    
+def create_app(env="production", static_folder="../../static"):
     app = Flask(__name__, static_folder= static_folder)
     # Init secret key for session
     app.secret_key = environ.get("SECRET_KEY") or urandom(24)
@@ -47,10 +46,9 @@ def create_app(env="development", static_folder="../../static"):
     routes.register(app)
     # Init OAuth
     configure_oauth(app)
-
     # Error handlers
     errors.register_errors(app)
-
+    
     app.jinja_env.globals.update(check_permissions=has_permissions)
     app.jinja_env.globals.update(is_link=is_link)
 

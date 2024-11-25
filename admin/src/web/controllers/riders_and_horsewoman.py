@@ -177,6 +177,7 @@ def riders_and_horsewomen_edit(id, form=None):
     pension_options = pension_enum.enums
     education_level_options = education_level_enum.enums
     days_options = days_enum.enums
+    file_type = files_enum.enums
     health_insurances = hi.get_all()
     team_members = tm.get_all()
     therapists = tm.get_all_therapists()
@@ -253,6 +254,7 @@ def riders_and_horsewomen_edit(id, form=None):
         rider_condition = work_in_institutions.condition,
         rider_seat = work_in_institutions.seat,
         form=form,
+        file_type=file_type,
     )
 
 

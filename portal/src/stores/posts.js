@@ -26,14 +26,13 @@ export const usePostsStore = defineStore('posts', {
           page: this.page,
           per_page: limit
         };
-        console.log(import.meta.env.VITE_APP_API)
         const response = await axios.get(`${import.meta.env.VITE_APP_API}/posts`, { params })
         this.posts = response.data.data
         this.hasNextPage = response.data.meta.has_next_page
         this.totalPages = response.data.meta.total_pages
 
       } catch (error) {
-        this.error = error
+        this.error = "Error al cargar los posts"
       } finally {
         this.loading = false
       }

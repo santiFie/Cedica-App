@@ -12,7 +12,6 @@ export const useContactStore = defineStore('contactStore', {
               'Content-Type': 'application/json',
             },
         })
-        console.log('Consulata enviada exitosamente:', response.data)
         alert('Tu consulta ha sido enviada!')
       } catch (error) {
         console.error('Error enviando consulta:', error)
