@@ -55,7 +55,7 @@ def post_create():
 
     post.create_post(title, content, author, summary, state)
     flash('Publicación creada correctamente')
-    return redirect(url_for('posts.new_post'))
+    return redirect(url_for('posts.post_new'))
 
 @bp.get('/edit/<int:post_id>')
 @check_permissions("post_edit")
@@ -85,7 +85,7 @@ def post_update(post_id):
 
     post.update_post(post_id, title, content, summary, state)
     flash('Publicación actualizada correctamente')
-    return redirect(url_for('posts.edit_post', post_id=post_id))
+    return redirect(url_for('posts.post_edit', post_id=post_id))
 
 @bp.get('/delete/<int:post_id>')
 @check_permissions("post_delete")
@@ -96,4 +96,4 @@ def post_delete(post_id):
     else:
         flash('Error al eliminar la publicación', 'error')
 
-    return redirect(url_for('posts.index_posts'))
+    return redirect(url_for('posts.post_index'))
