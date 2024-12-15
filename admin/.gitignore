@@ -10,3 +10,4 @@ htmlcov/
 docs/_build/
 .python-version
 flask_session/
+.env

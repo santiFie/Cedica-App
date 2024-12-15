@@ -25,27 +25,23 @@ class ProductionConfig(Config):
     GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET")
     GOOGLE_REDIRECT_URI = environ.get("GOOGLE_REDIRECT_URI")
     
-
-class DevelopmentConfig(Config):
-    MINIO_SERVER = "localhost:9000"
-    MINIO_ACCESS_KEY = "0yNExytlaQ2opQLb19vp"
-    MINIO_SECRET_KEY = "AaVEC9YEuvJ56Yag943XT6Vex7VaQXyhhH6Qh5G5"
-    MINIO_SECURE = False
-    DEBUG = True
-    DB_USER = "grupo43"
-    DB_PASSWORD = "1234"
-    DB_HOST = "localhost"
-    DB_PORT = "5432"
-    DB_NAME = "grupo43"
-    SQLALCHEMY_DATABASE_URI = (
-         f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    )
-    SQLAQCHEMY_TRACK_MODIFICATIONS = True
-    GOOGLE_CLIENT_ID = "130407405975-s0rpddvf3bhp77nhnpgp7cogaens4ufp.apps.googleusercontent.com"
-    GOOGLE_CLIENT_SECRET = "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"
-    GOOGLE_REDIRECT_URI = "https://127.0.0.1:5000/auth/google/callback"
-    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-
+    class DevelopmentConfig(Config):
+        MINIO_SERVER = environ.get("MINIO_SERVER")
+        MINIO_ACCESS_KEY = environ.get("MINIO_ACCESS_KEY")
+        MINIO_SECRET_KEY = environ.get("MINpIO_SECRET_KEY")
+        MINIO_SECURE = environ.get("MINIO_SECURE") == 'True'
+        DEBUG = environ.get("DEBUG") == 'True'
+        DB_USER = environ.get("DB_USER")
+        DB_PASSWORD = environ.get("DB_PASSWORD")
+        DB_HOST = environ.get("DB_HOST")
+        DB_PORT = environ.get("DB_PORT")
+        DB_NAME = environ.get("DB_NAME")
+        SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
+        SQLALCHEMY_TRACK_MODIFICATIONS = environ.get("SQLALCHEMY_TRACK_MODIFICATIONS") == 'True'
+        GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID")
+        GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET")
+        GOOGLE_REDIRECT_URI = environ.get("GOOGLE_REDIRECT_URI")
+        CONF_URL = environ.get("CONF_URL")
 
 class TestingConfig(Config):
     TESTING = True
