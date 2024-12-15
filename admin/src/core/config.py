@@ -28,7 +28,7 @@ class ProductionConfig(Config):
     class DevelopmentConfig(Config):
         MINIO_SERVER = environ.get("MINIO_SERVER")
         MINIO_ACCESS_KEY = environ.get("MINIO_ACCESS_KEY")
-        MINIO_SECRET_KEY = environ.get("MINpIO_SECRET_KEY")
+        MINIO_SECRET_KEY = environ.get("MINIO_SECRET_KEY")
         MINIO_SECURE = environ.get("MINIO_SECURE") == 'True'
         DEBUG = environ.get("DEBUG") == 'True'
         DB_USER = environ.get("DB_USER")
