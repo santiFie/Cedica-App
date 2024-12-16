@@ -26,7 +26,6 @@ export default {
       if (!document.getElementById('recaptcha-script')) {
         const script = document.createElement('script');
         script.id = 'recaptcha-script';
-        script.src = 'https://www.google.com/recaptcha/api.js';
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);
@@ -103,7 +102,7 @@ export default {
       <textarea id="message" class="form-message" v-model="message" placeholder="Mensaje" required @input="adjustHeight"></textarea>
     </div>
     <div class="g-recaptcha" 
-         data-sitekey="6LeGsYIqAAAAAHtkb8P22Xoyfc-lyulQsGU3Ryx_" 
+         :data-sitekey="import.meta.env.VITE_RECAPTCHA_SITE_KEY" 
          data-callback="onCaptchaSuccess">
     </div>
     <button type="submit">Enviar</button>
